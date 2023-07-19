@@ -19,16 +19,16 @@ public class Member {
     @Column
     private Long id;
 
-    @Column
+    @Column (unique = true)
     private String name; //멤버 아이디에 해당합니다.
 
     @Column
     private String password;
 
-    @Column
+    @Column (unique = true)
     private String nickname;
 
-    @Column
+    @Column (unique = true)
     private String email;
 
     @Column
