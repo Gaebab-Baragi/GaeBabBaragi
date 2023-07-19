@@ -1,4 +1,4 @@
-package site.doggyyummy.gaebap.domain.user.domain;
+package site.doggyyummy.gaebap.domain.member.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class User{
+public class Member {
 
     @Id
     @Column

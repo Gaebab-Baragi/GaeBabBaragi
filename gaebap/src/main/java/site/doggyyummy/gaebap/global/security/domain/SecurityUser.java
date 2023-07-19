@@ -2,31 +2,31 @@ package site.doggyyummy.gaebap.global.security.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import site.doggyyummy.gaebap.domain.user.domain.User;
+import site.doggyyummy.gaebap.domain.member.domain.Member;
 
 import java.util.Collection;
 import java.util.List;
 
 public class SecurityUser implements UserDetails {
-    private final User user;
+    private final Member member;
 
-    public SecurityUser(User user){
-        this.user = user;
+    public SecurityUser(Member member){
+        this.member = member;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(()-> this.user.getAuthority()); //추후에 수정
+        return List.of(()-> this.member.getAuthority()); //추후에 수정
     }
 
     @Override
     public String getPassword() {
-        return this.user.getPassword();
+        return this.member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.user.getName();
+        return this.member.getName();
     }
 
     @Override
