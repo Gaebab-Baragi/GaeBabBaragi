@@ -1,11 +1,10 @@
-package site.doggyyummy.gaebap.domain.user.service;
+package site.doggyyummy.gaebap.global.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import site.doggyyummy.gaebap.domain.user.domain.SecurityUser;
+import site.doggyyummy.gaebap.global.security.domain.SecurityUser;
 import site.doggyyummy.gaebap.domain.user.domain.User;
 import site.doggyyummy.gaebap.domain.user.repository.UserRepository;
 
