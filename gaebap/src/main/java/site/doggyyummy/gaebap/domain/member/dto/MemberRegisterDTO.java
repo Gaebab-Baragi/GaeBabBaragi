@@ -3,8 +3,8 @@ package site.doggyyummy.gaebap.domain.member.dto;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class MemberDetailsDTO {
-    private String name;
+public class MemberRegisterDTO {
+    private String registerName;
     private String password;
     private String nickname;
     private String email;
