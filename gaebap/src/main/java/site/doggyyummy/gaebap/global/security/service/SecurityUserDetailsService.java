@@ -1,5 +1,6 @@
 package site.doggyyummy.gaebap.global.security.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,10 +12,9 @@ import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import java.util.function.Supplier;
 
 @Service
+@RequiredArgsConstructor
 public class SecurityUserDetailsService implements UserDetailsService {
 
-    //나중에 생성자 주입으로 바꿔야 함
-    @Autowired
     private MemberRepository userRepository;
 
     @Override
