@@ -40,17 +40,4 @@ public class Member {
        List<Recipe> likes;
        List<Pet> pets;
      */
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                ", authority='" + authority + '\'' +
-                ", registerDate=" + registerDate +
-                '}';
-    }
 }

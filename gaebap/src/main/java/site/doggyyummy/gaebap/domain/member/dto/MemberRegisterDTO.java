@@ -25,7 +25,6 @@ public class MemberRegisterDTO {
         member.setPassword(registerDTO.getPassword());
         member.setRegisterDate(new Timestamp(System.currentTimeMillis()));
 
-        System.out.println(member.toString());
         return member;
     }
 }
