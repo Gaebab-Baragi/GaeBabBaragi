@@ -6,5 +6,6 @@ import site.doggyyummy.gaebap.domain.member.domain.Member;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findUserByName(String username);
+    Optional<Member> findMemberByName(String username);
+
 }

@@ -1,8 +1,6 @@
 package site.doggyyummy.gaebap.domain.member.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -12,11 +10,11 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@RequiredArgsConstructor
 public class Member {
 
     @Id
     @Column
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     @Column (unique = true)
@@ -42,4 +40,17 @@ public class Member {
        List<Recipe> likes;
        List<Pet> pets;
      */
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                ", authority='" + authority + '\'' +
+                ", registerDate=" + registerDate +
+                '}';
+    }
 }
