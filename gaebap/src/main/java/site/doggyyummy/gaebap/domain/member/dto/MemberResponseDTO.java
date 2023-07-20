@@ -5,6 +5,7 @@ import site.doggyyummy.gaebap.domain.member.domain.Member;
 
 @AllArgsConstructor
 public class MemberResponseDTO {
+
     private String name;
     private String nickname;
     private String email;

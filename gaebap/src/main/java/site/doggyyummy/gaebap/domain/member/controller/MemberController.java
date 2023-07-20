@@ -1,5 +1,6 @@
 package site.doggyyummy.gaebap.domain.member.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.member.domain.Member;
@@ -8,16 +9,16 @@ import site.doggyyummy.gaebap.domain.member.dto.MemberResponseDTO;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
 
-    @Autowired MemberService memberService;
+    private MemberService memberService;
+
     @PostMapping("/register")
     public String signUp(@RequestBody MemberRegisterDTO registerDTO){
         try {
-            memberService.signUp(MemberRegisterDTO.toMember(registerDTO));
-            Member m = memberService.findByName("pysss").get();
-            System.out.println(m.toString());
+            memberService.signUp(MemberRegisterDTO.toEntity(registerDTO));
             return "reg";
         }
         catch (Exception e){
@@ -32,7 +33,6 @@ public class MemberController {
             return MemberResponseDTO.toDTO(member);
         }
         catch (Exception e) {
-            System.out.println("no member found");
             return null;
         }
     }
