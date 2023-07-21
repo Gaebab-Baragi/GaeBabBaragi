@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+/* eslint-disable */
 import './App.css';
+import React, {useState} from 'react';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Button from 'react-bootstrap/Button';
+import { configureStore } from '@reduxjs/toolkit'
+import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import NaviBar from './components/ui/NaviBar';
+import BackGround from './components/ui/BackGround';
+import LoginPage from './pages/LoginPage'
+
 
 function App() {
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <NaviBar></NaviBar>    
+    <BackGround></BackGround>
+
+      <br />
+      <h2>추천레시피</h2>
+      <br></br>
+      {/* 카드 컴포넌트 만들고 / 데이터 받으면 거기서넣어주기/? */}
+      </>
   );
 }
-
 export default App;
+
+
+
