@@ -26,7 +26,6 @@ public class Ingredient {
     @Column
     private boolean edible;
 
-    @Column
     @OneToMany(mappedBy = "ingredient")
     private List<Forbidden> forbiddens = new ArrayList<>();
 }

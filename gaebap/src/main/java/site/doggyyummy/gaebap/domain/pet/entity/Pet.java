@@ -21,9 +21,8 @@ public class Pet {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "member_id")
+    @JoinColumn (name = "MEMBER_ID", nullable = false)
     private Member member;
 
     @Column(nullable = false)
@@ -38,7 +37,6 @@ public class Pet {
     @Column
     private String imgUrl;
 
-    @Column
     @OneToMany(mappedBy = "pet")
     private List<Forbidden> forbiddens = new ArrayList<>();
 

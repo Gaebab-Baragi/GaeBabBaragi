@@ -15,13 +15,13 @@ public class Step {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_id")
+    @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
 
-    private Integer order;
+    private Long orderingNumber;
 
     // 보류
-    private String image;
+    private String imageUrl;
 
     private String description;
 }

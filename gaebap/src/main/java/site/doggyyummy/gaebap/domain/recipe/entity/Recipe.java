@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import site.doggyyummy.gaebap.domain.comment.entity.Comment;
+import site.doggyyummy.gaebap.domain.like.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 
-import javax.xml.stream.events.Comment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +29,11 @@ public class Recipe {
     @Column
     private String description;
 
-    @Column(name = "MEMBER_ID")
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     private Long hit;
-
-    // 보류
-    private Long like;
 
     // 보류
     private String imageUrl;
@@ -43,7 +42,7 @@ public class Recipe {
     private String videoUrl;
 
     @OneToMany(mappedBy = "recipe")
-    private List<RecipeIngredient> receipeIngredients = new ArrayList<>();
+    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe")
     private List<Step> steps = new ArrayList<>();
@@ -53,4 +52,8 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe")
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
 }
