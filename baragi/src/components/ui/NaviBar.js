@@ -11,16 +11,17 @@ import LoginPage from '../../pages/LoginPage'
 function NaviBar() {
     let navigate = useNavigate();
     return (
-        <Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
+        <Navbar expand="lg" className="bg-body-tertiary" bg="dark">
+          {/* data-bs-theme="dark" */}
         <Container>
-            <img src="/냠냠.png" alt="My Image" width="5%" height="1%" />
-            <Navbar.Brand href="/">개밥바라기</Navbar.Brand>
+            <img src="/개밥바라기.png" alt="My Image" width="5%" height="1%" />
+            <Navbar.Brand href="/" className = 'test1' >개밥바라기</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav"> 
             <Nav className='me-auto'>
-              <Nav.Link href="#home">레시피</Nav.Link>
-              <Nav.Link href="#link">스트리밍</Nav.Link>
-              <NavDropdown title="커뮤니티" id="basic-nav-dropdown">
+              <Nav.Link href="#home" className='test2'>레시피</Nav.Link>
+              <Nav.Link href="#link" className='test2'>스트리밍</Nav.Link>
+              <NavDropdown title="커뮤니티" id="basic-nav-dropdown" className='test2'>
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
                   Another action
