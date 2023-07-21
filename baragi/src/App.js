@@ -22,6 +22,7 @@ function App() {
       <NaviBar></NaviBar>    
       <BackGround></BackGround>
       <h2>추천레시피</h2>
+      <br />
       <CardCarousel/>
       <br />
       <br></br>

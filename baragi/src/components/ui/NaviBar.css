@@ -1,0 +1,21 @@
+.test1{
+    color: #FA0;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: IBM Plex Sans KR;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%; /* 62.4px */
+}
+
+.test2{
+    color: #000;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: IBM Plex Sans KR;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 45.5px */
+}
