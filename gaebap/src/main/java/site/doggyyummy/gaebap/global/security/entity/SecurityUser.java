@@ -1,8 +1,8 @@
-package site.doggyyummy.gaebap.global.security.domain;
+package site.doggyyummy.gaebap.global.security.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import site.doggyyummy.gaebap.domain.member.domain.Member;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
 
 import java.util.Collection;
 import java.util.List;
