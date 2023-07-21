@@ -1,0 +1,26 @@
+/* Form.css */
+.LoginForm {
+  width: 400px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.formTitle {
+  font-size: 26px;
+}
+
+/* Increase font size for form inputs and button */
+.form-control,
+.input {
+  font-size: 16px; /* Adjust the font size as needed */
+  width: 100%; /* Make input fields match the form's width */
+  height: 40px; /* Adjust the height as needed */
+  padding: 8px; /* Adjust the padding as needed */
+}
+.btn {
+  background-color: #fa0;
+}
