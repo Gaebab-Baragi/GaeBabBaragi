@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.domain.member.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import site.doggyyummy.gaebap.domain.member.dto.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.MemberRegisterDTO;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
 
@@ -22,6 +23,20 @@ public class MemberController {
             return "exception";
         }
     }
+
+    @PutMapping("")
+    public String modify(@RequestBody MemberModifyDTO modifyDTO){
+        try {
+            memberService.modify(MemberModifyDTO.toEntity(modifyDTO));
+            return "reg";
+        }
+        catch (Exception e){
+            return "exception";
+        }
+    }
+
+
+
 
     /** TODO
      *  회원가입
