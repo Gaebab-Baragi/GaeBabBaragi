@@ -1,7 +1,7 @@
 package site.doggyyummy.gaebap.domain.member.dto;
 
 import lombok.AllArgsConstructor;
-import site.doggyyummy.gaebap.domain.member.domain.Member;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
 
 @AllArgsConstructor
 public class MemberResponseDTO {
