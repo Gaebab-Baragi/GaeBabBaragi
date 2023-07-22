@@ -1,13 +1,20 @@
+/* eslint-disable */
 import LoginForm from "../components/ui/LoginForm";
+import Container from 'react-bootstrap/Container';
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
-
+import Test from '../components/ui/Test'
+import Test2 from '../components/ui/Test2'
+import InputImage from "../components/ui/InputImage";
 
 function Recipepage() {
     return (
-        <>
-        <p>레시피페이지임</p>
-
-        </>
+      <>
+      <Test2></Test2>
+      
+      </>
       );
     }
     export default Recipepage;

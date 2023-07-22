@@ -16,21 +16,20 @@ import LoginPage from './pages/LoginPage'
 import FormComponent from './components/ui/LoginForm';
 import LoginForm from './components/ui/LoginForm';
 import MainPage from './pages/MainPage';
+import Test2 from './components/ui/InputImage'
 
 function App() {  
   return (
+    <>
     <div className="App">
-      <NaviBar></NaviBar>    
+      <NaviBar></NaviBar>
       {/* <FormComponent/> */}
-      <br />
-      <br></br>
       {/* 카드 컴포넌트 만들고 / 데이터 받으면 거기서넣어주기/? */}
-      <Routes>
-      <Route
-        path='/' element={<MainPage/>}></Route>
-      </Routes>
+        <Routes>
+        <Route path='' element={<MainPage/>}></Route>
+        </Routes>
     </div>
-
+    </>
   );
 
 }
