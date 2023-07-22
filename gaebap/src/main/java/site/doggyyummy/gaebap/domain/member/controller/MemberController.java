@@ -35,6 +35,23 @@ public class MemberController {
         }
     }
 
+    /**
+     * validateId와 validate
+     */
+    @PostMapping("/id")
+    public boolean validateId(@RequestBody MemberRegisterDTO registerDTO) {
+        return memberService.isDuplicateName(registerDTO.getRegisterName());
+    }
+
+    @PostMapping("/email")
+    public boolean validateEmail(@RequestBody MemberRegisterDTO registerDTO) {
+        return memberService.isDuplicateEmail(registerDTO.getNickname());
+    }
+
+    @PostMapping("/nickname")
+    public boolean validateNickname(@RequestBody MemberRegisterDTO registerDTO) {
+        return memberService.isDuplicateEmail(registerDTO.getEmail());
+    }
 
 
     /** TODO
