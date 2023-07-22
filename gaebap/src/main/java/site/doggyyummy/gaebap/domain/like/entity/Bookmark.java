@@ -9,20 +9,18 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 @AllArgsConstructor
 @Data
 @Entity
-public class Like {
+public class Bookmark {
 
     @Id
     @Column
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
 
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_id")
+    @JoinColumn(name = "RECIPE_ID", nullable = false)
     private Recipe recipe;
 }
