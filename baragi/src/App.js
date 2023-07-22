@@ -11,15 +11,20 @@ import SignupPage from './pages/SignupPage';
 import Recipepage from './pages/RecipePage';
 import StreamingPage from './pages/StreamingPage';
 import MainPage from './pages/MainPage';
+
 import FindIdPage from './pages/FindIdPage';
 import FindPasswordPage from './pages/FindPasswordPage';
 // -------------------PAGES-------------------//
 
+import Test2 from './components/ui/InputImage'
+
 function App() {  
   return (
+    <>
     <div className="App">
-      <NaviBar></NaviBar>    
+      <NaviBar></NaviBar>
       {/* <FormComponent/> */}
+
       <br />
       <br></br>
 
@@ -35,7 +40,7 @@ function App() {
       </Routes>
 
     </div>
-
+    </>
   );
 
 }

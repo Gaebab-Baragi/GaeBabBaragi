@@ -12,7 +12,8 @@ function NaviBar() {
     let navigate = useNavigate();
     return (
       <>
-        <Navbar expand="lg">
+        <Navbar sticky="top" expand="lg" bg='dark'>
+          <Container >
           {/* data-bs-theme="dark" */}
             <img src="/개밥바라기.png" alt="My Image" width="5%" height="1%" />
             <Navbar.Brand href="/" className = 'test1' >개밥바라기</Navbar.Brand>
@@ -38,6 +39,7 @@ function NaviBar() {
                 <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='test2' >회원가입</Nav.Link>
               </Nav>
           </Navbar.Collapse>
+          </Container>
         </Navbar>
 {/* 주석인데 여기 네비바에 로그인 여부에 따라 프로필 보여질지 로그인/회원가입 보여질지 선택  */}
 
