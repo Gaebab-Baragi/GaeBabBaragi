@@ -2,16 +2,15 @@ package site.doggyyummy.gaebap.domain.member.service;
 
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 
+import java.rmi.server.ExportException;
 import java.util.Optional;
 
 public interface MemberService {
 
-    void signUp(Member member);
+    void signUp(Member member) throws Exception;
+    void modify(Member member) throws Exception;
     Optional<Member> findByName(String username);
-
-    void validateName(String name) throws Exception;
-    void validateDuplicateName(String name) throws Exception;
-    void validateNameFormat(String name) throws Exception;
-    void validateNickname(String nickname);
-    void validateEmail(String email);
+    boolean isDuplicateName(String name);
+    boolean isDuplicateNickname(String nickname);
+    boolean isDuplicateEmail(String email);
 }

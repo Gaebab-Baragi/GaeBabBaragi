@@ -1,5 +1,6 @@
 package site.doggyyummy.gaebap.domain.member.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
@@ -8,15 +9,26 @@ import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class MemberServiceImpl implements MemberService{
 
     private MemberRepository memberRepository;
 
     @Override
-    public void signUp(Member member) {
-
+    public void signUp(Member member) throws Exception{
+        validateMemberRegistration(member);
         memberRepository.save(member);
+    }
+
+    @Override
+    public void modify(Member member) throws Exception{
+        Member memberToModify = memberRepository.findMemberByName(member.getName()).orElseThrow(() -> new Exception());
+        validateMemberModification(member);
+
+        memberToModify.setNickname(member.getNickname());
+        memberToModify.setEmail(member.getEmail());
+        memberToModify.setPassword(member.getPassword());
     }
 
     @Override
@@ -25,39 +37,29 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void validateName(String name) throws Exception{
-        try {
-            validateNameFormat(name);
-            validateDuplicateName(name);
-        }
-        catch (Exception e){
-
-
-
-        }
+    public boolean isDuplicateName(String name){
+        return memberRepository.existsMemberByName(name);
     }
 
     @Override
-    public void validateDuplicateName(String name) throws Exception {//Exception의 종류는 후에 바꿈
-        if (memberRepository.existsMemberByName(name)) {
-            throw new Exception();
-        }
+    public boolean isDuplicateNickname(String nickname){
+        return memberRepository.existsMemberByNickname(nickname);
     }
 
     @Override
-    public void validateNameFormat(String name) throws Exception {
-        String usernameRegex= "^[a-zA-Z0-9]{8,20}$";
-        if (name.matches(usernameRegex)) return;
-        throw new Exception();
+    public boolean isDuplicateEmail(String email){
+        return memberRepository.existsMemberByEmail(email);
     }
 
-    @Override
-    public void validateNickname(String nickname) {
-
+    private void validateMemberRegistration(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
+        if (isDuplicateName(member.getName())) throw new Exception();
+        if (isDuplicateNickname(member.getNickname())) throw new Exception();
+        if (isDuplicateEmail(member.getEmail())) throw new Exception();
     }
 
-    @Override
-    public void validateEmail(String email) {
-
+    private void validateMemberModification(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
+        if (!isDuplicateName(member.getName())) throw new Exception();
+        if (isDuplicateNickname(member.getNickname())) throw new Exception();
+        if (isDuplicateEmail(member.getEmail())) throw new Exception();
     }
 }
