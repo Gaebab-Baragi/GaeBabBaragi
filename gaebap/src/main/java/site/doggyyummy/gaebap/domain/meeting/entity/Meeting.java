@@ -20,19 +20,21 @@ public class Meeting {
 
     private String password;
 
-    private Integer limit;
+    @Column
+    private Long maxParticipant;
 
     @Column(nullable = false)
     private String title;
 
     private String description;
 
-    @OneToOne(mappedBy = "meeting")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
     private Member host;
 
     private LocalDateTime startTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_id")
+    @JoinColumn(name = "rECIPE_ID")
     private Recipe recipe;
 }

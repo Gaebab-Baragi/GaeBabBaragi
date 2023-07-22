@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import site.doggyyummy.gaebap.domain.like.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
@@ -37,24 +38,18 @@ public class Member {
     @Column
     private String authority;
 
-    @Column(name = "register_date")
+    @Column
     private Timestamp registerDate;
 
-    @Column
     @OneToMany(mappedBy = "member")
     private List<Recipe> recipes = new ArrayList<>();
 
-    @Column
     @OneToMany(mappedBy = "member")
-    private List<Recipe> likes = new ArrayList<>();
+    private List<Bookmark> bookmarks = new ArrayList<>();
 
-    @Column
     @OneToMany(mappedBy = "member")
-    private List<Pet> pets;
+    private List<Pet> pets = new ArrayList<>();
 
-    @Column
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "meeting_id")
-    // 내가 생성한 미팅이라는걸 바로 알 수 있는 변수명으로 바꾸는건 어떻게 생각하시는지..
-    private Meeting meeting;
+    @OneToOne(mappedBy = "host")
+    private Meeting hostedMeeting;
 }
