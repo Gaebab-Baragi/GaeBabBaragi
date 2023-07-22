@@ -1,35 +1,53 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import './Form.css';
+import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
+import { useState } from 'react';
 
 function LoginForm() {
+  const navigate = useNavigate();
+  let [id, setId] = useState();
+  let [password, setPassword] = useState();
+
   return (
-    <div className="d-flex justify-content-center align-items-center h-100">
-      <Form className='LoginForm'>
-        <Form.Group className="mb-4">
-          <span className='formTitle'>LOGIN</span>
-        </Form.Group>
+    <div className="formContainer">
+      <form className="form">
+        <div className="formTitle">로그인</div>
 
         {/* 아이디 입력  */}
-        <Form.Group className="input mb-3" controlId="formBasicEmail">
-          <Form.Control  type="email" placeholder="아이디를 입력해주세요." />
-        </Form.Group>
+        <div className="formGroup">
+          <input onChange={e=>{setId(e.target.value)}} type="id" id="formBasicEmail" placeholder="아이디를 입력해주세요." />
+        </div>
 
         {/* 비밀번호 입력 */}
-        <Form.Group className="input mb-3" controlId="formBasicPassword">
-          <Form.Control type="password" placeholder="비밀번호를 입력해주세요." />
-        </Form.Group>
+        <div className="formGroup">
+          <input onChange={e=>{setPassword(e.target.value)}} type="password" id="formBasicPassword" placeholder="비밀번호를 입력해주세요." />
+        </div>
 
-        {/* (아이디, 비번) 찾기  */}
+        {/* 아이디 찾기 / 비밀번호 찾기 / 회원가입 */}
+        <div className='formGroup'>
+          <span onClick={()=>{navigate('/find-id')}}>아이디 찾기</span> | <span onClick={()=>{navigate('/find-password')}}>비밀번호 찾기</span> | <span onClick={()=>navigate('/signup')}>회원가입</span>
+        </div>
 
-        {/* Login 버튼 - outline 제거 */}
-        <Button className='btn btn-custom-class' variant='outline-' type="submit">
+        {/* Login 버튼 */}
+        <button className="loginButton" type="submit">
           LOGIN
-        </Button>
-      </Form>
+        </button>
+
+        {/* OR  */}
+        <div className="formGroup">
+          <hr />
+        </div>
+
+        {/* 구글 로그인 */}
+        <div className="formGroup">
+          구글 로그인 임
+        </div>
+      </form>
     </div>
   );
 }
 
 export default LoginForm;
+
+// 아이디, 비밀번호로 로그인 function 만들기
+// 어떻게? back-end랑 얘기해보기

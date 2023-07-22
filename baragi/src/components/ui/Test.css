@@ -1,0 +1,50 @@
+.container {
+    margin-right: auto;
+    margin-left: auto;
+}
+.regi_center {
+    border: 1px solid #e6e7e8;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.pad_l_60 {
+    padding-left: 60px !important;
+}
+.cont_box {
+    padding: 26px 30px;
+    border-bottom: 10px solid #f1f1f2;
+    margin: 0 -1px;
+}
+.cont_line {
+    width: 800px;
+    padding: 8px 0 0 0;
+}
+.cont_tit4 {
+    width: 140px;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: normal;
+    vertical-align: top;
+}
+.cont_box {
+    padding: 26px 30px;
+    border-bottom: 10px solid #f1f1f2;
+    margin: 0 -1px;
+}
+
+.pad_b_25 {
+    padding-bottom: 25px !important;
+}
+.cont_line .thumb_m {
+    display: inline-block;
+    margin-left: 10px;
+}
+.cont_box p {
+    font-size: 20px;
+    padding: 0 0 0 2px;
+    margin: 0 0 22px 0;
+    line-height: 50px;
+    display: inline-block;
+}
