@@ -1,5 +1,5 @@
 import React from 'react';
-import './Form.css';
+import './BasicForm.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
 
@@ -50,18 +50,15 @@ function SignupForm() {
 
         {/* 로그인 navigate */}
         <div className='formGroup'>
-          이미 회원이신가요?<span className='loginRoute' onClick={()=>{navigate('/login')}}> 로그인</span> 
+          이미 회원이신가요?<span className='loginRoute' onClick={()=>{navigate('/login')}}>로그인</span> 
         </div>
 
         {/* Login 버튼 */}
-        <button className="loginButton" type="submit">
+        <button className="submitButton" type="submit">
           SIGNUP
         </button>
 
-        {/* OR  */}
-        <div className="formGroup">
-          <hr />
-        </div>
+        <hr />
 
         {/* 구글 로그인 */}
         <div className="formGroup">

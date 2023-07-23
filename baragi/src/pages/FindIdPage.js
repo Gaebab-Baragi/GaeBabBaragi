@@ -1,6 +1,11 @@
+import React from 'react';
+import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
+import { useState } from 'react';
+import FindIdForm from '../components/form/FindIdForm';
+
 function FindIdPage() {
   return(
-   " 안뇽?"
+    <FindIdForm/>
   )
 }
 
