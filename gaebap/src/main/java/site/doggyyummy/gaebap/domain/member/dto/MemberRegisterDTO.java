@@ -23,7 +23,7 @@ public class MemberRegisterDTO {
         member.setAuthority("READ");//추후 변경 필요
 
         member.setEmail(registerDTO.getEmail());
-        member.setPassword(registerDTO.getPassword());``
+        member.setPassword(registerDTO.getPassword());
         member.setRegisterDate(new Timestamp(System.currentTimeMillis()));
 
         return member;

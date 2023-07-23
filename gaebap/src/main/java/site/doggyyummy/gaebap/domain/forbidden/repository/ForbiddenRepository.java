@@ -34,5 +34,13 @@ public class ForbiddenRepository {
         return forbiddens;
     }
 
+    public void delete(long pet_id, long ingredient_id){
+        em.createQuery("delete   Forbidden f" +
+                " where f.pet.id = :pet_id" +
+                " and f.ingredient.id = :ingredient_id")
+                .setParameter("pet_id" ,pet_id)
+                .setParameter("ingredient_id" ,ingredient_id)
+                .executeUpdate();
+    }
 
 }
