@@ -17,10 +17,10 @@ public class Forbidden {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_id")
+    @JoinColumn(name = "PET_ID")
     private Pet pet;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ingredient_id")
+    @JoinColumn(name = "INGREDIENT_ID")
     private Ingredient ingredient;
 }
