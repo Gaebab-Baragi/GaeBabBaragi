@@ -7,7 +7,8 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

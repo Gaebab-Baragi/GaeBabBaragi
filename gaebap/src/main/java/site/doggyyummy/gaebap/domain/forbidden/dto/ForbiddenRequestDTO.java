@@ -9,14 +9,16 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 
 @AllArgsConstructor
 @Data
-public class ForbiddenRegisterDTO {    //필요 없는데 걍 만듬 ,연습용 + 추후 변경 변경 가능성
+public class ForbiddenRequestDTO {    //필요 없는데 걍 만듬 ,연습용 + 추후 변경 변경 가능성
     private Long petId;
     private Long ingredientId;
 
-    public static Forbidden toEntity(Pet pet, Ingredient ingredient){
+    public Forbidden toEntity(){
         Forbidden forbidden = new Forbidden();
-        forbidden.setPet(pet);
-        forbidden.setIngredient(ingredient);
+        Pet pet = new Pet();
+        pet.setId(this.petId);
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(this.ingredientId);
 
         return forbidden;
     }

@@ -4,10 +4,8 @@ package site.doggyyummy.gaebap.domain.forbidden.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenRegisterDTO;
 import site.doggyyummy.gaebap.domain.forbidden.repository.ForbiddenRepository;
 import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
-import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 
 import java.util.List;
 
