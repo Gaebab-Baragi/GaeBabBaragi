@@ -52,4 +52,5 @@ public class Member {
 
     @OneToOne(mappedBy = "host")
     private Meeting hostedMeeting;
+
 }

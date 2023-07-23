@@ -1,13 +1,16 @@
 package site.doggyyummy.gaebap.domain.member.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 
 import java.sql.Timestamp;
 
 @AllArgsConstructor
-@Getter
+@Data
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberRegisterDTO {
 
     private String registerName;

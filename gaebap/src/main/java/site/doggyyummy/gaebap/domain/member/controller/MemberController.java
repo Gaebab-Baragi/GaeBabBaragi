@@ -1,9 +1,11 @@
 package site.doggyyummy.gaebap.domain.member.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.member.dto.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.MemberRegisterDTO;
+import site.doggyyummy.gaebap.domain.member.dto.MemberResponseDTO;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
 
 @RestController
@@ -11,47 +13,46 @@ import site.doggyyummy.gaebap.domain.member.service.MemberService;
 @RequestMapping("/member")
 public class MemberController {
 
-    private MemberService memberService;
+    private final MemberService memberService;
+
+    @GetMapping("")
+    public MemberResponseDTO findMemberByName(@Param(value = "id") String memberId) throws Exception{
+       return MemberResponseDTO.toDTO(memberService.findByName(memberId).orElseThrow(() -> new Exception()));
+    }
+
+    //=================================================================================
 
     @PostMapping("/register")
-    public String signUp(@RequestBody MemberRegisterDTO registerDTO){
-        try {
-            memberService.signUp(MemberRegisterDTO.toEntity(registerDTO));
-            return "reg";
-        }
-        catch (Exception e){
-            return "exception";
-        }
+    public String signUp(@RequestBody MemberRegisterDTO registerDTO) throws Exception{
+        memberService.signUp(MemberRegisterDTO.toEntity(registerDTO));
+        return "reg";
     }
 
-    @PutMapping("")
-    public String modify(@RequestBody MemberModifyDTO modifyDTO){
-        try {
-            memberService.modify(MemberModifyDTO.toEntity(modifyDTO));
-            return "reg";
-        }
-        catch (Exception e){
-            return "exception";
-        }
-    }
+    //=================================================================================
 
-    /**
-     * validateId와 validate
-     */
-    @PostMapping("/id")
-    public boolean validateId(@RequestBody MemberRegisterDTO registerDTO) {
+    @PostMapping("/register/id")
+    public boolean validateRegisterId(@RequestBody MemberRegisterDTO registerDTO) {
         return memberService.isDuplicateName(registerDTO.getRegisterName());
     }
 
-    @PostMapping("/email")
-    public boolean validateEmail(@RequestBody MemberRegisterDTO registerDTO) {
+    @PostMapping("/register/email")
+    public boolean validateRegisterEmail(@RequestBody MemberRegisterDTO registerDTO) {
         return memberService.isDuplicateEmail(registerDTO.getNickname());
     }
 
-    @PostMapping("/nickname")
-    public boolean validateNickname(@RequestBody MemberRegisterDTO registerDTO) {
+    @PostMapping("/register/nickname")
+    public boolean validateRegisterNickname(@RequestBody MemberRegisterDTO registerDTO) {
         return memberService.isDuplicateEmail(registerDTO.getEmail());
     }
+
+    //=================================================================================
+    @PutMapping("/modify")
+    public String modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
+        memberService.modify(MemberModifyDTO.toEntity(modifyDTO));
+        return "modify";
+    }
+
+
 
 
     /** TODO

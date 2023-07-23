@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class MemberServiceImpl implements MemberService{
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public void signUp(Member member) throws Exception{
