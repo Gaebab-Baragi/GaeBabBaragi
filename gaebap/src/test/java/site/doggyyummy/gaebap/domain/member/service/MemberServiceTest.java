@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import site.doggyyummy.gaebap.domain.member.dto.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 
@@ -60,7 +61,26 @@ class MemberServiceTest {
     }
 
     @Test
-    void modify() {
+    @DisplayName("회원 정보 수정")
+    void modify() throws Exception{
+        signUp();
+        String modifyName = "member1";
+        String password = "pwwww";
+        String nickname = "modnick";
+        String email = "modify@modify.com";
+
+        System.out.println(memberService.findByName(modifyName).get().getNickname());
+
+        Member modifyMemberEntity = MemberModifyDTO.toEntity(new MemberModifyDTO(modifyName, password, nickname, email));
+
+        memberService.modify(modifyMemberEntity);
+        modifyMemberEntity.setNickname("nick2");
+
+        System.out.println(memberService.findByName(modifyName).get().getNickname());
+
+        //중복된 닉네임
+        Assertions.assertThrows(Exception.class, () -> memberService.modify(modifyMemberEntity));
+
     }
 
     @Test
