@@ -6,11 +6,9 @@ import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 import java.util.List;
 
 public interface ForbiddenService {
-    List<Forbidden> selectByPet (ForbiddenRegisterDTO dto);
-    void create(ForbiddenRegisterDTO dto);
-    void delete(ForbiddenRegisterDTO dto);
+    void create(Long petId, Long IngredientId);
+    List<Forbidden> selectByPet (Long petId);
 
-
-
+    void delete(Long petId, Long IngredientId);
 
 }

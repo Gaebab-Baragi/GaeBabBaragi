@@ -2,12 +2,9 @@ package site.doggyyummy.gaebap.domain.forbidden.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenRegisterDTO;
+import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.forbidden.service.ForbiddenServiceImpl;
+import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 
 import java.util.List;
 
@@ -19,9 +16,19 @@ public class ForbiddenController {
     ForbiddenServiceImpl forbiddenService;
 
     @GetMapping("")
-    public List<ForbiddenRegisterDTO> getForbiddensByMettingID(@RequestParam(name= "member_id") Long member_id){
-
+    public List<Forbidden> selectByPet(@RequestParam(name= "pet_id") Long petId){
+        List<Forbidden> forbiddens = forbiddenService.selectByPet(petId);
+        return forbiddens;
     }
 
+    @PostMapping("")
+    public void create(Long petId, Long ingredientId) {
+        forbiddenService.create(petId,ingredientId);
+    }
+
+    @DeleteMapping("")
+    public void delete(Long petId, Long ingredientId){         //API 명세상으로는 Id를 params로 받지만 회의 때 petId,ingredientId를 받자 했던 거 같아서 일단 그렇게함
+        forbiddenService.delete(petId,ingredientId);
+    }
 
 }

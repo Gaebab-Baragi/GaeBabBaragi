@@ -10,13 +10,13 @@ import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 @AllArgsConstructor
 @Data
 public class ForbiddenResponseDTO {      //필요 없는데 걍 만듬 ,연습용 + 추후 변경 변경 가능성
-    private Long pet_id;
-    private Long ingredient_id;
+    private Long petId;
+    private Long ingredientId;
 
     public static ForbiddenResponseDTO toDTO(Forbidden forbidden){
         ForbiddenResponseDTO forbiddenResponseDTO = new ForbiddenResponseDTO();
-        forbiddenResponseDTO.setIngredient_id(forbidden.getIngredient().getId());
-        forbiddenResponseDTO.setPet_id(forbidden.getPet().getId());
+        forbiddenResponseDTO.setIngredientId(forbidden.getIngredient().getId());
+        forbiddenResponseDTO.setPetId(forbidden.getPet().getId());
         return forbiddenResponseDTO;
     }
 

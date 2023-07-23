@@ -15,31 +15,31 @@ public class ForbiddenRepository {
     public void create(Forbidden forbidden){
         em.persist(forbidden);
     }
-    public Forbidden selectOne (long pet_id, long ingredient_id){
+    public Forbidden selectOne (long petId, long ingredientId){
         Forbidden forbidden = (Forbidden)em.createQuery("select f from Forbidden f" +
-                        " where f.pet.id = :pet_id" +
-                        " and f.ingredient.id = :ingredient_id"
+                        " where f.pet.id = :petId" +
+                        " and f.ingredient.id = :ingredientId"
                 )
-                .setParameter("pet_id" ,pet_id)
-                .setParameter("ingredient_id" ,ingredient_id)
+                .setParameter("petId" ,petId)
+                .setParameter("ingredientId" ,ingredientId)
                 .getSingleResult();
         return forbidden;
     }
 
-    public List<Forbidden> selectByPet (long pet_id){
+    public List<Forbidden> selectByPet (long petId){
         List<Forbidden> forbiddens = em.createQuery("select f from Forbidden f" +
-                        " where f.pet.id = :pet_id")
-                .setParameter("pet_id" ,pet_id)
+                        " where f.pet.id = :petId")
+                .setParameter("petId" ,petId)
                 .getResultList();
         return forbiddens;
     }
 
-    public void delete(long pet_id, long ingredient_id){
+    public void delete(long petId, long ingredientId){
         em.createQuery("delete   Forbidden f" +
-                " where f.pet.id = :pet_id" +
-                " and f.ingredient.id = :ingredient_id")
-                .setParameter("pet_id" ,pet_id)
-                .setParameter("ingredient_id" ,ingredient_id)
+                " where f.pet.id = :petId" +
+                " and f.ingredient.id = :ingredientId")
+                .setParameter("petId" ,petId)
+                .setParameter("ingredientId" ,ingredientId)
                 .executeUpdate();
     }
 
