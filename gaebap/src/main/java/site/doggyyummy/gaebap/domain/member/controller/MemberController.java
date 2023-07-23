@@ -1,8 +1,12 @@
 package site.doggyyummy.gaebap.domain.member.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.token.Token;
 import org.springframework.web.bind.annotation.*;
+import site.doggyyummy.gaebap.domain.member.dto.MemberLoginDTO;
 import site.doggyyummy.gaebap.domain.member.dto.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.MemberRegisterDTO;
 import site.doggyyummy.gaebap.domain.member.dto.MemberResponseDTO;
@@ -46,7 +50,7 @@ public class MemberController {
     }
 
     //=================================================================================
-    @PutMapping("")
+    @PutMapping("/modify")
     public String modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
         memberService.modify(MemberModifyDTO.toEntity(modifyDTO));
         return "modify";
@@ -62,7 +66,11 @@ public class MemberController {
         return memberService.isValidNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
     }
 
-
-
+    @GetMapping("/login")
+    public String loginForm(HttpServletRequest req){
+        String referer = req.getHeader("Referer") ;
+        req.getSession().setAttribute("prevPage", referer);//login으로 오기 전의 페이지를 저장해 둠.
+        return "member/login";
+    }
 
 }

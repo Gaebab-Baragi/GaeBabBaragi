@@ -1,7 +1,7 @@
 package site.doggyyummy.gaebap.global.security.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,13 +11,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationProviderService implements AuthenticationProvider {
 
-    private PasswordEncoder passwordEncoder;
-    private UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService securityUserDetailsService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -25,7 +26,7 @@ public class AuthenticationProviderService implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        UserDetails u = userDetailsService.loadUserByUsername(username);
+        UserDetails u = securityUserDetailsService.loadUserByUsername(username);
 
         if (passwordEncoder.matches(password, u.getPassword())) {
             return new UsernamePasswordAuthenticationToken(username, password, u.getAuthorities());

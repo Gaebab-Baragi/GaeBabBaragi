@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 public class Member {
 
@@ -52,5 +53,11 @@ public class Member {
 
     @OneToOne(mappedBy = "host")
     private Meeting hostedMeeting;
+
+    private String refreshToken;
+
+    public void updateRefreshToken(String refreshToken){
+       this.refreshToken = refreshToken;
+    }
 
 }

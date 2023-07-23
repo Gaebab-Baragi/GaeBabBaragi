@@ -14,11 +14,11 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public class SecurityUserDetailsService implements UserDetailsService {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public SecurityUser loadUserByUsername(String username) throws UsernameNotFoundException {
-        Supplier<UsernameNotFoundException> s = () -> new UsernameNotFoundException("user name not found");
+        Supplier<UsernameNotFoundException> s = () -> new UsernameNotFoundException("username not found");
 
         Member member = memberRepository.findMemberByName(username).orElseThrow(s);
 

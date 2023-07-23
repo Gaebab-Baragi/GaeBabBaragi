@@ -11,7 +11,7 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberResponseDTO {
 
-    private String name;
+    private String username;
     private String nickname;
     private String email;
 
