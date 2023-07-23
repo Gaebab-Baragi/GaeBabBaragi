@@ -58,8 +58,19 @@ public class MemberServiceImpl implements MemberService{
     }
 
     private void validateMemberModification(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
+        if (!isValidNicknameModification(member)) throw new Exception();
+        if (!isValidEmailModification(member)) throw new Exception();
+    }
+
+    @Override
+    public boolean isValidNicknameModification(Member member) throws Exception{
         Member origin = findByName(member.getName()).orElseThrow(() -> new Exception());
-        if (!origin.getNickname().equals(member.getNickname()) && isDuplicateNickname(member.getNickname())) throw new Exception();
-        if (!origin.getEmail().equals(member.getEmail()) && isDuplicateEmail(member.getEmail())) throw new Exception();
+        return member.getNickname().equals(origin.getNickname()) || !isDuplicateNickname(member.getNickname());
+    }
+
+    @Override
+    public boolean isValidEmailModification(Member member) throws  Exception{
+        Member origin = findByName(member.getName()).orElseThrow(() -> new Exception());
+        return member.getEmail().equals(origin.getEmail()) || !isDuplicateEmail(member.getEmail());
     }
 }

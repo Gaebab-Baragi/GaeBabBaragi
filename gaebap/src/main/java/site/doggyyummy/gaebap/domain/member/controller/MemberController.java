@@ -46,12 +46,21 @@ public class MemberController {
     }
 
     //=================================================================================
-    @PutMapping("/modify")
+    @PutMapping("")
     public String modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
         memberService.modify(MemberModifyDTO.toEntity(modifyDTO));
         return "modify";
     }
 
+    @PostMapping("/modify/email")
+    public boolean validateModifyEmail(@RequestBody MemberModifyDTO modifyDTO) throws Exception {
+        return memberService.isValidEmailModification(MemberModifyDTO.toEntity(modifyDTO));
+    }
+
+    @PostMapping("/modify/nickname")
+    public boolean validateModifyNickname(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
+        return memberService.isValidNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
+    }
 
 
 

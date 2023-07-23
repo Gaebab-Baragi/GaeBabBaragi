@@ -13,4 +13,7 @@ public interface MemberService {
     boolean isDuplicateName(String name);
     boolean isDuplicateNickname(String nickname);
     boolean isDuplicateEmail(String email);
+
+    boolean isValidNicknameModification(Member member) throws Exception;
+    boolean isValidEmailModification(Member member) throws  Exception;
 }
