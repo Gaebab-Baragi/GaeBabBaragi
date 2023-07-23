@@ -65,9 +65,9 @@ class MemberServiceTest {
     void modify() throws Exception{
         signUp();
         String modifyName = "member1";
-        String password = "pwwww";
+        String password = "pass";
         String nickname = "modnick";
-        String email = "modify@modify.com";
+        String email = "member1@doggyyummy.site";//이메일은 바꾸지 않음
 
         System.out.println(memberService.findByName(modifyName).get().getNickname());
 
@@ -75,7 +75,6 @@ class MemberServiceTest {
 
         memberService.modify(modifyMemberEntity);
         modifyMemberEntity.setNickname("nick2");
-
         System.out.println(memberService.findByName(modifyName).get().getNickname());
 
         //중복된 닉네임
