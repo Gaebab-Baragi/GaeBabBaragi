@@ -9,11 +9,13 @@ import NaviBar from './components/ui/NaviBar';
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage';
 import Recipepage from './pages/RecipePage';
+import RecipeListPage from './pages/RecipeListPage';
 import StreamingPage from './pages/StreamingPage';
 import MainPage from './pages/MainPage';
 
 import FindIdPage from './pages/FindIdPage';
 import FindPasswordPage from './pages/FindPasswordPage';
+import Posts from './pages/Post';
 // -------------------PAGES-------------------//
 
 import Test2 from './components/ui/InputImage'
@@ -23,7 +25,6 @@ function App() {
     <>
     <div className="App">
       <NaviBar></NaviBar>
-      {/* <FormComponent/> */}
 
       <br />
       <br></br>
@@ -36,6 +37,7 @@ function App() {
         <Route path='/find-id' element={<FindIdPage/>}></Route>
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
         <Route path='/recipe' element={<Recipepage/>}></Route>
+        <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming' element={<StreamingPage/>}></Route>
       </Routes>
 

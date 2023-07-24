@@ -17,4 +17,5 @@ function Recipepage() {
       </>
       );
     }
+
     export default Recipepage;

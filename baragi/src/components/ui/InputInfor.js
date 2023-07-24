@@ -24,7 +24,6 @@ function InputInfor() {
         onChange={handleRecipeNameChange}
         placeholder="레시피 이름을 입력하세요."
       />
-   
 
       <button type="submit">제출</button>
     </form>
