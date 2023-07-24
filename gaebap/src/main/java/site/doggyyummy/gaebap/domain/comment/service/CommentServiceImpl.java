@@ -8,9 +8,6 @@ import site.doggyyummy.gaebap.domain.comment.dto.CommentRequestDTO;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentResponseDTO;
 import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.comment.repository.CommentRepository;
-import site.doggyyummy.gaebap.domain.forbidden.repository.ForbiddenRepository;
-import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

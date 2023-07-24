@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
-
 import java.time.LocalDateTime;
 
 @Data

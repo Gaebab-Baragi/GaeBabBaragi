@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentRequestDTO;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentResponseDTO;
-import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.comment.service.CommentService;
-import site.doggyyummy.gaebap.domain.forbidden.service.ForbiddenServiceImpl;
-import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
+
 
 import java.util.List;
 
@@ -22,7 +20,6 @@ public class CommentController {
     @GetMapping("")
     public List<CommentResponseDTO> selectByRecipe(@RequestParam(name= "recipe_id") Long recipeId){
         List<CommentResponseDTO> comments = commentService.selectByRecipe(recipeId);
-
         return comments;
     }
 

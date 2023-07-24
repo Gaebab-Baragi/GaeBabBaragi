@@ -9,7 +9,7 @@ import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ForbiddenResponseDTO {      //필요 없는데 걍 만듬 ,연습용 + 추후 변경 변경 가능성
+public class ForbiddenResponseDTO {      //순환 참조 방지용으로 DTO 필수임
     private Long petId;
     private Long ingredientId;
 

@@ -4,10 +4,8 @@ package site.doggyyummy.gaebap.domain.pet.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenRequestDTO;
 import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenResponseDTO;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

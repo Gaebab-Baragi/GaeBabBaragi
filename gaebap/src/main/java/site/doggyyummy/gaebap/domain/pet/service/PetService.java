@@ -1,6 +1,5 @@
 package site.doggyyummy.gaebap.domain.pet.service;
 
-import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.pet.dto.PetRequestDTO;
 import site.doggyyummy.gaebap.domain.pet.dto.PetResponseDTO;
 

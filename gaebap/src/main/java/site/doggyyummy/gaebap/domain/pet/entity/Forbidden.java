@@ -2,10 +2,10 @@ package site.doggyyummy.gaebap.domain.pet.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

@@ -4,7 +4,6 @@ package site.doggyyummy.gaebap.domain.pet.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenRequestDTO;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.pet.dto.PetRequestDTO;

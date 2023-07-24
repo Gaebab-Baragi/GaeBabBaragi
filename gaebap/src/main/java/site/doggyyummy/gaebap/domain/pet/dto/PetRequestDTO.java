@@ -6,13 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import site.doggyyummy.gaebap.domain.comment.dto.CommentRequestDTO;
-import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenRequestDTO;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

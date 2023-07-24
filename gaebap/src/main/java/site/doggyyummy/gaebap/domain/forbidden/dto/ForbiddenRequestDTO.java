@@ -20,12 +20,15 @@ public class ForbiddenRequestDTO {    //필요 없는데 걍 만듬 ,연습용 +
 
     public Forbidden toEntity(){
         Forbidden forbidden = new Forbidden();
+
         Pet pet = new Pet();
         pet.setId(this.petId);
+        forbidden.setPet(pet);
+
         Ingredient ingredient = new Ingredient();
         ingredient.setId(this.ingredientId);
+        forbidden.setIngredient(ingredient);
 
         return forbidden;
     }
-
 }

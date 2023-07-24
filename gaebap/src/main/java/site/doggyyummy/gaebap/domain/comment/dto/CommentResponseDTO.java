@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.doggyyummy.gaebap.domain.comment.entity.Comment;
-import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
-
 import java.time.LocalDateTime;
 
 @NoArgsConstructor

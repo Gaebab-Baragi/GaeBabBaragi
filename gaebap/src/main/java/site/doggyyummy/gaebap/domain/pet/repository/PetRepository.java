@@ -3,9 +3,7 @@ package site.doggyyummy.gaebap.domain.pet.repository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
-
 import java.util.List;
 
 @Repository
@@ -17,18 +15,18 @@ public class PetRepository {
         em.persist(pet);
     }
     public Pet selectOne (long id){
-        Pet pet = em.createQuery("select p from Pet p " +
+        Pet pet = em.createQuery("select distinct p from Pet p " +
                         "join fetch p.member m " +
-                        "join fetch p.forbiddens f " +
+                        "left join fetch p.forbiddens f " +
                         "where p.id = :id ",Pet.class)
                 .setParameter("id" ,id)
                 .getSingleResult();
         return pet;
     }
     public List<Pet> selectByMember (long memberId){
-        List<Pet> pets = em.createQuery("select p from Pet p " +
+        List<Pet> pets = em.createQuery("select distinct p from Pet p " +
                         "join fetch p.member m " +
-                        "join fetch p.forbiddens f " +
+                        "left join fetch p.forbiddens f " +
                         "where p.member.id = :memberId ")
                 .setParameter("memberId" ,memberId)
                 .getResultList();

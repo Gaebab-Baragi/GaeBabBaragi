@@ -3,12 +3,9 @@ package site.doggyyummy.gaebap.domain.pet.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.pet.dto.PetRequestDTO;
 import site.doggyyummy.gaebap.domain.pet.dto.PetResponseDTO;
-import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.pet.service.PetService;
-
 import java.util.List;
 
 @RestController

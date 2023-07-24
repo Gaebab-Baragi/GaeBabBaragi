@@ -7,17 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
-import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
-import site.doggyyummy.gaebap.domain.pet.entity.Pet;
-import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
-
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class CommentRequestDTO {
+    Long id;
     @JsonProperty("recipe_id")
     Long recipeId;
     @JsonProperty("member_id")
@@ -27,6 +24,10 @@ public class CommentRequestDTO {
 
     public Comment toEntity(){
         Comment comment = new Comment();
+
+        if(this.id!=null){
+            comment.setId(this.id);
+        }
 
         Member member= new Member();
         member.setId(this.recipeId);

@@ -4,8 +4,6 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import site.doggyyummy.gaebap.domain.comment.entity.Comment;
-import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
-
 import java.util.List;
 
 @Repository
