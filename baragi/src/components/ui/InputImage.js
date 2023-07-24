@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 function InputImage() {
-  const [image, setImage] = useState(null);
-
+  const defaultImageUrl = './기본이미지.PNG';
+  const [image, setImage] = useState(defaultImageUrl);
   // 파일 선택 시 이미지 미리보기 함수
   const handleImagePreview = (e) => {
     const selectedImage = e.target.files[0];
@@ -27,7 +27,7 @@ function InputImage() {
         <div>1. 대표사진 등록</div>
         <div>
       {/* 이미지 미리보기 */}
-      {image && <img src={image} alt="미리보기" style={{ width: '200px', height: '200px' }} />}
+      {image!== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '200px', height: '200px' }} />}
         <br />
       {/* 파일 업로드 입력 필드 */}
       <input type="file" accept="image/*" onChange={handleImagePreview} />

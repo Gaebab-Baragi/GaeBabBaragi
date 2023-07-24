@@ -12,7 +12,7 @@ function NaviBar() {
     let navigate = useNavigate();
     return (
       <>
-        <Navbar sticky="top" expand="lg" bg='dark'>
+        <Navbar sticky="top" expand="lg">
           <Container >
           {/* data-bs-theme="dark" */}
             <img src="/개밥바라기.png" alt="My Image" width="5%" height="1%" />
