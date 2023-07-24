@@ -1,4 +1,4 @@
-package site.doggyyummy.gaebap.domain.like.entity;
+package site.doggyyummy.gaebap.domain.bookmark.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,3 +24,4 @@ public class Bookmark {
     @JoinColumn(name = "RECIPE_ID", nullable = false)
     private Recipe recipe;
 }
+
