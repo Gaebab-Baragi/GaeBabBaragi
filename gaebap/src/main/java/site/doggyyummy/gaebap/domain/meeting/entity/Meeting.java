@@ -1,5 +1,6 @@
 package site.doggyyummy.gaebap.domain.meeting.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
@@ -7,7 +8,8 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -32,9 +34,12 @@ public class Meeting {
     @JoinColumn(name = "MEMBER_ID")
     private Member host;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime startTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rECIPE_ID")
+    @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
+
+    private String sessionId;
 }
