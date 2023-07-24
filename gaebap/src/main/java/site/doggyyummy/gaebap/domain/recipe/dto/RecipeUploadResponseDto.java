@@ -6,16 +6,15 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 
 @Getter
 @Setter
-public class RecipeUploadResDto {
+public class RecipeUploadResponseDto {
     private String title;
     private MemberDto member;
 
-    public RecipeUploadResDto(String title,MemberDto member) {
+    public RecipeUploadResponseDto(String title, MemberDto member) {
         this.title = title;
         this.member=member;
-
     }
-    public RecipeUploadResDto(String title, Member member){
+    public RecipeUploadResponseDto(String title, Member member){
         this.title=title;
         this.member=new MemberDto(member.getName(),member.getId());
     }
@@ -29,6 +28,7 @@ public class RecipeUploadResDto {
             this.id=id;
         }
     }
+
 
 }
 

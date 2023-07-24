@@ -26,6 +26,9 @@ public class Ingredient {
     @Column
     private boolean edible;
 
+    @OneToMany(mappedBy="")
+    private List<RecipeIngredient> recipeIngredients=new ArrayList<>();
+
     @OneToMany(mappedBy = "ingredient")
     private List<Forbidden> forbiddens = new ArrayList<>();
 }
