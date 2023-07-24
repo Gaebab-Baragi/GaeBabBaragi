@@ -6,7 +6,7 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findMemberByName(String username);
+    Optional<Member> findMemberByName(String name);
     Optional<Member> findMemberByRefreshToken(String refreshToken);
     boolean existsMemberByName(String name);
     boolean existsMemberByNickname(String name);

@@ -1,4 +1,4 @@
-package site.doggyyummy.gaebap.domain.member.dto;
+package site.doggyyummy.gaebap.domain.member.dto.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -23,7 +23,7 @@ public class MemberRegisterDTO {
 
         member.setName(registerDTO.getRegisterName());
         member.setNickname(registerDTO.getNickname());
-        member.setAuthority("READ");//추후 변경 필요
+        member.setAuthority("ROLE_USER");//추후 변경 필요
 
         member.setEmail(registerDTO.getEmail());
         member.setPassword(registerDTO.getPassword());

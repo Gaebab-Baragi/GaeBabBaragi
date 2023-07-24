@@ -1,4 +1,4 @@
-package site.doggyyummy.gaebap.domain.member.dto;
+package site.doggyyummy.gaebap.domain.member.dto.request;
 
 
 import lombok.AllArgsConstructor;

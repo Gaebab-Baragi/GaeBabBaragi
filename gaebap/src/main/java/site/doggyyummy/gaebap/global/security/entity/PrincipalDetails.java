@@ -1,5 +1,6 @@
 package site.doggyyummy.gaebap.global.security.entity;
 
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
@@ -7,10 +8,11 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 import java.util.Collection;
 import java.util.List;
 
-public class SecurityUser implements UserDetails {
+@Builder
+public class PrincipalDetails implements UserDetails {
     private final Member member;
 
-    public SecurityUser(Member member){
+    public PrincipalDetails(Member member){
         this.member = member;
     }
 
@@ -31,21 +33,21 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

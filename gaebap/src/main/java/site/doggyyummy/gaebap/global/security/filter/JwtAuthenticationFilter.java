@@ -10,11 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.filter.OncePerRequestFilter;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
+import site.doggyyummy.gaebap.global.security.entity.PrincipalDetails;
 import site.doggyyummy.gaebap.global.security.service.JwtService;
 import site.doggyyummy.gaebap.global.security.util.PasswordUtil;
 
@@ -24,7 +26,8 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK = "/member/login";
+    private static final String LOGIN_URL = "/member/login";
+
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
@@ -32,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().equals(NO_CHECK)) {
+        if (request.getRequestURI().equals(LOGIN_URL)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -52,6 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String reIssueRefreshToken(Member member) {
+        log.info("reIssueRefreshToken() 호출");
         String reIssuedRefreshToken = jwtService.createRefreshToken();
         member.updateRefreshToken(reIssuedRefreshToken);
         memberRepository.saveAndFlush(member);
@@ -59,6 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
+        log.info("checkRefreshTokenAndReIssueAccessToken() 호출");
         memberRepository.findMemberByRefreshToken(refreshToken)
                 .ifPresent(member-> {
                     String reIssuedRefreshToken = reIssueRefreshToken(member);
@@ -81,6 +86,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     public void saveAuthentication(Member member) {
+        log.info("saveAuthentication() 호출");
         String password = member.getPassword();
         if (password == null) { // 소셜 로그인 유저의 비밀번호 임의로 설정 하여 소셜 로그인 유저도 인증 되도록 설정
             password = PasswordUtil.generateRandomPassword();
@@ -97,4 +103,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
 }

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -16,22 +17,18 @@ import site.doggyyummy.gaebap.global.security.service.JwtService;
 import java.io.IOException;
 
 
+@RequiredArgsConstructor
+@Slf4j
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private MemberRepository memberRepository;
+    private final JwtService jwtService;
+    private final MemberRepository memberRepository;
 
     @Value("${jwt.access.expiration}")
     private String accessTokenExpiration;
 
-    public LoginSuccessHandler(String defaultTargetUrl){
-        setDefaultTargetUrl(defaultTargetUrl);
-    }
-
    /*
-   * 로그인 화면으로 오기 전의 페이지를 저장해놓고 거기로 redirect함
+    * 로그인 화면으로 오기 전의 페이지를 저장해놓고 거기로 redirect함
     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
@@ -42,12 +39,11 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 
-        memberRepository.findMemberByName(username)
-                .ifPresent(user -> {
-                    user.updateRefreshToken(refreshToken);
-                    memberRepository.saveAndFlush(user);
-                });
+        jwtService.updateRefreshToken(username, refreshToken);
 
+        log.info("login success. username : {}", username);
+        log.info("login success. accessToken : {}", accessToken);
+        log.info("login success. expiration: {}", accessTokenExpiration);
 
         if (session != null){
             String redirectUrl = (String) session.getAttribute("prevPage");
@@ -65,6 +61,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     }
 
     private String extractUsername(Authentication authentication){
+        log.info("authentication.getPrincipal : {}", authentication.getPrincipal());
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return userDetails.getUsername();
     }
