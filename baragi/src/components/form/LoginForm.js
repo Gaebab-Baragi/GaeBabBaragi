@@ -1,7 +1,7 @@
 import React from 'react';
-import './Form.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
+import './BasicForm.css'
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -24,19 +24,17 @@ function LoginForm() {
         </div>
 
         {/* 아이디 찾기 / 비밀번호 찾기 / 회원가입 */}
-        <div className='formGroup'>
-          <span onClick={()=>{navigate('/find-id')}}>아이디 찾기</span> | <span onClick={()=>{navigate('/find-password')}}>비밀번호 찾기</span> | <span onClick={()=>navigate('/signup')}>회원가입</span>
+        <div className='formGroup' id='navigateNewPage'>
+          <span onClick={()=>{navigate('/find-id')}}>아이디 찾기</span>|<span onClick={()=>{navigate('/find-password')}}>비밀번호 찾기</span> | <span onClick={()=>navigate('/signup')}>회원가입</span>
         </div>
 
         {/* Login 버튼 */}
-        <button className="loginButton" type="submit">
+        <button className="submitButton" type="submit">
           LOGIN
         </button>
 
         {/* OR  */}
-        <div className="formGroup">
-          <hr />
-        </div>
+        <hr />
 
         {/* 구글 로그인 */}
         <div className="formGroup">

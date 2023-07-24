@@ -1,5 +1,5 @@
 /* eslint-disable */
-import LoginForm from "../components/ui/LoginForm";
+import LoginForm from "../components/form/LoginForm";
 import Container from 'react-bootstrap/Container';
 import React from 'react';
 import Button from 'react-bootstrap/Button';

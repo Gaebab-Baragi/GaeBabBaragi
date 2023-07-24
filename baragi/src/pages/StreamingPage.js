@@ -1,5 +1,5 @@
 /* eslint-disable */
-import LoginForm from "../components/ui/LoginForm";
+import LoginForm from "../components/form/LoginForm";
 
 
 

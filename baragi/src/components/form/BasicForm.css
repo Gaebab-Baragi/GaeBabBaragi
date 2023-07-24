@@ -1,13 +1,9 @@
-/* Form.css */
+/* BasicForm.css */
 .formContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   /* height: 50vh; */
-}
-
-.formTitle {
-  font-weight: bold;
 }
 
 .form {
@@ -19,19 +15,30 @@
 }
 
 .formTitle {
-  font-size: 26px;
-  text-align: center;
+  font-size: 25px;
   margin-bottom: 25px;
+  font-weight: bold;
+}
+.findFormTitle{
+  font-size: 20px;
+  margin-bottom: 35px;
+  font-weight: bold;
+}
+.currentPage {
+  color: #fa0;
 }
 
 .formGroup {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+#navigateNewPage {
+  justify-content: space-evenly;
 }
 
-/* id input & 중복확인 버튼 */
-#checkGroup {
-  display: flex;
-}
 .duplicationCheckButton{
   height: 40px;
   width: 30%;
@@ -49,8 +56,29 @@
   background-color: aliceblue;
   margin-left: 10px;
 }
+
+.sendCodeBtn {
+  height: 40px;
+  width: 25%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: aliceblue;
+  margin-left: 10px;
+  font-size: small;
+}
+.verificationBtn{
+  height: 40px;
+  width: 25%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: aliceblue;
+  margin-left: 10px;
+}
 /* 커서가 포인터로 보이게 하기 */
 .formGroup span {
+  cursor: pointer;
+}
+.pointerShow {
   cursor: pointer;
 }
 /* 커서가 hover되면 색깔 바꾸기 */
@@ -60,6 +88,7 @@
 .loginRoute {
   color: #fa0;
   font-weight: bold;
+  margin-left: 10px;
 }
 input {
   width: 100%;
@@ -74,7 +103,7 @@ input:focus {
   border-color:#ffbb33;
 }
 
-.loginButton {
+.submitButton {
   background-color: #fa0;
   width: 100%;
   height: 40px;
@@ -88,6 +117,7 @@ input:focus {
   margin-bottom: 20px;
 }
 
-.loginButton:hover {
+.submitButton:hover {
   background-color: #ffbb33;
 }
+
