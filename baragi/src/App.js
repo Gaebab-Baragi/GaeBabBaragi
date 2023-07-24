@@ -26,8 +26,7 @@ function App() {
     <div className="App">
       <NaviBar></NaviBar>
 
-      <br />
-      <br></br>
+      {/* <FormComponent/> */}
 
       {/*---------- 모든 Router는 App.js에 적기!!! ------------*/}
       <Routes>

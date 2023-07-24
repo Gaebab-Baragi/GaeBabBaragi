@@ -11,10 +11,10 @@ import InputImage from "../components/ui/InputImage";
 
 function Recipepage() {
     return (
-      <>
+      <div>
       <Test2></Test2>
       
-      </>
+      </div>
       );
     }
 

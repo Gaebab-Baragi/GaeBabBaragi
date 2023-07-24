@@ -1,0 +1,123 @@
+/* Recipe.css */
+.formContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 50vh; */
+}
+
+.form {
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle {
+  font-size: 25px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+.findFormTitle{
+  font-size: 20px;
+  margin-bottom: 35px;
+  font-weight: bold;
+}
+.currentPage {
+  color: #fa0;
+}
+
+.formGroup {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+#navigateNewPage {
+  justify-content: space-evenly;
+}
+
+.duplicationCheckButton{
+  height: 40px;
+  width: 30%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: aliceblue;
+  margin-left: 10px;
+
+}
+.emailVerificationButton{
+  height: 40px;
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: aliceblue;
+  margin-left: 10px;
+}
+
+.sendCodeBtn {
+  height: 40px;
+  width: 25%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: aliceblue;
+  margin-left: 10px;
+  font-size: small;
+}
+.verificationBtn{
+  height: 40px;
+  width: 25%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: aliceblue;
+  margin-left: 10px;
+}
+/* 커서가 포인터로 보이게 하기 */
+.formGroup span {
+  cursor: pointer;
+}
+.pointerShow {
+  cursor: pointer;
+}
+/* 커서가 hover되면 색깔 바꾸기 */
+.formGroup span:hover {
+  color:#fa0
+}
+.loginRoute {
+  color: #fa0;
+  font-weight: bold;
+  margin-left: 10px;
+}
+input {
+  width: 100%;
+  height: 40px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+input:focus {
+  border-color:#ffbb33;
+}
+
+.submitButton {
+  background-color: #fa0;
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 20px;
+}
+
+.submitButton:hover {
+  background-color: #ffbb33;
+}
+

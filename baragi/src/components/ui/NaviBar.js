@@ -12,10 +12,9 @@ function NaviBar() {
     let navigate = useNavigate();
     return (
       <>
-        <Navbar sticky="top" expand="lg" bg='dark'>
+        <Navbar sticky="top" expand="lg" bg='light' >
           <Container >
-          {/* data-bs-theme="dark" */}
-            <img src="/개밥바라기.png" alt="My Image" width="5%" height="1%" />
+            <img src="/개밥바라기.png" alt="My Image" width="5%" height="0.5%" />
             <Navbar.Brand href="/" className = 'test1' >개밥바라기</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav"> 
@@ -35,8 +34,8 @@ function NaviBar() {
               </NavDropdown>
               </Nav>
               <Nav>
-                <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='test2' >로그인/</Nav.Link>
-                <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='test2' >회원가입</Nav.Link>
+                <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='test3' >로그인/</Nav.Link>
+                <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='test3' >회원가입</Nav.Link>
               </Nav>
           </Navbar.Collapse>
           </Container>
