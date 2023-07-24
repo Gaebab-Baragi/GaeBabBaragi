@@ -20,7 +20,7 @@ public class Recipe {
 
     @Id
     @Column
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -49,8 +49,8 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
     private List<Meeting> meetings = new ArrayList<>();
-
-    @OneToMany(mappedBy = "recipe")
+//    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe")

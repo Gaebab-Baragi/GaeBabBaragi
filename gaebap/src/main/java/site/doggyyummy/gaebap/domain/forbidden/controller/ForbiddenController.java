@@ -15,8 +15,8 @@ public class ForbiddenController {
 
     ForbiddenServiceImpl forbiddenService;
 
-    @GetMapping("")
-    public List<Forbidden> selectByPet(@RequestParam(name= "pet_id") Long petId){
+    @GetMapping("/{pet_id}")
+    public List<Forbidden> selectByPet(@PathVariable(name= "pet_id") Long petId){
         List<Forbidden> forbiddens = forbiddenService.selectByPet(petId);
         return forbiddens;
     }
@@ -26,7 +26,7 @@ public class ForbiddenController {
         forbiddenService.create(petId,ingredientId);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("")     //id를 프론트단에서 알기 힘드므로 pet_id,ingredient_id를 받음
     public void delete(Long petId, Long ingredientId){         //API 명세상으로는 Id를 params로 받지만 회의 때 petId,ingredientId를 받자 했던 거 같아서 일단 그렇게함
         forbiddenService.delete(petId,ingredientId);
     }

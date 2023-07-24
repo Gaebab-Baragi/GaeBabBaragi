@@ -14,28 +14,28 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/forbidden")
+@RequestMapping("/comment")
 public class CommentController {
 
-    CommentService commentService;
+    private final CommentService commentService;
 
     @GetMapping("")
     public List<CommentResponseDTO> selectByRecipe(@RequestParam(name= "recipe_id") Long recipeId){
         List<CommentResponseDTO> comments = commentService.selectByRecipe(recipeId);
+
         return comments;
     }
 
-
     @PostMapping("")
-        public void create(CommentRequestDTO dto) {
-            commentService.create(dto);
+    public void create(@RequestBody CommentRequestDTO dto) {
+        commentService.create(dto);
     }
     @PutMapping("")
-    public void modify(CommentRequestDTO dto){
+    public void modify(@RequestBody CommentRequestDTO dto){
         commentService.modify(dto);
     }
-    @DeleteMapping("")
-    public void delete(Long id){         //API 명세상으로는 Id를 params로 받지만 회의 때 petId,ingredientId를 받자 했던 거 같아서 일단 그렇게함
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable(name = "id") Long id){
         commentService.delete(id);
     }
 }

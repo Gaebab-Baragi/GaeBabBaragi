@@ -13,12 +13,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/forbidden")
+@RequestMapping("/pet")
 public class PetController {
 
-    PetService petService;
-    @GetMapping("")
-    public PetResponseDTO selectOne(@RequestParam(name= "id") Long id){
+    private final PetService petService;
+    @GetMapping("/{id}")
+    public PetResponseDTO selectOne(@PathVariable Long id){
         PetResponseDTO petDTO = petService.selectOne(id);
         return petDTO;
     }
@@ -28,17 +28,16 @@ public class PetController {
         return pets;
     }
 
-
     @PostMapping("")
-    public void create(PetRequestDTO dto) {
+    public void create(@RequestBody PetRequestDTO dto) {
         petService.create(dto);
     }
     @PutMapping("")
-    public void modify(PetRequestDTO dto){
+    public void modify(@RequestBody PetRequestDTO dto){
         petService.modify(dto);
     }
-    @DeleteMapping("")
-    public void delete(Long id){         //API 명세상으로는 Id를 params로 받지만 회의 때 petId,ingredientId를 받자 했던 거 같아서 일단 그렇게함
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){         //API 명세상으로는 Id를 params로 받지만 회의 때 petId,ingredientId를 받자 했던 거 같아서 일단 그렇게함
         petService.delete(id);
     }
 }

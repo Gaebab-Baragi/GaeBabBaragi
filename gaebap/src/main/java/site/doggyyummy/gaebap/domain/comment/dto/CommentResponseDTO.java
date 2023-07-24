@@ -28,7 +28,7 @@ public class CommentResponseDTO {      //필요 없는데 걍 만듬 ,연습용 
         dto.setContent(comment.getContent());
         dto.setRecipeId(comment.getRecipe().getId());
         dto.setWriterId(comment.getWriter().getId());
-        dto.setContent(comment.getContent());
+        dto.setWriteTime(comment.getWriteTime());
         return dto;
     }
 

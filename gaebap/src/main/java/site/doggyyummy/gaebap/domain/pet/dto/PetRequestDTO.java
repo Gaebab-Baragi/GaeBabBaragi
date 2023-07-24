@@ -1,8 +1,10 @@
 package site.doggyyummy.gaebap.domain.pet.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentRequestDTO;
 import site.doggyyummy.gaebap.domain.comment.entity.Comment;
@@ -16,10 +18,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class PetRequestDTO {
     Long id;
+    @JsonProperty("member_id")
     Long memberId;
     LocalDateTime birthdate;
     Double weight;

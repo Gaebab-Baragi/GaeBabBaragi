@@ -20,7 +20,7 @@ public class Member {
 
     @Id
     @Column
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column (unique = true)
@@ -52,4 +52,5 @@ public class Member {
 
     @OneToOne(mappedBy = "host")
     private Meeting hostedMeeting;
+
 }

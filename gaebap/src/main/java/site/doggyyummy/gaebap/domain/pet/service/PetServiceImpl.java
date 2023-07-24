@@ -42,6 +42,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PetResponseDTO selectOne(Long id) {
         PetResponseDTO dto = PetResponseDTO.toDTO(petRepository.selectOne(id));
         return dto;
