@@ -1,12 +1,12 @@
 /* eslint-disable */
-import LoginForm from "../components/form/LoginForm";
+import StreamingForm from "../components/form/StreamingForm";
 
 
 
 function StreamingPage() {
     return (
         <>
-        <p>스트리밍페이지임</p>
+        <StreamingForm></StreamingForm>
         </>
       );
     }

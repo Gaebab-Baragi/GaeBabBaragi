@@ -24,10 +24,6 @@ function App() {
     <div className="App">
       <NaviBar></NaviBar>
       {/* <FormComponent/> */}
-
-      <br />
-      <br></br>
-
       {/*---------- 모든 Router는 App.js에 적기!!! ------------*/}
       <Routes>
         <Route path='/' element={<MainPage/>}></Route>
