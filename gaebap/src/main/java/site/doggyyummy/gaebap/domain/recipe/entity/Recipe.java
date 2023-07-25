@@ -41,10 +41,10 @@ public class Recipe {
     // 보류
     private String videoUrl;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade=CascadeType.REMOVE)
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade=CascadeType.REMOVE)
     private List<Step> steps = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe")
