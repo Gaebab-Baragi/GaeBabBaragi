@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* height: 50vh; */
+  margin-top:3%;
 }
 
 .form {
@@ -121,3 +121,4 @@
 .submitButton:hover {
   background-color: #ffbb33;
 }
+
