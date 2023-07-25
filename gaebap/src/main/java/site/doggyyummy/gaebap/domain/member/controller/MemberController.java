@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberRegisterDTO;
 import site.doggyyummy.gaebap.domain.member.dto.response.MemberResponseDTO;
+import site.doggyyummy.gaebap.domain.member.service.MemberMailService;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
 
 @RestController
@@ -17,6 +18,7 @@ import site.doggyyummy.gaebap.domain.member.service.MemberService;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberMailService memberMailService;
 
     @GetMapping("")
     public MemberResponseDTO findMemberByName(@Param(value = "id") String memberId) throws Exception{
@@ -40,8 +42,16 @@ public class MemberController {
     }
 
     @PostMapping("/register/email")
-    public boolean validateRegisterEmail(@RequestBody MemberRegisterDTO registerDTO) {
-        return memberService.isValidRegistrationEmail(registerDTO.getEmail());
+    public String validateRegisterEmail(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
+        if (memberService.isValidRegistrationEmail(registerDTO.getEmail())){
+            try {
+                return memberMailService.sendEmail(registerDTO.getEmail());
+            }
+            catch (Exception e){
+                throw new Exception("invalid email");
+            }
+        }
+        throw new Exception("duplicate email");
     }
 
     @PostMapping("/register/nickname")
@@ -65,6 +75,8 @@ public class MemberController {
     public boolean validateModifyNickname(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
         return memberService.isValidNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
     }
+
+    //====================================================================================
 
 
 }
