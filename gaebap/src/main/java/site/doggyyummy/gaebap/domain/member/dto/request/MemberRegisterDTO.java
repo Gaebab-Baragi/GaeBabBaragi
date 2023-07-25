@@ -31,4 +31,14 @@ public class MemberRegisterDTO {
 
         return member;
     }
+
+    @Override
+    public String toString() {
+        return "MemberRegisterDTO{" +
+                "registerName='" + registerName + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

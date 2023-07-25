@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.domain.member.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberModifyDTO;
@@ -12,6 +13,7 @@ import site.doggyyummy.gaebap.domain.member.service.MemberService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -25,6 +27,7 @@ public class MemberController {
 
     @PostMapping("/register")
     public String signUp(@RequestBody MemberRegisterDTO registerDTO) throws Exception{
+        log.info("registerDTO : {}", registerDTO);
         memberService.signUp(MemberRegisterDTO.toEntity(registerDTO));
         return "reg";
     }
@@ -33,17 +36,17 @@ public class MemberController {
 
     @PostMapping("/register/id")
     public boolean validateRegisterId(@RequestBody MemberRegisterDTO registerDTO) {
-        return memberService.isDuplicateName(registerDTO.getRegisterName());
+        return memberService.isValidRegistrationName(registerDTO.getRegisterName());
     }
 
     @PostMapping("/register/email")
     public boolean validateRegisterEmail(@RequestBody MemberRegisterDTO registerDTO) {
-        return memberService.isDuplicateEmail(registerDTO.getNickname());
+        return memberService.isValidRegistrationEmail(registerDTO.getEmail());
     }
 
     @PostMapping("/register/nickname")
     public boolean validateRegisterNickname(@RequestBody MemberRegisterDTO registerDTO) {
-        return memberService.isDuplicateEmail(registerDTO.getEmail());
+        return memberService.isValidRegistrationNickname(registerDTO.getNickname());
     }
 
     //=================================================================================
@@ -63,11 +66,5 @@ public class MemberController {
         return memberService.isValidNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
     }
 
-    @GetMapping("/login")
-    public String loginForm(HttpServletRequest req){
-        String referer = req.getHeader("Referer") ;
-        req.getSession().setAttribute("prevPage", referer);//login으로 오기 전의 페이지를 저장해 둠.
-        return "/member/login";
-    }
 
 }

@@ -1,37 +1,49 @@
 /* eslint-disable */
 import './App.css';
-import CardList from './components/list/CardList';
-import CardCarousel from './components/list/CardCarousel';
 import React, {useState} from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/Button';
 import { configureStore } from '@reduxjs/toolkit'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import NaviBar from './components/ui/NaviBar';
-import BackGround from './components/ui/BackGround';
-import LoginPage from './pages/LoginPage'
-import FormComponent from './components/ui/LoginForm';
 
-function App() {
-  
+// -------------------PAGES--------------------//
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage';
+import Recipepage from './pages/RecipePage';
+import StreamingPage from './pages/StreamingPage';
+import MainPage from './pages/MainPage';
+
+import FindIdPage from './pages/FindIdPage';
+import FindPasswordPage from './pages/FindPasswordPage';
+// -------------------PAGES-------------------//
+
+import Test2 from './components/ui/InputImage'
+
+function App() {  
   return (
+    <>
     <div className="App">
-      <NaviBar></NaviBar>    
-      <BackGround></BackGround>
-      <h2>추천레시피</h2>
-      <CardCarousel/>
-      <FormComponent/>
+      <NaviBar></NaviBar>
+      {/* <FormComponent/> */}
+
       <br />
       <br></br>
-      {/* 카드 컴포넌트 만들고 / 데이터 받으면 거기서넣어주기/? */}
+
+      {/*---------- 모든 Router는 App.js에 적기!!! ------------*/}
+      <Routes>
+        <Route path='/' element={<MainPage/>}></Route>
+        <Route path='/login' element={<LoginPage/>}></Route>
+        <Route path='/signup' element={<SignupPage/>}></Route>
+        <Route path='/find-id' element={<FindIdPage/>}></Route>
+        <Route path='/find-password' element={<FindPasswordPage/>}></Route>
+        <Route path='/recipe' element={<Recipepage/>}></Route>
+        <Route path='/streaming' element={<StreamingPage/>}></Route>
+      </Routes>
 
     </div>
+    </>
   );
+
 }
 export default App;
-
 
 
