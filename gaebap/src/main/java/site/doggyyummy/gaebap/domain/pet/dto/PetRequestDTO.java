@@ -32,10 +32,10 @@ public class PetRequestDTO {
     public Pet toEntity() {
         Pet pet = new Pet();
 
-        Member memberRef = new Member();
-        memberRef.setId(this.memberId);
+        Member member = new Member();
+        member.setId(this.memberId);
 
-        pet.setMember(memberRef);
+        pet.setMember(member);
         pet.setBirthDate(this.birthdate);
         pet.setWeight(this.weight);
         pet.setName(this.name);

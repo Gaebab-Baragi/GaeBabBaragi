@@ -15,7 +15,7 @@ public class PetController {
 
     private final PetService petService;
     @GetMapping("/{id}")
-    public PetResponseDTO selectOne(@PathVariable Long id){
+    public PetResponseDTO selectOne(@PathVariable(name = "id") Long id){
         PetResponseDTO petDTO = petService.selectOne(id);
         return petDTO;
     }
@@ -34,7 +34,7 @@ public class PetController {
         petService.modify(dto);
     }
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){         //API 명세상으로는 Id를 params로 받지만 회의 때 petId,ingredientId를 받자 했던 거 같아서 일단 그렇게함
+    public void delete(@PathVariable(name = "id") Long id){         //API 명세상으로는 Id를 params로 받지만 회의 때 petId,ingredientId를 받자 했던 거 같아서 일단 그렇게함
         petService.delete(id);
     }
 }
