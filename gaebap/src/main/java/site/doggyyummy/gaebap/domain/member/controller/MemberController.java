@@ -67,8 +67,16 @@ public class MemberController {
     }
 
     @PostMapping("/modify/email")
-    public boolean validateModifyEmail(@RequestBody MemberModifyDTO modifyDTO) throws Exception {
-        return memberService.isValidEmailModification(MemberModifyDTO.toEntity(modifyDTO));
+    public String validateModifyEmail(@RequestBody MemberModifyDTO modifyDTO) throws Exception {
+        if (memberService.isValidRegistrationEmail(modifyDTO.getEmail())){
+            try {
+                return memberMailService.sendEmail(modifyDTO.getEmail());
+            }
+            catch (Exception e){
+                throw new Exception("invalid email");
+            }
+        }
+        throw new Exception("duplicate email");
     }
 
     @PostMapping("/modify/nickname")
