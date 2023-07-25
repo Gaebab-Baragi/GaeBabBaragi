@@ -24,7 +24,6 @@ public class RecipeModifyRequestDto {
     }
     @Getter
     public static class StepDto{
-        private Long id;
         private Long orderingNumber;
         private String description;
     }

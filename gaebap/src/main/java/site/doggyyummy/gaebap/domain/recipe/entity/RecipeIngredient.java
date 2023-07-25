@@ -3,9 +3,8 @@ package site.doggyyummy.gaebap.domain.recipe.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 public class RecipeIngredient {
 

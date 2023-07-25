@@ -129,38 +129,93 @@ public class RecipeService {
     @Transactional
     public void modifyRecipe(Long id,RecipeModifyRequestDto reqDto){
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
-        Member writer = findRecipe.get().getMember();
-        System.out.println("writer.getName() = " + writer.getName());
+        Recipe recipe = findRecipe.get();
+        Member writer = recipe.getMember();
         RecipeModifyRequestDto.MemberDto loginMember = reqDto.getLoginMember();
-        System.out.println("reqDto.getTitle() = " + reqDto.getTitle());
-        RecipeModifyRequestDto.MemberDto member = reqDto.getMember();
-        System.out.println("member = " + member.getId());
-        System.out.println("loginMember = " + loginMember.getId());
-
-
 
         if(loginMember!=null && writer.getId()==loginMember.getId()){
-            List<Step> steps=new ArrayList<>();
+            findRecipe.get().setTitle(reqDto.getTitle());
+            findRecipe.get().setDescription(reqDto.getDescription());
+            List<Step> updateSteps=new ArrayList<>();
+
             for(RecipeModifyRequestDto.StepDto s:reqDto.getSteps()){
-                Optional<Step> findStep = stepRepository.findById(s.getId());
+                Step findStep = stepRepository.findByRecipeIdAndOrderingNumber(id, s.getOrderingNumber());
                 if(findStep!=null){ //해당 id의 step이 있으면 수정하는거
-                    findStep.get().setOrderingNumber(s.getOrderingNumber());
-                    findStep.get().setDescription(s.getDescription());
-                    steps.add(findStep.get());
-                    stepRepository.save(findStep.get());
+                    findStep.setOrderingNumber(s.getOrderingNumber());
+                    findStep.setDescription(s.getDescription());
+                    updateSteps.add(findStep);
+                    stepRepository.save(findStep);
                 }else{ //없으면, 추가해줘야대
                     Step step=new Step();
                     step.setOrderingNumber(s.getOrderingNumber());
                     step.setDescription(s.getDescription());
-                    steps.add(step);
+                    updateSteps.add(step);
                     stepRepository.save(step);
                 }
             }
-            findRecipe.get().setSteps(steps);
-            recipeRepository.save(findRecipe.get());
+
+            List<Step> originSteps = findRecipe.get().getSteps();
+            for(Step originStep : originSteps){
+                boolean flag=false;
+                for(Step updateStep:updateSteps){
+                    if(updateStep.getId()==originStep.getId()){
+                        flag=true;
+                        break;
+                    }
+                }
+                if(flag==false){
+                    stepRepository.delete(originStep);
+                }
+            }
+            recipe.setSteps(updateSteps);
+
+            List<RecipeIngredient> updateRecipeIngredients=new ArrayList<>();
+            for(RecipeModifyRequestDto.RecipeIngredientDto r: reqDto.getRecipeIngredients()) {
+                Ingredient findIngredient = ingredientRepository.findByName(r.getIngredientName());//ingredient찾음
+
+                Ingredient ingredient = new Ingredient();
+                if (findIngredient == null) {
+                    ingredient.setName(r.getIngredientName());
+                    ingredientRepository.save(ingredient);
+                } else {
+                    ingredient = findIngredient;
+                }
+                RecipeIngredient findRecipeIngredient=recipeIngredientRepository.findByIngredientIdAndRecipeId(ingredient.getId(), id);
+
+                RecipeIngredient recipeIngredient = new RecipeIngredient();
+
+                if(findRecipeIngredient==null){
+                    recipeIngredient.setAmount(r.getAmount());
+                    recipeIngredient.setIngredient(ingredient);
+                    updateRecipeIngredients.add(recipeIngredient);
+                    recipeIngredientRepository.save(recipeIngredient);
+                }else{
+                    System.out.println("=====================================");
+                    System.out.println("findRecipeIngredient = " + findRecipeIngredient.getIngredient().getName());
+                    recipeIngredient=findRecipeIngredient;
+                    recipeIngredient.setAmount(r.getAmount());
+                    recipeIngredient.setIngredient(ingredient);
+                    updateRecipeIngredients.add(recipeIngredient);
+                }
+            }
+
+            List<RecipeIngredient> originRecipeIngredients=findRecipe.get().getRecipeIngredients();
+            for(RecipeIngredient origin:originRecipeIngredients){
+                boolean flag=false;
+                for(RecipeIngredient updateRecipeIngredient: updateRecipeIngredients) {
+                    if(origin.getIngredient().getId()==updateRecipeIngredient.getIngredient().getId()) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if(flag==false) {
+                    recipeIngredientRepository.delete(origin);
+                }
+            }
+            recipe.setRecipeIngredients(updateRecipeIngredients);
+            recipeRepository.save(recipe);
         }
-        else{
-            //작성자랑 수정하려는 자가 다르면 수정 불가 -> 삭제도 이거 추가해야 함
+        else{//작성자랑 수정하려는 자가 다르면 수정 불가 -> 삭제도 이거 추가해야 함
         }
 
     }
