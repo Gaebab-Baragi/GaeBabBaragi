@@ -15,12 +15,12 @@ function LoginForm() {
 
         {/* 아이디 입력  */}
         <div className="formGroup">
-          <input onChange={e=>{setId(e.target.value)}} type="id" id="formBasicEmail" placeholder="아이디를 입력해주세요." />
+          <input className='formInput' onChange={e=>{setId(e.target.value)}} type="id" id="formBasicEmail" placeholder="아이디를 입력해주세요." />
         </div>
 
         {/* 비밀번호 입력 */}
         <div className="formGroup">
-          <input onChange={e=>{setPassword(e.target.value)}} type="password" id="formBasicPassword" placeholder="비밀번호를 입력해주세요." />
+          <input className='formInput' onChange={e=>{setPassword(e.target.value)}} type="password" id="formBasicPassword" placeholder="비밀번호를 입력해주세요." />
         </div>
 
         {/* 아이디 찾기 / 비밀번호 찾기 / 회원가입 */}

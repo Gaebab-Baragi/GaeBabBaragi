@@ -15,7 +15,8 @@ import MainPage from './pages/MainPage';
 
 import FindIdPage from './pages/FindIdPage';
 import FindPasswordPage from './pages/FindPasswordPage';
-import Posts from './pages/Post';
+import TestPage from './pages/TestPage';
+
 // -------------------PAGES-------------------//
 
 import Test2 from './components/ui/InputImage'
@@ -38,6 +39,7 @@ function App() {
         <Route path='/recipe' element={<Recipepage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming' element={<StreamingPage/>}></Route>
+        <Route path='/test' element={<TestPage/>}></Route>
       </Routes>
 
     </div>

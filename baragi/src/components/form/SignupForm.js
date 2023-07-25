@@ -23,27 +23,27 @@ function SignupForm() {
 
         {/* 아이디 입력  */}
         <div className="formGroup" id='checkGroup'>
-          <input onChange={e=>{setId(e.target.value)}} type="id" id="formId" placeholder="아이디를 입력해주세요." />
+          <input className='formInput' onChange={e=>{setId(e.target.value)}} type="id" id="formId" placeholder="아이디를 입력해주세요." />
           <button className='duplicationCheckButton' onClick={handleDuplicateCheck}>중복 확인</button>
         </div>
 
         {/* 비밀번호1 입력 */}
         <div className="formGroup">
-          <input onChange={e=>{setPassword1(e.target.value)}} type="password" id="formPassword" placeholder="비밀번호를 입력해주세요." />
+          <input className='formInput' onChange={e=>{setPassword1(e.target.value)}} type="password" id="formPassword" placeholder="비밀번호를 입력해주세요." />
         </div>
         {/* 비밀번호2 다시 입력 */}
         <div className="formGroup">
-          <input onChange={e=>{setPassword2(e.target.value)}} type="password" id="formPassword" placeholder="비밀번호를 다시 입력해주세요." />
+          <input className='formInput' onChange={e=>{setPassword2(e.target.value)}} type="password" id="formPassword" placeholder="비밀번호를 다시 입력해주세요." />
         </div>
 
         {/* 닉네임 입력 */}
         <div className="formGroup">
-          <input onChange={e=>{setNickname(e.target.value)}} type="text" id='formNickname' placeholder='닉네임을 입력해주세요'/>
+          <input className='formInput' onChange={e=>{setNickname(e.target.value)}} type="text" id='formNickname' placeholder='닉네임을 입력해주세요'/>
         </div>
 
         {/* 이메일 입력 */}
         <div className="formGroup" id='checkGroup'>
-          <input onChange={e=>{setEmail(e.target.value)}} type="email" id='formEmail' placeholder='이메일을 입력해주세요.' />
+          <input className='formInput' onChange={e=>{setEmail(e.target.value)}} type="email" id='formEmail' placeholder='이메일을 입력해주세요.' />
           <button className='emailVerificationButton'>인증코드 발송</button>
         </div>
 

@@ -5,6 +5,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import CardComponent from '../ui/Card';
 import { Stack } from 'react-bootstrap';
 
+
 function CardCarousel() {
   // 반응형 슬라이드당 카드 개수를 상태로 관리
   const [cardsPerSlide, setCardsPerSlide] = useState(4);
