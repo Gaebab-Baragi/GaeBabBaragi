@@ -8,7 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -38,6 +40,10 @@ public class SecurityConfig {
     private final JwtService jwtService;
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/member/register/**");
+    }
+    @Bean
     public SecurityFilterChain httpFilterChain (HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -55,7 +61,6 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -85,7 +90,7 @@ public class SecurityConfig {
         return new LoginFailureHandler();
     }
 
-    @Bean
+    //아래 두 필터는 Bean으로 설정 X
     public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() throws Exception{
         CustomJsonUsernamePasswordAuthenticationFilter namePasswordFilter
                 = new CustomJsonUsernamePasswordAuthenticationFilter(new ObjectMapper());
@@ -96,7 +101,6 @@ public class SecurityConfig {
         return namePasswordFilter;
     }
 
-    @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
         JwtAuthenticationFilter jwtAuthenticationFilter
                 = new JwtAuthenticationFilter(jwtService, memberRepository);
