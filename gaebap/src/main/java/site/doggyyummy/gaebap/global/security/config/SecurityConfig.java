@@ -47,7 +47,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        //.requestMatchers("/member/modify/**").authenticated()
+                        .requestMatchers("/member/modify/**").authenticated()
                         .anyRequest().permitAll()
                 );
 
