@@ -12,9 +12,10 @@ function NaviBar() {
     let navigate = useNavigate();
     return (
       <>
-        <Navbar sticky="top" expand="lg" bg='light' >
+        <Navbar sticky="top" expand="lg" bg='light'>
           <Container >
-            <img src="/개밥바라기.png" alt="My Image" width="5%" height="0.5%" />
+          {/* data-bs-theme="dark" */}
+            <img src="/개밥바라기.png" alt="My Image" width="5%" height="1%" />
             <Navbar.Brand href="/" className = 'test1' >개밥바라기</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav"> 

@@ -27,11 +27,15 @@ function InputInfor() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <label htmlFor="recipeName" style={{ marginRight: '10px' }}>레시피 제목:</label>
+    <div style={{  padding: '1%'}}>
+      <h4 style={{textAlign:'left', marginLeft:'2%', marginRight : '15%'}}>2. 기본 정보 입력</h4>
+    {/* </div> */}
+    <form onSubmit={handleSubmit} style={{marginLeft:'2%', marginRight : '15%', padding:'1%'}}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom:'1%'}}>
+          
+          <label htmlFor="recipeName" style={{width:'15%'}} >레시피 제목:</label>
           <input
-            type="text"
+            type="textarea"
             id="recipeName"
             name="recipeName"
             value={recipeName}
@@ -39,8 +43,8 @@ function InputInfor() {
             placeholder="레시피 제목을 입력하세요."
           />
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <label htmlFor="foodName" style={{ marginRight: '10px' }}>음식 이름:</label>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom:'1%' }}>
+          <label htmlFor="foodName" style={{width:'15%'}}>음식 이름:</label>
           <input
             type="text"
             id="foodName"
@@ -50,8 +54,8 @@ function InputInfor() {
             placeholder="음식 이름을 입력하세요."
           />
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <label htmlFor="recipeIntro" style={{ marginRight: '10px' }}>레시피 소개:</label>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom:'1%' }}>
+          <label htmlFor="recipeIntro" style={{width:'15%'}}>레시피 소개:</label>
           <input
             type="text"
             id="recipeIntro"
@@ -61,8 +65,9 @@ function InputInfor() {
             placeholder="레시피를 소개하세요."
           />
         </div>
-        <button type="submit">제출</button>
-      </form>
+        {/* <button type="submit">제출</button> */}
+    </form>
+    </div>
     </>
   );
 }

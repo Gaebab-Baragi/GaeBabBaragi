@@ -13,7 +13,6 @@ function Recipepage() {
     return (
       <div>
       <Test2></Test2>
-      
       </div>
       );
     }

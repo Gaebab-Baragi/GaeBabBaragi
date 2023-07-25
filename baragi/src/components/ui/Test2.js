@@ -8,8 +8,8 @@ function Test2() {
   return (
     <>
     
-    <div>
-        <h1>레시피 등록</h1>
+    <div style={{ marginLeft:'10%' , marginRight : '10%' , marginTop : '0.5%' , marginBottom : '10%'}}>
+        <h1 style={{ textAlign : 'left' }}>레시피 등록</h1>
         <InputImage></InputImage>
         <InputInfor></InputInfor>
         <MaterialRegist></MaterialRegist>

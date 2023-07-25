@@ -15,9 +15,9 @@ function LimitForm() {
 
   return (
     <div style={{display:'flex'}}>
-      <button onClick={handleIncrease}>+</button>
-      <h4 style={{marginLeft:'10px', marginRight:'10px'}}>{number}</h4>
       <button onClick={handleDecrease}>-</button>
+      <h4 style={{marginLeft:'10px', marginRight:'10px'}}>{number}</h4>
+      <button onClick={handleIncrease}>+</button>
     </div>
   );
 }

@@ -24,10 +24,11 @@ function StreamingForm() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-        <h2>스트리밍 예약하기</h2>
-        <h4>스트리밍 기본 정보 입력</h4>
-      <form onSubmit={handleRegistrationSubmit} style={{ display: 'flex', flexDirection: 'column', maxWidth: '1000px', gap: '15px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+
+      <form onSubmit={handleRegistrationSubmit} style={{marginLeft:'2%', marginRight : '15%', padding:'1%' }}>
+        <div style={{ display: 'flex',}}>
+          {/* display: 'flex', flexDirection: 'column', maxWidth: '1000px', gap: '15px' , justifyContent: 'space-between'  */}
+
           <label htmlFor="name">방제목:</label>
           <input
             type="text"

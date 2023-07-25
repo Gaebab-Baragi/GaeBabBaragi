@@ -11,8 +11,8 @@ function InputMat() {
     };
   return (
     <>
-    <div style={{ backgroundColor :'#FFEACB', display: 'flex', alignItems: 'center', justifyContent: 'space-between' , padding: '10px 0' }}>
-        <div style={{ margin: '5px 10px' }}>
+    <div style={{ width: '120%' , borderRadius: '5px', backgroundColor :'#FFEACB', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <div style = {{margin :'5% 0% 5% 5%'}}>
         <input
           type="text"
           id="Matname"
@@ -20,9 +20,10 @@ function InputMat() {
           value={Matname}
           onChange={handleMatnameChange}
           placeholder="재료를 입력하세요"
+          style={{textAlign : 'center' }}
         />
         </div>
-        <div style={{ margin: '5px 10px' }}>
+        <div style = {{margin :'5% 5% 5% 5%'}}>
         <input
           type="text"
           id="Matamount"
@@ -30,6 +31,7 @@ function InputMat() {
           value={Matamount}
           onChange={handleMatamountChange}
           placeholder="양을 입력하세요"
+          style={{textAlign : 'center'}}
         />
         </div>
     </div>
