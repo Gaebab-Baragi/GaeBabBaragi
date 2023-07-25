@@ -24,12 +24,16 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
+import site.doggyyummy.gaebap.global.security.entity.oauth2.CustomOAuth2User;
 import site.doggyyummy.gaebap.global.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import site.doggyyummy.gaebap.global.security.filter.JwtAuthenticationFilter;
 import site.doggyyummy.gaebap.global.security.handler.LoginFailureHandler;
 import site.doggyyummy.gaebap.global.security.handler.LoginSuccessHandler;
+import site.doggyyummy.gaebap.global.security.handler.oauth2.OAuth2LoginFailureHandler;
+import site.doggyyummy.gaebap.global.security.handler.oauth2.OAuth2LoginSuccessHandler;
 import site.doggyyummy.gaebap.global.security.service.JwtService;
 import site.doggyyummy.gaebap.global.security.service.PrincipalDetailsService;
+import site.doggyyummy.gaebap.global.security.service.oauth2.CustomOAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -38,6 +42,9 @@ public class SecurityConfig {
 
     private final MemberRepository memberRepository;
     private final JwtService jwtService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -55,6 +62,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/member/modify/**").authenticated()
                         .anyRequest().permitAll()
+                )
+                .oauth2Login((oauth2login) ->
+                    oauth2login
+                            .successHandler(oAuth2LoginSuccessHandler)
+                            .failureHandler(oAuth2LoginFailureHandler)
+                            .userInfoEndpoint((endpoint) ->
+                                    endpoint.userService(customOAuth2UserService))
                 );
 
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
