@@ -38,26 +38,10 @@ public class MemberServiceImpl implements MemberService{
     public Optional<Member> findByName(String username){
         return memberRepository.findMemberByName(username);
     }
-
-    @Override
-    public boolean isDuplicateName(String name){
-        return memberRepository.existsMemberByName(name);
-    }
-
-    @Override
-    public boolean isDuplicateNickname(String nickname){
-        return memberRepository.existsMemberByNickname(nickname);
-    }
-
-    @Override
-    public boolean isDuplicateEmail(String email){
-        return memberRepository.existsMemberByEmail(email);
-    }
-
     private void validateMemberRegistration(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
-        if (isDuplicateName(member.getName())) throw new Exception();
-        if (isDuplicateNickname(member.getNickname())) throw new Exception();
-        if (isDuplicateEmail(member.getEmail())) throw new Exception();
+        if (isValidRegistrationName(member.getName())) throw new Exception();
+        if (isValidRegistrationNickname(member.getNickname())) throw new Exception();
+        if (isValidRegistrationEmail(member.getEmail())) throw new Exception();
     }
 
     private void validateMemberModification(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
@@ -66,14 +50,60 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public boolean isValidNicknameModification(Member member) throws Exception{
-        Member origin = findByName(member.getName()).orElseThrow(() -> new Exception());
-        return member.getNickname().equals(origin.getNickname()) || !isDuplicateNickname(member.getNickname());
+    public boolean isValidNicknameModification(Member member) {
+        Member origin = findByName(member.getName()).get();
+        if (origin == null) return false;
+        if (!isValidNameFormat(member.getNickname())) return false;
+        if (member.getNickname().equals(origin.getNickname())) return true;
+        return !isDuplicateNickname(member.getNickname());
     }
 
     @Override
-    public boolean isValidEmailModification(Member member) throws  Exception{
-        Member origin = findByName(member.getName()).orElseThrow(() -> new Exception());
-        return member.getEmail().equals(origin.getEmail()) || !isDuplicateEmail(member.getEmail());
+    public boolean isValidEmailModification(Member member) {
+        Member origin = findByName(member.getName()).get();
+        if (origin == null) return false;
+        if (member.getEmail().equals(origin.getEmail())) return true;
+        return !isDuplicateEmail(member.getEmail());
+    }
+
+    @Override
+    public boolean isValidRegistrationName(String registerName){
+        if (!isValidNameFormat(registerName)) return false;
+        return !isDuplicateName(registerName);
+    }
+
+    @Override
+    public boolean isValidRegistrationNickname(String nickname) {
+        if (!isValidNicknameFormat(nickname)) return false;
+        return !isDuplicateNickname(nickname);
+    }
+
+    @Override
+    public boolean isValidRegistrationEmail(String email) {
+        return !isDuplicateEmail(email);
+    }
+    private boolean isDuplicateName(String name){
+        return memberRepository.existsMemberByName(name);
+    }
+
+    private boolean isDuplicateNickname(String nickname){
+        return memberRepository.existsMemberByNickname(nickname);
+    }
+
+    private boolean isDuplicateEmail(String email){
+        return memberRepository.existsMemberByEmail(email);
+    }
+
+    private boolean isValidNameFormat(String name){
+        Integer length = name.length();
+        if (length < 5 || length > 20) return false;
+        String regex = "/^[a-z0-9]*$/";
+        if (!name.matches(regex)) return false;
+        return true;
+    }
+    private boolean isValidNicknameFormat(String nickname){
+        Integer length = nickname.length();
+        if (length == 0 || length > 10) return false;
+        return true;
     }
 }

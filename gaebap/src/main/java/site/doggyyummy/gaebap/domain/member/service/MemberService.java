@@ -10,10 +10,12 @@ public interface MemberService {
     void signUp(Member member) throws Exception;
     void modify(Member member) throws Exception;
     Optional<Member> findByName(String username);
-    boolean isDuplicateName(String name);
-    boolean isDuplicateNickname(String nickname);
-    boolean isDuplicateEmail(String email);
 
     boolean isValidNicknameModification(Member member) throws Exception;
     boolean isValidEmailModification(Member member) throws  Exception;
+
+    boolean isValidRegistrationName(String registerName);
+    boolean isValidRegistrationNickname(String email);
+
+    boolean isValidRegistrationEmail(String nickname);
 }

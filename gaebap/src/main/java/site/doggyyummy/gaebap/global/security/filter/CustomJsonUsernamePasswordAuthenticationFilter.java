@@ -53,7 +53,6 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
         log.info("username : {}", username);
         log.info("password : {}", password);
 
-
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);//principal 과 credentials 전달
 
         return this.getAuthenticationManager().authenticate(authRequest);

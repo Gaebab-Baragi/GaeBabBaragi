@@ -43,13 +43,13 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         log.info("login success. username : {}", username);
         log.info("login success. accessToken : {}", accessToken);
-        log.info("login success. expiration: {}", accessTokenExpiration);
 
         if (session != null){
             String redirectUrl = (String) session.getAttribute("prevPage");
+            log.info("redirect To : {}", redirectUrl);
             if (redirectUrl != null){
                 session.removeAttribute("prevPage");
-                getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+                //getRedirectStrategy().sendRedirect(request, response, redirectUrl);
             }
             else {
                 super.onAuthenticationSuccess(request, response, authentication);
