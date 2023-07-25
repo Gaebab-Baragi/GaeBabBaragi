@@ -40,6 +40,9 @@ public class Member {
     private String authority;
 
     @Column
+    private String profileUrl;
+
+    @Column
     private Timestamp registerDate;
 
     @OneToMany(mappedBy = "member")

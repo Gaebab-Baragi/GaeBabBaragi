@@ -125,4 +125,8 @@ public class JwtService {
             return false;
         }
     }
+
+    public String getBearer(){
+        return this.BEARER;
+    }
 }
