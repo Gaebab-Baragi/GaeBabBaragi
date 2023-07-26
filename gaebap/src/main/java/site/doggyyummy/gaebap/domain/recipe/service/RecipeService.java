@@ -1,5 +1,9 @@
 package site.doggyyummy.gaebap.domain.recipe.service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +19,7 @@ import site.doggyyummy.gaebap.domain.recipe.repository.RecipeIngredientRepositor
 import site.doggyyummy.gaebap.domain.recipe.repository.RecipeRepository;
 import site.doggyyummy.gaebap.domain.recipe.repository.StepRepository;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +32,10 @@ public class RecipeService {
     private final StepRepository stepRepository;
     private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
+
+    //AWS S3
+    private final AmazonS3 awsS3Client;
+
 
     //그냥 테스트용임 (지워야됨)
     @Transactional
@@ -79,6 +88,46 @@ public class RecipeService {
 
         Recipe savedRecipe = recipeRepository.save(recipe);
 
+        //레시피 대표 사진 업로드
+        File img=new File(reqDto.getImgLocalPath());
+        String imgKey=savedRecipe.getId().toString()+"/"+img.toPath().getFileName().toString();
+        String bucketName="sh-bucket";
+        String imgUrl="https://"+bucketName+".s3.ap-northeast-2.amazonaws.com/"+imgKey;
+
+        ObjectMetadata objectMetadata = null;
+        try{
+            objectMetadata=awsS3Client.getObjectMetadata(bucketName,imgKey);
+            System.out.println("버킷에 해당 사진이 이미 존재하므로, 재저장하지 않습니다.");
+        }catch(AmazonS3Exception e){
+            if(e.getStatusCode()==404) {
+                //존재하지 않는 레시피 사진이면 업로드
+                awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
+                System.out.println("버킷에 해당 사진을 저장했습니다.");
+            }else {
+                e.printStackTrace();
+            }
+        }
+        recipe.setImageUrl(imgUrl);
+
+        //레시피 시연 영상 업로드
+        File video=new File(reqDto.getVideoLocalPath());
+        String videoKey=savedRecipe.getId().toString()+"/"+video.toPath().getFileName().toString();
+        String videoUrl="https://"+bucketName+".s3.ap-northeast-2.amazonaws.com/"+videoKey;
+        ObjectMetadata objectMetadata2 = null;
+        try{
+            objectMetadata2=awsS3Client.getObjectMetadata(bucketName,videoKey);
+            System.out.println("버킷에 해당 비디오가 이미 존재하므로, 재저장하지 않습니다.");
+        }catch(AmazonS3Exception e){
+            if(e.getStatusCode()==404) {
+                //존재하지 않는 레시피 사진이면 업로드
+                awsS3Client.putObject(new PutObjectRequest(bucketName, videoKey, video));
+                System.out.println("버킷에 해당 비디오를 저장했습니다.");
+            }else {
+                e.printStackTrace();
+            }
+        }
+        recipe.setVideoUrl(videoUrl);
+        savedRecipe = recipeRepository.save(recipe);
         return new RecipeUploadResponseDto(savedRecipe.getTitle(),findMeberById.get());
     }
 
@@ -121,7 +170,21 @@ public class RecipeService {
     @Transactional
     public RecipeDeleteResponseDto deleteRecipe(Long id){
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
+
+        //S3에 해당 레시피 이미지 및 동영상 삭제
+        String imgUrl=findRecipe.get().getImageUrl();
+        String[] UrlSegments= imgUrl.split("/");
+        String folderKey= UrlSegments[UrlSegments.length-2]+"/";
+        ObjectListing objectListing = awsS3Client.listObjects("sh-bucket", folderKey);
+        // 폴더 내의 모든 객체들을 삭제
+        for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+            awsS3Client.deleteObject("sh-bucket", objectSummary.getKey());
+        }
+        // 폴더 삭제
+        awsS3Client.deleteObject("sh-bucket", folderKey);
+
         recipeRepository.delete(findRecipe.get());
+
         return new RecipeDeleteResponseDto(findRecipe.get());
     }
 
@@ -136,6 +199,58 @@ public class RecipeService {
         if(loginMember!=null && writer.getId()==loginMember.getId()){
             findRecipe.get().setTitle(reqDto.getTitle());
             findRecipe.get().setDescription(reqDto.getDescription());
+
+            //2. 삭제 가능
+            String imgUrl=findRecipe.get().getImageUrl();
+            System.out.println("imgUrl = " + imgUrl);
+            System.out.println("reqDto.getImgUrl() = " + reqDto.getImgUrl());
+            String[] imgSegments=imgUrl.split("/");
+            String folderKey=imgSegments[imgSegments.length-2]+"/";
+
+            ObjectListing objectListing = awsS3Client.listObjects("sh-bucket", folderKey);
+            //https://sh-bucket.s3.ap-northeast-2.amazonaws.com/2/teayang.jpg
+            if(reqDto.getImgUrl().equals("") || !imgUrl.equals(reqDto.getImgUrl())){
+                String imgKey=imgSegments[imgSegments.length-1];
+                System.out.println("2304oejifadklsjv;ifjskl;dfjio;awejfaweioghosdgjklsdjfl;asdjfklsdfm@!#!@#!@");
+                System.out.println("imgKey = "+ imgKey);
+                if(reqDto.getImgUrl().equals("")) {
+                    findRecipe.get().setImageUrl("");
+                }
+                for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                    System.out.println("objectSummary.getKey() = " + objectSummary.getKey());
+                    System.out.println((folderKey+imgKey));
+                    if(objectSummary.getKey().equals((folderKey+imgKey))){
+                        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                        awsS3Client.deleteObject("sh-bucket",objectSummary.getKey());
+                        break;
+                    }
+                }
+            }
+            if(!reqDto.getImgUrl().equals("") && !imgUrl.equals(reqDto.getImgUrl())){
+                File img=new File(reqDto.getImgUrl());
+                String imgKey=findRecipe.get().getId().toString()+"/"+img.toPath().getFileName().toString();
+                String newImgUrl="https://sh-bucket.s3.ap-northeast-2.amazonaws.com/"+imgKey;
+                ObjectMetadata objectMetadata=null;
+                try{
+                    objectMetadata=awsS3Client.getObjectMetadata("sh-bucket",imgKey);
+                }catch (AmazonS3Exception e){
+                    if(e.getStatusCode()==404){
+                        findRecipe.get().setImageUrl(newImgUrl);
+                        awsS3Client.putObject(new PutObjectRequest("sh-bucket",imgKey,img));
+                    }else{
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
             List<Step> updateSteps=new ArrayList<>();
 
             for(RecipeModifyRequestDto.StepDto s:reqDto.getSteps()){
@@ -190,8 +305,6 @@ public class RecipeService {
                     updateRecipeIngredients.add(recipeIngredient);
                     recipeIngredientRepository.save(recipeIngredient);
                 }else{
-                    System.out.println("=====================================");
-                    System.out.println("findRecipeIngredient = " + findRecipeIngredient.getIngredient().getName());
                     recipeIngredient=findRecipeIngredient;
                     recipeIngredient.setAmount(r.getAmount());
                     recipeIngredient.setIngredient(ingredient);
@@ -218,6 +331,29 @@ public class RecipeService {
         else{//작성자랑 수정하려는 자가 다르면 수정 불가 -> 삭제도 이거 추가해야 함
         }
 
+    }
+
+
+    public void s3DeleteAll() {
+        try {
+            // 모든 객체의 키(Key) 목록 가져오기
+            ObjectListing objectListing = awsS3Client.listObjects("sh-bucket");
+
+            List<DeleteObjectsRequest.KeyVersion> keysToDelete = new ArrayList<>();
+            for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                keysToDelete.add(new DeleteObjectsRequest.KeyVersion(objectSummary.getKey()));
+            }
+
+            // 모든 객체 삭제 요청 생성
+            DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest("sh-bucket").withKeys(keysToDelete);
+
+            // 객체들 삭제
+            DeleteObjectsResult deleteObjectsResult = awsS3Client.deleteObjects(deleteObjectsRequest);
+            System.out.println("Deleted objects count: " + deleteObjectsResult.getDeletedObjects().size());
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+            System.exit(1);
+        }
     }
 
 }

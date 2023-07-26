@@ -11,6 +11,8 @@ public class RecipeModifyRequestDto {
     private String title;
     private String description;
     //imgUrl, videoUrl 필요
+    private String imgUrl;
+    private String videoUrl;
 
     private List<RecipeIngredientDto> recipeIngredients;
     private List<StepDto> steps;

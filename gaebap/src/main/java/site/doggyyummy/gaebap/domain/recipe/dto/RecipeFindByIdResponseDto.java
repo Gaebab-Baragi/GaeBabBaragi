@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 public class RecipeFindByIdResponseDto {
     private String title;
     private String description;
+    private String imgUrl;
+    private String videoUrl;
+
     private MemberDto member;
     private List<StepDto> steps;
     private List<RecipeIngredientDto> recipeIngredients;
@@ -30,6 +33,8 @@ public class RecipeFindByIdResponseDto {
     public RecipeFindByIdResponseDto(Recipe recipe, Member member, List<Step> steps,List<RecipeIngredient> recipeIngredients,List<Ingredient> ingredients){
         this.title=recipe.getTitle();
         this.description=recipe.getDescription();
+        this.imgUrl=recipe.getImageUrl();
+        this.videoUrl=recipe.getVideoUrl();
         this.member=new MemberDto(member.getName());
         // Convert List<Step> to List<StepDto>
         this.steps = steps.stream()
