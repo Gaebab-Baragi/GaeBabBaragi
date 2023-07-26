@@ -15,7 +15,6 @@ import MainPage from './pages/MainPage';
 
 import FindIdPage from './pages/FindIdPage';
 import FindPasswordPage from './pages/FindPasswordPage';
-import TestPage from './pages/TestPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 
 // -------------------PAGES-------------------//
@@ -40,7 +39,6 @@ function App() {
         <Route path='/recipe-regist' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming' element={<StreamingPage/>}></Route>
-        <Route path='/test' element={<TestPage/>}></Route>
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
         <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>
