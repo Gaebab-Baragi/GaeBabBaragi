@@ -53,7 +53,7 @@ public class InitDb {
         }
         private Member createMember(String name) {
             Member member = new Member();
-            member.setName(name);
+            member.setUsername(name);
 
             return member;
         }

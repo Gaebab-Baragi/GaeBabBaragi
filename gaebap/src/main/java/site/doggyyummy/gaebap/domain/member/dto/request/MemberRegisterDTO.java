@@ -19,26 +19,15 @@ public class MemberRegisterDTO {
     private String email;
 
     public static Member toEntity(MemberRegisterDTO registerDTO){
-        Member member = new Member();
-
-        member.setName(registerDTO.getRegisterName());
-        member.setNickname(registerDTO.getNickname());
-        member.setAuthority("ROLE_USER");//추후 변경 필요
-
-        member.setEmail(registerDTO.getEmail());
-        member.setPassword(registerDTO.getPassword());
-        member.setRegisterDate(new Timestamp(System.currentTimeMillis()));
+        Member member = Member.builder()
+                .username(registerDTO.getRegisterName())
+                .nickname(registerDTO.getNickname())
+                .password(registerDTO.getPassword())
+                .email(registerDTO.getEmail())
+                .authority("ROLE_USER")
+                .registerDate(new Timestamp(System.currentTimeMillis()))
+                .build();
 
         return member;
-    }
-
-    @Override
-    public String toString() {
-        return "MemberRegisterDTO{" +
-                "registerName='" + registerName + '\'' +
-                ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

@@ -11,11 +11,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
-import site.doggyyummy.gaebap.global.security.constant.SocialType;
+import site.doggyyummy.gaebap.global.security.dto.SocialType;
 import site.doggyyummy.gaebap.global.security.dto.OAuth2Attributes;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.CustomOAuth2User;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 

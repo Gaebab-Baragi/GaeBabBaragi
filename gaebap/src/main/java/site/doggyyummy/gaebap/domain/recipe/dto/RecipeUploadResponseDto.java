@@ -16,7 +16,7 @@ public class RecipeUploadResponseDto {
     }
     public RecipeUploadResponseDto(String title, Member member){
         this.title=title;
-        this.member=new MemberDto(member.getName(),member.getId());
+        this.member=new MemberDto(member.getUsername(),member.getId());
     }
 
     @Getter

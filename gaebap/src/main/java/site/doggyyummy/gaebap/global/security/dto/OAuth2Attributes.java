@@ -3,7 +3,6 @@ package site.doggyyummy.gaebap.global.security.dto;
 import lombok.Builder;
 import lombok.Getter;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
-import site.doggyyummy.gaebap.global.security.constant.SocialType;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.GoogleUserInfo;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.KakaoUserInfo;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.NaverUserInfo;

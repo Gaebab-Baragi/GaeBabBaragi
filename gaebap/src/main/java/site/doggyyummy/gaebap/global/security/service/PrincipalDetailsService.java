@@ -23,7 +23,7 @@ public class PrincipalDetailsService implements UserDetailsService {
         Supplier<UsernameNotFoundException> s = () -> new UsernameNotFoundException("username not found");
 
         log.info("loadUserByUsername : {}", username);
-        Member member = memberRepository.findMemberByName(username).orElseThrow(s);
+        Member member = memberRepository.findByName(username).orElseThrow(s);
 
         log.info("locked? : {}", new PrincipalDetails(member).isAccountNonLocked());
         return new PrincipalDetails(member);
