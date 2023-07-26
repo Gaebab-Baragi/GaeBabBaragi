@@ -1,6 +1,8 @@
+import FindPasswordForm from "../components/form/FindPasswordForm";
+
 function FindPasswordPage() {
   return(
-   " 안뇽!"
+   <FindPasswordForm/>
   )
 }
 
