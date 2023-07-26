@@ -6,9 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import store from './redux/store';
+import axios from 'axios';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+axios.defaults.withCredentials = true;
+
 root.render(
   // <React.StrictMode>
     <Provider store={store}>

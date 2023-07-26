@@ -180,8 +180,6 @@ function SignupForm() {
       }
     }
   //----------------------------------------------------------//
-
-
   return (
     <div className="formContainer">
       <form  className="form">
@@ -220,7 +218,7 @@ function SignupForm() {
         {/* 닉네임 입력 */}
         <div className="formGroup">
           <div className="formGroupComponent">
-            <input className='formInput' onChange={e=>{setNickname(e.target.value); setNicknameDuplicateCheck(false)}} type="text" id='formNickname' placeholder='닉네임을 입력해주세요'/>
+            <input className='formInput' onChange={e=>{setNickname(e.target.value); setNicknameDuplicateCheck(false);}} type="text" id='formNickname' placeholder='닉네임을 입력해주세요'/>
             <button className='duplicationCheckButton' onClick={handleNicknameDuplicateCheck}>중복 확인</button>
           </div>
           { !validNickname && nickname.length>=1 && (
@@ -231,7 +229,7 @@ function SignupForm() {
         {/* 이메일 입력 & 인증번호 요청하기 */}
         <div className="formGroup" id='checkGroup'>
           <div className="formGroupComponent">
-            <input className='formInput' onChange={e=>{setEmail(e.target.value); setSendCode(false)}} type="email" id='formEmail' placeholder='이메일을 입력해주세요.' />
+            <input className='formInput' onChange={e=>{setEmail(e.target.value); setSendCode(false);}} type="email" id='formEmail' placeholder='이메일을 입력해주세요.' />
             <button onClick={handleSendCode} className='emailVerificationButton'>인증코드 발송</button>
           </div>
         </div>
@@ -240,7 +238,7 @@ function SignupForm() {
         { sendCode && (
         <div className="formGroup">
           <div className="formGroupComponent">
-            <input className='formInput' onChange={e=>{setCode(e.target.value)}} type="text"  placeholder="인증번호 입력" />
+            <input className='formInput' onChange={e=>{setCode(e.target.value);}} type="text"  placeholder="인증번호 입력" />
             <button onClick={handleEmailCodeCheck} className='verificationBtn'>확인</button>
           </div>
         </div>

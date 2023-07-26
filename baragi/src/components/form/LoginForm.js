@@ -34,17 +34,18 @@ function LoginForm() {
     }
     // axios 요청 보내기
     let body = {
-      id,
-      password
+      username : id,
+      password : password
     };
 
     axios.post('/member/login', body)
     .then((res)=>{
-      console.log(res.data);
+      const { accessToken } = res.data;
+      console.log(res);
+      axios.defaults.headers.common['Authorization'] =  accessToken;
       switch (res.data.code) {
         case 200:
           console.log("로그인");
-          dispatch(loginUser(res.data.userInfo));
           break;
         case 452:
           setMsg("존재하지 않는 아이디입니다.");
@@ -56,6 +57,9 @@ function LoginForm() {
           break;
       }
     })
+    .catch (
+      alert("로그인에 실패했습니다.")
+    )
 
   }
   // ---------------------------------------------//
