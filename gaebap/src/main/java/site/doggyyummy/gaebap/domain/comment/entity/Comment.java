@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -15,7 +14,7 @@ public class Comment {
 
     @Id
     @Column
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
