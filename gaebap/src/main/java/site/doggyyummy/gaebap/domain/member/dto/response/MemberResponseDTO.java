@@ -3,11 +3,11 @@ package site.doggyyummy.gaebap.domain.member.dto.response;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 
 @AllArgsConstructor
-@Data
+@Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberResponseDTO {
 
@@ -16,7 +16,7 @@ public class MemberResponseDTO {
     private String email;
 
     public static MemberResponseDTO toDTO(Member member){
-        return new MemberResponseDTO(member.getName(), member.getNickname(), member.getEmail());
+        return new MemberResponseDTO(member.getUsername(), member.getNickname(), member.getEmail());
     }
 
 }
