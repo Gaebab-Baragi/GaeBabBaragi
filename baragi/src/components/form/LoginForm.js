@@ -10,9 +10,9 @@ import { loginUser } from '../../redux/userSlice';
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let [id, setId] = useState('');
-  let [password, setPassword] = useState('');
-  let [msg, setMsg] = useState('')
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState('');
 
   // 오류 메세지 alert
   useEffect(()=>{
@@ -46,13 +46,10 @@ function LoginForm() {
           console.log("로그인");
           dispatch(loginUser(res.data.userInfo));
           break;
-        case 400:
-          setMsg("아이디, 비밀번호가 비어있습니다.");
-          break;
-        case 401:
+        case 452:
           setMsg("존재하지 않는 아이디입니다.");
           break;
-        case 402:
+        case 453:
           setMsg("비밀번호가 틀렸습니다.");
           break;
         default:
