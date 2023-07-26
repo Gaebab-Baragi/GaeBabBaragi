@@ -2,7 +2,7 @@ package site.doggyyummy.gaebap.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.doggyyummy.gaebap.domain.like.entity.Bookmark;
+import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
@@ -20,7 +20,7 @@ public class Member {
 
     @Id
     @Column
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column (unique = true)
@@ -52,4 +52,5 @@ public class Member {
 
     @OneToOne(mappedBy = "host")
     private Meeting hostedMeeting;
+
 }
