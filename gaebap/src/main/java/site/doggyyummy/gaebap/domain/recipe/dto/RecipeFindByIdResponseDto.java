@@ -1,0 +1,76 @@
+package site.doggyyummy.gaebap.domain.recipe.dto;
+
+import lombok.Getter;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
+import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
+import site.doggyyummy.gaebap.domain.recipe.entity.RecipeIngredient;
+import site.doggyyummy.gaebap.domain.recipe.entity.Step;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
+public class RecipeFindByIdResponseDto {
+    private String title;
+    private String description;
+    private MemberDto member;
+    private List<StepDto> steps;
+    private List<RecipeIngredientDto> recipeIngredients;
+    private List<IngredientDto> ingredients;
+
+    public RecipeFindByIdResponseDto(String title, String description, MemberDto member, List<StepDto> steps, List<RecipeIngredientDto> recipeIngredients,List<IngredientDto> ingredients){
+        this.title=title;
+        this.description=description;
+        this.member=member;
+        this.steps=steps;
+        this.recipeIngredients=recipeIngredients;
+        this.ingredients=ingredients;
+    }
+    public RecipeFindByIdResponseDto(Recipe recipe, Member member, List<Step> steps,List<RecipeIngredient> recipeIngredients,List<Ingredient> ingredients){
+        this.title=recipe.getTitle();
+        this.description=recipe.getDescription();
+        this.member=new MemberDto(member.getName());
+        // Convert List<Step> to List<StepDto>
+        this.steps = steps.stream()
+                .map(step -> new StepDto(step.getOrderingNumber(), step.getDescription()))
+                .collect(Collectors.toList());
+        this.recipeIngredients=recipeIngredients.stream()
+                .map(recipeIngredient->new RecipeIngredientDto(recipeIngredient.getAmount()))
+                .collect(Collectors.toList());
+        this.ingredients=ingredients.stream()
+                .map(ingredient->new IngredientDto(ingredient.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Getter
+    public static class MemberDto{
+        private String name;
+        public MemberDto(String name){
+            this.name=name;
+        }
+    }
+    @Getter
+    public static class StepDto{
+        private Long orderingNumber;
+        private String description;
+        public StepDto(Long orderingNumber,String description){
+            this.description=description;
+            this.orderingNumber=orderingNumber;
+        }
+    }
+    @Getter
+    public static class RecipeIngredientDto{
+        private String amount;
+        public RecipeIngredientDto(String amount){
+            this.amount=amount;
+        }
+    }
+    @Getter
+    public static class IngredientDto{
+        private String name;
+        public IngredientDto(String name){
+            this.name=name;
+        }
+    }
+}
