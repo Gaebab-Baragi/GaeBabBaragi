@@ -14,6 +14,7 @@ function Test2() {
         <InputInfor></InputInfor>
         <MaterialRegist></MaterialRegist>
         <CookStep></CookStep>
+        <button>제출</button>
     </div>
     </>
   );
