@@ -16,6 +16,7 @@ import MainPage from './pages/MainPage';
 import FindIdPage from './pages/FindIdPage';
 import FindPasswordPage from './pages/FindPasswordPage';
 import TestPage from './pages/TestPage';
+import RecipeDetailPage from './pages/RecipeDetailPage';
 
 // -------------------PAGES-------------------//
 
@@ -40,6 +41,7 @@ function App() {
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming' element={<StreamingPage/>}></Route>
         <Route path='/test' element={<TestPage/>}></Route>
+        <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
       </Routes>
 
     </div>
