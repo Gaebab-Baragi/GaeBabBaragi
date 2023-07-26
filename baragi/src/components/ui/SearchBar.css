@@ -10,7 +10,7 @@
   color: black;
   padding: 15px;
   height: 40px;
-  width: 300px;
+  width: 450px;
 }
 
 .searchIcon {
@@ -30,7 +30,6 @@
 
 .dataResult {
   position: absolute;
-  left: 10%;
   /* 검색창 바로 밑에 띄우기 */
   /* margin-left: 10%; */
   /* margin-top: 5px; */

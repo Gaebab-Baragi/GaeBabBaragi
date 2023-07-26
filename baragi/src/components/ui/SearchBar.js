@@ -36,9 +36,9 @@ function SearchBar({  data }) {
   };
 
   return (
+
     <div className="search">
       <div className="searchInputs">
-        <p className="searchTitle">통합 검색 : </p>
         <input
           className="searchInput"
           type="text"
