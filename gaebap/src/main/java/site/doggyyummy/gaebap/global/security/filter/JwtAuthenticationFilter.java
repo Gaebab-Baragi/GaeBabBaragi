@@ -78,6 +78,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .ifPresent(name-> memberRepository.findByUsername(name)
                                 .ifPresent(this::saveAuthentication)));
 
+        log.info("여긴?");
         filterChain.doFilter(request, response);
     }
 
