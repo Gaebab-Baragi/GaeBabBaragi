@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.doggyyummy.gaebap.domain.meeting.dto.CreateMeetingRequestDTO;
-import site.doggyyummy.gaebap.domain.meeting.dto.CreateMeetingResponseDTO;
-import site.doggyyummy.gaebap.domain.meeting.dto.ModifyMeetingRequestDTO;
-import site.doggyyummy.gaebap.domain.meeting.dto.ModifyMeetingResponseDTO;
+import site.doggyyummy.gaebap.domain.meeting.dto.*;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
+import site.doggyyummy.gaebap.domain.meeting.entity.Status;
 import site.doggyyummy.gaebap.domain.meeting.repository.MeetingRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @PropertySource("classpath:openvidu.properties")
@@ -90,5 +90,16 @@ public class MeetingServiceImpl implements MeetingService{
         else { // id에 해당하는 meeting이 없을 경우
             // Exception 처리 필요
         }
+    }
+
+    @Override
+    public List<SelectByRecipeMeetingResponseDTO> selectByRecipe(Long recipeId) {
+        List<Meeting> meetings = meetingRepository.findMeetingsByRecipeIdAndStatusNotOrderByStartTimeAsc(recipeId, Status.IN_PROGRESS);
+
+        List<SelectByRecipeMeetingResponseDTO> selectByRecipeMeetingResponseDTOS = meetings.stream()
+                .map(SelectByRecipeMeetingResponseDTO::toDTO)
+                .collect(Collectors.toList());
+
+        return selectByRecipeMeetingResponseDTOS;
     }
 }

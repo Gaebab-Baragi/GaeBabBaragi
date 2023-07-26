@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.doggyyummy.gaebap.domain.meeting.dto.CreateMeetingRequestDTO;
-import site.doggyyummy.gaebap.domain.meeting.dto.CreateMeetingResponseDTO;
-import site.doggyyummy.gaebap.domain.meeting.dto.ModifyMeetingRequestDTO;
-import site.doggyyummy.gaebap.domain.meeting.dto.ModifyMeetingResponseDTO;
+import site.doggyyummy.gaebap.domain.meeting.dto.*;
+import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.meeting.service.MeetingService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,5 +39,12 @@ public class MeetingController {
         meetingService.delete(id);
 
         return HttpStatus.OK;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SelectByRecipeMeetingResponseDTO>> selectByRecipe(@RequestParam(name = "recipe_id") Long recipeId) {
+        List<SelectByRecipeMeetingResponseDTO> selectByRecipeMeetingResponseDTOS = meetingService.selectByRecipe(recipeId);
+
+        return new ResponseEntity<>(selectByRecipeMeetingResponseDTOS, HttpStatus.OK);
     }
 }
