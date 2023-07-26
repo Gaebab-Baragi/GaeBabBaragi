@@ -42,6 +42,7 @@ function App() {
         <Route path='/streaming' element={<StreamingPage/>}></Route>
         <Route path='/test' element={<TestPage/>}></Route>
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
+        <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>
 
     </div>
