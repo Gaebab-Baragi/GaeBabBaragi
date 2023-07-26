@@ -2,7 +2,7 @@ package site.doggyyummy.gaebap.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.doggyyummy.gaebap.domain.like.entity.Bookmark;
+import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
@@ -15,12 +15,13 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 public class Member {
 
     @Id
     @Column
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column (unique = true)
@@ -39,6 +40,9 @@ public class Member {
     private String authority;
 
     @Column
+    private String profileUrl;
+
+    @Column
     private Timestamp registerDate;
 
     @OneToMany(mappedBy = "member")
@@ -52,4 +56,11 @@ public class Member {
 
     @OneToOne(mappedBy = "host")
     private Meeting hostedMeeting;
+
+    private String refreshToken;
+
+    public void updateRefreshToken(String refreshToken){
+       this.refreshToken = refreshToken;
+    }
+
 }
