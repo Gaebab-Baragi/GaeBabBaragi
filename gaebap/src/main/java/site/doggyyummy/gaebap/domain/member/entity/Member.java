@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 public class Member {
 
@@ -39,6 +40,9 @@ public class Member {
     private String authority;
 
     @Column
+    private String profileUrl;
+
+    @Column
     private Timestamp registerDate;
 
     @OneToMany(mappedBy = "member")
@@ -52,5 +56,11 @@ public class Member {
 
     @OneToOne(mappedBy = "host")
     private Meeting hostedMeeting;
+
+    private String refreshToken;
+
+    public void updateRefreshToken(String refreshToken){
+       this.refreshToken = refreshToken;
+    }
 
 }
