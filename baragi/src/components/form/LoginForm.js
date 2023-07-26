@@ -1,26 +1,79 @@
-import React from 'react';
-import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { redirect, useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import './BasicForm.css'
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../redux/userSlice';
+
 
 function LoginForm() {
   const navigate = useNavigate();
-  let [id, setId] = useState();
-  let [password, setPassword] = useState();
+  const dispatch = useDispatch();
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState('');
+
+  // 오류 메세지 alert
+  useEffect(()=>{
+    if (msg) {
+      alert(msg)
+    }
+  },[msg])
+
+
+  // ----------- 로그인 기능 구현-------------------//
+  const handleLogin = (e) => {
+    // Reload 막기
+    e.preventDefault();
+    // 빈 값 처리
+    if (!id) {
+      return alert('아이디를 입력하세요.')
+    } else if (!password) {
+      return alert('비밀번호를 입력하세요')
+    }
+    // axios 요청 보내기
+    let body = {
+      id,
+      password
+    };
+
+    axios.post('/member/login', body)
+    .then((res)=>{
+      console.log(res.data);
+      switch (res.data.code) {
+        case 200:
+          console.log("로그인");
+          dispatch(loginUser(res.data.userInfo));
+          break;
+        case 452:
+          setMsg("존재하지 않는 아이디입니다.");
+          break;
+        case 453:
+          setMsg("비밀번호가 틀렸습니다.");
+          break;
+        default:
+          break;
+      }
+    })
+
+  }
+  // ---------------------------------------------//
+
 
   return (
     <div className="formContainer">
-      <form className="form">
+      <form onSubmit={handleLogin} className="form">
         <div className="formTitle">로그인</div>
 
         {/* 아이디 입력  */}
         <div className="formGroup">
-          <input onChange={e=>{setId(e.target.value)}} type="id" id="formBasicEmail" placeholder="아이디를 입력해주세요." />
+          <input className='formInput' onChange={e=>{setId(e.target.value)}} type="id" id="formBasicEmail" placeholder="아이디를 입력해주세요." />
         </div>
 
         {/* 비밀번호 입력 */}
         <div className="formGroup">
-          <input onChange={e=>{setPassword(e.target.value)}} type="password" id="formBasicPassword" placeholder="비밀번호를 입력해주세요." />
+          <input className='formInput' onChange={e=>{setPassword(e.target.value)}} type="password" id="formBasicPassword" placeholder="비밀번호를 입력해주세요." />
         </div>
 
         {/* 아이디 찾기 / 비밀번호 찾기 / 회원가입 */}
@@ -46,6 +99,3 @@ function LoginForm() {
 }
 
 export default LoginForm;
-
-// 아이디, 비밀번호로 로그인 function 만들기
-// 어떻게? back-end랑 얘기해보기

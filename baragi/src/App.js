@@ -8,12 +8,16 @@ import NaviBar from './components/ui/NaviBar';
 // -------------------PAGES--------------------//
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage';
-import Recipepage from './pages/RecipePage';
+import RecipeRegisterPage from './pages/RecipeRegisterPage';
+import RecipeListPage from './pages/RecipeListPage';
 import StreamingPage from './pages/StreamingPage';
 import MainPage from './pages/MainPage';
 
 import FindIdPage from './pages/FindIdPage';
 import FindPasswordPage from './pages/FindPasswordPage';
+import TestPage from './pages/TestPage';
+import RecipeDetailPage from './pages/RecipeDetailPage';
+
 // -------------------PAGES-------------------//
 
 import Test2 from './components/ui/InputImage'
@@ -23,10 +27,8 @@ function App() {
     <>
     <div className="App">
       <NaviBar></NaviBar>
-      {/* <FormComponent/> */}
 
-      <br />
-      <br></br>
+      {/* <FormComponent/> */}
 
       {/*---------- 모든 Router는 App.js에 적기!!! ------------*/}
       <Routes>
@@ -35,8 +37,11 @@ function App() {
         <Route path='/signup' element={<SignupPage/>}></Route>
         <Route path='/find-id' element={<FindIdPage/>}></Route>
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
-        <Route path='/recipe' element={<Recipepage/>}></Route>
+        <Route path='/recipe-regist' element={<RecipeRegisterPage/>}></Route>
+        <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming' element={<StreamingPage/>}></Route>
+        <Route path='/test' element={<TestPage/>}></Route>
+        <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
       </Routes>
 
     </div>

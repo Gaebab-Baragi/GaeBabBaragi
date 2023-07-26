@@ -4,11 +4,11 @@ import CardCarousel from "../components/list/CardCarousel";
 
 function MainPage(){
     return(
-        <>
-        <BackGround></BackGround>
-        <h2>추천레시피</h2>
-        <CardCarousel/>
-        </>
+        <div>
+            <BackGround></BackGround>
+            <h2>추천레시피</h2>
+            <CardCarousel/>
+        </div>
     )
 }
 export default MainPage;

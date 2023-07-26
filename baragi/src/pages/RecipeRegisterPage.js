@@ -9,12 +9,12 @@ import Test from '../components/ui/Test'
 import Test2 from '../components/ui/Test2'
 import InputImage from "../components/ui/InputImage";
 
-function Recipepage() {
+function RecipeRegisterPage() {
     return (
-      <>
+      <div>
       <Test2></Test2>
-      
-      </>
+      </div>
       );
     }
-    export default Recipepage;
+
+    export default RecipeRegisterPage;
