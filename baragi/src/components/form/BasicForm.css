@@ -7,7 +7,7 @@
 }
 
 .form {
-  width: 400px;
+  width: 420px;
   padding: 20px;
   border-radius: 10px;
   background-color: #f9f9f9;
@@ -29,13 +29,21 @@
 }
 
 .formGroup {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+
+}
+
+.formGroupComponent{
+  margin-bottom: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
 
 }
+
+
 #navigateNewPage {
+  display: flex;
   justify-content: space-evenly;
 }
 
@@ -101,7 +109,8 @@
   outline: none;
 }
 .formInput:focus {
-  border-color:#ffbb33;
+  /* border-color:#ffbb33; */
+  border-color:black;
 }
 
 .submitButton {
@@ -122,3 +131,7 @@
   background-color: #ffbb33;
 }
 
+.errorMsg {
+  font-size: 7px;
+  color: red;
+}

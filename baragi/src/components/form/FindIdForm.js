@@ -21,14 +21,18 @@ function FindIdForm() {
 
         {/* 이메일 입력  */}
         <div className="formGroup">
-          <input className='formInput' onChange={e=>{setEmail(e.target.value)}} type="email" id="formId" placeholder="이메일 입력" />
-          <button onClick={sendAuthenticationCode()} className='sendCodeBtn'>인증코드 보내기</button>
+          <div className="formGroupComponent">
+            <input className='formInput' onChange={e=>{setEmail(e.target.value)}} type="email" id="formId" placeholder="이메일 입력" />
+            <button onClick={sendAuthenticationCode()} className='sendCodeBtn'>인증코드 보내기</button>
+          </div>
         </div>
 
         {/* 인증번호 입력 */}
         <div className="formGroup">
-          <input className='formInput' onChange={e=>{setPassword1(e.target.value)}} type="text" id="formPassword" placeholder="인증번호 입력" />
-          <button className='verificationBtn'>확인</button>
+          <div className="formGroupComponent">
+            <input className='formInput' onChange={e=>{setPassword1(e.target.value)}} type="text" id="formPassword" placeholder="인증번호 입력" />
+            <button className='verificationBtn'>확인</button>
+          </div>
         </div>
 
         {/* Login 버튼 */}
