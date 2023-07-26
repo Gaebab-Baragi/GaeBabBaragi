@@ -3,9 +3,8 @@ package site.doggyyummy.gaebap.domain.recipe.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 public class RecipeIngredient {
 
@@ -18,8 +17,18 @@ public class RecipeIngredient {
     @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
 
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="INGREDIENT_ID")
     private Ingredient ingredient;
 
     private String amount;
+
+    public void setRecipeIngredientIngredient(Ingredient ingredient){
+        this.ingredient=ingredient;
+    }
+    public void setRecipeIngredient(Recipe recipe,Ingredient ingredient){
+        this.recipe=recipe;
+        this.ingredient=ingredient;
+    }
 }
