@@ -1,4 +1,4 @@
-import LoginForm from "../components/ui/LoginForm";
+import LoginForm from "../components/form/LoginForm";
 
 function LoginPage() {
     return (
@@ -8,4 +8,4 @@ function LoginPage() {
       );
     }
 
-    export default LoginPage;
+export default LoginPage;

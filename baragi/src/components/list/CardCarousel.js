@@ -5,17 +5,20 @@ import Carousel from 'react-bootstrap/Carousel';
 import CardComponent from '../ui/Card';
 import { Stack } from 'react-bootstrap';
 
+
 function CardCarousel() {
   // 반응형 슬라이드당 카드 개수를 상태로 관리
-  const [cardsPerSlide, setCardsPerSlide] = useState(3);
+  const [cardsPerSlide, setCardsPerSlide] = useState(4);
 
   // 화면 크기가 변경될 때마다 카드 개수 업데이트
   useEffect(() => {
     const adjustCardsPerSlide = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1200) {
+        return 4;
+      } else if (screenWidth >= 920) {
         return 3;
-      } else if (screenWidth >= 900) {
+      } else if (screenWidth >= 700) {
         return 2;
       } else {
         return 1;
