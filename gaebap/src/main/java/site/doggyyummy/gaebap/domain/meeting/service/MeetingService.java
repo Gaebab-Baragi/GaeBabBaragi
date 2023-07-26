@@ -1,9 +1,9 @@
 package site.doggyyummy.gaebap.domain.meeting.service;
 
-import site.doggyyummy.gaebap.domain.meeting.dto.MakeMeetingRequestDTO;
-import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
+import site.doggyyummy.gaebap.domain.meeting.dto.CreateMeetingRequestDTO;
+import site.doggyyummy.gaebap.domain.meeting.dto.CreateMeetingResponseDTO;
 
 public interface MeetingService {
 
-    public void makeMeeting(String sessionId, final MakeMeetingRequestDTO makeMeetingRequestDTO);
+    public CreateMeetingResponseDTO create(CreateMeetingRequestDTO createMeetingRequestDTO);
 }

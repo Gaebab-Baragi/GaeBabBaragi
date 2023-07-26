@@ -41,5 +41,7 @@ public class Meeting {
     @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
 
-    private String sessionId;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
 }
