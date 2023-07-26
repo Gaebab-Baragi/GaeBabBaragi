@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.domain.member.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
@@ -9,10 +10,12 @@ import site.doggyyummy.gaebap.domain.member.exception.custom.*;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
@@ -27,7 +30,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void modify(Member member) throws Exception{
-        Member memberToModify = memberRepository.findByName(member.getUsername()).orElseThrow(() -> new Exception());
+        Member memberToModify = memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new Exception());
         validateMemberModification(member);
 
         memberToModify.setNickname(member.getNickname());
@@ -37,7 +40,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Optional<Member> findByName(String username) {
-        return memberRepository.findByName(username);
+        return memberRepository.findByUsername(username);
     }
 
     @Override
@@ -57,6 +60,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void validateRegistrationUsername(String registerName) throws InvalidNameFormatException, DuplicateUsernameException{
+        log.info(registerName);
         if (!isValidNameFormat(registerName)) throw new InvalidNameFormatException();
         if (isDuplicateName(registerName)) throw new DuplicateUsernameException();
     }
@@ -73,7 +77,7 @@ public class MemberServiceImpl implements MemberService{
     }
     //=============================================================================================
     private boolean isDuplicateName(String name){
-        return memberRepository.existsByName(name);
+        return memberRepository.existsByUsername(name);
     }
 
     private boolean isDuplicateNickname(String nickname){
@@ -85,14 +89,12 @@ public class MemberServiceImpl implements MemberService{
     }
 
     private boolean isValidNameFormat(String name) {
-        Integer length = name.length();
-        if (length < 5 || length > 20) return false;
-        String regex = "/^[a-z0-9]*$/";
-        if (!name.matches(regex)) return false;
-        return true;
+        String regex = "^[a-z]{1}[a-z0-9]{5,10}+$";
+        return Pattern.matches(regex, name);
     }
     private boolean isValidNicknameFormat(String nickname){
         Integer length = nickname.length();
+        log.info("nickname : {}", nickname);
         if (length == 0 || length > 10) return false;
         return true;
     }

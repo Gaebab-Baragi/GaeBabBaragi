@@ -1,4 +1,4 @@
-package site.doggyyummy.gaebap.domain.bookmark.entity.repository;
+package site.doggyyummy.gaebap.domain.bookmark.repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

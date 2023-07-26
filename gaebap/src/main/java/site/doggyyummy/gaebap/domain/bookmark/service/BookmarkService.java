@@ -1,7 +1,7 @@
-package site.doggyyummy.gaebap.domain.bookmark.entity.service;
+package site.doggyyummy.gaebap.domain.bookmark.service;
 
-import site.doggyyummy.gaebap.domain.bookmark.entity.dto.BookmarkRequestDTO;
-import site.doggyyummy.gaebap.domain.bookmark.entity.dto.BookmarkResponseDTO;
+import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkRequestDTO;
+import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkResponseDTO;
 
 import java.util.List;
 

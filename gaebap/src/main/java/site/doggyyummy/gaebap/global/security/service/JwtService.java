@@ -108,7 +108,7 @@ public class JwtService {
     }
 
     public void updateRefreshToken(String username, String refreshToken) {
-        memberRepository.findByName(username)
+        memberRepository.findByUsername(username)
                 .ifPresentOrElse(
                         member-> member.updateRefreshToken(refreshToken),
                         () -> new Exception("일치하는 회원이 없습니다.")
