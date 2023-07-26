@@ -18,7 +18,7 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @PostMapping
-    public ResponseEntity<CreateMeetingResponseDTO> creat(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO){ // 방 생성
+    public ResponseEntity<CreateMeetingResponseDTO> create(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO){ // 방 생성
 
         CreateMeetingResponseDTO createMeetingResponseDTO = meetingService.create(createMeetingRequestDTO);
 
@@ -34,7 +34,7 @@ public class MeetingController {
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus delete(@PathVariable Long id) {
+    public HttpStatus delete(@PathVariable(name = "id") Long id) {
 
         meetingService.delete(id);
 
