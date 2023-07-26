@@ -30,7 +30,7 @@ public class CommentRequestDTO {
         }
 
         Member member= new Member();
-        member.setId(this.recipeId);
+        member.setId(this.memberId);
         Recipe recipe = new Recipe();
         recipe.setId(this.recipeId);
 
