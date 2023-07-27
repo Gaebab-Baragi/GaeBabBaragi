@@ -186,7 +186,7 @@ function SignupForm() {
           if (res.status ===201) {
             console.log('signup success')
             navigate('/login')
-            aler("회원 가입에 성공했습니다.")
+            alert("회원 가입에 성공했습니다.")
           }
         })
         .catch((res) => {
@@ -196,6 +196,7 @@ function SignupForm() {
         );
       }
     }
+
   //----------------------------------------------------------//
   return (
     <div className="formContainer">

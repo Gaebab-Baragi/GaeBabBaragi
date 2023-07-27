@@ -43,24 +43,18 @@ function LoginForm() {
       const { accessToken } = res.data;
       console.log(res);
       axios.defaults.headers.common['Authorization'] =  accessToken;
-      switch (res.data.code) {
-        case 200:
-          console.log("로그인");
-          break;
-        case 452:
-          setMsg("존재하지 않는 아이디입니다.");
-          break;
-        case 453:
-          setMsg("비밀번호가 틀렸습니다.");
-          break;
-        default:
-          break;
+      if (res.status == 200){
+        navigate('/');
       }
     })
-    .catch (
-      alert("로그인에 실패했습니다.")
+    .catch ((res) => {
+        res = res.response;
+        console.log(res);
+        if (res.status === 452) setMsg("존재하지 않는 아이디입니다.")
+        else if (res.status === 453) setMsg("잘못된 비밀번호입니다.")
+        else setMsg("알 수 없는 오류")
+      }
     )
-
   }
   // ---------------------------------------------//
 
