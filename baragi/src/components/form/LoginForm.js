@@ -3,7 +3,7 @@ import { redirect, useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import './BasicForm.css'
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 
 function LoginForm() {
@@ -95,7 +95,7 @@ function LoginForm() {
 
         {/* 구글 로그인 */}
         <div className="formGroup">
-          구글 로그인 임
+          <a href = "/login/oauth2/code/google"> 구글</a>
           <button className='testbutton' onClick={letsTest}>테스트요 </button>
         </div>
       </form>

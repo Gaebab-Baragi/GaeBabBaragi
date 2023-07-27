@@ -23,9 +23,9 @@ public class OAuth2Attributes {
     }
 
     public static OAuth2Attributes of(SocialType socialType, String nameAttributeName, Map<String, Object> attributes){
-        if (socialType == SocialType.GOOGLE) return ofGoogle(nameAttributeName, attributes);
-        if (socialType == SocialType.NAVER) return ofNaver(nameAttributeName, attributes);
-        if (socialType == SocialType.KAKAO) return ofKakao(nameAttributeName, attributes);
+        if (socialType == SocialType.google) return ofGoogle(nameAttributeName, attributes);
+        if (socialType == SocialType.naver) return ofNaver(nameAttributeName, attributes);
+        if (socialType == SocialType.kakao) return ofKakao(nameAttributeName, attributes);
         return null;
     }
 

@@ -216,7 +216,9 @@ function SignupForm() {
 
         {/* 구글 로그인 */}
         <div className="formGroup">
-          구글 로그인 임
+          <a href = "http://localhost:9999/oauth2/authorization/google">구글</a>
+          <a href = "http://localhost:9999/oauth2/authorization/naver">네이버</a>
+          <a href = "http://localhost:9999/oauth2/authorization/kakao">카카오</a>
         </div>
       </form>
     </div>
