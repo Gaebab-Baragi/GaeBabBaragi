@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import InputMat from './InputMat'
+
+
+
+
 function MaterialRegist() {
-  const [InputMats, setInputMats] = useState([]);
+  const [InputMats, setInputMats] = useState([<InputMat key={0} />]);
   const handleAddInputMat = ()=>{
     setInputMats([...InputMats,<InputMat key={InputMats.length} />]); 
   }

@@ -1,14 +1,12 @@
-// 메인페이지에 들어가는
-
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import CardComponent from '../ui/Card';
 import { Stack } from 'react-bootstrap';
-
+import './CardCarousel.css'
 
 function CardCarousel() {
   // 반응형 슬라이드당 카드 개수를 상태로 관리
-  const [cardsPerSlide, setCardsPerSlide] = useState(4);
+  const [cardsPerSlide, setCardsPerSlide] = useState();
 
   // 화면 크기가 변경될 때마다 카드 개수 업데이트
   useEffect(() => {
@@ -24,11 +22,13 @@ function CardCarousel() {
         return 1;
       }
     };
+    
     const updateCardsPerSlide = () => {
       const newCardsPerSlide = adjustCardsPerSlide();
       setCardsPerSlide(newCardsPerSlide);
     };
 
+    updateCardsPerSlide();
     // 화면 크기 변화 이벤트 리스너 등록
     window.addEventListener('resize', updateCardsPerSlide);
 
@@ -36,7 +36,7 @@ function CardCarousel() {
     return () => {
       window.removeEventListener('resize', updateCardsPerSlide);
     };
-  }, []);
+  });
 
   // 슬라이드당 카드 배열을 생성하는 함수
   const createSlideWithCards = (startIndex) => {
@@ -50,7 +50,7 @@ function CardCarousel() {
 
   // Carousel.Item에 들어가는 배열 생성
   const carouselItems = [];
-  for (let i = 0; i < 30; i += cardsPerSlide) {
+  for (let i = 0; i < 12; i += cardsPerSlide) {
     const slideCards = createSlideWithCards(i);
     carouselItems.push(
       <Carousel.Item key={i}>

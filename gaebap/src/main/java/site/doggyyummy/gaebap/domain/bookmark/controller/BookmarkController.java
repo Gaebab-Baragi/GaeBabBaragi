@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkRequestDTO;
 import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkServiceImpl;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bookmark")

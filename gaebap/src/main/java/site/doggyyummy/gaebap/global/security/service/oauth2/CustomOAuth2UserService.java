@@ -11,11 +11,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
-import site.doggyyummy.gaebap.global.security.constant.SocialType;
+import site.doggyyummy.gaebap.global.security.dto.SocialType;
 import site.doggyyummy.gaebap.global.security.dto.OAuth2Attributes;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.CustomOAuth2User;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
@@ -40,7 +39,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuth2Attributes oAuth2Attributes = OAuth2Attributes.of(socialType, nameAttributeName, attributes);
 
-        Member member = getMember(socialType, oAuth2Attributes);
+        Member member = getMember(oAuth2Attributes);
 
         return new CustomOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("Guest")),
@@ -50,18 +49,18 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         );
     }
 
-    private Member getMember(SocialType socialType, OAuth2Attributes attributes){
+    private Member getMember(OAuth2Attributes attributes){
         String email = attributes.getOAuth2UserInfo().getEmail();
         if (email == null) return null;
-        Member member = memberRepository.findMemberByEmail(email).orElse(null);
+        Member member = memberRepository.findByUsername(email).orElse(null);
         if (member == null){
-            return createUser(socialType, attributes);
+            return createUser(attributes);
         }
         return member;
     }
 
-    private Member createUser(SocialType socialType, OAuth2Attributes attributes){
-       Member member = attributes.toEntity(socialType, attributes.getOAuth2UserInfo());
+    private Member createUser(OAuth2Attributes attributes){
+       Member member = attributes.toEntity(attributes.getOAuth2UserInfo());
        return member;//일단 저장 안하고 나중에 빈 정보들을 채운 다음에 추가할 것
     }
 

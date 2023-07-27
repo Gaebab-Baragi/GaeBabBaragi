@@ -4,13 +4,19 @@ import { createSlice } from "@reduxjs/toolkit";
 let user= createSlice({
   name:'user',
   initialState:{
-    userId:'', // long
-    loginId:'', // string
-    isLogin: null,
+    id: '', // long
+    username: '', // string
+    nickname :' ',
+    profileUrl: '',
+    hostedMeeting: ''
   },
   reducers:{
     loginUser: (state, action)=>{
-      // state update needed
+      state.id= action.payload.id;
+      state.username = action.payload.username;
+      state.nickname = action.payload.nickname;
+      state.profileUrl= action.payload.profileUrl;
+      state.hostedMeeting = action.payload.hostedMeeting;
     },
     clearUser: (state) =>{
       // state update

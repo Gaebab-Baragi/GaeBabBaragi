@@ -4,10 +4,10 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
-import java.io.UnsupportedEncodingException;
+import site.doggyyummy.gaebap.domain.member.exception.custom.InvalidEmailException;
 import java.security.SecureRandom;
 
 @Service
@@ -17,6 +17,7 @@ public class MemberMailService {
     private final JavaMailSender emailSender;
     private String authCode;
     private Integer codeLength = 8;
+    protected String sendingEmail = "doggy.yummy.site@gmail.com";
 
     public void generateAuthCode(){
             String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -32,10 +33,10 @@ public class MemberMailService {
             authCode = sb.toString();
     }
 
-    public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
+    public MimeMessage createEmailForm(String email) throws MessagingException {
 
         generateAuthCode();
-        String fromEmail = "pj0642@gmail.com"; //보낸 사람
+        String fromEmail = sendingEmail;
         String toEmail = email; //받는 사람
         String title = "[개밥바라기] 인증 이메일"; //제목
 
@@ -47,18 +48,15 @@ public class MemberMailService {
         message.setText(authCode);
         return message;
     }
-    public String sendEmail(String toEmail) throws MessagingException, UnsupportedEncodingException {
-        log.info("만든다?");
-        MimeMessage emailForm = createEmailForm(toEmail);
-        log.info("만들었다");
-        log.info("authCode {}", authCode);
+    public String sendEmail(String toEmail) throws InvalidEmailException{
         try {
-            emailSender.send(emailForm);
+            MimeMessage emailForm = createEmailForm(toEmail);
+            //emailSender.send(emailForm);
+            log.info("email-verification-code : {}", authCode);
         }
         catch (Exception e){
-            log.info(e.getMessage());
+            throw new InvalidEmailException();
         }
-        log.info("보냈다");
 
         return authCode; //인증 코드 반환
     }
