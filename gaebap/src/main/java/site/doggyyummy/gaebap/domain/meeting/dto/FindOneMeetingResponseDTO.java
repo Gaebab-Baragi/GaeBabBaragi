@@ -11,11 +11,9 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @Builder
-public class ModifyMeetingResponseDTO {
+public class FindOneMeetingResponseDTO {
 
     private Long id;
-
-    private String password;
 
     @JsonProperty("max_participant")
     private int maxParticipant;
@@ -34,10 +32,9 @@ public class ModifyMeetingResponseDTO {
     @JsonProperty("recipe_id")
     private Long recipeId;
 
-    public static ModifyMeetingResponseDTO toDTO(Meeting meeting) {
-        ModifyMeetingResponseDTO createMeetingResponseDTO = ModifyMeetingResponseDTO.builder()
+    public static FindOneMeetingResponseDTO toDTO(Meeting meeting) {
+        FindOneMeetingResponseDTO createMeetingResponseDTO = FindOneMeetingResponseDTO.builder()
                 .id(meeting.getId())
-                .password(meeting.getPassword())
                 .maxParticipant(meeting.getMaxParticipant())
                 .title(meeting.getTitle())
                 .description(meeting.getDescription())

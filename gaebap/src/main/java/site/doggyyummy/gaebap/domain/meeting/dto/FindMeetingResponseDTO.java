@@ -7,19 +7,22 @@ import lombok.Getter;
 import lombok.Setter;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.meeting.entity.Status;
+import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
 import java.time.LocalDateTime;
 
 @Getter @Setter
 @Builder
-public class SelectByRecipeMeetingResponseDTO {
+public class FindMeetingResponseDTO {
 
     private Long id;
 
     @JsonProperty("max_participant")
-    private Long maxParticipant;
+    private int maxParticipant;
 
     private String title;
+
+    private String description;
 
     @JsonProperty("host_nickname")
     private String hostNickname;
@@ -28,18 +31,30 @@ public class SelectByRecipeMeetingResponseDTO {
     @JsonProperty("start_time")
     private LocalDateTime startTime;
 
+    @JsonProperty("recipe_id")
+    private Long recipeId;
+
+    @JsonProperty("recipe_title")
+    private String recipeTitle;
+
     private Status status;
 
-    public static SelectByRecipeMeetingResponseDTO toDTO(Meeting meeting) {
-        SelectByRecipeMeetingResponseDTO selectByRecipeMeetingResponseDTO = SelectByRecipeMeetingResponseDTO.builder()
+    @JsonProperty("current_participants")
+    private int currentParticipants;
+
+    public static FindMeetingResponseDTO toDTO(Meeting meeting) {
+        FindMeetingResponseDTO findMeetingResponseDTO = FindMeetingResponseDTO.builder()
                 .id(meeting.getId())
                 .maxParticipant(meeting.getMaxParticipant())
                 .title(meeting.getTitle())
                 .hostNickname(meeting.getHost().getNickname())
                 .startTime(meeting.getStartTime())
+                .recipeId(meeting.getRecipe().getId())
+                .recipeTitle(meeting.getRecipe().getTitle())
                 .status(meeting.getStatus())
+                .currentParticipants(meeting.getCurrentParticipants())
                 .build();
 
-        return selectByRecipeMeetingResponseDTO;
+        return findMeetingResponseDTO;
     }
 }
