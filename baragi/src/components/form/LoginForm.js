@@ -5,7 +5,7 @@ import './BasicForm.css'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
-
+import { useSelector } from 'react-redux';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
 
+  const user = useSelector((state) => state.user);
   // 오류 메세지 alert
   useEffect(()=>{
     if (msg) {
@@ -43,7 +44,9 @@ function LoginForm() {
       const { accessToken } = res.data;
       console.log(res);
       axios.defaults.headers.common['Authorization'] =  accessToken;
-      if (res.status == 200){
+      if (res.status === 200){
+        let data = res.data;
+        dispatch(loginUser(data))
         navigate('/');
       }
     })
@@ -56,7 +59,14 @@ function LoginForm() {
       }
     )
   }
+
+  const letsTest = (e) => {
+    e.preventDefault();
+    console.log(user);
+  }
+
   // ---------------------------------------------//
+
 
 
   return (
@@ -90,6 +100,7 @@ function LoginForm() {
         {/* 구글 로그인 */}
         <div className="formGroup">
           구글 로그인 임
+          <button className='testbutton' onClick={letsTest}>테스트요 </button>
         </div>
       </form>
     </div>
