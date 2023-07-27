@@ -68,16 +68,24 @@ function SignupForm() {
         console.log('duplication checked')
         setIdDuplicateCheck(true);
       }
-    })
-    .catch((res) => {
-      if (res.status === 459) {
+      else if (res.status === 459) {
         alert("잘못된 아이디 형식입니다.")
       }
       else if (res.status === 456){
         alert("이미 사용중인 아이디입니다.")
       }
     })
-  }, []);
+    .catch((res) => {
+      res = res.response;
+      if (res.status === 459) {
+        alert("잘못된 아이디 형식입니다.")
+      }
+      else if (res.status === 456){
+        alert("이미 사용중인 아이디입니다.")
+      }
+      else alert("이유를 알 수 없는 오류")
+    })
+  }, [id]);
 
   const handleNicknameDuplicateCheck = useCallback((e) => {
     e.preventDefault();
@@ -100,11 +108,13 @@ function SignupForm() {
       }
     })
     .catch((res) => {
+      res = res.response;
       if (res.status === 460) alert("잘못된 닉네임 형식입니다.")
       else if (res.status === 457) alert("이미 사용중인 닉네임입니다.")
+      else alert("이유를 알 수 없는 오류");
     })
 
-  }, []);
+  }, [nickname]);
 
   const handleEmailCodeCheck = useCallback((e) => {
     e.preventDefault();
@@ -117,7 +127,7 @@ function SignupForm() {
       setEmailCodeCheck(false)
       alert("인증번호가 맞지 않습니다.")
     }
-  }, []);
+  }, [code]);
 
   const handleSendCode = useCallback((e) => {
     e.preventDefault()
@@ -141,10 +151,12 @@ function SignupForm() {
       }
     })
     .catch((res) => {
+      res = res.status;
       if (res.status === 454) alert("잘못된 이메일입니다.")
       else if (res.status === 455) alert("이미 사용중인 이메일입니다.")
+      else alert("이유를 알 수 없는 오류");
     })
-  }, []);
+  }, [email]);
 
   //==================================================================================//
 
@@ -174,8 +186,10 @@ function SignupForm() {
             navigate('/login')
           }
         })
-        .catch(
+        .catch((res) => {
+          console.log(res);
           alert("잘못된 회원가입입니다.")
+        }
         );
       }
     }
