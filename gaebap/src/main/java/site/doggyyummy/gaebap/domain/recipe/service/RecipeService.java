@@ -20,6 +20,7 @@ import site.doggyyummy.gaebap.domain.recipe.repository.RecipeRepository;
 import site.doggyyummy.gaebap.domain.recipe.repository.StepRepository;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,15 +37,6 @@ public class RecipeService {
     //AWS S3
     private final AmazonS3 awsS3Client;
 
-
-    //그냥 테스트용임 (지워야됨)
-    @Transactional
-    public SignupResponseDto signUp(SignupRequestDto reqDto){
-        Member member=new Member();
-        member.setUsername(reqDto.getName());
-        Member savedMember = memberRepository.save(member);
-        return new SignupResponseDto(savedMember.getId(), savedMember.getUsername());
-    }
 
     //레시피 등록 (대표 이미지, 스텝 별 이미지, 시연 영상 not included)
     @Transactional
@@ -84,6 +76,7 @@ public class RecipeService {
         recipe.setDescription(reqDto.getDescription());
         recipe.setMember(findMeberById.get());
         recipe.setSteps(steps);
+        recipe.setNowTime(LocalDateTime.now());
         recipe.setRecipeIngredients(recipeIngredients);
 
         Recipe savedRecipe = recipeRepository.save(recipe);
@@ -365,6 +358,12 @@ public class RecipeService {
             System.err.println(e.getErrorMessage());
             System.exit(1);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public RecipeSearchLikeResponseDto searchRecipeLike(RecipeSearchLikeRequestDto reqDto){
+        List<Recipe> recipes = recipeRepository.findByTitleContaining(reqDto.getTitle());
+        return new RecipeSearchLikeResponseDto(recipes);
     }
 
 }

@@ -7,6 +7,7 @@ import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +33,11 @@ public class Recipe {
 
     private Long hit=0L;
 
-    // 보류
+    private LocalDateTime nowTime;
+
     private String imageUrl;
 
-    // 보류
+
     private String videoUrl;
 
     @OneToMany(mappedBy = "recipe", cascade=CascadeType.REMOVE)

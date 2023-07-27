@@ -13,7 +13,7 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 import java.time.LocalDateTime;
 
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class InitDb {
 
