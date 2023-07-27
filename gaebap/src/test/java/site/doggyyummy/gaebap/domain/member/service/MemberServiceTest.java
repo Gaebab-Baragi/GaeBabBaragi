@@ -24,7 +24,7 @@ class MemberServiceTest {
     @DisplayName("멤버 가입 테스트")
     void signUp() throws Exception {
         Member member1= new Member();
-        member1.setName("member1");
+        member1.setUsername("member1");
         member1.setNickname("nick1");
         member1.setPassword("pass");
         member1.setEmail("member1@doggyyummy.site");
@@ -34,7 +34,7 @@ class MemberServiceTest {
         //이메일 중복
 
         Member member2= new Member();
-        member2.setName("member2");
+        member2.setUsername("member2");
         member2.setNickname("nick2");
         member2.setPassword("pass");
         member2.setEmail("member1@doggyyummy.site");
@@ -48,11 +48,11 @@ class MemberServiceTest {
 
         //아이디 중복
         member2.setNickname("nick2");
-        member2.setName("member1");
+        member2.setUsername("member1");
         Assertions.assertThrows(Exception.class, () -> memberService.signUp(member2));
 
         //가입
-        member2.setName("member2");
+        member2.setUsername("member2");
         memberService.signUp(member2);
     }
 
@@ -83,8 +83,8 @@ class MemberServiceTest {
     void findByName() throws Exception {
         signUp();
 
-        System.out.println(memberService.findByName("member1").get().getName());
-        System.out.println(memberService.findByName("member2").get().getName());
+        System.out.println(memberService.findByName("member1").get().getUsername());
+        System.out.println(memberService.findByName("member2").get().getUsername());
 
         Assertions.assertThrows(Exception.class, () -> memberService.findByName("member3")
                                                         .orElseThrow(() -> new Exception("그런 사람 없습니다")));

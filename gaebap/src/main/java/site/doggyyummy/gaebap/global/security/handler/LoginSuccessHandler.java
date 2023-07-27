@@ -1,5 +1,6 @@
 package site.doggyyummy.gaebap.global.security.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,10 +12,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import site.doggyyummy.gaebap.domain.member.dto.response.MemberResponseDTO;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.exception.custom.NoSuchUserException;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.global.security.service.JwtService;
+import site.doggyyummy.gaebap.global.security.service.PrincipalDetailsService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
 @RequiredArgsConstructor
@@ -23,6 +29,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${jwt.access.expiration}")
     private String accessTokenExpiration;
@@ -35,29 +42,20 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String username = extractUsername(authentication);
         String accessToken = jwtService.createAccessToken(username);
         String refreshToken = jwtService.createRefreshToken();
-        HttpSession session = request.getSession();
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-
         jwtService.updateRefreshToken(username, refreshToken);
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NoSuchUserException());
+
+        MemberResponseDTO responseDTO = MemberResponseDTO.toDTO(member);
+        String result = objectMapper.writeValueAsString(responseDTO);
+        response.getWriter().println(result);
 
         log.info("login success. username : {}", username);
         log.info("login success. accessToken : {}", accessToken);
-
-        if (session != null){
-            String redirectUrl = (String) session.getAttribute("prevPage");
-            log.info("redirect To : {}", redirectUrl);
-            if (redirectUrl != null){
-                session.removeAttribute("prevPage");
-                //getRedirectStrategy().sendRedirect(request, response, redirectUrl);
-            }
-            else {
-                super.onAuthenticationSuccess(request, response, authentication);
-            }
-        }
-        else {
-            super.onAuthenticationSuccess(request, response, authentication);
-        }
     }
 
     private String extractUsername(Authentication authentication){

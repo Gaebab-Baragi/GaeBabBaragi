@@ -1,13 +1,15 @@
 package site.doggyyummy.gaebap.domain.member.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberRegisterDTO;
 import site.doggyyummy.gaebap.domain.member.dto.response.MemberResponseDTO;
+import site.doggyyummy.gaebap.domain.member.exception.custom.NoSuchUsernameException;
 import site.doggyyummy.gaebap.domain.member.service.MemberMailService;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
 
@@ -21,67 +23,45 @@ public class MemberController {
     private final MemberMailService memberMailService;
 
     @GetMapping("")
-    public MemberResponseDTO findMemberByName(@Param(value = "id") String memberId) throws Exception{
-       return MemberResponseDTO.toDTO(memberService.findByName(memberId).orElseThrow(() -> new Exception()));
+    public ResponseEntity<MemberResponseDTO> findByName(@Param(value = "id") String memberId) throws NoSuchUsernameException {
+       return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.findByName(memberId).orElseThrow(() -> new NoSuchUsernameException()))
+                                , HttpStatus.OK);
     }
 
     //=================================================================================
 
     @PostMapping("/register")
-    public String signUp(@RequestBody MemberRegisterDTO registerDTO) throws Exception{
+    public ResponseEntity<String> signUp(@RequestBody MemberRegisterDTO registerDTO) throws Exception{
         log.info("registerDTO : {}", registerDTO);
         memberService.signUp(MemberRegisterDTO.toEntity(registerDTO));
-        return "reg";
+        return new ResponseEntity<>("로그인에 성공했습니다.", HttpStatus.CREATED);
     }
 
     //=================================================================================
 
-    @PostMapping("/register/id")
-    public boolean validateRegisterId(@RequestBody MemberRegisterDTO registerDTO) {
-        return memberService.isValidRegistrationName(registerDTO.getRegisterName());
-    }
-
-    @PostMapping("/register/email")
-    public String validateRegisterEmail(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
-        if (memberService.isValidRegistrationEmail(registerDTO.getEmail())){
-            try {
-                return memberMailService.sendEmail(registerDTO.getEmail());
-            }
-            catch (Exception e){
-                throw new Exception("invalid email");
-            }
-        }
-        throw new Exception("duplicate email");
+    @PostMapping("/register/username")
+    public ResponseEntity<String> validateRegisterUsername(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
+        memberService.validateRegistrationUsername(registerDTO.getRegisterName());
+        return new ResponseEntity<>(memberMailService.sendEmail(registerDTO.getRegisterName()), HttpStatus.OK);
     }
 
     @PostMapping("/register/nickname")
-    public boolean validateRegisterNickname(@RequestBody MemberRegisterDTO registerDTO) {
-        return memberService.isValidRegistrationNickname(registerDTO.getNickname());
+    public ResponseEntity<String> validateRegisterNickname(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
+        memberService.validateRegistrationNickname(registerDTO.getNickname());
+        return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
 
     //=================================================================================
     @PutMapping("/modify")
-    public String modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
+    public ResponseEntity<String> modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
         memberService.modify(MemberModifyDTO.toEntity(modifyDTO));
-        return "modify";
-    }
-
-    @PostMapping("/modify/email")
-    public String validateModifyEmail(@RequestBody MemberModifyDTO modifyDTO) throws Exception {
-        if (memberService.isValidRegistrationEmail(modifyDTO.getEmail())){
-            try {
-                return memberMailService.sendEmail(modifyDTO.getEmail());
-            }
-            catch (Exception e){
-                throw new Exception("invalid email");
-            }
-        }
-        throw new Exception("duplicate email");
+        return new ResponseEntity<>("회원 정보 수정에 성공했습니다.", HttpStatus.OK);
     }
 
     @PostMapping("/modify/nickname")
-    public boolean validateModifyNickname(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
-        return memberService.isValidNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
+    public ResponseEntity<String> validateModifyNickname(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
+        memberService.validateNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
+        return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
 
     //====================================================================================

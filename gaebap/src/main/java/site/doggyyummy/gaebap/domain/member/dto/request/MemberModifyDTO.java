@@ -16,16 +16,14 @@ public class MemberModifyDTO {
     private String modifyName;
     private String password;
     private String nickname;
-    private String email;
 
-    public static Member toEntity(MemberModifyDTO registerDTO){
-        Member member = new Member();
-
-        member.setName(registerDTO.getModifyName());
-        member.setNickname(registerDTO.getNickname());
-        member.setEmail(registerDTO.getEmail());
-        member.setPassword(registerDTO.getPassword());
-        member.setRegisterDate(new Timestamp(System.currentTimeMillis()));
+    public static Member toEntity(MemberModifyDTO modifyDTO){
+        Member member = Member
+                .builder()
+                .username(modifyDTO.getModifyName())
+                .nickname(modifyDTO.getModifyName())
+                .password(modifyDTO.getPassword())
+                .build();
 
         return member;
     }

@@ -1,9 +1,9 @@
-package site.doggyyummy.gaebap.global.security.constant;
+package site.doggyyummy.gaebap.global.security.dto;
 
 public enum SocialType {
     GOOGLE("google"),
     NAVER("naver"),
-    KAKAO("kako");
+    KAKAO("kakao");
 
     private final String asString;
     SocialType(String asString){

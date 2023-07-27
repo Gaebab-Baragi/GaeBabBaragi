@@ -18,7 +18,7 @@ public class RecipeFindByMemberIdResponseDto {
         this.recipes=recipes;
     }
     public RecipeFindByMemberIdResponseDto(Member member, List<Recipe> recipes){
-        this.name=member.getName();
+        this.name=member.getUsername();
         this.recipes=recipes.stream()
                 .map(recipe -> new RecipeFindByMemberIdResponseDto.RecipeDto(recipe.getTitle()))
                 .collect(Collectors.toList());

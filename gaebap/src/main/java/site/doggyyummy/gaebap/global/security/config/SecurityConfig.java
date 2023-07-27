@@ -23,6 +23,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.CustomOAuth2User;
 import site.doggyyummy.gaebap.global.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
@@ -34,6 +37,8 @@ import site.doggyyummy.gaebap.global.security.handler.oauth2.OAuth2LoginSuccessH
 import site.doggyyummy.gaebap.global.security.service.JwtService;
 import site.doggyyummy.gaebap.global.security.service.PrincipalDetailsService;
 import site.doggyyummy.gaebap.global.security.service.oauth2.CustomOAuth2UserService;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -50,11 +55,28 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/member/register/**");
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
+        config.setAllowedHeaders(Arrays.asList("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
     @Bean
     public SecurityFilterChain httpFilterChain (HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .cors((cors) ->
+                        cors.configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
