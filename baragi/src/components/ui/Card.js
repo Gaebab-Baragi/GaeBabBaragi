@@ -3,7 +3,7 @@ import pracImg from './pracImage.jpg'
 
 function CardComponent({count}) {
   return (
-    <Card style={{ width: '18rem'}}>
+    <Card style={{ width: '16rem'}}>
       <Card.Img variant="top" src={pracImg} />
       <Card.Body>
         <Card.Title>Recipe Title</Card.Title>

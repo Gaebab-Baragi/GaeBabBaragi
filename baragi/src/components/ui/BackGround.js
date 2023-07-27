@@ -20,6 +20,6 @@ function BackGround() {
             </div>
         </div>
 
-      );
-    }
+    )};
+    
     export default BackGround;

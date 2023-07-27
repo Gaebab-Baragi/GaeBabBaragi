@@ -1,0 +1,36 @@
+.dogContainer {
+  /* border: ; */
+  width: 450px;
+  height: auto;
+  border: 2px solid #afb8c1;
+  border-radius: 10px;
+  background: #ffffff;
+  
+}
+
+.dogContainerHeader {
+  display: flex;
+
+}
+
+.dogContainerSeperator {
+  margin: 10px;
+}
+
+
+.dogContainerTitle {
+  display: flex;
+  
+}
+
+.dogImageContainer {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.dogImage {
+  margin-left: 10px;
+  width: 80px;
+  border: 2px solid black;
+  border-radius: 100px;
+}

@@ -10,8 +10,7 @@ let user= createSlice({
   },
   reducers:{
     loginUser: (state, action)=>{
-      // state update needed
-      
+      // state update needed      
     },
     clearUser: (state) =>{
       // state update

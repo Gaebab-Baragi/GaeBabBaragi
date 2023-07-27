@@ -7,13 +7,13 @@ import axios from 'axios';
 function SignupForm() {
   const navigate = useNavigate();
   // 기본 input stated
-  let [id, setId] = useState('');
-  let [password1, setPassword1] = useState('');
-  let [password2, setPassword2] = useState('');
-  let [nickname, setNickname] = useState('');
-  let [email, setEmail] = useState('');
-  let [code, setCode] = useState();
-  let [sendCode, setSendCode] = useState(false);
+  const [id, setId] = useState('');
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState();
+  const [sendCode, setSendCode] = useState(false);
 
   // ======================빈 값 & validation 처리 state=======================//
   let [validId, setValidId] = useState(false);
@@ -21,11 +21,13 @@ function SignupForm() {
   let [samePassword, setSamePassword] = useState(false);
   let [validNickname, setValidNickname] = useState(false);
   let [validEmail, setValidEmail] = useState(false); 
+
   useEffect(() => {
     // 정규표현식 패턴: 5자 이상 20자 이하, 영어 소문자, 숫자, 특수문자를 하나 이상 포함
     const idPattern = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-z0-9!@#$%^&*]{5,20}$/i;
     const isValidId = idPattern.test(id);
     setValidId(isValidId);
+    // console.log(id)
   }, [id]);
   useEffect(() => {
     // 정규표현식 패턴: 8자 이상 20자 이하, 영문 대소문자, 숫자, 특수문자를 하나 이상 포함
@@ -49,22 +51,24 @@ function SignupForm() {
   // handleIdDuplicateCheck, handleNicknameDuplicateCheck, handleEmailCodeCheck, handleSendCode callbacks
   const handleIdDuplicateCheck = useCallback((e) => {
     e.preventDefault();
+    // console.log(id)
     console.log('idDuplicationCheck')
     // 
     setIdDuplicateCheck(true);
-  }, []);
+  }, [id]);
 
   const handleNicknameDuplicateCheck = useCallback((e) => {
     e.preventDefault();
+    // console.log(nickname)
     console.log('Nickname-Duplication-Check')
     setNicknameDuplicateCheck(true);
-  }, []);
+  }, [nickname]);
 
   const handleEmailCodeCheck = useCallback((e) => {
     e.preventDefault();
     console.log('Email-Code-Check')
     setEmailCodeCheck(true);
-  }, []);
+  },[code]);
 
   const handleSendCode = useCallback((e) => {
     e.preventDefault()

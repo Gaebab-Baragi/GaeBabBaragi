@@ -6,7 +6,7 @@ let recipeSearch= createSlice({
   initialState:{
     keyword:'',
     ingredients:[],
-    dog:''
+    dogs:[]
   },
   reducers:{
     requestFilteredRecipeList: (state, action)=>{
@@ -21,10 +21,14 @@ let recipeSearch= createSlice({
     updateIngredients: (state, action) =>{
       state.ingredients = action.payload.map((ingredient) => ingredient.label);
       // console.log(state.ingredients)
+    },
+    updateDogs: (state, action) =>{
+      state.dogs = action.payload
+      console.log(state.dogs)
     }
   }
 })
 
-export const {updateKeyword, updateIngredients} = recipeSearch.actions;
+export const {updateKeyword, updateIngredients,updateDogs} = recipeSearch.actions;
 
 export default recipeSearch;
