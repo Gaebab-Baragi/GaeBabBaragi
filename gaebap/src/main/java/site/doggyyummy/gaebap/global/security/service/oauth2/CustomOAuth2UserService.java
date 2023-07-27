@@ -52,7 +52,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private Member getMember(OAuth2Attributes attributes){
         String email = attributes.getOAuth2UserInfo().getEmail();
         if (email == null) return null;
-        Member member = memberRepository.findByEmail(email).orElse(null);
+        Member member = memberRepository.findByUsername(email).orElse(null);
         if (member == null){
             return createUser(attributes);
         }

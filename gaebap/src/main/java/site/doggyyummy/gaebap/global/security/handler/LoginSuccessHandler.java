@@ -20,6 +20,7 @@ import site.doggyyummy.gaebap.global.security.service.JwtService;
 import site.doggyyummy.gaebap.global.security.service.PrincipalDetailsService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
 @RequiredArgsConstructor
@@ -51,7 +52,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         MemberResponseDTO responseDTO = MemberResponseDTO.toDTO(member);
         String result = objectMapper.writeValueAsString(responseDTO);
-        response.getOutputStream().println(result);
+        response.getWriter().println(result);
 
         log.info("login success. username : {}", username);
         log.info("login success. accessToken : {}", accessToken);
