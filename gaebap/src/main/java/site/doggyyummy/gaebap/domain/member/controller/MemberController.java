@@ -40,7 +40,7 @@ public class MemberController {
     //=================================================================================
 
     @PostMapping("/register/username")
-    public ResponseEntity<String> validateRegisterEmail(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
+    public ResponseEntity<String> validateRegisterUsername(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
         memberService.validateRegistrationUsername(registerDTO.getRegisterName());
         return new ResponseEntity<>(memberMailService.sendEmail(registerDTO.getRegisterName()), HttpStatus.OK);
     }
