@@ -53,4 +53,11 @@ public class RecipeController {
         recipeService.modifyRecipe(id,reqDto);
         return "ok";
     }
+
+    //테스트용 (버킷에 있는 객체 전부 삭제)
+    @GetMapping("/s3DeleteAll")
+    public String s3DeleteAll(){
+        recipeService.s3DeleteAll();
+        return "ok";
+    }
 }
