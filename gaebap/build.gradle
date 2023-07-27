@@ -26,6 +26,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// WebRTC - Openvidu
+	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.28.0'
+
 	implementation "org.springframework.security:spring-security-oauth2-authorization-server:1.1.1"
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
@@ -47,6 +50,9 @@ dependencies {
 
 
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+	//AWS S3
+	implementation("com.amazonaws:aws-java-sdk-s3:1.12.445")
 }
 
 tasks.named('test') {

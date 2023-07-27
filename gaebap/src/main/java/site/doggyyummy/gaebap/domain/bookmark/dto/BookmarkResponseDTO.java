@@ -1,4 +1,4 @@
-package site.doggyyummy.gaebap.domain.bookmark.entity.dto;
+package site.doggyyummy.gaebap.domain.bookmark.dto;
 
 
 import lombok.AllArgsConstructor;

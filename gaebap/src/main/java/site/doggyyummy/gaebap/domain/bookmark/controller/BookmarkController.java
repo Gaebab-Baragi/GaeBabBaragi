@@ -1,13 +1,10 @@
-package site.doggyyummy.gaebap.domain.bookmark.entity.controller;
+package site.doggyyummy.gaebap.domain.bookmark.controller;
 
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import site.doggyyummy.gaebap.domain.bookmark.entity.dto.BookmarkRequestDTO;
-import site.doggyyummy.gaebap.domain.bookmark.entity.dto.BookmarkResponseDTO;
-import site.doggyyummy.gaebap.domain.bookmark.entity.service.BookmarkServiceImpl;
-
-import java.util.List;
+import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkRequestDTO;
+import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkServiceImpl;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,9 +14,9 @@ public class BookmarkController {
     private final BookmarkServiceImpl bookmarkService;
 
     @GetMapping("/{recipe_id}")
-    public List<BookmarkResponseDTO> selectByPet(@PathVariable(name= "recipe_id") Long bookmarkId){
-        List<BookmarkResponseDTO> bookmarks = bookmarkService.selectByRecipe(bookmarkId);
-        return bookmarks;
+    public long selectByRecipe(@PathVariable(name= "recipe_id") Long bookmarkId){
+        long count = bookmarkService.selectByRecipe(bookmarkId);
+        return count;
     }
 
     @PostMapping("")
