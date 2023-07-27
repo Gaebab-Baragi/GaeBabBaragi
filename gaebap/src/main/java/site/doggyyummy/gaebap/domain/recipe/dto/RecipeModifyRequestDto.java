@@ -28,6 +28,7 @@ public class RecipeModifyRequestDto {
     public static class StepDto{
         private Long orderingNumber;
         private String description;
+        private String imgUrl;
     }
 
     @Getter

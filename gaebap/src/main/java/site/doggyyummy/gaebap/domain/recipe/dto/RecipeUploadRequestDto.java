@@ -14,8 +14,8 @@ public class RecipeUploadRequestDto {
     private MemberDto member; //레시피 등록자
     private List<StepDto> steps;
     private List<RecipeIngredientDto> recipeIngredients;
-    private String imgLocalPath="";
-    private String videoLocalPath="";
+    private String imgLocalPath;
+    private String videoLocalPath;
     @Getter
     public static class MemberDto{
         private Long id;
@@ -25,6 +25,7 @@ public class RecipeUploadRequestDto {
     public static class StepDto{
         private Long orderingNumber;
         private String description;
+        private String imgLocalPath;
     }
     @Getter
     public static class RecipeIngredientDto {

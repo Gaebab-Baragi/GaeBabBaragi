@@ -21,7 +21,7 @@ public class Step {
     private Long orderingNumber;
 
     // 보류
-    private String imageUrl;
+    private String imgUrl;
 
     private String description;
 }

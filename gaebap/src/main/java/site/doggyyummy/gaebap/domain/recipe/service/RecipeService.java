@@ -50,12 +50,12 @@ public class RecipeService {
     @Transactional
     public RecipeUploadResponseDto uploadRecipe(RecipeUploadRequestDto reqDto){
         Optional<Member> findMeberById = memberRepository.findById(reqDto.getMember().getId());
-
         List<Step> steps=new ArrayList<>();
         for(RecipeUploadRequestDto.StepDto s:reqDto.getSteps()){
             Step step=new Step();
             step.setOrderingNumber(s.getOrderingNumber());
             step.setDescription(s.getDescription());
+            step.setImgUrl(s.getImgLocalPath());
             steps.add(step);
             stepRepository.save(step);
         }
@@ -88,45 +88,14 @@ public class RecipeService {
 
         Recipe savedRecipe = recipeRepository.save(recipe);
 
-        //레시피 대표 사진 업로드
-        File img=new File(reqDto.getImgLocalPath());
-        String imgKey=savedRecipe.getId().toString()+"/"+img.toPath().getFileName().toString();
-        String bucketName="sh-bucket";
-        String imgUrl="https://"+bucketName+".s3.ap-northeast-2.amazonaws.com/"+imgKey;
-
-        ObjectMetadata objectMetadata = null;
-        try{
-            objectMetadata=awsS3Client.getObjectMetadata(bucketName,imgKey);
-            System.out.println("버킷에 해당 사진이 이미 존재하므로, 재저장하지 않습니다.");
-        }catch(AmazonS3Exception e){
-            if(e.getStatusCode()==404) {
-                //존재하지 않는 레시피 사진이면 업로드
-                awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
-                System.out.println("버킷에 해당 사진을 저장했습니다.");
-            }else {
-                e.printStackTrace();
-            }
+        //레시피 대표 사진 및 동영상 업로드
+        uploadModifyS3Object(null,reqDto.getImgLocalPath(),savedRecipe,true,null);
+        uploadModifyS3Object(null,reqDto.getVideoLocalPath(),savedRecipe,false,null);
+        for(Step step:steps){
+            uploadModifyS3Object(null,step.getImgUrl(),savedRecipe,false,step);
+            stepRepository.save(step);
         }
-        recipe.setImageUrl(imgUrl);
-
-        //레시피 시연 영상 업로드
-        File video=new File(reqDto.getVideoLocalPath());
-        String videoKey=savedRecipe.getId().toString()+"/"+video.toPath().getFileName().toString();
-        String videoUrl="https://"+bucketName+".s3.ap-northeast-2.amazonaws.com/"+videoKey;
-        ObjectMetadata objectMetadata2 = null;
-        try{
-            objectMetadata2=awsS3Client.getObjectMetadata(bucketName,videoKey);
-            System.out.println("버킷에 해당 비디오가 이미 존재하므로, 재저장하지 않습니다.");
-        }catch(AmazonS3Exception e){
-            if(e.getStatusCode()==404) {
-                //존재하지 않는 레시피 사진이면 업로드
-                awsS3Client.putObject(new PutObjectRequest(bucketName, videoKey, video));
-                System.out.println("버킷에 해당 비디오를 저장했습니다.");
-            }else {
-                e.printStackTrace();
-            }
-        }
-        recipe.setVideoUrl(videoUrl);
+        savedRecipe.setSteps(steps);
         savedRecipe = recipeRepository.save(recipe);
         return new RecipeUploadResponseDto(savedRecipe.getTitle(),findMeberById.get());
     }
@@ -188,6 +157,88 @@ public class RecipeService {
         return new RecipeDeleteResponseDto(findRecipe.get());
     }
 
+    //AWS S3에 사진 or 동영상 업로드 또는 수정 메서드
+    public void uploadModifyS3Object(String oldUrl, String reqUrl,Recipe recipe, boolean isImg,Step step){ //oldUrl : DB에 있던 URL, reqUrl : 새로운 URL, isImg=true -> img, isImg=false -> video
+        if(oldUrl==null){ //DB에 저장안되어있으니까, 새로운 객체를 s3에 저장
+            if(reqUrl!=null) {
+                File img = new File(reqUrl);
+                String bucketName = "sh-bucket";
+                if(step==null){
+                    String imgKey = recipe.getId() + "/" + img.toPath().getFileName().toString();
+                    String newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
+                    awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
+                    if(isImg){
+                        recipe.setImageUrl(newUrl);
+                    }else{
+                        recipe.setVideoUrl(newUrl);
+                    }
+                }else{ //스텝 별 사진 등록
+                    String imgKey = recipe.getId() + "/"+step.getId()+"/" + img.toPath().getFileName().toString();
+                    String newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
+                    awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
+                    step.setImgUrl(newUrl);
+
+                }
+            }
+        }else{ //DB에 저장 되어 있으니까, 수정하거나 삭제하거나.
+            String newUrl=null;
+            String[] imgSegments = oldUrl.split("/");
+            if(reqUrl==null){//imgUrl을 삭제 한 경우 (등록되있던 사진 삭제한 경우)
+                String oldImgKey=null;
+                if(step==null) {
+                    oldImgKey = imgSegments[imgSegments.length - 2] + "/" + imgSegments[imgSegments.length - 1];
+                }else{
+                    oldImgKey=imgSegments[imgSegments.length - 3] + "/"+imgSegments[imgSegments.length - 2] + "/" + imgSegments[imgSegments.length - 1];
+                }
+                //s3에 기존에 있던 객체 삭제 해야함
+                awsS3Client.deleteObject("sh-bucket",oldImgKey);
+                if(step==null){
+                    if(isImg){
+                        recipe.setImageUrl(newUrl);
+                    }else{
+                        recipe.setVideoUrl(newUrl);
+                    }
+                }else{ //스텝 별 사진 등록
+                    step.setImgUrl(newUrl);
+                }
+            }
+            else if(!oldUrl.equals(reqUrl)){ //이미지 파일을 수정한 경우
+                String bucketName="sh-bucket";
+                String oldImgKey=null;
+                if(step==null) {
+                    oldImgKey = imgSegments[imgSegments.length - 2] + "/" + imgSegments[imgSegments.length - 1];
+
+                }else{
+                    oldImgKey=imgSegments[imgSegments.length - 3] + "/"+imgSegments[imgSegments.length - 2] + "/" + imgSegments[imgSegments.length - 1];
+                }
+                //s3에 기존에 있던 객체는 삭제
+                awsS3Client.deleteObject(bucketName,oldImgKey);
+                //s3에 새로운 사진 저장
+                File img=new File(reqUrl);
+                if(step==null) {
+                    String imgKey = recipe.getId().toString() + "/" + img.toPath().getFileName().toString();
+                    newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
+                    awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
+                }
+                else{
+                    String imgKey = recipe.getId() + "/"+step.getId()+"/" + img.toPath().getFileName().toString();
+                    newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
+                    awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
+                }
+                if(step==null){
+                    if(isImg){
+                        recipe.setImageUrl(newUrl);
+                    }else{
+                        recipe.setVideoUrl(newUrl);
+                    }
+                }else{ //스텝 별 사진 등록
+                    step.setImgUrl(newUrl);
+                }
+            }
+
+        }
+
+    }
     //레시피 수정 (등록자와 일치해야 수정 가능)
     @Transactional
     public void modifyRecipe(Long id,RecipeModifyRequestDto reqDto){
@@ -200,56 +251,10 @@ public class RecipeService {
             findRecipe.get().setTitle(reqDto.getTitle());
             findRecipe.get().setDescription(reqDto.getDescription());
 
-            //2. 삭제 가능
             String imgUrl=findRecipe.get().getImageUrl();
-            System.out.println("imgUrl = " + imgUrl);
-            System.out.println("reqDto.getImgUrl() = " + reqDto.getImgUrl());
-            String[] imgSegments=imgUrl.split("/");
-            String folderKey=imgSegments[imgSegments.length-2]+"/";
-
-            ObjectListing objectListing = awsS3Client.listObjects("sh-bucket", folderKey);
-            //https://sh-bucket.s3.ap-northeast-2.amazonaws.com/2/teayang.jpg
-            if(reqDto.getImgUrl().equals("") || !imgUrl.equals(reqDto.getImgUrl())){
-                String imgKey=imgSegments[imgSegments.length-1];
-                System.out.println("2304oejifadklsjv;ifjskl;dfjio;awejfaweioghosdgjklsdjfl;asdjfklsdfm@!#!@#!@");
-                System.out.println("imgKey = "+ imgKey);
-                if(reqDto.getImgUrl().equals("")) {
-                    findRecipe.get().setImageUrl("");
-                }
-                for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                    System.out.println("objectSummary.getKey() = " + objectSummary.getKey());
-                    System.out.println((folderKey+imgKey));
-                    if(objectSummary.getKey().equals((folderKey+imgKey))){
-                        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-                        awsS3Client.deleteObject("sh-bucket",objectSummary.getKey());
-                        break;
-                    }
-                }
-            }
-            if(!reqDto.getImgUrl().equals("") && !imgUrl.equals(reqDto.getImgUrl())){
-                File img=new File(reqDto.getImgUrl());
-                String imgKey=findRecipe.get().getId().toString()+"/"+img.toPath().getFileName().toString();
-                String newImgUrl="https://sh-bucket.s3.ap-northeast-2.amazonaws.com/"+imgKey;
-                ObjectMetadata objectMetadata=null;
-                try{
-                    objectMetadata=awsS3Client.getObjectMetadata("sh-bucket",imgKey);
-                }catch (AmazonS3Exception e){
-                    if(e.getStatusCode()==404){
-                        findRecipe.get().setImageUrl(newImgUrl);
-                        awsS3Client.putObject(new PutObjectRequest("sh-bucket",imgKey,img));
-                    }else{
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-
-
-
-
-
-
-
+            uploadModifyS3Object(imgUrl,reqDto.getImgUrl(),findRecipe.get(),true,null);
+            String videoUrl=findRecipe.get().getVideoUrl();
+            uploadModifyS3Object(videoUrl,reqDto.getVideoUrl(),findRecipe.get(),false,null);
 
             List<Step> updateSteps=new ArrayList<>();
 
@@ -259,14 +264,17 @@ public class RecipeService {
                     findStep.setOrderingNumber(s.getOrderingNumber());
                     findStep.setDescription(s.getDescription());
                     updateSteps.add(findStep);
+                    uploadModifyS3Object(findStep.getImgUrl(), s.getImgUrl(),findRecipe.get(),false,findStep);
                     stepRepository.save(findStep);
                 }else{ //없으면, 추가해줘야대
                     Step step=new Step();
                     step.setOrderingNumber(s.getOrderingNumber());
                     step.setDescription(s.getDescription());
                     updateSteps.add(step);
+                    uploadModifyS3Object(findStep.getImgUrl(), s.getImgUrl(),findRecipe.get(),false,step);
                     stepRepository.save(step);
                 }
+
             }
 
             List<Step> originSteps = findRecipe.get().getSteps();
@@ -279,6 +287,9 @@ public class RecipeService {
                     }
                 }
                 if(flag==false){
+                    if(originStep.getImgUrl()!=null){
+                        uploadModifyS3Object(originStep.getImgUrl(),null,findRecipe.get(),false,originStep);
+                    }
                     stepRepository.delete(originStep);
                 }
             }
