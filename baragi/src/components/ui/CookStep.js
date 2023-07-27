@@ -3,9 +3,9 @@ import InputCookstep from './InputCookstep'
 
 function CookStep() {
     const [stepCount, setStepCount] = useState(1);
-    const [InputCooksteps, setInputCooksteps] = useState([]);
+    const [InputCooksteps, setInputCooksteps] = useState([<InputCookstep key={0} step={stepCount} />]);
     const handleAddInputCookstep = ()=>{
-        setInputCooksteps([...InputCooksteps,<InputCookstep key={InputCooksteps.length} step={stepCount} />]); 
+        setInputCooksteps([...InputCooksteps,<InputCookstep key={InputCooksteps.length} step={stepCount+1} />]); 
         setStepCount(stepCount+1);
   }
   return (
