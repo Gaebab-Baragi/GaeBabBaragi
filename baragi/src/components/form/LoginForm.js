@@ -39,7 +39,7 @@ function LoginForm() {
       password : password
     };
 
-    axios.post('/member/login', body)
+    axios.post('/member/login', body) 
     .then((res)=>{
       const { accessToken } = res.data;
       console.log(res);
