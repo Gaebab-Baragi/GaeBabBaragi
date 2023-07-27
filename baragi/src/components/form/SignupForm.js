@@ -66,6 +66,7 @@ function SignupForm() {
     .then((res)=>{
       if (res.status === 200) {
         console.log('duplication checked')
+        alert("사용 가능한 아이디입니다.")
         setIdDuplicateCheck(true);
       }
       else if (res.status === 459) {
@@ -104,6 +105,7 @@ function SignupForm() {
     .then((res)=>{
       if (res.status === 200) {
         console.log('duplication checked')
+        alert("사용 가능한 닉네임입니다.")
         setNicknameDuplicateCheck(true);
       }
     })
@@ -184,6 +186,7 @@ function SignupForm() {
           if (res.status ===201) {
             console.log('signup success')
             navigate('/login')
+            aler("회원 가입에 성공했습니다.")
           }
         })
         .catch((res) => {
