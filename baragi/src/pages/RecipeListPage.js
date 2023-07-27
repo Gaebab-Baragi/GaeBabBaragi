@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import CardPaginationList from "../components/list/CardPagination";
 import SearchBar from "../components/ui/SearchBar";
 import IngredientTagBar from "../components/ui/IngredientTagBar";
@@ -9,8 +10,16 @@ import './RecipeListPage.css'
 import DogSelectBar from "../components/ui/DogSelectBar";
 
 function RecipeListPage() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  // 언제가져오는 거지? 자동 렌더링이 되나??
+  const requestHappen = useSelector((state) => state.recipeSearch.requestHappen);
   const [filtered, setFiltered] = useState(false);
+
+  useEffect(()=>{
+    if (requestHappen) {
+      setFiltered(true);
+    }
+  },[requestHappen])
 
   return (
     <div>
