@@ -42,6 +42,7 @@ function SignupForm() {
 
   const handleNicknameDuplicateCheck = useCallback((e) => {
     e.preventDefault();
+    // console.log(nickname)
     console.log('Nickname-Duplication-Check')
     console.log(nickname)
     let body = JSON.stringify({

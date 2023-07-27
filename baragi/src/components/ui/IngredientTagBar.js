@@ -1,10 +1,17 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { ReactTags } from "react-tag-autocomplete";
 import './IngredientTagBar.css'
+import { useDispatch } from "react-redux";
+import { updateIngredients } from "../../redux/searchRecipeSlice";
 
 
 function IngredientTagBar() {
-  let [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(updateIngredients(selected))
+  }, [selected])
 
   // 재료 리스트 받아와주기
   const suggestions = [
@@ -32,7 +39,7 @@ function IngredientTagBar() {
   return(
     <div className="ingredientSelect">
       <ReactTags
-      suggestions={suggestions}
+        suggestions={suggestions}
         placeholderText="재료 선택"
         selected={selected}
         onAdd={onAdd}
