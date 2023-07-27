@@ -1,16 +1,15 @@
-package site.doggyyummy.gaebap.domain.bookmark.entity.service;
+package site.doggyyummy.gaebap.domain.bookmark.service;
 
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
-import site.doggyyummy.gaebap.domain.bookmark.entity.dto.BookmarkRequestDTO;
-import site.doggyyummy.gaebap.domain.bookmark.entity.dto.BookmarkResponseDTO;
-import site.doggyyummy.gaebap.domain.bookmark.entity.repository.BookmarkRepository;
+import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkRequestDTO;
+import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkResponseDTO;
+import site.doggyyummy.gaebap.domain.bookmark.repository.BookmarkRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,20 +19,19 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<BookmarkResponseDTO> selectByRecipe(Long recipeId) {
+    public long selectByRecipe(Long recipeId) {
         List<Bookmark> bookmarks = null;
         List<BookmarkResponseDTO> bookmarksDTO = null;
+        long count = 0L;
         try {
             bookmarks = bookmarkRepository.selectByRecipe(recipeId);
-            bookmarksDTO = bookmarks.stream()
-                    .map(BookmarkResponseDTO::toDTO)
-                    .collect(Collectors.toList());
-            return bookmarksDTO;
+            count = bookmarks.size();
+            return count;
 
         }catch (Exception e){
             e.printStackTrace();
         }
-        return bookmarksDTO;
+        return count;
     }
 
     @Override
