@@ -24,17 +24,14 @@ public class Member {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column (unique = true)
-    private String name; //멤버 아이디에 해당합니다.
+    @Column (unique = true, nullable = false)
+    private String username; //멤버 아이디에 해당합니다.
 
     @Column
     private String password;
 
-    @Column (unique = true)
+    @Column (unique = true, nullable = false)
     private String nickname;
-
-    @Column (unique = true)
-    private String email;
 
     @Column
     private String authority;
@@ -57,7 +54,20 @@ public class Member {
     @OneToOne(mappedBy = "host")
     private Meeting hostedMeeting;
 
+    /**
+     * 아래는 Security 및 OAuth2 관련한 필드
+     */
+    @Column
     private String refreshToken;
+
+    @Column (unique = true)
+    private String googleAccount;
+
+    @Column (unique = true)
+    private String kakaoAccount;
+
+    @Column (unique = true)
+    private String naverAccount;
 
     public void updateRefreshToken(String refreshToken){
        this.refreshToken = refreshToken;

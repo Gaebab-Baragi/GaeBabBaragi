@@ -10,13 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.filter.OncePerRequestFilter;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
-import site.doggyyummy.gaebap.global.security.entity.PrincipalDetails;
 import site.doggyyummy.gaebap.global.security.service.JwtService;
 import site.doggyyummy.gaebap.global.security.util.PasswordUtil;
 
@@ -64,10 +61,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
         log.info("checkRefreshTokenAndReIssueAccessToken() 호출");
-        memberRepository.findMemberByRefreshToken(refreshToken)
+        memberRepository.findByRefreshToken(refreshToken)
                 .ifPresent(member-> {
                     String reIssuedRefreshToken = reIssueRefreshToken(member);
-                    jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getName()),
+                    jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getUsername()),
                             reIssuedRefreshToken);
                 });
     }
@@ -78,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
                 .ifPresent(accessToken -> jwtService.extractName(accessToken)
-                        .ifPresent(name-> memberRepository.findMemberByName(name)
+                        .ifPresent(name-> memberRepository.findByUsername(name)
                                 .ifPresent(this::saveAuthentication)));
 
         filterChain.doFilter(request, response);
@@ -93,7 +90,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
-                .username(member.getEmail())
+                .username(member.getUsername())
                 .password(password)
                 .build();
 

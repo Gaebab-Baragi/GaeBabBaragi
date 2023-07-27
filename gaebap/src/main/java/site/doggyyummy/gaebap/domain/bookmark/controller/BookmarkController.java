@@ -1,11 +1,11 @@
-package site.doggyyummy.gaebap.domain.bookmark.entity.controller;
+package site.doggyyummy.gaebap.domain.bookmark.controller;
 
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import site.doggyyummy.gaebap.domain.bookmark.entity.dto.BookmarkRequestDTO;
-import site.doggyyummy.gaebap.domain.bookmark.entity.dto.BookmarkResponseDTO;
-import site.doggyyummy.gaebap.domain.bookmark.entity.service.BookmarkServiceImpl;
+import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkRequestDTO;
+import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkResponseDTO;
+import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkServiceImpl;
 
 import java.util.List;
 

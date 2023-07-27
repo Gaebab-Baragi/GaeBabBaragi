@@ -29,7 +29,7 @@ public class RecipeAllResponseDto {
         }
         public RecipeDto(String title,Member member){
             this.title=title;
-            this.member=new MemberDto(member.getName());
+            this.member=new MemberDto(member.getUsername());
         }
     }
 
