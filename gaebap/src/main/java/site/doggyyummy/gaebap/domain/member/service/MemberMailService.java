@@ -51,7 +51,8 @@ public class MemberMailService {
     public String sendEmail(String toEmail) throws InvalidEmailException{
         try {
             MimeMessage emailForm = createEmailForm(toEmail);
-            emailSender.send(emailForm);
+            //emailSender.send(emailForm);
+            log.info("email-verification-code : {}", authCode);
         }
         catch (Exception e){
             throw new InvalidEmailException();
