@@ -41,9 +41,9 @@ public class RecipeService {
     @Transactional
     public SignupResponseDto signUp(SignupRequestDto reqDto){
         Member member=new Member();
-        member.setName(reqDto.getName());
+        member.setUsername(reqDto.getName());
         Member savedMember = memberRepository.save(member);
-        return new SignupResponseDto(savedMember.getId(), savedMember.getName());
+        return new SignupResponseDto(savedMember.getId(), savedMember.getUsername());
     }
 
     //레시피 등록 (대표 이미지, 스텝 별 이미지, 시연 영상 not included)

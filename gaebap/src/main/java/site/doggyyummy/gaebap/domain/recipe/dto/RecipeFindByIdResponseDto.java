@@ -33,9 +33,10 @@ public class RecipeFindByIdResponseDto {
     public RecipeFindByIdResponseDto(Recipe recipe, Member member, List<Step> steps,List<RecipeIngredient> recipeIngredients,List<Ingredient> ingredients){
         this.title=recipe.getTitle();
         this.description=recipe.getDescription();
+
         this.imgUrl=recipe.getImageUrl();
         this.videoUrl=recipe.getVideoUrl();
-        this.member=new MemberDto(member.getName());
+        this.member=new MemberDto(member.getUsername());
         // Convert List<Step> to List<StepDto>
         this.steps = steps.stream()
                 .map(step -> new StepDto(step.getOrderingNumber(), step.getDescription()))

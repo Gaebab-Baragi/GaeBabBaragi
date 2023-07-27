@@ -26,11 +26,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         try {
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-            //첫 로그인의 경우는 생각해봐야 됨 -> 필요한 정보 채우는 페이지로
+            //TODO 첫 로그인의 경우는 생각해봐야 됨 -> 필요한 정보 채우는 페이지로
             loginSuccess(response, oAuth2User);
-
-
-
         } catch (Exception e){
            throw e;
         }

@@ -35,7 +35,7 @@ function NaviBar() {
               </NavDropdown>
               </Nav>
               <Nav>
-                <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='list2' >로그인/</Nav.Link>
+                <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='list2' >로그인</Nav.Link>
                 <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='list2' >회원가입</Nav.Link>
               </Nav>
           </Navbar.Collapse>

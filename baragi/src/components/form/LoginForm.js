@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 
-
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,13 +13,13 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
 
+  const user = useSelector((state) => state.user);
   // 오류 메세지 alert
   useEffect(()=>{
     if (msg) {
       alert(msg)
     }
   },[msg])
-
 
   // ----------- 로그인 기능 구현-------------------//
   const handleLogin = (e) => {
@@ -34,32 +33,37 @@ function LoginForm() {
     }
     // axios 요청 보내기
     let body = {
-      id,
-      password
+      username : id,
+      password : password
     };
 
-    axios.post('/member/login', body)
+    axios.post('/member/login', body) 
     .then((res)=>{
-      console.log(res.data);
-      switch (res.data.code) {
-        case 200:
-          console.log("로그인");
-          dispatch(loginUser(res.data.userInfo));
-          break;
-        case 452:
-          setMsg("존재하지 않는 아이디입니다.");
-          break;
-        case 453:
-          setMsg("비밀번호가 틀렸습니다.");
-          break;
-        default:
-          break;
+      const { accessToken } = res.data;
+      console.log(res);
+      axios.defaults.headers.common['Authorization'] =  accessToken;
+      if (res.status === 200){
+        let data = res.data;
+        dispatch(loginUser(data))
+        navigate('/');
       }
     })
-
+    .catch ((res) => {
+        res = res.response;
+        console.log(res);
+        if (res.status === 452) setMsg("존재하지 않는 아이디입니다.")
+        else if (res.status === 453) setMsg("잘못된 비밀번호입니다.")
+        else setMsg("알 수 없는 오류")
+      }
+    )
   }
-  // ---------------------------------------------//
 
+  const letsTest = (e) => {
+    e.preventDefault();
+    console.log(user);
+  }
+
+  // ---------------------------------------------//
 
   return (
     <div className="formContainer">
@@ -92,6 +96,7 @@ function LoginForm() {
         {/* 구글 로그인 */}
         <div className="formGroup">
           구글 로그인 임
+          <button className='testbutton' onClick={letsTest}>테스트요 </button>
         </div>
       </form>
     </div>
