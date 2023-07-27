@@ -10,7 +10,7 @@
   color: black;
   padding: 15px;
   height: 40px;
-  width: 300px;
+  width: 450px;
 }
 
 .searchIcon {
@@ -21,20 +21,16 @@
   place-items: center;
 }
 
-.searchInput:focus {
-  outline: none;
-}
 .searchIcon svg {
   font-size: 35px;
 }
 
 .dataResult {
   position: absolute;
-  left: 10%;
   /* 검색창 바로 밑에 띄우기 */
   /* margin-left: 10%; */
   /* margin-top: 5px; */
-  width: 300px;
+  width: 450px;
   height: 200px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;

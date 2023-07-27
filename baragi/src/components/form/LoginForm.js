@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 
-
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,7 +19,6 @@ function LoginForm() {
       alert(msg)
     }
   },[msg])
-
 
   // ----------- 로그인 기능 구현-------------------//
   const handleLogin = (e) => {
@@ -59,7 +57,6 @@ function LoginForm() {
 
   }
   // ---------------------------------------------//
-
 
   return (
     <div className="formContainer">

@@ -1,13 +1,50 @@
-import React, { useEffect, useState } from "react";
+// 수정 필요한 사항
+// 검색 icon 눌렀을 경우, axios 요청 보내는 함수
+// wordEntered Redux 와 연결하기!
+
+import React, { useEffect, useState, useRef } from "react";
 import "./SearchBar.css";
 import SearchIcon from '@mui/icons-material/Search';
-import CloseIcon from '@mui/icons-material/Close';
 import '@mui/icons-material'
+import { useDispatch } from "react-redux";
+import {updateKeyword} from "../../redux/searchRecipeSlice";
 
 function SearchBar({  data }) {
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
   const [needSearch, setNeedSearch] = useState(true);
+  const dataResultRef = useRef(null);
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(updateKeyword(wordEntered))
+  }, [wordEntered])
+
+   // Add event listeners to the document when the component mounts
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      // Remove the event listeners when the component unmounts
+      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+  // Handle clicks outside the dataResult div
+  const handleClickOutside = (event) => {
+    if (dataResultRef.current && !dataResultRef.current.contains(event.target)) {
+      // Click occurred outside the dataResult div, so close it
+      setFilteredData([]);
+    }
+  };
+  // Handle keydown (e.g., Esc key)
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 27) {
+      // 27 is the keyCode for the Esc key
+      setFilteredData([]);
+    }
+  };
 
   useEffect(()=>{
     if (wordEntered==="") {
@@ -36,9 +73,9 @@ function SearchBar({  data }) {
   };
 
   return (
+
     <div className="search">
       <div className="searchInputs">
-        <p className="searchTitle">통합 검색 : </p>
         <input
           className="searchInput"
           type="text"
@@ -47,16 +84,12 @@ function SearchBar({  data }) {
           onChange={handleFilter}
         />
         <div className="searchIcon">
-          {filteredData.length === 0 ? (
-            <SearchIcon />
-          ) : (
-            <CloseIcon id="clearBtn" onClick={clearInput} />
-          )}
+          <SearchIcon/>
         </div>
       </div>
       {filteredData.length != 0 && needSearch && (
         // <div className="dataResultWrapper">
-          <div className="dataResult">
+          <div className="dataResult" ref={dataResultRef}>
             {filteredData.slice(0, 15).map((value, key) => {
               return (
                 <p className="titleClick" onClick={()=>{
@@ -74,3 +107,4 @@ function SearchBar({  data }) {
 }
 
 export default SearchBar;
+
