@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface BookmarkService {
     void create(BookmarkRequestDTO bookmarkRequestDTO);
-    List<BookmarkResponseDTO>  selectByRecipe (Long recipeId);
-
+    long selectByRecipe (Long recipeId);
     void delete(BookmarkRequestDTO bookmarkRequestDTO);
 
 }

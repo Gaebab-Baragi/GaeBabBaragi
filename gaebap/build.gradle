@@ -50,6 +50,9 @@ dependencies {
 
 
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+	//AWS S3
+	implementation("com.amazonaws:aws-java-sdk-s3:1.12.445")
 }
 
 tasks.named('test') {
