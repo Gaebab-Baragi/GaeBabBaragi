@@ -21,12 +21,9 @@ public class MemberResponseDTO {
     private Long id;
     private String username;
     private String nickname;
-    private String email;
     private String profileUrl;
     private Meeting hostedMeeting;
-    private String googleAccount;
-    private String kakaoAccount;
-    private String naverAccount;
+
 
     public static MemberResponseDTO toDTO(Member member){
         return MemberResponseDTO.builder()
@@ -35,10 +32,6 @@ public class MemberResponseDTO {
                         .nickname(member.getNickname())
                         .profileUrl(member.getProfileUrl())
                         .hostedMeeting(member.getHostedMeeting())
-                        .email(member.getEmail())
-                        .googleAccount(member.getGoogleAccount())
-                        .kakaoAccount(member.getKakaoAccount())
-                        .naverAccount(member.getNaverAccount())
                 .build();
     }
 

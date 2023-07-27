@@ -39,7 +39,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuth2Attributes oAuth2Attributes = OAuth2Attributes.of(socialType, nameAttributeName, attributes);
 
-        Member member = getMember(socialType, oAuth2Attributes);
+        Member member = getMember(oAuth2Attributes);
 
         return new CustomOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("Guest")),
@@ -49,18 +49,18 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         );
     }
 
-    private Member getMember(SocialType socialType, OAuth2Attributes attributes){
+    private Member getMember(OAuth2Attributes attributes){
         String email = attributes.getOAuth2UserInfo().getEmail();
         if (email == null) return null;
         Member member = memberRepository.findByEmail(email).orElse(null);
         if (member == null){
-            return createUser(socialType, attributes);
+            return createUser(attributes);
         }
         return member;
     }
 
-    private Member createUser(SocialType socialType, OAuth2Attributes attributes){
-       Member member = attributes.toEntity(socialType, attributes.getOAuth2UserInfo());
+    private Member createUser(OAuth2Attributes attributes){
+       Member member = attributes.toEntity(attributes.getOAuth2UserInfo());
        return member;//일단 저장 안하고 나중에 빈 정보들을 채운 다음에 추가할 것
     }
 

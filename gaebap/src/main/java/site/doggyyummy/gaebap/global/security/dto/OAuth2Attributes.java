@@ -50,9 +50,9 @@ public class OAuth2Attributes {
                 .build();
     }
 
-    public Member toEntity(SocialType socialType, OAuth2UserInfo oAuth2UserInfo){
+    public Member toEntity(OAuth2UserInfo oAuth2UserInfo){
         return Member.builder()
-                .email(oAuth2UserInfo.getEmail())
+                .username(oAuth2UserInfo.getEmail())
                 .nickname(oAuth2UserInfo.getNickname())
                 .profileUrl(oAuth2UserInfo.getProfileUrl())
                 .build();

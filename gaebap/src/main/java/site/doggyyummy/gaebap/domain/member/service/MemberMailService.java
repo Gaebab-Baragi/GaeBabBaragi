@@ -4,11 +4,10 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import site.doggyyummy.gaebap.domain.member.exception.custom.InvalidEmailException;
-
-import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 
 @Service
@@ -18,6 +17,7 @@ public class MemberMailService {
     private final JavaMailSender emailSender;
     private String authCode;
     private Integer codeLength = 8;
+    protected String sendingEmail = "doggy.yummy.site@gmail.com";
 
     public void generateAuthCode(){
             String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -36,7 +36,7 @@ public class MemberMailService {
     public MimeMessage createEmailForm(String email) throws MessagingException {
 
         generateAuthCode();
-        String fromEmail = "pj0642@gmail.com"; //보낸 사람
+        String fromEmail = sendingEmail;
         String toEmail = email; //받는 사람
         String title = "[개밥바라기] 인증 이메일"; //제목
 

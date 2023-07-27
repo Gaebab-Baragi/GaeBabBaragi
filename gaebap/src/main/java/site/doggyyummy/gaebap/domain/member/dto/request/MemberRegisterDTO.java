@@ -16,14 +16,12 @@ public class MemberRegisterDTO {
     private String registerName;
     private String password;
     private String nickname;
-    private String email;
 
     public static Member toEntity(MemberRegisterDTO registerDTO){
         Member member = Member.builder()
                 .username(registerDTO.getRegisterName())
                 .nickname(registerDTO.getNickname())
                 .password(registerDTO.getPassword())
-                .email(registerDTO.getEmail())
                 .authority("ROLE_USER")
                 .registerDate(new Timestamp(System.currentTimeMillis()))
                 .build();

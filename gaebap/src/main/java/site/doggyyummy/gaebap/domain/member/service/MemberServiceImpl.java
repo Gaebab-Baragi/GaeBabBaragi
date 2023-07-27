@@ -34,7 +34,6 @@ public class MemberServiceImpl implements MemberService{
         validateMemberModification(member);
 
         memberToModify.setNickname(member.getNickname());
-        memberToModify.setEmail(member.getEmail());
         memberToModify.setPassword(member.getPassword());
     }
 
@@ -46,23 +45,15 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void validateNicknameModification(Member member) throws Exception{
         Member origin = findByName(member.getUsername()).orElseThrow(()->{throw new NoSuchUserException();});
-        if (!isValidNameFormat(member.getNickname())) throw new InvalidNicknameFormatException();
+        if (!isValidNicknameFormat(member.getNickname())) throw new InvalidNicknameFormatException();
         if (member.getNickname().equals(origin.getNickname())) return;
         if (isDuplicateNickname(member.getNickname())) throw new DuplicateNicknameException();
     }
 
-    @Override
-    public void validateEmailModification(Member member)  throws NoSuchUserException, DuplicateEmailException{
-        Member origin = findByName(member.getUsername()).orElseThrow(() -> {throw new NoSuchUserException();});
-        if (member.getEmail().equals(origin.getEmail())) return;
-        if (isDuplicateEmail(member.getEmail())) throw new DuplicateEmailException();
-    }
 
     @Override
     public void validateRegistrationUsername(String registerName) throws InvalidNameFormatException, DuplicateUsernameException{
-        log.info(registerName);
-        if (!isValidNameFormat(registerName)) throw new InvalidNameFormatException();
-        if (isDuplicateName(registerName)) throw new DuplicateUsernameException();
+        if (isDuplicateName(registerName)) throw new DuplicateEmailException();
     }
 
     @Override
@@ -71,10 +62,6 @@ public class MemberServiceImpl implements MemberService{
         if (isDuplicateNickname(nickname)) throw new DuplicateNicknameException();
     }
 
-    @Override
-    public void validateRegistrationEmail(String email) throws DuplicateEmailException{
-        if (isDuplicateEmail(email)) throw new DuplicateEmailException();
-    }
     //=============================================================================================
     private boolean isDuplicateName(String name){
         return memberRepository.existsByUsername(name);
@@ -84,14 +71,6 @@ public class MemberServiceImpl implements MemberService{
         return memberRepository.existsByNickname(nickname);
     }
 
-    private boolean isDuplicateEmail(String email){
-        return memberRepository.existsByEmail(email);
-    }
-
-    private boolean isValidNameFormat(String name) {
-        String regex = "^[a-z]{1}[a-z0-9]{5,10}+$";
-        return Pattern.matches(regex, name);
-    }
     private boolean isValidNicknameFormat(String nickname){
         Integer length = nickname.length();
         log.info("nickname : {}", nickname);
@@ -102,11 +81,12 @@ public class MemberServiceImpl implements MemberService{
     private void validateMemberRegistration(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
         validateRegistrationUsername(member.getUsername());
         validateRegistrationNickname(member.getNickname());
-        validateRegistrationEmail(member.getEmail());
     }
 
     private void validateMemberModification(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
         validateNicknameModification(member);
-        validateEmailModification(member);
     }
+
+
+    //TODO : 비밀번호 검증하는 부분이 있어야 함
 }

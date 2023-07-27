@@ -10,9 +10,7 @@ public interface MemberService {
     void modify(Member member) throws Exception;
     Optional<Member> findByName(String username);
     void validateNicknameModification(Member member) throws Exception;
-    void validateEmailModification(Member member) throws  Exception;
 
     void validateRegistrationUsername(String registerUsername) throws Exception;
     void validateRegistrationNickname(String email) throws Exception;
-    void validateRegistrationEmail(String nickname) throws Exception;
 }

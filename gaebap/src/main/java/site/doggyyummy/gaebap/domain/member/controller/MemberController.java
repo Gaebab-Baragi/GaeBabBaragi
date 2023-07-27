@@ -39,16 +39,10 @@ public class MemberController {
 
     //=================================================================================
 
-    @PostMapping("/register/id")
-    public ResponseEntity<String> validateRegisterId(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
-        memberService.validateRegistrationUsername(registerDTO.getRegisterName());
-        return new ResponseEntity<>("사용 가능한 아이디입니다.", HttpStatus.OK);
-    }
-
-    @PostMapping("/register/email")
+    @PostMapping("/register/username")
     public ResponseEntity<String> validateRegisterEmail(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
-        memberService.validateRegistrationEmail(registerDTO.getEmail());
-        return new ResponseEntity<>(memberMailService.sendEmail(registerDTO.getEmail()), HttpStatus.OK);
+        memberService.validateRegistrationUsername(registerDTO.getRegisterName());
+        return new ResponseEntity<>(memberMailService.sendEmail(registerDTO.getRegisterName()), HttpStatus.OK);
     }
 
     @PostMapping("/register/nickname")
@@ -62,12 +56,6 @@ public class MemberController {
     public ResponseEntity<String> modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
         memberService.modify(MemberModifyDTO.toEntity(modifyDTO));
         return new ResponseEntity<>("회원 정보 수정에 성공했습니다.", HttpStatus.OK);
-    }
-
-    @PostMapping("/modify/email")
-    public ResponseEntity<String> validateModifyEmail(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
-        memberService.validateRegistrationEmail(modifyDTO.getEmail());
-        return new ResponseEntity<>(memberMailService.sendEmail(modifyDTO.getEmail()), HttpStatus.OK);
     }
 
     @PostMapping("/modify/nickname")

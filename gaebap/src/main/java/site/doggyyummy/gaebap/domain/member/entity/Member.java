@@ -33,9 +33,6 @@ public class Member {
     @Column (unique = true, nullable = false)
     private String nickname;
 
-    @Column (unique = true, nullable = false)
-    private String email;
-
     @Column
     private String authority;
 
