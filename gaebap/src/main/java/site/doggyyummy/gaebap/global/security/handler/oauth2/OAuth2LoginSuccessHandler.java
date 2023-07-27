@@ -27,7 +27,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         try {
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
             //TODO 첫 로그인의 경우는 생각해봐야 됨 -> 필요한 정보 채우는 페이지로
-            loginSuccess(response, oAuth2User);
+            String accessToken = jwtService.createAccessToken(oAuth2User.getName());
+            response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+            response.sendRedirect("oauth2/sign-up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
+
+            jwtService.sendAccessAndRefreshToken(response, accessToken, null);
+            //loginSuccess(response, oAuth2User);
         } catch (Exception e){
            throw e;
         }
