@@ -85,7 +85,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void saveAuthentication(Member member) {
         log.info("saveAuthentication() 호출");
         String password = member.getPassword();
-        if (password == null) { // 소셜 로그인 유저의 비밀번호 임의로 설정 하여 소셜 로그인 유저도 인증 되도록 설정
+        if (password == null) {
             password = PasswordUtil.generateRandomPassword();
         }
 

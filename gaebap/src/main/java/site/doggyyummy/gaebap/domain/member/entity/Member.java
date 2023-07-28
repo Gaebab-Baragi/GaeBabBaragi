@@ -75,9 +75,6 @@ public class Member {
                 ", authority='" + authority + '\'' +
                 ", profileUrl='" + profileUrl + '\'' +
                 ", registerDate=" + registerDate +
-                ", recipes=" + recipes +
-                ", bookmarks=" + bookmarks +
-                ", pets=" + pets +
                 ", hostedMeeting=" + hostedMeeting +
                 ", refreshToken='" + refreshToken + '\'' +
                 '}';
