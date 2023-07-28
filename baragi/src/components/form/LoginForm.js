@@ -5,6 +5,7 @@ import './BasicForm.css'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
+import SocialLogin from '../social/SocialLogin';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ function LoginForm() {
       axios.defaults.headers.common['Authorization'] =  accessToken;
       if (res.status === 200){
         let data = res.data;
+        console.log(data);
         dispatch(loginUser(data))
         navigate('/');
       }
@@ -95,8 +97,8 @@ function LoginForm() {
 
         {/* 구글 로그인 */}
         <div className="formGroup">
-          <a href = "/login/oauth2/code/google"> 구글</a>
-          <button className='testbutton' onClick={letsTest}>테스트요 </button>
+          <SocialLogin/>
+          <button type="button" onClick={letsTest}>테스트입니다</button>
         </div>
       </form>
     </div>
