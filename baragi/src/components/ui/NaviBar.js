@@ -1,15 +1,30 @@
 /* eslint-disable */
+import axios from 'axios';
 import './NaviBar.css';
 import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
-
+import { Routes, Route, Link, useNavigate, Outlet, useResolvedPath } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 function NaviBar() {
     let navigate = useNavigate();
+    const user = useSelector((state) => state.user);
+
+    function logout(){
+      axios.get("/member/logout")
+      .then((res) => {
+        console.log(user);
+        console.log("로그아웃")
+      })
+      .catch((res) => {
+        console.log(res);
+        console.log("로그아웃 실패")
+      })
+    }
+    
     return (
       <>
         <Navbar sticky="top" expand="lg" style={{backgroundColor: 'white'}}>
@@ -37,6 +52,7 @@ function NaviBar() {
               <Nav>
                 <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='list2' >로그인</Nav.Link>
                 <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='list2' >회원가입</Nav.Link>
+                <Nav.Link onClick={logout} eventKey={5} className='list2' >로그아웃</Nav.Link>
               </Nav>
           </Navbar.Collapse>
           </Container>
