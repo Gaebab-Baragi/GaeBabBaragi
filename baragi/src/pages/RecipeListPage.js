@@ -19,14 +19,14 @@ function RecipeListPage() {
         <SearchBar data={BookData}/>
         <IngredientTagBar/> 
         <DogSelectBar/>
+        <button onClick={()=>navigate('/recipe-regist')}>레시피 작성</button>
       </div>
     {
-      filtered
+     filtered
       // 검색 --> 레시피 목록 보이게
       ? 
       <div>
         <h2>총 100 건의 레시피가 있습니다.</h2>
-        <button onClick={()=>navigate('/recipe-regist')}>레시피 작성</button>
         <CardPaginationList rowNum={3} />
       </div>
       // 첫 화면 --> 인기 레시피 캐로셀로 보여주기
