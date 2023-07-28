@@ -362,8 +362,35 @@ public class RecipeService {
 
     @Transactional(readOnly = true)
     public RecipeSearchLikeResponseDto searchRecipeLike(RecipeSearchLikeRequestDto reqDto){
-        List<Recipe> recipes = recipeRepository.findByTitleContaining(reqDto.getTitle());
-        return new RecipeSearchLikeResponseDto(recipes);
+        if(reqDto.getIngredients()==null){
+            List<Recipe> recipes = recipeRepository.findByTitleContaining(reqDto.getTitle());
+            return new RecipeSearchLikeResponseDto(recipes);
+        }else{
+            List<RecipeSearchLikeRequestDto.IngredientDto> ingredients = reqDto.getIngredients();
+            List<String> ingredientsName=new ArrayList<>();
+            for(RecipeSearchLikeRequestDto.IngredientDto i:ingredients){
+                ingredientsName.add(i.getName());
+                System.out.println("i.getName() = " + i.getName());
+            }
+            List<Object[]> resultList= recipeIngredientRepository.findRecipesWithIngredientsAndTitle(ingredientsName,reqDto.getTitle(),ingredientsName.size());
+
+            List<Recipe> recipes = new ArrayList<>();
+
+            for (Object[] result : resultList) {
+                Long count = (Long) result[0];
+                Long recipeId = (Long) result[1];
+
+                Recipe recipe = new Recipe();
+                // 이후 Recipe 엔티티의 필드에 값을 설정하는 로직 추가
+                // recipe.setCount(count);
+                recipe.setId(recipeId);
+                recipe.setTitle(recipeRepository.findById(recipeId).get().getTitle());
+                recipe.setMember(recipeRepository.findById(recipeId).get().getMember());
+                recipes.add(recipe);
+            }
+            return new RecipeSearchLikeResponseDto(recipes);
+        }
+
     }
 
 }
