@@ -19,12 +19,8 @@ import MainPage from './pages/MainPage';
 import FindIdPage from './pages/FindIdPage';
 import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
-<<<<<<< HEAD
-
-
-=======
 import Streaming from './streaming/Streaming';
->>>>>>> e5eae5205e356ad0fd7549c8e8938b4f803a44a2
+
 // -------------------PAGES-------------------//
 
 import Test2 from './components/ui/InputImage'
@@ -48,13 +44,9 @@ function App() {
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming' element={<StreamingPage/>}></Route>
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
-<<<<<<< HEAD
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/mypetregister' element={<MyPetRegisterPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
-=======
-        <Route path='/streaming-test' element={<Streaming/>}></Route>
->>>>>>> e5eae5205e356ad0fd7549c8e8938b4f803a44a2
         <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>
 
