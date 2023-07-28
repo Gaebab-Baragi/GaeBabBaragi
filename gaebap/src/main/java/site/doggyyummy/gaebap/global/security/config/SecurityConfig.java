@@ -29,6 +29,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.CustomOAuth2User;
 import site.doggyyummy.gaebap.global.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
@@ -92,7 +93,7 @@ public class SecurityConfig {
                 .oauth2Login((oauth2login) ->
                     oauth2login
                             .successHandler(oAuth2LoginSuccessHandler)
-                            .defaultSuccessUrl("/")
+                            .defaultSuccessUrl("http://localhost:3000")
                             .failureHandler(oAuth2LoginFailureHandler)
                             .userInfoEndpoint((endpoint) ->
                                     endpoint.userService(customOAuth2UserService))
@@ -100,7 +101,7 @@ public class SecurityConfig {
                 .logout((logout) ->
                         logout
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                                .logoutSuccessUrl("/")
+                                .logoutSuccessUrl("http://localhost:3000")
                                 .invalidateHttpSession(true)
                 );
 
@@ -153,5 +154,7 @@ public class SecurityConfig {
                 = new JwtAuthenticationFilter(jwtService, memberRepository);
         return jwtAuthenticationFilter;
     }
+
+
 
 }
