@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 
-const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000/';
+const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:9999/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
 
 class Streaming extends Component {
@@ -335,7 +335,7 @@ class Streaming extends Component {
     }
 
     async createSession(sessionId) {
-        const response = await axios.post('api/sessions', { customSessionId: sessionId }, {
+        const response = await axios.post(APPLICATION_SERVER_URL + 'meetings/sessions', { customSessionId: sessionId }, {
             headers: { 
               'Content-Type': 'application/json', 
           },
@@ -344,7 +344,7 @@ class Streaming extends Component {
     }
 
     async createToken(sessionId) {
-        const response = await axios.post('api/sessions/' + sessionId + '/connections', {}, {
+        const response = await axios.post(APPLICATION_SERVER_URL + 'meetings/sessions/' + sessionId + '/connections', {}, {
             headers: { 
               'Content-Type': 'application/json', 
             },
