@@ -7,8 +7,7 @@ import "./SearchBar.css";
 import SearchIcon from '@mui/icons-material/Search';
 import '@mui/icons-material'
 import { useDispatch } from "react-redux";
-import {updateKeyword, requestFilteredRecipeList} from "../../redux/searchRecipeSlice";
-import useDidMountEffect from "../../useDidMountEffect";
+import {updateKeyword} from "../../redux/searchRecipeSlice";
 
 function SearchBar({  data }) {
   const [filteredData, setFilteredData] = useState([]);
@@ -16,28 +15,30 @@ function SearchBar({  data }) {
   const [needSearch, setNeedSearch] = useState(true);
   const dataResultRef = useRef(null);
   const dispatch = useDispatch();
-  
 
   useEffect(()=>{
     dispatch(updateKeyword(wordEntered))
   }, [wordEntered])
 
+   // Add event listeners to the document when the component mounts
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      // Remove the event listeners when the component unmounts
       document.removeEventListener("click", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
-  // esc 키 누르거나 빈 화면 누를 때 dataResult 창 없애기
+  // Handle clicks outside the dataResult div
   const handleClickOutside = (event) => {
     if (dataResultRef.current && !dataResultRef.current.contains(event.target)) {
+      // Click occurred outside the dataResult div, so close it
       setFilteredData([]);
     }
   };
+  // Handle keydown (e.g., Esc key)
   const handleKeyDown = (event) => {
     if (event.keyCode === 27) {
       // 27 is the keyCode for the Esc key
@@ -71,13 +72,6 @@ function SearchBar({  data }) {
     setWordEntered("");
   };
 
-  //===================== axios 요청 보내기=====================//
-  const handleRequestFilteredList  = (e)=>{
-    e.preventDefault();
-    dispatch(requestFilteredRecipeList())
-  }
-
-
   return (
 
     <div className="search">
@@ -89,7 +83,7 @@ function SearchBar({  data }) {
           value={wordEntered}
           onChange={handleFilter}
         />
-        <div onClick={handleRequestFilteredList} className="searchIcon">
+        <div className="searchIcon">
           <SearchIcon/>
         </div>
       </div>
@@ -105,6 +99,8 @@ function SearchBar({  data }) {
               );
             })}
           </div>
+
+        // </div>
       )}
     </div>
   );

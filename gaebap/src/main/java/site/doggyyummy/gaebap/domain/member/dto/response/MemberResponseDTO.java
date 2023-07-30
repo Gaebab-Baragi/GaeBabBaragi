@@ -2,11 +2,16 @@ package site.doggyyummy.gaebap.domain.member.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.pet.entity.Pet;
+import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
+
+import java.util.List;
 
 @Getter
 @Builder

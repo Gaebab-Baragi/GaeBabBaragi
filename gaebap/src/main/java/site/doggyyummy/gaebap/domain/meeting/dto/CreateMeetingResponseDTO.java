@@ -18,7 +18,7 @@ public class CreateMeetingResponseDTO {
     private String password;
 
     @JsonProperty("max_participant")
-    private int maxParticipant;
+    private Long maxParticipant;
 
     private String title;
 

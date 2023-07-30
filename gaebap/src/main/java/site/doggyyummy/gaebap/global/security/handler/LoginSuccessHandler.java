@@ -34,6 +34,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value("${jwt.access.expiration}")
     private String accessTokenExpiration;
 
+   /*
+    * 로그인 화면으로 오기 전의 페이지를 저장해놓고 거기로 redirect함
+    */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         String username = extractUsername(authentication);

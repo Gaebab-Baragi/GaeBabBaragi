@@ -1,27 +1,20 @@
-import React, { useState ,useEffect} from 'react';
-import { useDispatch } from 'react-redux';
-import {requestRecipeTitle, requestFoodName, requestRecipeInformation} from '../../redux/inforSlice'
+import React, { useState } from 'react';
 
 function InputInfor() {
-  const dispatch = useDispatch();
-
   const [recipeName, setRecipeName] = useState('');
   const [foodName, setFoodName] = useState('');
   const [recipeIntro, setRecipeIntro] = useState('');
 
   const handleRecipeNameChange = (e) => {
     setRecipeName(e.target.value);
-    dispatch(requestRecipeTitle(e.target.value));
   };
 
   const handleFoodNameChange = (e) => {
     setFoodName(e.target.value);
-    dispatch(requestFoodName(e.target.value));
   };
 
   const handleRecipeIntroChange = (e) => {
     setRecipeIntro(e.target.value);
-    dispatch(requestRecipeInformation(e.target.value));
   };
 
   const handleSubmit = (e) => {
@@ -42,7 +35,7 @@ function InputInfor() {
           
           <label htmlFor="recipeName" style={{width:'15%'}} >레시피 제목:</label>
           <input
-            type="text"
+            type="textarea"
             id="recipeName"
             name="recipeName"
             value={recipeName}

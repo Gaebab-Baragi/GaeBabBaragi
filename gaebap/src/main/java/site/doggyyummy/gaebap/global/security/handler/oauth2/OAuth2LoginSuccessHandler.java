@@ -20,11 +20,13 @@ import java.io.IOException;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
+    private final MemberRepository memberRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         try {
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+            //TODO 첫 로그인의 경우는 생각해봐야 됨 -> 필요한 정보 채우는 페이지로
             loginSuccess(response, oAuth2User);
         } catch (Exception e){
            throw e;

@@ -3,7 +3,6 @@ import './BasicForm.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios';
-import SocialLogin from '../social/SocialLogin';
 
 function SignupForm() {
   const navigate = useNavigate();
@@ -105,7 +104,7 @@ function SignupForm() {
       }
     })
     .catch((res) => {
-      res = res.response;
+      res = res.status;
       if (res.status === 454) alert("잘못된 이메일입니다.")
       else if (res.status === 455) alert("이미 사용중인 이메일입니다.")
       else alert("이유를 알 수 없는 오류");
@@ -217,7 +216,7 @@ function SignupForm() {
 
         {/* 구글 로그인 */}
         <div className="formGroup">
-            <SocialLogin/>
+          구글 로그인 임
         </div>
       </form>
     </div>

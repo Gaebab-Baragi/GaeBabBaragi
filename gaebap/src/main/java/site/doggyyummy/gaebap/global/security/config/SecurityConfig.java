@@ -1,7 +1,6 @@
 package site.doggyyummy.gaebap.global.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,12 +23,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.CustomOAuth2User;
 import site.doggyyummy.gaebap.global.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
@@ -57,8 +53,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web
-                .ignoring().requestMatchers("/member/register/**");
+        return (web) -> web.ignoring().requestMatchers("/member/register/**");
     }
 
     @Bean
@@ -93,17 +88,9 @@ public class SecurityConfig {
                 .oauth2Login((oauth2login) ->
                     oauth2login
                             .successHandler(oAuth2LoginSuccessHandler)
-                            .defaultSuccessUrl("http://localhost:3000")
                             .failureHandler(oAuth2LoginFailureHandler)
-                            .failureUrl("http://localhost:3000/login")
                             .userInfoEndpoint((endpoint) ->
                                     endpoint.userService(customOAuth2UserService))
-                )
-                .logout((logout) ->
-                        logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                                .logoutSuccessUrl("http://localhost:3000")
-                                .invalidateHttpSession(true)
                 );
 
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
@@ -155,7 +142,5 @@ public class SecurityConfig {
                 = new JwtAuthenticationFilter(jwtService, memberRepository);
         return jwtAuthenticationFilter;
     }
-
-
 
 }
