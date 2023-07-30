@@ -19,7 +19,7 @@ public class CreateMeetingRequestDTO {
     private String password;
 
     @JsonProperty("max_participant")
-    private int maxParticipant;
+    private Long maxParticipant;
 
     private String title;
 
@@ -53,7 +53,6 @@ public class CreateMeetingRequestDTO {
                 .startTime(this.startTime)
                 .recipe(recipe)
                 .status(Status.SCHEDULED)
-                .currentParticipants(0)
                 .build();
 
         return meeting;

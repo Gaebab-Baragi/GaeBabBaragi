@@ -30,13 +30,12 @@ public class KakaoUserInfo extends OAuth2UserInfo {
 
         if (account == null || profile == null) return null;
 
-        return (String) profile.get("profile_image_url");
+        return (String) profile.get("thumbnail_image_url");
 
     }
 
     @Override
     public String getEmail() {//카카오는 이메일 필수로 하려면 검수받아야 돼서 어떻게 될지는 모름
-        Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
-        return String.valueOf(account.get("email"));
+        return String.valueOf(attributes.get("email"));
     }
 }

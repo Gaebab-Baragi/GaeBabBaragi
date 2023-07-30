@@ -2,8 +2,8 @@ import React, {useCallback, useEffect, useState} from "react";
 import { ReactTags } from "react-tag-autocomplete";
 import './IngredientTagBar.css'
 import { useDispatch } from "react-redux";
-import { updateIngredients, requestFilteredRecipeList } from "../../redux/searchRecipeSlice";
-import useDidMountEffect from "../../useDidMountEffect";
+import { updateIngredients } from "../../redux/searchRecipeSlice";
+
 
 function IngredientTagBar() {
   const [selected, setSelected] = useState([]);
@@ -11,10 +11,6 @@ function IngredientTagBar() {
 
   useEffect(()=>{
     dispatch(updateIngredients(selected))
-  }, [selected])
-
-  useDidMountEffect(()=>{
-    dispatch(requestFilteredRecipeList())
   }, [selected])
 
   // 재료 리스트 받아와주기

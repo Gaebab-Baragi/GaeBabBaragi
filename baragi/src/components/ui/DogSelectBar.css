@@ -2,35 +2,29 @@
   /* border: ; */
   width: 450px;
   height: auto;
-  border: 2px solid black;
+  border: 2px solid #afb8c1;
   border-radius: 10px;
   background: #ffffff;
   
 }
 
 .dogContainerHeader {
-  margin: 5px 10px;
-  height: auto;
   display: flex;
-  justify-content: space-between;
-}
 
-.addDogButton {
-  size: 100px;
-  /* height: 25px; */
-  background-color: white;
-  border: none;
 }
 
 .dogContainerSeperator {
-  margin-top: 0px;
-  margin-bottom: 10px;
+  margin: 10px;
 }
 
 
+.dogContainerTitle {
+  display: flex;
+  
+}
+
 .dogImageContainer {
   display: flex;
-  margin-top: 0px;
   margin-bottom: 10px;
 }
 
@@ -39,9 +33,4 @@
   width: 80px;
   border: 2px solid black;
   border-radius: 100px;
-}
-
-.dogImage.selected {
-  /* Styles for the selected image */
-  border-color:cadetblue; /* Change the border color for selected images */
 }
