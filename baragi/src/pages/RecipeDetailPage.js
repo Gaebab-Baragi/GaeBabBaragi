@@ -11,6 +11,7 @@ function RecipeDetailPage() {
                 <span>재료 리스트 뽑아서 하나씩 예정</span>
             </div>
         </div>
+        
         </>
       );
     }
