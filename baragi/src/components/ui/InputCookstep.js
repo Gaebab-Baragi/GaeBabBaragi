@@ -10,8 +10,8 @@ function InputCookstep({step}) {
     <div style={{ display: 'flex', justifyContent: 'space-between', width : '200%' , alignItems: 'center'}}>
       <label htmlFor="Cookstep" style={{ }}>{`STEP${step}:`}</label>
       <textarea
-        // rows="5" // 여러 줄 입력 필드의 높이를 5줄로 설정  
-        // cols="30" // 여러 줄 입력 필드의 너비를 30글자로 설정
+        rows="5" // 여러 줄 입력 필드의 높이를 5줄로 설정  
+        cols="30" // 여러 줄 입력 필드의 너비를 30글자로 설정
 
         id="Cookstep"
         name="Cookstep"

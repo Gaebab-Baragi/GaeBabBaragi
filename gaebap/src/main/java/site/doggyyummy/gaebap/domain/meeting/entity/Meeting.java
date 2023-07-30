@@ -23,7 +23,7 @@ public class Meeting {
     private String password;
 
     @Column
-    private Long maxParticipant;
+    private int maxParticipant;
 
     @Column(nullable = false)
     private String title;
@@ -44,4 +44,5 @@ public class Meeting {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private int currentParticipants;
 }
