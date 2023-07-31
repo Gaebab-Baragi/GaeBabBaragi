@@ -17,7 +17,7 @@ public class CustomOAuth2User extends DefaultOAuth2User {
 
     @Override
     public String getName() {
-        return super.getName();
+        return member.getUsername();
     }
 
     @Override
@@ -28,21 +28,6 @@ public class CustomOAuth2User extends DefaultOAuth2User {
     @Override
     public Map<String, Object> getAttributes() {
         return super.getAttributes();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 
     @Override

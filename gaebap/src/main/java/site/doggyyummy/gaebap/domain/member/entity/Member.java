@@ -60,17 +60,23 @@ public class Member {
     @Column
     private String refreshToken;
 
-    @Column (unique = true)
-    private String googleAccount;
-
-    @Column (unique = true)
-    private String kakaoAccount;
-
-    @Column (unique = true)
-    private String naverAccount;
-
     public void updateRefreshToken(String refreshToken){
        this.refreshToken = refreshToken;
     }
 
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", authority='" + authority + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", registerDate=" + registerDate +
+                ", hostedMeeting=" + hostedMeeting +
+                ", refreshToken='" + refreshToken + '\'' +
+                '}';
+    }
 }
