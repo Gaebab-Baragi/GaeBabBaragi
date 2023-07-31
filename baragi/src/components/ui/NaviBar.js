@@ -41,7 +41,7 @@ function NaviBar() {
                   <NavDropdown.Item onClick={()=>{navigate('/mypetregister')}} eventKey={6}></NavDropdown.Item>
                   <NavDropdown.Item onClick={()=>{navigate('/myrecipe')}} eventKey={7}>나의/내가 찜한 레시피</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={()=>{navigate('')}}> 로그아웃 </NavDropdown.Item>
+                  <NavDropdown.Item onClick={()=>{navigate('/logout')}}> 로그아웃 </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
               )
