@@ -16,9 +16,10 @@ const LogoutHandler= () => {
         .then((res) => {
             console.log(res);
             if (res.status === 200){
+                window.sessionStorage.clear();
                 dispatch(clearUser());
                 alert("로그아웃되었습니다.");
-                navigate("/");
+                navigate("/", {replace : true});
             }
         })
         .catch((res) => {
@@ -26,7 +27,7 @@ const LogoutHandler= () => {
         })
     }, [])
 
-    return (<div> 안녕 </div>);
+    return (<div> 빠이요 </div>);
 }
 
 export default LogoutHandler;

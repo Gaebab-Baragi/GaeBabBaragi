@@ -1,7 +1,9 @@
+import MemberModification from "../components/form/MemberModification"
+
 function MyinformationPage() {
     return (
         <div>
-            <div>내 정보 변경</div>
+            <MemberModification></MemberModification>
         </div>
       );
     }

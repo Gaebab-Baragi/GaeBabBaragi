@@ -4,14 +4,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { loginUser } from "../../redux/userSlice";
 
-const SocialLoginSuccessHandler = () => {
+const SocialLoginHandler= () => {
 
     const params = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        
         axios.get("/oauth2/success", {
             params : {token : params.token},
             headers: {'content-type': 'application/json'}
@@ -19,7 +18,7 @@ const SocialLoginSuccessHandler = () => {
         )
         .then((res) => {
             if (res.status === 200){
-                axios.defaults.headers.common['Authorization'] = params.token;
+                axios.defaults.headers.common['authorization'] = params.token;
                 dispatch(loginUser(res.data));
                 navigate("/");
             }
@@ -32,4 +31,4 @@ const SocialLoginSuccessHandler = () => {
     return (<div> 안녕 </div>);
 }
 
-export default SocialLoginSuccessHandler;
+export default SocialLoginHandler;

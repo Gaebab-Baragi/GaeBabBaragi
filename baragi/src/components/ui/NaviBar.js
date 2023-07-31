@@ -38,7 +38,7 @@ function NaviBar() {
               <Nav>
                 <NavDropdown title="내 프로필" id="basic-nav-dropdown" className='list2'>
                   <NavDropdown.Item onClick={()=>{navigate('/myinformation')}} eventKey={5}>내 정보변경</NavDropdown.Item>
-                  <NavDropdown.Item onClick={()=>{navigate('/mypetregister')}} eventKey={6}></NavDropdown.Item>
+                  <NavDropdown.Item onClick={()=>{navigate('/mypetregister')}} eventKey={6}>반려견 등록</NavDropdown.Item>
                   <NavDropdown.Item onClick={()=>{navigate('/myrecipe')}} eventKey={7}>나의/내가 찜한 레시피</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={()=>{navigate('/logout')}}> 로그아웃 </NavDropdown.Item>
