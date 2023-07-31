@@ -10,9 +10,8 @@ const SocialLoginSuccessHandler = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    console.log("here");
     useEffect(() => {
-        console.log(params.token);
+        console.log("token: " + params.token);
         axios.defaults.headers.common['Authorization'] = params.token;
         
         axios.get("/oauth2/success", {
