@@ -6,10 +6,12 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 
 function NaviBar() {
     let navigate = useNavigate();
+    let user = useSelector((state) => state.user);
     return (
       <>
       
@@ -23,25 +25,27 @@ function NaviBar() {
             <Nav className='mx-auto'>
               <Nav.Link onClick={()=>{navigate('/recipe-list')}} className='list1'>레시피</Nav.Link>
               <Nav.Link onClick={()=>{navigate('/streaming')}}  className='list1'>스트리밍</Nav.Link>
-              </Nav>
-              <Nav>
-
+            </Nav>
                 {/* 로그인 X인경우 */}
-                <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='list2' >로그인</Nav.Link>
-                <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='list2' >회원가입</Nav.Link>
-                {/* 로그인 0인 경우 */}
+            {
+              !user.isLogin ? ( 
+                <Nav>
+                  <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='list2' >로그인</Nav.Link>
+                  <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='list2' >회원가입</Nav.Link>
+                </Nav>
+              )
+              : (
+              <Nav>
                 <NavDropdown title="내 프로필" id="basic-nav-dropdown" className='list2'>
-                <NavDropdown.Item onClick={()=>{navigate('/myinformation')}} eventKey={5}>내 정보변경</NavDropdown.Item>
-                <NavDropdown.Item onClick={()=>{navigate('/mypetregister')}} eventKey={6}>
-                  반려견 등록
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={()=>{navigate('/myrecipe')}} eventKey={7}>나의/내가 찜한 레시피</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={()=>{navigate('')}}>
-                  로그아웃
-                </NavDropdown.Item>
-              </NavDropdown>
+                  <NavDropdown.Item onClick={()=>{navigate('/myinformation')}} eventKey={5}>내 정보변경</NavDropdown.Item>
+                  <NavDropdown.Item onClick={()=>{navigate('/mypetregister')}} eventKey={6}></NavDropdown.Item>
+                  <NavDropdown.Item onClick={()=>{navigate('/myrecipe')}} eventKey={7}>나의/내가 찜한 레시피</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={()=>{navigate('')}}> 로그아웃 </NavDropdown.Item>
+                </NavDropdown>
               </Nav>
+              )
+            }
           </Navbar.Collapse>
           </Container>
         </Navbar>

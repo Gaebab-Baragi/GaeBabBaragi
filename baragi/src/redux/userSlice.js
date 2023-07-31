@@ -8,7 +8,8 @@ let user= createSlice({
     username: '', // string
     nickname :' ',
     profileUrl: '',
-    hostedMeeting: ''
+    hostedMeeting: '',
+    isLogin : false
   },
   reducers:{
     loginUser: (state, action)=>{
@@ -17,10 +18,15 @@ let user= createSlice({
       state.nickname = action.payload.nickname;
       state.profileUrl= action.payload.profileUrl;
       state.hostedMeeting = action.payload.hostedMeeting;
-      console.log(action.payload);
+      state.isLogin = true;
     },
     clearUser: (state) =>{
-      // state update
+      state.id = '';
+      state.username = '';
+      state.nickname = '';
+      state.profileUrl = '';
+      state.hostedMeeting = '';
+      state.isLogin = false;
     }
   }
 })
