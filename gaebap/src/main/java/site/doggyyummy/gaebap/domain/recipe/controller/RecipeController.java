@@ -29,12 +29,6 @@ public class RecipeController {
         return recipeService.findRecipeByMemberId(id);
     }
 
-    //임시 회원 등록
-    @PostMapping("/members/new")
-    public SignupResponseDto signUp(@RequestBody SignupRequestDto reqDto){
-        return recipeService.signUp(reqDto);
-    }
-
     //레시피 전체 조회 (레시피 제목, 작성자)
     @GetMapping("/recipes")
     public RecipeAllResponseDto allRecipes(){
@@ -59,5 +53,11 @@ public class RecipeController {
     public String s3DeleteAll(){
         recipeService.s3DeleteAll();
         return "ok";
+    }
+
+    //레시피 검색 like with title
+    @PostMapping("/recipes/searchlike")
+    public RecipeSearchLikeResponseDto searchRecipeLikeTitle(@RequestBody RecipeSearchLikeRequestDto reqDto){
+        return recipeService.searchRecipeLike(reqDto);
     }
 }
