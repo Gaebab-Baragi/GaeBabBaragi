@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
@@ -14,6 +15,8 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 import site.doggyyummy.gaebap.domain.recipe.entity.RecipeIngredient;
 import site.doggyyummy.gaebap.domain.recipe.entity.Step;
+import site.doggyyummy.gaebap.domain.recipe.exception.NotFoundRecipeException;
+import site.doggyyummy.gaebap.domain.recipe.exception.UnauthorizedException;
 import site.doggyyummy.gaebap.domain.recipe.repository.IngredientRepository;
 import site.doggyyummy.gaebap.domain.recipe.repository.RecipeIngredientRepository;
 import site.doggyyummy.gaebap.domain.recipe.repository.RecipeRepository;
@@ -38,22 +41,51 @@ public class RecipeService {
     private final AmazonS3 awsS3Client;
 
 
-    //레시피 등록 (대표 이미지, 스텝 별 이미지, 시연 영상 not included)
-    @Transactional
+    //레시피 등록
+    //예외가 발생해도 DB에서 id는 계속 증가하는 문제 발생.. 어캐 해결하지 ㅅㅂ
+    @Transactional(rollbackFor = IllegalArgumentException.class)
     public RecipeUploadResponseDto uploadRecipe(RecipeUploadRequestDto reqDto){
+        //로그인 안되어있으면 로그인 exception handling
         Optional<Member> findMeberById = memberRepository.findById(reqDto.getMember().getId());
+
+        Recipe recipe=new Recipe();
+        if(reqDto.getTitle()==null || reqDto.getTitle().equals("")){
+            throw new IllegalArgumentException("제목을 입력하세요");
+        }else {
+            recipe.setTitle(reqDto.getTitle());
+        }
+        if(reqDto.getDescription()==null || reqDto.getDescription().equals("")){
+            throw new IllegalArgumentException("설명을 입력하세요");
+        }else{
+            recipe.setDescription(reqDto.getDescription());
+        }
+        if(reqDto.getImgLocalPath()==null || reqDto.getImgLocalPath().equals("")){
+            throw new IllegalArgumentException("대표 사진을 등록해주세요");
+        }
+
         List<Step> steps=new ArrayList<>();
         for(RecipeUploadRequestDto.StepDto s:reqDto.getSteps()){
+            if(s.getDescription()==null || s.getDescription().equals("")){
+                throw new IllegalArgumentException("조리 순서에 대한 설명을 작성해주세요");
+            }
             Step step=new Step();
             step.setOrderingNumber(s.getOrderingNumber());
             step.setDescription(s.getDescription());
             step.setImgUrl(s.getImgLocalPath());
             steps.add(step);
-            stepRepository.save(step);
         }
+        stepRepository.saveAll(steps);
+
+        recipe.setMember(findMeberById.get());
+        recipe.setSteps(steps);
+        recipe.setNowTime(LocalDateTime.now());
+        Recipe savedRecipe = recipeRepository.save(recipe);
 
         List<RecipeIngredient> recipeIngredients=new ArrayList<>();
         for(RecipeUploadRequestDto.RecipeIngredientDto r:reqDto.getRecipeIngredients()){
+            if(r.getIngredientName()==null || r.getIngredientName().equals("")){
+                throw new IllegalArgumentException("재료 명을 입력해주세요");
+            }
             Ingredient findIngredient = ingredientRepository.findByName(r.getIngredientName());
             //이미 ingredient 테이블에 같은 이름이 있는 데이터는 저장 X
             Ingredient ingredient=new Ingredient();
@@ -68,21 +100,11 @@ public class RecipeService {
             recipeIngredient.setAmount(r.getAmount());
             recipeIngredient.setIngredient(ingredient);
             recipeIngredients.add(recipeIngredient);
-            recipeIngredientRepository.save(recipeIngredient);
         }
-
-        Recipe recipe=new Recipe();
-        recipe.setTitle(reqDto.getTitle());
-        recipe.setDescription(reqDto.getDescription());
-        recipe.setMember(findMeberById.get());
-        recipe.setSteps(steps);
-        recipe.setNowTime(LocalDateTime.now());
+        recipeIngredientRepository.saveAll(recipeIngredients);
         recipe.setRecipeIngredients(recipeIngredients);
-
-        Recipe savedRecipe = recipeRepository.save(recipe);
-
         //레시피 대표 사진 및 동영상 업로드
-        uploadModifyS3Object(null,reqDto.getImgLocalPath(),savedRecipe,true,null);
+        uploadModifyS3Object(null, reqDto.getImgLocalPath(), savedRecipe, true, null);
         uploadModifyS3Object(null,reqDto.getVideoLocalPath(),savedRecipe,false,null);
         for(Step step:steps){
             uploadModifyS3Object(null,step.getImgUrl(),savedRecipe,false,step);
@@ -90,15 +112,19 @@ public class RecipeService {
         }
         savedRecipe.setSteps(steps);
         savedRecipe = recipeRepository.save(recipe);
-        return new RecipeUploadResponseDto(savedRecipe.getTitle(),findMeberById.get());
+        return new RecipeUploadResponseDto(savedRecipe.getTitle(),findMeberById.get(),HttpStatus.SC_OK,"upload success");
     }
 
     //레시피 id로 조회 (레시피 제목, 설명,재료, steps, 작성자 이름)
+    //readOnly=true일 때, 지연 로딩 불가 !!! -> 이거 해결 어캐하지
     @Transactional(readOnly = true)
     public RecipeFindByIdResponseDto findRecipeByRecipeId(Long id){
-        //hit 증가
-        recipeRepository.addHits(id);
+
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
+        if(!findRecipe.isPresent()){
+            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST,"해당 레시피는 존재하지 않습니다.");
+        }
+
         Member member = findRecipe.get().getMember();
         List<Step> steps=findRecipe.get().getSteps();
         List<RecipeIngredient> recipeIngredients=findRecipe.get().getRecipeIngredients();
@@ -111,7 +137,16 @@ public class RecipeService {
 
         return new RecipeFindByIdResponseDto(findRecipe.get(),member,steps,recipeIngredients,ingredients);
     }
-
+    
+    //hit 증가
+    @Transactional
+    public void addHit(Long id){
+        Optional<Recipe> findRecipe = recipeRepository.findById(id);
+        if(!findRecipe.isPresent()){
+            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST,"해당 레시피는 존재하지 않습니다.");
+        }
+        recipeRepository.addHits(id);
+    }
     //작성자 id로 조회 (레시피 제목)
     @Transactional(readOnly = true)
     public RecipeFindByMemberIdResponseDto findRecipeByMemberId(Long id){
@@ -130,24 +165,34 @@ public class RecipeService {
 
     //레시피 삭제
     @Transactional
-    public RecipeDeleteResponseDto deleteRecipe(Long id){
+    public RecipeDeleteResponseDto deleteRecipe(Long id,RecipeDeleteRequestDto reqDto){
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
-
-        //S3에 해당 레시피 이미지 및 동영상 삭제
-        String imgUrl=findRecipe.get().getImageUrl();
-        String[] UrlSegments= imgUrl.split("/");
-        String folderKey= UrlSegments[UrlSegments.length-2]+"/";
-        ObjectListing objectListing = awsS3Client.listObjects("sh-bucket", folderKey);
-        // 폴더 내의 모든 객체들을 삭제
-        for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-            awsS3Client.deleteObject("sh-bucket", objectSummary.getKey());
+        //로그인 안하면 exception 터져
+        //삭제할 findRecipe가 존재하지 않으면 exception 터져 -> 완료
+        if(!findRecipe.isPresent()){
+            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST,"존재하지 않는 레시피입니다.");
         }
-        // 폴더 삭제
-        awsS3Client.deleteObject("sh-bucket", folderKey);
+        if(findRecipe.get().getMember().getId().equals(reqDto.getLoginMember().getId())) {
+            //S3에 해당 레시피 이미지 및 동영상 삭제
+            String imgUrl = findRecipe.get().getImageUrl();
+            String[] UrlSegments = imgUrl.split("/");
+            String folderKey = UrlSegments[UrlSegments.length - 2] + "/";
+            ObjectListing objectListing = awsS3Client.listObjects("sh-bucket", folderKey);
+            // 폴더 내의 모든 객체들을 삭제
+            for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                awsS3Client.deleteObject("sh-bucket", objectSummary.getKey());
+            }
+            // 폴더 삭제
+            awsS3Client.deleteObject("sh-bucket", folderKey);
 
-        recipeRepository.delete(findRecipe.get());
+            recipeRepository.delete(findRecipe.get());
 
-        return new RecipeDeleteResponseDto(findRecipe.get());
+            return new RecipeDeleteResponseDto(findRecipe.get());
+        }
+        else{ //작성자랑 로그인한 회원의 id가 다르면 권한 없는 exceptino 발생
+            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"권한이 없습니다.");
+        }
+
     }
 
     //AWS S3에 사진 or 동영상 업로드 또는 수정 메서드
@@ -209,13 +254,11 @@ public class RecipeService {
                 //s3에 새로운 사진 저장
                 File img=new File(reqUrl);
                 if(step==null) {
-                    System.out.println("대표 사진 or 동영상 수정");
                     String imgKey = recipe.getId().toString() + "/" + img.toPath().getFileName().toString();
                     newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
                     awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
                 }
                 else{
-                    System.out.println("스텝 이미지 수정");
                     String imgKey = recipe.getId() + "/"+step.getId()+"/" + img.toPath().getFileName().toString();
                     newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
                     awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
@@ -238,9 +281,17 @@ public class RecipeService {
     @Transactional
     public void modifyRecipe(Long id,RecipeModifyRequestDto reqDto){
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
+        //해당 레시피 없으면 exception
+        if(!findRecipe.isPresent()){
+            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST,"존재하지 않는 레시피입니다.");
+        }
+
         Recipe recipe = findRecipe.get();
         Member writer = recipe.getMember();
         RecipeModifyRequestDto.MemberDto loginMember = reqDto.getLoginMember();
+        if(loginMember==null){
+            //로그인하라고 exception
+        }
 
         if(loginMember!=null && writer.getId()==loginMember.getId()){
             findRecipe.get().setTitle(reqDto.getTitle());
@@ -335,6 +386,8 @@ public class RecipeService {
             recipeRepository.save(recipe);
         }
         else{//작성자랑 수정하려는 자가 다르면 수정 불가 -> 삭제도 이거 추가해야 함
+            //권한 없음 exception
+            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"권한이 없습니다");
         }
 
     }
@@ -362,9 +415,10 @@ public class RecipeService {
         }
     }
 
+    //레시피 제목은 like 검색, 재료는 equal로 검색
     @Transactional(readOnly = true)
     public RecipeSearchLikeResponseDto searchRecipeLike(RecipeSearchLikeRequestDto reqDto){
-        if(reqDto.getIngredients()==null){
+        if(reqDto.getIngredients()==null || reqDto.getIngredients().size()==0){
             List<Recipe> recipes = recipeRepository.findByTitleContaining(reqDto.getTitle());
             return new RecipeSearchLikeResponseDto(recipes);
         }else{

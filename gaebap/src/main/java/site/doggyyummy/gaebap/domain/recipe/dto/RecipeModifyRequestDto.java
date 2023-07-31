@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.domain.recipe.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.http.HttpStatus;
 
 import java.util.List;
 

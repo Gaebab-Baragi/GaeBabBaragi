@@ -16,6 +16,18 @@ public class RecipeUploadRequestDto {
     private List<RecipeIngredientDto> recipeIngredients;
     private String imgLocalPath;
     private String videoLocalPath;
+    public String getTitle(){
+        if(title==null){
+            return null;
+        }
+        return title.trim();
+    }
+    public String getDescription(){
+        if(description==null){
+            return null;
+        }
+        return description.trim();
+    }
     @Getter
     public static class MemberDto{
         private Long id;
@@ -25,6 +37,13 @@ public class RecipeUploadRequestDto {
     public static class StepDto{
         private Long orderingNumber;
         private String description;
+        public String getDescription(){
+            if(description==null){
+                return null;
+            }
+            return description.trim();
+        }
+
         private String imgLocalPath;
     }
     @Getter
@@ -32,6 +51,12 @@ public class RecipeUploadRequestDto {
         private Long recipeId;
         private Long ingredientId;
         private String ingredientName;
+        public String getIngredientName(){
+            if(ingredientName==null){
+                return null;
+            }
+            return ingredientName.trim();
+        }
         private String amount;
     }
 }

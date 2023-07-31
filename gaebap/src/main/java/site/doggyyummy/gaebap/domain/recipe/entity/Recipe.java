@@ -37,7 +37,6 @@ public class Recipe {
 
     private String imageUrl;
 
-
     private String videoUrl;
 
     @OneToMany(mappedBy = "recipe", cascade=CascadeType.REMOVE)

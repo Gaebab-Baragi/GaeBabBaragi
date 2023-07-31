@@ -1,8 +1,12 @@
 package site.doggyyummy.gaebap.domain.recipe.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.recipe.dto.*;
+import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
+import site.doggyyummy.gaebap.domain.recipe.exception.NotFoundRecipeException;
+import site.doggyyummy.gaebap.domain.recipe.exception.UnauthorizedException;
 import site.doggyyummy.gaebap.domain.recipe.service.RecipeService;
 
 @RestController
@@ -13,14 +17,24 @@ public class RecipeController {
 
     //레시피 등록
     @PostMapping("/recipes/new")
-    public RecipeUploadResponseDto uploadRecipes(@RequestBody RecipeUploadRequestDto recipeUploadRequestDto){
-        return recipeService.uploadRecipe(recipeUploadRequestDto);
+    public RecipeUploadResponseDto uploadRecipes(@RequestBody RecipeUploadRequestDto recipeUploadRequestDto) {
+        try {
+            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(recipeUploadRequestDto);
+            return resDto;
+        }catch (IllegalArgumentException e){
+            return new RecipeUploadResponseDto(null,null,HttpStatus.SC_BAD_REQUEST,e.getMessage());
+        }
     }
-
     //레시피 id로 조회
     @GetMapping("/recipes/{id}")
     public RecipeFindByIdResponseDto findByRecipeId(@PathVariable Long id){
-        return recipeService.findRecipeByRecipeId(id);
+        try {
+            recipeService.addHit(id);
+            return recipeService.findRecipeByRecipeId(id);
+        }
+        catch (NotFoundRecipeException e){
+            return new RecipeFindByIdResponseDto(e.getStatusCode(),e.getMessage());
+        }
     }
 
     //멤버 id가 등록한 레시피 조회
@@ -37,15 +51,27 @@ public class RecipeController {
 
     //레시피 삭제
     @DeleteMapping("/recipes/{id}")
-    public RecipeDeleteResponseDto deleteRecipe(@PathVariable ("id") Long id){
-        return recipeService.deleteRecipe(id);
+    public RecipeDeleteResponseDto deleteRecipe(@PathVariable ("id") Long id,@RequestBody RecipeDeleteRequestDto reqDto){
+        try{
+            return recipeService.deleteRecipe(id,reqDto);
+        }catch (UnauthorizedException e){
+            return new RecipeDeleteResponseDto(e.getStatusCode(),e.getMessage(),null);
+        }catch (NotFoundRecipeException e){
+            return new RecipeDeleteResponseDto(e.getStatusCode(),e.getMessage(),null);
+        }
     }
 
     //레시피 수정
     @PutMapping("/recipes/{id}")
-    public String modifyRecipe(@PathVariable("id") Long id,@RequestBody RecipeModifyRequestDto reqDto){
-        recipeService.modifyRecipe(id,reqDto);
-        return "ok";
+    public RecipeModifyResponseDto modifyRecipe(@PathVariable("id") Long id,@RequestBody RecipeModifyRequestDto reqDto){
+        try {
+            recipeService.modifyRecipe(id, reqDto);
+            return new RecipeModifyResponseDto(HttpStatus.SC_OK, "modify Success");
+        }catch(UnauthorizedException e){
+            return new RecipeModifyResponseDto(e.getStatusCode(),e.getMessage());
+        }catch(NotFoundRecipeException e){
+            return new RecipeModifyResponseDto(e.getStatusCode(),e.getMessage());
+        }
     }
 
     //테스트용 (버킷에 있는 객체 전부 삭제)
