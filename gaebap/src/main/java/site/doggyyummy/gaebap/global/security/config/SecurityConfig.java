@@ -93,9 +93,8 @@ public class SecurityConfig {
                 .oauth2Login((oauth2login) ->
                     oauth2login
                             .successHandler(oAuth2LoginSuccessHandler)
-                            .defaultSuccessUrl("http://localhost:3000")
-                            .failureHandler(oAuth2LoginFailureHandler)
                             .failureUrl("http://localhost:3000/login")
+                            .failureHandler(oAuth2LoginFailureHandler)
                             .userInfoEndpoint((endpoint) ->
                                     endpoint.userService(customOAuth2UserService))
                 )

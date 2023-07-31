@@ -20,6 +20,7 @@ import site.doggyyummy.gaebap.domain.recipe.repository.RecipeRepository;
 import site.doggyyummy.gaebap.domain.recipe.repository.StepRepository;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,15 +37,6 @@ public class RecipeService {
     //AWS S3
     private final AmazonS3 awsS3Client;
 
-
-    //그냥 테스트용임 (지워야됨)
-    @Transactional
-    public SignupResponseDto signUp(SignupRequestDto reqDto){
-        Member member=new Member();
-        member.setUsername(reqDto.getName());
-        Member savedMember = memberRepository.save(member);
-        return new SignupResponseDto(savedMember.getId(), savedMember.getUsername());
-    }
 
     //레시피 등록 (대표 이미지, 스텝 별 이미지, 시연 영상 not included)
     @Transactional
@@ -84,6 +76,7 @@ public class RecipeService {
         recipe.setDescription(reqDto.getDescription());
         recipe.setMember(findMeberById.get());
         recipe.setSteps(steps);
+        recipe.setNowTime(LocalDateTime.now());
         recipe.setRecipeIngredients(recipeIngredients);
 
         Recipe savedRecipe = recipeRepository.save(recipe);
@@ -216,11 +209,13 @@ public class RecipeService {
                 //s3에 새로운 사진 저장
                 File img=new File(reqUrl);
                 if(step==null) {
+                    System.out.println("대표 사진 or 동영상 수정");
                     String imgKey = recipe.getId().toString() + "/" + img.toPath().getFileName().toString();
                     newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
                     awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
                 }
                 else{
+                    System.out.println("스텝 이미지 수정");
                     String imgKey = recipe.getId() + "/"+step.getId()+"/" + img.toPath().getFileName().toString();
                     newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
                     awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
@@ -365,6 +360,39 @@ public class RecipeService {
             System.err.println(e.getErrorMessage());
             System.exit(1);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public RecipeSearchLikeResponseDto searchRecipeLike(RecipeSearchLikeRequestDto reqDto){
+        if(reqDto.getIngredients()==null){
+            List<Recipe> recipes = recipeRepository.findByTitleContaining(reqDto.getTitle());
+            return new RecipeSearchLikeResponseDto(recipes);
+        }else{
+            List<RecipeSearchLikeRequestDto.IngredientDto> ingredients = reqDto.getIngredients();
+            List<String> ingredientsName=new ArrayList<>();
+            for(RecipeSearchLikeRequestDto.IngredientDto i:ingredients){
+                ingredientsName.add(i.getName());
+                System.out.println("i.getName() = " + i.getName());
+            }
+            List<Object[]> resultList= recipeIngredientRepository.findRecipesWithIngredientsAndTitle(ingredientsName,reqDto.getTitle(),ingredientsName.size());
+
+            List<Recipe> recipes = new ArrayList<>();
+
+            for (Object[] result : resultList) {
+                Long count = (Long) result[0];
+                Long recipeId = (Long) result[1];
+
+                Recipe recipe = new Recipe();
+                // 이후 Recipe 엔티티의 필드에 값을 설정하는 로직 추가
+                // recipe.setCount(count);
+                recipe.setId(recipeId);
+                recipe.setTitle(recipeRepository.findById(recipeId).get().getTitle());
+                recipe.setMember(recipeRepository.findById(recipeId).get().getMember());
+                recipes.add(recipe);
+            }
+            return new RecipeSearchLikeResponseDto(recipes);
+        }
+
     }
 
 }

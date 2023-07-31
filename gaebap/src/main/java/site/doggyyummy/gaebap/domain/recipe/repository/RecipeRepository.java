@@ -16,4 +16,6 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long> {
     @Modifying(clearAutomatically = true)
     @Query("update Recipe r set r.hit=r.hit+1 where r.id=:id")
     int addHits(Long id);
+
+    List<Recipe> findByTitleContaining(String title);
 }
