@@ -2,8 +2,11 @@ import { useSelector } from 'react-redux';
 import './DogSelectBar.css'
 import dogImg from './dogExample.jpg'
 import { useDispatch } from 'react-redux';
-import { updateDogs } from '../../redux/searchRecipeSlice';
+import { updateDogs, requestFilteredRecipeList } from '../../redux/searchRecipeSlice';
 import { useEffect, useState } from 'react';
+import useDidMountEffect from '../../useDidMountEffect';
+
+// button 누르면 반려견 등록 페이지로 navigate 해주는 기능 추가해주기
 
 function DogSelectBar() {
   const dispatch = useDispatch();
@@ -21,28 +24,35 @@ function DogSelectBar() {
 
   useEffect(()=>{
     dispatch(updateDogs(dogsSelected))
+    
   }, [dogsSelected])
 
-  
+  useDidMountEffect(()=>{
+    dispatch(requestFilteredRecipeList())
+  }, [dogsSelected])
+
   const fakeDogId = [1,2,3]
 
   return(
     <div className="dogContainer">
       <div className='dogContainerHeader'>
         <span className='dogContainerTitle'>내 반려동물</span>
-        <button>+</button>
+        <button className='addDogButton' >+</button>
       </div>
       <hr className='dogContainerSeperator'/>
-      <div className='dogImageContainer'>
+      <div className="dogImageContainer">
         {/* 가지고 있는 강아지 정보를 map하면서  */}
-        {
-          fakeDogId.map((fake)=>{
-            return(
-              <img className="dogImage" onClick={()=>handleSelectDog(fake)}  src={dogImg} />
-            )
-          })
-        }
-
+        {fakeDogId.map((fake) => {
+          const isSelected = dogsSelected.includes(fake);
+          return (
+            <img
+              className={`dogImage ${isSelected ? 'selected' : ''}`}
+              onClick={() => handleSelectDog(fake)}
+              src={dogImg}
+              key={fake}
+            />
+          );
+        })}
       </div>
     </div>
   )

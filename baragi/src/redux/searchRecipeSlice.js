@@ -6,11 +6,15 @@ let recipeSearch= createSlice({
   initialState:{
     keyword:'',
     ingredients:[],
-    dogs:[]
+    dogs:[],
+    filteredList:[],
+    requestHappen: false
   },
   reducers:{
     requestFilteredRecipeList: (state, action)=>{
-      // state update 
+      // axios 요청 보내서 레시피 저장하기
+      console.log(action)
+      state.requestHappen=true;
       
     },
     updateKeyword: (state, action) =>{
@@ -24,11 +28,11 @@ let recipeSearch= createSlice({
     },
     updateDogs: (state, action) =>{
       state.dogs = action.payload
-      console.log(state.dogs)
+      // console.log(state.dogs)
     }
   }
 })
 
-export const {updateKeyword, updateIngredients,updateDogs} = recipeSearch.actions;
+export const {updateKeyword, updateIngredients, updateDogs, requestFilteredRecipeList} = recipeSearch.actions;
 
 export default recipeSearch;

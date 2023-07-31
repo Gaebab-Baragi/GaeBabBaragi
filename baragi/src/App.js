@@ -11,6 +11,9 @@ import SignupPage from './pages/SignupPage';
 import RecipeRegisterPage from './pages/RecipeRegisterPage';
 import RecipeListPage from './pages/RecipeListPage';
 import StreamingPage from './pages/StreamingPage';
+import MyinformationPage from './pages/MyinformationPage';
+import MyPetRegisterPage from './pages/MyPetRegisterPage';
+import MyRecipePage from './pages/MyRecipePage';
 import MainPage from './pages/MainPage';
 
 import FindIdPage from './pages/FindIdPage';
