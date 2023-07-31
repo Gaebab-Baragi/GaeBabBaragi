@@ -209,11 +209,13 @@ public class RecipeService {
                 //s3에 새로운 사진 저장
                 File img=new File(reqUrl);
                 if(step==null) {
+                    System.out.println("대표 사진 or 동영상 수정");
                     String imgKey = recipe.getId().toString() + "/" + img.toPath().getFileName().toString();
                     newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
                     awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
                 }
                 else{
+                    System.out.println("스텝 이미지 수정");
                     String imgKey = recipe.getId() + "/"+step.getId()+"/" + img.toPath().getFileName().toString();
                     newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
                     awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
