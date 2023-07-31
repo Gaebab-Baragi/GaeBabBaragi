@@ -17,6 +17,7 @@ let user= createSlice({
       state.nickname = action.payload.nickname;
       state.profileUrl= action.payload.profileUrl;
       state.hostedMeeting = action.payload.hostedMeeting;
+      console.log(action.payload);
     },
     clearUser: (state) =>{
       // state update
@@ -24,6 +25,6 @@ let user= createSlice({
   }
 })
 
-export const {loginUser} = user.actions;
+export const {loginUser, clearUser} = user.actions;
 
 export default user;

@@ -11,8 +11,6 @@ const SocialLoginSuccessHandler = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("token: " + params.token);
-        axios.defaults.headers.common['Authorization'] = params.token;
         
         axios.get("/oauth2/success", {
             params : {token : params.token},
@@ -21,6 +19,7 @@ const SocialLoginSuccessHandler = () => {
         )
         .then((res) => {
             if (res.status === 200){
+                axios.defaults.headers.common['Authorization'] = params.token;
                 dispatch(loginUser(res.data));
                 navigate("/");
             }

@@ -9,7 +9,7 @@ import store from './redux/store';
 import axios from 'axios';
 import registerServiceWorker from './streaming/registerServiceWorker'
 import { PersistGate } from 'redux-persist/integration/react';
-import persistStore from 'redux-persist';
+import { persistStore} from 'redux-persist';
 
 
 let persistor = persistStore(store);

@@ -9,7 +9,7 @@ import rootReducer from "./reducers";
 
 const persistConfg ={
   key : 'root',
-  sessionStorage,
+  storage : sessionStorage,
 }
 
 const persistedReducer = persistReducer(persistConfg, rootReducer);
