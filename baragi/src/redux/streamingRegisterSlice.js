@@ -11,7 +11,7 @@ let streamingRegister= createSlice({
     member_id: 1,
     start_time:'',
     // 수정해야됨
-    recipe_id:4,
+    recipe_id:1,
   },
   reducers:{
     setPassword: (state, action) =>{
