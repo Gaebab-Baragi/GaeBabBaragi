@@ -19,15 +19,6 @@ function InputCookstep({step}) {
         onChange={handleCookstepChange}
         placeholder="예)요리방법 돼지고기 소고기 요리해줘"
       />
-      {/* <input
-        type="text"
-        id="Cookstep"
-        name="Cookstep"
-        value={Cookstep}
-        onChange={handleCookstepChange}
-        placeholder="예)요리방법 돼지고기 소고기 요리해줘"
-        style={{ width: '100%', wordWrap: 'break-word' }}
-      /> */}
     </div>
     </>
   );
