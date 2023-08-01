@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import InputCookstep from './InputCookstep'
 
 function CookStep() {
-    const [stepCount, setStepCount] = useState(1);
+    const [stepCount] = useState(1);
     const [InputCooksteps, setInputCooksteps] = useState([<InputCookstep key={0} step={stepCount} />]);
     
-    const [array, setArray] = useState([{ step: 1, content: '' }]);
-
     const handleDeleteInputCookstep = (step) => {
       
       const updatedCooksteps = InputCooksteps.filter((inputCookstep) => inputCookstep.props.step !== step);
@@ -19,7 +17,7 @@ function CookStep() {
     };
     const handleAddInputCookstep = ()=>{
 
-        setInputCooksteps([...InputCooksteps, <InputCookstep key={InputCooksteps.length} step={InputCooksteps.length + 1} onDelete={() => handleDeleteInputCookstep(InputCooksteps.length + 1)} />]);
+        setInputCooksteps([...InputCooksteps, <InputCookstep key={InputCooksteps.length} step={InputCooksteps.length + 1} content={InputCooksteps.cookstepValue} onDelete={() => handleDeleteInputCookstep(InputCooksteps.length + 1)} />]);
 
   }
   return (
