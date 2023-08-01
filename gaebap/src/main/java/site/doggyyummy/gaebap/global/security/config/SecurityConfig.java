@@ -87,13 +87,12 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers("/member/modify/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login((oauth2login) ->
                     oauth2login
                             .successHandler(oAuth2LoginSuccessHandler)
-                            .failureUrl("http://localhost:3000/login")
+                            .failureUrl("http://localhost:3000/member/login")
                             .failureHandler(oAuth2LoginFailureHandler)
                             .userInfoEndpoint((endpoint) ->
                                     endpoint.userService(customOAuth2UserService))
