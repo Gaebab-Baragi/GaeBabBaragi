@@ -4,10 +4,12 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
+import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.domain.recipe.dto.*;
@@ -23,10 +25,12 @@ import site.doggyyummy.gaebap.domain.recipe.repository.RecipeRepository;
 import site.doggyyummy.gaebap.domain.recipe.repository.StepRepository;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -85,6 +89,9 @@ public class RecipeService {
         for(RecipeUploadRequestDto.RecipeIngredientDto r:reqDto.getRecipeIngredients()){
             if(r.getIngredientName()==null || r.getIngredientName().equals("")){
                 throw new IllegalArgumentException("재료 명을 입력해주세요");
+            }
+            if(r.getAmount()==null || r.getAmount().equals("")){
+                throw new IllegalArgumentException("수량을 입력해주세요");
             }
             Ingredient findIngredient = ingredientRepository.findByName(r.getIngredientName());
             //이미 ingredient 테이블에 같은 이름이 있는 데이터는 저장 X
@@ -194,6 +201,7 @@ public class RecipeService {
         }
 
     }
+
 
     //AWS S3에 사진 or 동영상 업로드 또는 수정 메서드
     public void uploadModifyS3Object(String oldUrl, String reqUrl,Recipe recipe, boolean isImg,Step step){ //oldUrl : DB에 있던 URL, reqUrl : 새로운 URL, isImg=true -> img, isImg=false -> video
@@ -447,6 +455,17 @@ public class RecipeService {
             return new RecipeSearchLikeResponseDto(recipes);
         }
 
+    }
+
+    //aws s3에 업로드
+    public String uploadFile(MultipartFile multipartFile) throws IOException {
+        String s3FileName= UUID.randomUUID()+"-"+multipartFile.getOriginalFilename();
+
+        ObjectMetadata objMeta=new ObjectMetadata();
+        objMeta.setContentLength(multipartFile.getInputStream().available());
+
+        awsS3Client.putObject("sh-bucket",s3FileName,multipartFile.getInputStream(),objMeta);
+        return awsS3Client.getUrl("sh-bucket",s3FileName).toString();
     }
 
 }

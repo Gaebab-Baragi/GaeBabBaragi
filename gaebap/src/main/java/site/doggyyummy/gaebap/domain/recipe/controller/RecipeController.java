@@ -86,4 +86,5 @@ public class RecipeController {
     public RecipeSearchLikeResponseDto searchRecipeLikeTitle(@RequestBody RecipeSearchLikeRequestDto reqDto){
         return recipeService.searchRecipeLike(reqDto);
     }
+
 }

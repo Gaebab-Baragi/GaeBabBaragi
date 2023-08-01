@@ -11,7 +11,7 @@ import java.util.List;
 public class RecipeModifyRequestDto {
     private String title;
     private String description;
-    //imgUrl, videoUrl 필요
+    //imgUrl, videoUrl 필요 -> 아마 불필요 할듯
     private String imgUrl;
     private String videoUrl;
 
