@@ -10,7 +10,8 @@ let streamingRegister= createSlice({
     description:'',
     member_id: 1,
     start_time:'',
-    recipe_id:1,
+    // 수정해야됨
+    recipe_id:4,
   },
   reducers:{
     setPassword: (state, action) =>{
@@ -51,7 +52,8 @@ let streamingRegister= createSlice({
       };
       console.log(data)
 
-      axios.post("/meetings", data)
+
+      axios.post("http://localhost:9999/meetings", data)
         .then((response) => {
           // Handle the response if needed
           console.log("Request successful:", response.data);
