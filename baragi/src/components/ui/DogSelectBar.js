@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import './DogSelectBar.css'
 import dogImg from './dogExample.jpg'
 import { useDispatch } from 'react-redux';
-import { updateDogs, requestFilteredRecipeList } from '../../redux/searchRecipeSlice';
+import { updateDogs, requestFilteredRecipeList } from '../../redux/recipeSearchSlice.js';
 import { useEffect, useState } from 'react';
 import useDidMountEffect from '../../useDidMountEffect';
 

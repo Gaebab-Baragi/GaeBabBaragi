@@ -23,7 +23,6 @@ import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHan
 
 // -------------------PAGES-------------------//
 
-import Test2 from './components/ui/InputImage'
 
 function App() {  
   return (

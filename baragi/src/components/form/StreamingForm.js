@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DateTime from './DateTime'
 import LimitForm from './LimitForm';
+import { useDispatch } from "react-redux";
+import {setTitle, setDescription, requestStreamingReservation} from './../../redux/streamingRegisterSlice.js'
+
 function StreamingForm() {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
+
+  useEffect(()=>{
+    dispatch(setTitle(name))
+  }, [name])
+
+  useEffect(()=>{
+    dispatch(setDescription(room))
+  }, [room])
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -16,11 +28,17 @@ function StreamingForm() {
   const handleRegistrationSubmit = (e) => {
     e.preventDefault();
     // Perform registration logic (e.g., send data to the server)
-
+    // axios 요청 보내기 
     // Display registration information
     alert(`Thank you for registering!${name},${room}`);
     // \n\nName: ${name}\nEmail: ${room}\n
   };
+
+  const handleRequestStreamingRegister = (e) =>{
+
+    dispatch(requestStreamingReservation())
+  }
+
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
@@ -57,9 +75,6 @@ function StreamingForm() {
 
 {/* 참가 가능 인원 */}
 
-
-
-
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <label htmlFor="room">방소개:</label>
           <input
@@ -75,7 +90,7 @@ function StreamingForm() {
 
 
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-           <button  type="submit" style={{ width: '100px' }}>예약</button>
+          <button onClick={handleRequestStreamingRegister}  type="submit" style={{ width: '100px' }}>예약</button>
         </div>
       </form>
     </div>
