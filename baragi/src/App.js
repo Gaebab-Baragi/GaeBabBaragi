@@ -45,6 +45,9 @@ function App() {
         <Route path='/streaming' element={<StreamingPage/>}></Route>
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
+        <Route path='/myinformation' element={<MyinformationPage/>}></Route>
+        <Route path='/mypetregister' element={<MyPetRegisterPage/>}></Route>
+        <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>
 
