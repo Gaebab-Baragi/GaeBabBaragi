@@ -47,6 +47,7 @@ public class FindMeetingResponseDTO {
                 .id(meeting.getId())
                 .maxParticipant(meeting.getMaxParticipant())
                 .title(meeting.getTitle())
+                .description(meeting.getDescription())
                 .hostNickname(meeting.getHost().getNickname())
                 .startTime(meeting.getStartTime())
                 .recipeId(meeting.getRecipe().getId())
