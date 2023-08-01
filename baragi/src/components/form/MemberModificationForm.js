@@ -5,20 +5,21 @@ import axios from "axios";
 import Image from 'react-bootstrap/Image'
 import "./css/MemberModification.css"
 
-function MemberModification(){
+function MemberModificationForm(){
     const navigate = useNavigate();
     const user = useSelector((state) => (state.user));
     const [nickname, setNickname] = useState('');
     const [nicknameDuplicateCheck, setNicknameDuplicateCheck] = useState(false);
     const [validNickname, setValidNickname] = useState(false);
+    const [profileUrl, setProfileUrl] = useState(user.profileUrl);
     
     useEffect(()=>{
-        setValidNickname(nickname.length<=10)
+        if (nickname.length == 0) setNickname(user.nickname); 
+        setValidNickname(nickname.length<=30)
     },[nickname])
 
     const handleNicknameDuplicateCheck = useCallback((e) => {
         e.preventDefault();
-        // console.log(nickname)
         console.log('Nickname-Duplication-Check')
         let body = JSON.stringify({
             nickname : nickname,
@@ -68,36 +69,47 @@ function MemberModification(){
         }
     }
 
+    const onProfileChange = (e) =>{
+        e.preventDefault();
+        if (!e.target.files || !e.target.files[0]) return;
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+            setProfileUrl(reader.result);
+        }
+        reader.readAsDataURL(file);
+    }
 
     return (
         <div className="formContainer">
-        <form className="form">
+        <form className="member-info-form form" onSubmit={onSubmit}>
             <div className="formTitle">프로필 수정</div>
             {/* 프로필 이미지 */}
 
             <label htmlFor="photo-upload" className="custom-file-upload fas">
                 <div className="img-wrap img-upload" >
-                <img for="photo-upload" src={user.profileUrl}/>
+                    <img className="member-profile-img" src={profileUrl} htmlFor="photo-upload"/>
                 </div>
-                <input id="photo-upload" type="file" onChange={onChange}/> 
+                <input id="photo-upload" type="file" onChange={(e) => {onProfileChange(e)}}/> 
             </label>
 
+            <hr/>
 
             {/* 내 아이디(이메일) */}
             <div className="formGroup">
-                <label> 내 이메일 </label>
+                <label htmlFor="formNickname" className="member-info-label"> 이메일 </label> 
                 <input className='formInput' type="id" id="myEmail" placeholder={user.username} disabled />
             </div>
-            {/* 닉네임 수정 */}
 
-            {/* 닉네임 입력 */}
+            {/* 닉네임 수정*/}
             <div className="formGroup">
+                <label htmlFor="formNickname" className="member-info-label"> 닉네임 </label> 
                 <div className="formGroupComponent">
                     <input className='formInput' onChange={e=>{setNickname(e.target.value); setNicknameDuplicateCheck(false);}} type="text" id='formNickname' placeholder={user.nickname} />
                     <button className='duplicationCheckButton' onClick={handleNicknameDuplicateCheck}>중복 확인</button>
                 </div>
                 { !validNickname && nickname.length>=1 && (
-                    <div className="errorMsg">닉네임은 1~10자로 작성해주세요.</div>
+                    <div className="errorMsg">닉네임은 30자 이내로 작성해주세요.</div>
                 )}
             </div>
 
@@ -110,4 +122,4 @@ function MemberModification(){
     );
 }
 
-export default MemberModification;
+export default MemberModificationForm;

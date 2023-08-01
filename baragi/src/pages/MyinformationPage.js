@@ -1,9 +1,9 @@
-import MemberModification from "../components/form/MemberModification"
+import MemberModificationForm from "../components/form/MemberModificationForm";
 
 function MyinformationPage() {
     return (
         <div>
-            <MemberModification></MemberModification>
+            <MemberModificationForm></MemberModificationForm>
         </div>
       );
     }

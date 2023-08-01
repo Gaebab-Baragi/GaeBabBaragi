@@ -31,7 +31,7 @@ function SignupForm() {
     setSamePassword(password1===password2)
   },[password2])
   useEffect(()=>{
-    setValidNickname(nickname.length<=10)
+    setValidNickname(nickname.length<=30)
   },[nickname])
   //=================================================================================//
 
@@ -197,7 +197,7 @@ function SignupForm() {
             <button className='duplicationCheckButton' onClick={handleNicknameDuplicateCheck}>중복 확인</button>
           </div>
           { !validNickname && nickname.length>=1 && (
-            <div className="errorMsg">닉네임은 1~10자로 작성해주세요.</div>
+            <div className="errorMsg">닉네임은 1~30자로 작성해주세요.</div>
           )}
         </div>
 
