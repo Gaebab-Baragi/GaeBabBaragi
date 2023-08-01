@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import InputCookstep from './InputCookstep';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 function CookStep() {
+  const dispatch = useDispatch();
+  
+
   const [stepCount, setStepCount] = useState(1);
   const [inputCooksteps, setInputCooksteps] = useState([{ step: 1, cookstepValue: '' }]);
 
@@ -33,8 +38,6 @@ function CookStep() {
     console.log('InputCooksteps가 변경되었습니다:', inputCooksteps);
     // 원하는 작업을 수행할 수 있습니다.
   }, [inputCooksteps]); // inputCooksteps가 변경될 때마다 실행됩니다.
-
-
 
 
   

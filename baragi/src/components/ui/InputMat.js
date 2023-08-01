@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
 
-function InputMat() {
-    const [Matname, setMatname] = useState('');
+function InputMat( step, matName, matAmount, ingredientsChange) {
+    // const [Matname, setMatname] = useState('');
+    // const handleMatnameChange = (e) => {
+    //     setMatname(e.target.value);
+    //   };
+    // const [Matamount, setMatamount] = useState('');
+    // const handleMatamountChange = (e) => {
+    //     setMatamount(e.target.value);
+    // };
     const handleMatnameChange = (e) => {
-        setMatname(e.target.value);
-      };
-    const [Matamount, setMatamount] = useState('');
-    const handleMatamountChange = (e) => {
-        setMatamount(e.target.value);
+      const newMatName = e.target.value;
+      ingredientsChange(step, newMatName);
     };
+    const handleMatamountChange = (e) => {
+      const newMatAmount = e.target.value;
+      ingredientsChange(step, newMatAmount);
+    };
+
   return (
     <>
     <div style={{ width: '120%' , borderRadius: '5px', backgroundColor :'#FFEACB', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
         <div style = {{margin :'5% 0% 5% 5%'}}>
         <input
           type="text"
-          id="Matname"
-          name="Matname"
-          value={Matname}
+          id={`Matname${step}`}
+          name={`Matname${step}`}
+          value={matName}
           onChange={handleMatnameChange}
           placeholder="재료를 입력하세요"
           style={{textAlign : 'center' }}
@@ -26,9 +35,9 @@ function InputMat() {
         <div style = {{margin :'5% 5% 5% 5%'}}>
         <input
           type="text"
-          id="Matamount"
-          name="Matamount"
-          value={Matamount}
+          id={`matAmount${step}`}
+          name={`matAmount${step}`}
+          value={matAmount}
           onChange={handleMatamountChange}
           placeholder="양을 입력하세요"
           style={{textAlign : 'center'}}
