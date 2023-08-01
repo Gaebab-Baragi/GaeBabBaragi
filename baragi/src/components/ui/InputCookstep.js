@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-function InputCookstep({ step }) {
-  const [cookstepValue, setCookstepValue] = useState('');
-
+function InputCookstep({ step, cookstepValue, onCookstepChange }) {
   const handleCookstepChange = (e) => {
-    setCookstepValue(e.target.value);
+    const newValue = e.target.value;
+    onCookstepChange(step, newValue);
   };
-  
-  useEffect(() => {
-    console.log(step, cookstepValue);
-  }, [step, cookstepValue]);
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '200%', alignItems: 'center' }}>
