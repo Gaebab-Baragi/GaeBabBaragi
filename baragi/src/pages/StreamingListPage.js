@@ -1,11 +1,11 @@
 import axios from "axios";
-
+const BASE_URL = 'http://localhost:9999'
 function StreamingListPage() {
   
   const streamingList = []
 
   function getList() {
-    axios.get('http://localhost:9999/meetings')
+    axios.get(BASE_URL + '/meetings')
     .then((res)=>{
       console.log(res.data)
       console.log('response is successful : ', res.data)

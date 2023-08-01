@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { act } from "react-dom/test-utils";
 
+const BASE_URL = 'http://localhost:9999'
+
 // 레시피 검색  
 let recipeSearch= createSlice({
   name:'recipeSearch',
@@ -24,7 +26,7 @@ let recipeSearch= createSlice({
       }
 
       // axios 요청 보내서 레시피 저장하기
-      axios.post('http://localhost:9999/recipes/searchlike', data)
+      axios.post(BASE_URL + '/recipes/searchlike', data)
         .then((res)=>{
           console.log('request success : ' , res.data)
         })

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+const BASE_URL = 'http://localhost:9999'
 let streamingRegister= createSlice({
   name:'streamingRegister',
   initialState:{
@@ -53,7 +53,7 @@ let streamingRegister= createSlice({
       console.log(data)
 
 
-      axios.post("http://localhost:9999/meetings", data)
+      axios.post(BASE_URL + "/meetings", data)
         .then((response) => {
           // Handle the response if needed
           console.log("Request successful:", response.data);
