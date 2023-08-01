@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/forbidden")
+@RequestMapping("/api/forbidden")
 public class ForbiddenController {
 
     private final ForbiddenServiceImpl forbiddenService;

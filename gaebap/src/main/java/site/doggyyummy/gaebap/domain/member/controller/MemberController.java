@@ -15,7 +15,7 @@ import site.doggyyummy.gaebap.domain.member.service.MemberService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @Slf4j
 public class MemberController {
 
