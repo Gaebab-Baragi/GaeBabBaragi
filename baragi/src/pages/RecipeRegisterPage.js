@@ -1,20 +1,23 @@
-/* eslint-disable */
-import LoginForm from "../components/form/LoginForm";
-import Container from 'react-bootstrap/Container';
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-
-import Test from '../components/ui/Test'
-import Test2 from '../components/ui/Test2'
-import InputImage from "../components/ui/InputImage";
+import InputImage from '../components/ui/InputImage';
+import InputInfor from '../components/ui/InputInfor';
+import MaterialRegist from '../components/ui/MaterialRegist';
+import CookStep from '../components/ui/CookStep';
 
 function RecipeRegisterPage() {
-    return (
-      <div>
-      <Test2></Test2>
-      </div>
-      );
-    }
+  return (
+    <>
+    
+    <div style={{ marginLeft:'10%' , marginRight : '10%' , marginTop : '0.5%' , marginBottom : '10%'}}>
+        <h1 style={{ textAlign : 'left' }}>레시피 등록</h1>
+        <InputImage></InputImage>
+        <InputInfor></InputInfor>
+        <MaterialRegist></MaterialRegist>
+        <CookStep></CookStep>
+        <button>제출</button>
+    </div>
+    </>
+  );
+}
 
-    export default RecipeRegisterPage;
+export default RecipeRegisterPage;
