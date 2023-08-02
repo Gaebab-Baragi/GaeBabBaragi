@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 function InputMat({ step, matName, matAmount, ingredientsChange }) {
   const handleMatnameChange = (e) => {
     const newMatName = e.target.value;
-    ingredientsChange(step, 'name', newMatName);
+    ingredientsChange(step, 'ingredientName', newMatName);
   };
 
   const handleMatamountChange = (e) => {

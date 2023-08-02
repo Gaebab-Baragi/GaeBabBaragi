@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {setRecipeName2, setRecipeInfor } from './../../redux/recipeRegisterSlice.js'
+import {requestFilteredRecipeList, updateRecipeInfor } from './../../redux/recipeRegisterSlice.js'
 
 function InputInfor() {
   const dispatch = useDispatch();
@@ -18,10 +18,9 @@ function InputInfor() {
 
   useEffect(() => {
     // 레시피 이름과 레시피 소개를 상태 변경시마다 dispatch 하고 싶을 때
-    dispatch(setRecipeName2(recipeName));
-    dispatch(setRecipeInfor(recipeIntro));
-    // console.log('변경되었습니다:', [recipeName,recipeIntro]);
+    dispatch(updateRecipeInfor([recipeName, recipeIntro]));
   }, [recipeName, recipeIntro]);
+  
 
   return (
     <>
