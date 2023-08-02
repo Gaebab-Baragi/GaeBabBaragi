@@ -1,20 +1,22 @@
 /* eslint-disable */
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistReducer } from "redux-persist";
+import sessionStorage from "redux-persist/es/storage/session";
 import user from "./userSlice";
 import recipeSearch from "./searchRecipeSlice";
 import recipeInfor from "./inforSlice";
+import rootReducer from "./reducers";
 
+const persistConfg ={
+  key : 'root',
+  storage : sessionStorage,
+}
 
+const persistedReducer = persistReducer(persistConfg, rootReducer);
 
-
-
-export default configureStore({     // state 등록 한거임
-  reducer:{
-    user: user.reducer,
-    recipeSearch: recipeSearch.reducer,
-    recipeInfor: recipeInfor.reducer,
-  }
+const store = configureStore({     // state 등록 한거임
+  reducer: persistedReducer
 })
 
-
+export default store;
 

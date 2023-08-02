@@ -1,0 +1,66 @@
+.custom-file-upload {
+    border-radius: 50%;
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+    background: linear-gradient(270deg, #ffa600, #ffe600);
+    margin-top:30px;
+    margin-bottom:40px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.img-wrap{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.img-upload:before{
+    content: "프로필 변경";
+    font-size: 16px;
+    position: absolute;
+    padding-top: 92px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #fff;
+}
+
+.img-upload:hover:before{
+   opacity: 0.5;
+}
+
+.member-profile-img {
+    width: 200px;
+    height: 200px;
+}
+
+.member-info-label{
+    font-weight: 700;
+    color: #676767;
+    justify-self: left;
+}
+
+.member-info-Form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-divider{
+    margin-top:20px;
+    margin-bottom:20px;
+}

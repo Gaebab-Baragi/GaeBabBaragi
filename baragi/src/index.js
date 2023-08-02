@@ -8,18 +8,22 @@ import {Provider} from 'react-redux'
 import store from './redux/store';
 import axios from 'axios';
 import registerServiceWorker from './streaming/registerServiceWorker'
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore} from 'redux-persist';
 
 
+let persistor = persistStore(store);
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
 axios.defaults.withCredentials = true;
 
 root.render(
   // <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   // </React.StrictMode>
 );

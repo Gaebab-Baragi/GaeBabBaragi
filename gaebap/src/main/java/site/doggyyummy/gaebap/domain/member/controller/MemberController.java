@@ -23,8 +23,8 @@ public class MemberController {
     private final MemberMailService memberMailService;
 
     @GetMapping("")
-    public ResponseEntity<MemberResponseDTO> findByName(@Param(value = "id") String memberId) throws NoSuchUsernameException {
-       return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.findByName(memberId).orElseThrow(() -> new NoSuchUsernameException()))
+    public ResponseEntity<MemberResponseDTO> findByName(String username) throws NoSuchUsernameException {
+       return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.findByName(username).orElseThrow(() -> new NoSuchUsernameException()))
                                 , HttpStatus.OK);
     }
 
@@ -54,7 +54,7 @@ public class MemberController {
     //=================================================================================
     @PutMapping("/modify")
     public ResponseEntity<String> modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
-        memberService.modify(MemberModifyDTO.toEntity(modifyDTO));
+        memberService.modify(MemberModifyDTO.toEntity(modifyDTO), modifyDTO.getFile(), modifyDTO.getFileType());
         return new ResponseEntity<>("회원 정보 수정에 성공했습니다.", HttpStatus.OK);
     }
 
