@@ -37,6 +37,9 @@ public class FindMeetingResponseDTO {
     @JsonProperty("recipe_title")
     private String recipeTitle;
 
+    @JsonProperty("recipe_image_url")
+    private String recipeImageUrl;
+
     private Status status;
 
     @JsonProperty("current_participants")
@@ -52,6 +55,7 @@ public class FindMeetingResponseDTO {
                 .startTime(meeting.getStartTime())
                 .recipeId(meeting.getRecipe().getId())
                 .recipeTitle(meeting.getRecipe().getTitle())
+                .recipeImageUrl(meeting.getRecipe().getImageUrl())
                 .status(meeting.getStatus())
                 .currentParticipants(meeting.getCurrentParticipants())
                 .build();
