@@ -21,7 +21,7 @@ import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
-
+import StreamingLivePage from './streaming/StreamingLive';
 // -------------------PAGES-------------------//
 
 
@@ -44,6 +44,7 @@ function App() {
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming-register' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
+        <Route path='/streaming-live' element={<StreamingLivePage/>}></Route>
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
