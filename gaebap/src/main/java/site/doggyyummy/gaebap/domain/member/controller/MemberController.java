@@ -1,17 +1,22 @@
 package site.doggyyummy.gaebap.domain.member.controller;
 
+import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberRegisterDTO;
 import site.doggyyummy.gaebap.domain.member.dto.response.MemberResponseDTO;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.exception.custom.NoSuchUserException;
 import site.doggyyummy.gaebap.domain.member.exception.custom.NoSuchUsernameException;
 import site.doggyyummy.gaebap.domain.member.service.MemberMailService;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
+import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,9 +58,8 @@ public class MemberController {
 
     //=================================================================================
     @PutMapping("/modify")
-    public ResponseEntity<String> modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
-        memberService.modify(MemberModifyDTO.toEntity(modifyDTO), modifyDTO.getFile(), modifyDTO.getFileType());
-        return new ResponseEntity<>("회원 정보 수정에 성공했습니다.", HttpStatus.OK);
+    public ResponseEntity<MemberResponseDTO> modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
+        return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.modify(MemberModifyDTO.toEntity(modifyDTO), modifyDTO.getFile(), modifyDTO.getFileType())), HttpStatus.OK);
     }
 
     @PostMapping("/modify/nickname")
@@ -67,4 +71,10 @@ public class MemberController {
     //====================================================================================
 
 
+    @GetMapping("/test")
+    public ResponseEntity<MemberResponseDTO> test() throws NoSuchUserException {
+        Member member = SecurityUtil.getCurrentLoginMember();
+        MemberResponseDTO dto = MemberResponseDTO.toDTO((member));
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
 }

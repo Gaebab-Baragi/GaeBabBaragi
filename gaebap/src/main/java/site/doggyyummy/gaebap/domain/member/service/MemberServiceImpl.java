@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.exception.custom.*;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
+import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -42,14 +43,14 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void modify(Member member, String file, String fileType) throws Exception{
-        Member memberToModify = memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new NoSuchUserException());
+    public Member modify(Member member, String file, String fileType) throws Exception{
+        Member memberToModify = SecurityUtil.getCurrentLoginMember();
         validateMemberModification(member);
 
         uploadImageByFile(member, file, fileType);
         memberToModify.setNickname(member.getNickname());
         memberToModify.setProfileUrl(member.getProfileUrl());
-        log.info("정보 수정 성공");
+        return memberToModify;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void validateNicknameModification(Member member) throws Exception{
-        Member origin = findByName(member.getUsername()).orElseThrow(()->{throw new NoSuchUserException();});
+        Member origin = SecurityUtil.getCurrentLoginMember();
         if (!isValidNicknameFormat(member.getNickname())) throw new InvalidNicknameFormatException();
         if (member.getNickname().equals(origin.getNickname())) return;
         if (isDuplicateNickname(member.getNickname())) throw new DuplicateNicknameException();
@@ -103,7 +104,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     private void uploadImageByFile(Member member, String file, String fileType) throws Exception{
-        Member origin = memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new NoSuchUserException());
+        Member origin = SecurityUtil.getCurrentLoginMember();
         String imgKey = null;
         UUID uuid = UUID.nameUUIDFromBytes(origin.getUsername().getBytes());
         String bucketName="sh-bucket";
@@ -122,7 +123,6 @@ public class MemberServiceImpl implements MemberService{
         ObjectMetadata objectMetadata = new ObjectMetadata();
         InputStream fileInputStream = new ByteArrayInputStream(decodedBytes);
         objectMetadata.setContentType(fileType);
-
 
         if (imgKey != null && awsS3Client.doesObjectExist(bucketName,imgKey)) {
             awsS3Client.deleteObject(bucketName, imgKey);
