@@ -22,7 +22,7 @@ public interface MeetingService {
 
     FindOneMeetingResponseDTO findOne(Long id);
 
-    Map<String, String> joinRequest(Long id, Long member_id);
+    MessageResponseDTO joinRequest(Long id, Long member_id);
 
     void join(Long id, Long memberId);
 
