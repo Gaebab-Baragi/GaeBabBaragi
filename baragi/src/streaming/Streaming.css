@@ -1,10 +1,6 @@
 .streamingContainer {
 	background-color:#f9f9f9;
-}
-
-.stream-container {
-	width: 300px;
-	border-radius: 20px;
+	width: 60%;
 }
 
 .subVideos {
