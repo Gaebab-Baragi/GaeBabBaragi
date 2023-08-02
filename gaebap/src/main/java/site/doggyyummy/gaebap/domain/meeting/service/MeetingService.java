@@ -8,17 +8,17 @@ import java.util.Map;
 
 public interface MeetingService {
 
-    CreateMeetingResponseDTO create(CreateMeetingRequestDTO createMeetingRequestDTO);
+    CreateMeetingResponseDTO create(CreateMeetingRequestDTO createMeetingRequestDTO, Long hostId);
 
-    ModifyMeetingResponseDTO modify(ModifyMeetingRequestDTO modifyMeetingRequestDTO);
+    ModifyMeetingResponseDTO modify(ModifyMeetingRequestDTO modifyMeetingRequestDTO, Long hostId);
 
-    void delete(Long id);
+    void delete(Long id, Long hostId);
 
     List<FindMeetingResponseDTO> findAll();
 
     List<FindMeetingResponseDTO> findByRecipe(Long recipeId);
 
-    void startMeeting(Long id);
+    void startMeeting(Long id, Long hostId);
 
     FindOneMeetingResponseDTO findOne(Long id);
 

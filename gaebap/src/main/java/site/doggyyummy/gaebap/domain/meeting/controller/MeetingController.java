@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.meeting.dto.*;
 import site.doggyyummy.gaebap.domain.meeting.exception.InvalidArgumentMeetingCreateException;
 import site.doggyyummy.gaebap.domain.meeting.exception.MeetingEntryConditionNotMetException;
+import site.doggyyummy.gaebap.domain.meeting.exception.MeetingForbiddenException;
 import site.doggyyummy.gaebap.domain.meeting.exception.NotFoundMeetingException;
 import site.doggyyummy.gaebap.domain.meeting.service.MeetingService;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -41,10 +44,10 @@ public class MeetingController {
     @PostMapping
     public ResponseEntity<ResponseDTO> create(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO){ // 방 생성
 
-        // 멤버 검증 필요
+        Member member = SecurityUtil.getCurrentLoginMember();
 
         try {
-            CreateMeetingResponseDTO createMeetingResponseDTO = meetingService.create(createMeetingRequestDTO);
+            CreateMeetingResponseDTO createMeetingResponseDTO = meetingService.create(createMeetingRequestDTO, member.getId());
             return new ResponseEntity<>(createMeetingResponseDTO, HttpStatus.CREATED);
         } catch (InvalidArgumentMeetingCreateException e) {
             return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
@@ -54,11 +57,13 @@ public class MeetingController {
     @PutMapping
     public ResponseEntity<ResponseDTO> modify(@RequestBody ModifyMeetingRequestDTO modifyMeetingRequestDTO) { // 방 정보 수정
 
-        // 작성자 검증 필요
+        Member member = SecurityUtil.getCurrentLoginMember();
 
         try {
-            ModifyMeetingResponseDTO modifyMeetingResponseDTO = meetingService.modify(modifyMeetingRequestDTO);
+            ModifyMeetingResponseDTO modifyMeetingResponseDTO = meetingService.modify(modifyMeetingRequestDTO, member.getId());
             return new ResponseEntity<>(modifyMeetingResponseDTO, HttpStatus.OK);
+        } catch (MeetingForbiddenException e) {
+            return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
         } catch (InvalidArgumentMeetingCreateException e) {
             return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
         } catch (NotFoundMeetingException e) {
@@ -69,12 +74,14 @@ public class MeetingController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO> delete(@PathVariable(name = "id") Long id) {
 
-        // 작성자 검증 필요
+        Member member = SecurityUtil.getCurrentLoginMember();
 
         try {
-            meetingService.delete(id);
+            meetingService.delete(id, member.getId());
             return new ResponseEntity(HttpStatus.OK);
         } catch (NotFoundMeetingException e) {
+            return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
+        } catch (MeetingForbiddenException e) {
             return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
         }
     }
@@ -108,12 +115,14 @@ public class MeetingController {
     @PostMapping("/start/{id}")
     public ResponseEntity<ResponseDTO> startMeeting(@PathVariable(name = "id") Long id) { // 호스트 미팅 시작 요청
 
-        // 호스트인지 검증 필요
+        Member member = SecurityUtil.getCurrentLoginMember();
 
         try {
-            meetingService.startMeeting(id);
+            meetingService.startMeeting(id, member.getId());
             return new ResponseEntity(HttpStatus.OK);
         } catch (NotFoundMeetingException e) {
+            return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
+        } catch (MeetingForbiddenException e) {
             return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
         }
     }
@@ -121,13 +130,10 @@ public class MeetingController {
     @GetMapping("/join-request/{id}")
     public ResponseEntity<ResponseDTO> joinRequest(@PathVariable(name = "id") Long id) { // 미팅 참여 가능 여부
 
-        // 로그인 멤버 검증 필요
-
-        // 로그인 연동 후 삭제
-        Long member_id = 2L;
+        Member member = SecurityUtil.getCurrentLoginMember();
 
         try {
-            MessageResponseDTO messageResponseDTO = meetingService.joinRequest(id, member_id);
+            MessageResponseDTO messageResponseDTO = meetingService.joinRequest(id, member.getId());
             return new ResponseEntity<>(messageResponseDTO, HttpStatus.OK);
         } catch (NotFoundMeetingException e) {
             return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
@@ -157,13 +163,10 @@ public class MeetingController {
     @PostMapping("/join/{id}")
     public ResponseEntity<ResponseDTO> join(@PathVariable(name = "id") Long id) { // 미팅 참가
 
-        // 로그인 멤버 검증 필요
-
-        // 로그인 연동 후 삭제
-        Long memberId = 2L;
+        Member member = SecurityUtil.getCurrentLoginMember();
 
         try {
-            meetingService.join(id, memberId);
+            meetingService.join(id, member.getId());
             return new ResponseEntity(HttpStatus.OK);
         } catch (NotFoundMeetingException e) {
             return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
@@ -172,13 +175,11 @@ public class MeetingController {
 
     @PostMapping("/left/{id}")
     public ResponseEntity<ResponseDTO> left(@PathVariable(name = "id") Long id) { // 미팅 나가기
-        // 로그인 멤버 검증 필요
 
-        // 로그인 연동 후 삭제
-        Long memberId = 1L;
+        Member member = SecurityUtil.getCurrentLoginMember();
 
         try {
-            meetingService.left(id, memberId);
+            meetingService.left(id, member.getId());
             return new ResponseEntity(HttpStatus.OK);
         } catch (NotFoundMeetingException e) {
             return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());

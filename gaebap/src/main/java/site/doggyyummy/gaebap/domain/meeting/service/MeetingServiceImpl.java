@@ -2,7 +2,6 @@ package site.doggyyummy.gaebap.domain.meeting.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.doggyyummy.gaebap.domain.meeting.dto.*;
@@ -10,6 +9,7 @@ import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.meeting.entity.Status;
 import site.doggyyummy.gaebap.domain.meeting.exception.InvalidArgumentMeetingCreateException;
 import site.doggyyummy.gaebap.domain.meeting.exception.MeetingEntryConditionNotMetException;
+import site.doggyyummy.gaebap.domain.meeting.exception.MeetingForbiddenException;
 import site.doggyyummy.gaebap.domain.meeting.exception.NotFoundMeetingException;
 import site.doggyyummy.gaebap.domain.meeting.repository.MeetingRepository;
 
@@ -29,7 +29,7 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     @Transactional
-    public CreateMeetingResponseDTO create(CreateMeetingRequestDTO createMeetingRequestDTO) {
+    public CreateMeetingResponseDTO create(CreateMeetingRequestDTO createMeetingRequestDTO, Long hostId) {
 
         // 예외 처리
         if(createMeetingRequestDTO.getMaxParticipant() < 1 || createMeetingRequestDTO.getMaxParticipant() > 4) { //  제한 인원이 1 이상 4 이하가 아니라면
@@ -45,7 +45,7 @@ public class MeetingServiceImpl implements MeetingService{
                 throw new InvalidArgumentMeetingCreateException("이미 지난 시간으로는 예약이 불가능합니다.");
         }
 
-        Meeting meeting = createMeetingRequestDTO.toEntity();
+        Meeting meeting = createMeetingRequestDTO.toEntity(hostId);
         Meeting savedMeeting = meetingRepository.save(meeting);
         CreateMeetingResponseDTO createMeetingResponseDTO = CreateMeetingResponseDTO.toDTO(savedMeeting);
         return  createMeetingResponseDTO;
@@ -53,33 +53,37 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     @Transactional
-    public ModifyMeetingResponseDTO modify(ModifyMeetingRequestDTO modifyMeetingRequestDTO) {
+    public ModifyMeetingResponseDTO modify(ModifyMeetingRequestDTO modifyMeetingRequestDTO, Long hostId) {
 
-        // 예외 처리
-        if(modifyMeetingRequestDTO.getMaxParticipant() < 1 || modifyMeetingRequestDTO.getMaxParticipant() > 4) { //  제한 인원이 1 이상 4 이하가 아니라면
-            throw new InvalidArgumentMeetingCreateException("제한 인원은 1명 이상 4명 이하 입니다.");
-        }
-
-        String password = modifyMeetingRequestDTO.getPassword();
-        if (password != null && (password.length() != 6 || !password.matches("\\d+"))) { // private 룸일 때 비밀번호가 6자리 숫자가 아닐 경우
-            throw new InvalidArgumentMeetingCreateException("비밀번호는 6자리 숫자로 이루어진 문자열만 가능합니다.");
-        }
-
-        if (modifyMeetingRequestDTO.getStartTime().isBefore(LocalDateTime.now())) { // 미팅 시작 시간이 현재 시간보다 전이라면
-            throw new InvalidArgumentMeetingCreateException("이미 지난 시간으로는 예약이 불가능합니다.");
-        }
-
-        Meeting meeting = modifyMeetingRequestDTO.toEntity();
-
-        Optional<Meeting> findMeetingOptional = meetingRepository.findById(meeting.getId());
+        Optional<Meeting> findMeetingOptional = meetingRepository.findByIdJoinMember(modifyMeetingRequestDTO.getId());
 
         if(findMeetingOptional.isPresent()) {
+
             Meeting findMeeting = findMeetingOptional.get();
-            findMeeting.setPassword(meeting.getPassword());
-            findMeeting.setMaxParticipant(meeting.getMaxParticipant());
-            findMeeting.setTitle(meeting.getTitle());
-            findMeeting.setDescription(meeting.getDescription());
-            findMeeting.setStartTime(meeting.getStartTime());
+
+            // 예외 처리
+            if(findMeeting.getHost().getId() != hostId) { // 로그인된 멤버가 미팅의 호스트가 아니면 미팅 수정 불가
+                throw new MeetingForbiddenException("호스트만 해당 미팅을 수정할 수 있습니다.");
+            }
+
+            if(modifyMeetingRequestDTO.getMaxParticipant() < 1 || modifyMeetingRequestDTO.getMaxParticipant() > 4) { //  제한 인원이 1 이상 4 이하가 아니라면
+                throw new InvalidArgumentMeetingCreateException("제한 인원은 1명 이상 4명 이하 입니다.");
+            }
+
+            String password = modifyMeetingRequestDTO.getPassword();
+            if (password != null && (password.length() != 6 || !password.matches("\\d+"))) { // private 룸일 때 비밀번호가 6자리 숫자가 아닐 경우
+                throw new InvalidArgumentMeetingCreateException("비밀번호는 6자리 숫자로 이루어진 문자열만 가능합니다.");
+            }
+
+            if (modifyMeetingRequestDTO.getStartTime().isBefore(LocalDateTime.now())) { // 미팅 시작 시간이 현재 시간보다 전이라면
+                throw new InvalidArgumentMeetingCreateException("이미 지난 시간으로는 예약이 불가능합니다.");
+            }
+
+            findMeeting.setPassword(modifyMeetingRequestDTO.getPassword());
+            findMeeting.setMaxParticipant(modifyMeetingRequestDTO.getMaxParticipant());
+            findMeeting.setTitle(modifyMeetingRequestDTO.getTitle());
+            findMeeting.setDescription(modifyMeetingRequestDTO.getDescription());
+            findMeeting.setStartTime(modifyMeetingRequestDTO.getStartTime());
 
             ModifyMeetingResponseDTO modifyMeetingResponseDTO = ModifyMeetingResponseDTO.toDTO(findMeeting);
             return modifyMeetingResponseDTO;
@@ -91,12 +95,18 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id, Long hostId) {
 
-        Optional<Meeting> findMeetingOptional = meetingRepository.findById(id);
+        Optional<Meeting> findMeetingOptional = meetingRepository.findByIdJoinMember(id);
 
         if(findMeetingOptional.isPresent()) {
-            meetingRepository.delete(findMeetingOptional.get());
+            Meeting meeting = findMeetingOptional.get();
+
+            if(meeting.getHost().getId() != hostId) { // 로그인된 멤버가 미팅의 호스트가 아니면 미팅 삭제 불가
+                throw new MeetingForbiddenException("호스트만 해당 미팅을 삭제할 수 있습니다.");
+            }
+
+            meetingRepository.delete(meeting);
         }
         else { // id에 해당하는 meeting이 없을 경우
             throw new NotFoundMeetingException();
@@ -139,11 +149,17 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     @Transactional
-    public void startMeeting(Long id) {
-        Optional<Meeting> findMeetingOptional = meetingRepository.findById(id);
+    public void startMeeting(Long id, Long hostId) {
+        Optional<Meeting> findMeetingOptional = meetingRepository.findByIdJoinMember(id);
 
         if(findMeetingOptional.isPresent()) {
-            findMeetingOptional.get().setStatus(Status.IN_PROGRESS);
+            Meeting meeting = findMeetingOptional.get();
+
+            if(meeting.getHost().getId() != hostId) { // 로그인된 멤버가 미팅의 호스트가 아니면 미팅 시작 불가
+                throw new MeetingForbiddenException("호스트만 해당 미팅을 시작할 수 있습니다.");
+            }
+
+            meeting.setStatus(Status.IN_PROGRESS);
         }
         else { // id에 해당하는 meeting이 없을 경우
             throw new NotFoundMeetingException();
