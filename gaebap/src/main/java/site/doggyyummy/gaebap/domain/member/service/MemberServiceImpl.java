@@ -1,15 +1,27 @@
 package site.doggyyummy.gaebap.domain.member.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3URI;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.exception.custom.*;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Base64;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
@@ -21,6 +33,7 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final AmazonS3 awsS3Client;
     @Override
     public void signUp(Member member) throws Exception{
         validateMemberRegistration(member);
@@ -29,12 +42,14 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void modify(Member member) throws Exception{
-        Member memberToModify = memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new Exception());
+    public void modify(Member member, String file, String fileType) throws Exception{
+        Member memberToModify = memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new NoSuchUserException());
         validateMemberModification(member);
 
+        uploadImageByFile(member, file, fileType);
         memberToModify.setNickname(member.getNickname());
-        memberToModify.setPassword(member.getPassword());
+        memberToModify.setProfileUrl(member.getProfileUrl());
+        log.info("정보 수정 성공");
     }
 
     @Override
@@ -74,7 +89,7 @@ public class MemberServiceImpl implements MemberService{
     private boolean isValidNicknameFormat(String nickname){
         Integer length = nickname.length();
         log.info("nickname : {}", nickname);
-        if (length == 0 || length > 10) return false;
+        if (length == 0 || length > 30) return false;
         return true;
     }
 
@@ -85,6 +100,62 @@ public class MemberServiceImpl implements MemberService{
 
     private void validateMemberModification(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
         validateNicknameModification(member);
+    }
+
+    private void uploadImageByFile(Member member, String file, String fileType) throws Exception{
+        Member origin = memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new NoSuchUserException());
+        String imgKey = null;
+        UUID uuid = UUID.nameUUIDFromBytes(origin.getUsername().getBytes());
+        String bucketName="sh-bucket";
+
+        if (origin.getProfileUrl() != null) {
+            imgKey = "profile/" + uuid;
+        }
+        if (file == null) {//새로 등록하지 않는 경우는 삭제함
+            if (imgKey != null && awsS3Client.doesObjectExist(bucketName,imgKey)) awsS3Client.deleteObject(bucketName, imgKey);
+            member.setProfileUrl(null);
+            return;
+        }
+
+        byte[] decodedBytes = Base64.getDecoder().decode(file);
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        InputStream fileInputStream = new ByteArrayInputStream(decodedBytes);
+        objectMetadata.setContentType(fileType);
+
+
+        if (imgKey != null && awsS3Client.doesObjectExist(bucketName,imgKey)) {
+            awsS3Client.deleteObject(bucketName, imgKey);
+            awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, fileInputStream, objectMetadata));
+            member.setProfileUrl(awsS3Client.getUrl(bucketName, imgKey).toString());
+            log.info("fileType: {}", fileType);
+            log.info("base64 : {}", file);
+            log.info("url: {}", awsS3Client.getUrl(bucketName, imgKey).toString());
+        }
+        fileInputStream.close();
+    }
+
+    public void uploadImageByUrl(Member member) throws Exception{//소셜 로그인으로 처음 가입한 경우
+        if (member.getProfileUrl() == null) return;
+        URL url = new URL(member.getProfileUrl());
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("HEAD");
+        connection.connect();
+        String contentType = connection.getContentType();
+        connection.disconnect();
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(contentType);
+
+        InputStream inputStream = url.openStream();
+
+        String bucketName="sh-bucket";
+        UUID uuid = UUID.nameUUIDFromBytes(member.getUsername().getBytes());
+        String imgKey = "profile/" + uuid;
+        awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, inputStream, objectMetadata));
+        member.setProfileUrl(awsS3Client.getUrl(bucketName, imgKey).toString());
+        inputStream.close();
     }
 
 

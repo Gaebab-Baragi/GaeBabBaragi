@@ -1,4 +1,4 @@
-package site.doggyyummy.gaebap.config;
+package site.doggyyummy.gaebap.global.s3.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

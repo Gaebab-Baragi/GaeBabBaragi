@@ -1,6 +1,7 @@
 // reducers.js
 import { combineReducers } from 'redux';
 import { SET_RECIPE_NAME, SET_FOOD_NAME, SET_RECIPE_INTRO } from './actionTypes';
+import user from './userSlice';
 
 const recipeNameReducer = (state = '', action) => {
   switch (action.type) {
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   recipeName: recipeNameReducer,
   foodName: foodNameReducer,
   recipeIntro: recipeIntroReducer,
+  user : user.reducer
 });
 
 export default rootReducer;
