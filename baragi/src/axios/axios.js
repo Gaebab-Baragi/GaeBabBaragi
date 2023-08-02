@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const current = "local";
+const current = "deploy";
 
 const URL = {
     local: "http://localhost:8083",
