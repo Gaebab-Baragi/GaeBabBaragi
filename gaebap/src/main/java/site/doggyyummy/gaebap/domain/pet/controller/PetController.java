@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/pet")
+@RequestMapping("/api/pet")
 public class PetController {
 
     private final PetService petService;

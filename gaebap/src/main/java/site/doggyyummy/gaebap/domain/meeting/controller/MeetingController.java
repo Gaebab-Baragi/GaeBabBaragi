@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/meetings")
+@RequestMapping("/api/meetings")
 public class MeetingController {
 
     private final MeetingService meetingService;
