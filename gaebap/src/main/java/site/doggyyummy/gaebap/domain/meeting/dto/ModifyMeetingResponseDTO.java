@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @Builder
-public class ModifyMeetingResponseDTO {
+public class ModifyMeetingResponseDTO implements ResponseDTO{
 
     private Long id;
 
