@@ -35,12 +35,12 @@ public class CreateMeetingRequestDTO {
     @JsonProperty("recipe_id")
     private Long recipeId;
 
-    public Meeting toEntity() {
+    public Meeting toEntity(Long hostId) {
         // 호스트 멤버
         Member host = new Member();
-        host.setId(this.hostId);
+        Member.builder().id(hostId).build();
 
-        // 레시피 정보
+        // 레시피 정보 -> builder로 바꿀 예정
         Recipe recipe = new Recipe();
         recipe.setId(this.recipeId);
 
