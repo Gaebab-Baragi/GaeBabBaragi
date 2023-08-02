@@ -9,14 +9,23 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 public class RecipeUploadResponseDto {
     private String title;
     private MemberDto member;
+    //for exception
+    private String errorMessage;
+    private int statusCode;
 
+    public RecipeUploadResponseDto(String title,Member member,int statusCode,String errorMessage){
+        this.title=title;
+        if(member==null){
+            this.member=null;
+        }else {
+            this.member = new MemberDto(member.getUsername(), member.getId());
+        }
+        this.errorMessage=errorMessage;
+        this.statusCode=statusCode;
+    }
     public RecipeUploadResponseDto(String title, MemberDto member) {
         this.title = title;
         this.member=member;
-    }
-    public RecipeUploadResponseDto(String title, Member member){
-        this.title=title;
-        this.member=new MemberDto(member.getUsername(),member.getId());
     }
 
     @Getter
