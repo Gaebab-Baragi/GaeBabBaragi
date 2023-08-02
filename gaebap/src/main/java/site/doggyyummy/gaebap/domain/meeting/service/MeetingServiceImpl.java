@@ -29,8 +29,8 @@ public class MeetingServiceImpl implements MeetingService{
     public CreateMeetingResponseDTO create(CreateMeetingRequestDTO createMeetingRequestDTO, Long hostId) {
 
         // 예외 처리
-        if(createMeetingRequestDTO.getMaxParticipant() < 1 || createMeetingRequestDTO.getMaxParticipant() > 4) { //  제한 인원이 1 이상 4 이하가 아니라면
-            throw new InvalidArgumentMeetingCreateException("제한 인원은 1명 이상 4명 이하 입니다.");
+        if(createMeetingRequestDTO.getMaxParticipant() < 2 || createMeetingRequestDTO.getMaxParticipant() > 5) { //  제한 인원이 2 이상 5 이하가 아니라면
+            throw new InvalidArgumentMeetingCreateException("제한 인원은 2명 이상 5명 이하 입니다.");
         }
 
         String password = createMeetingRequestDTO.getPassword();
@@ -59,8 +59,8 @@ public class MeetingServiceImpl implements MeetingService{
             throw new MeetingForbiddenException("호스트만 해당 미팅을 수정할 수 있습니다.");
         }
 
-        if(modifyMeetingRequestDTO.getMaxParticipant() < 1 || modifyMeetingRequestDTO.getMaxParticipant() > 4) { //  제한 인원이 1 이상 4 이하가 아니라면
-            throw new InvalidArgumentMeetingCreateException("제한 인원은 1명 이상 4명 이하 입니다.");
+        if(modifyMeetingRequestDTO.getMaxParticipant() < 2 || modifyMeetingRequestDTO.getMaxParticipant() > 5) { //  제한 인원이 2 이상 5 이하가 아니라면
+            throw new InvalidArgumentMeetingCreateException("제한 인원은 2명 이상 5명 이하 입니다.");
         }
 
         String password = modifyMeetingRequestDTO.getPassword();
