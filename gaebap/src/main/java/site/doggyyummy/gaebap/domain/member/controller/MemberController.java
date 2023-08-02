@@ -19,7 +19,7 @@ import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @Slf4j
 public class MemberController {
 

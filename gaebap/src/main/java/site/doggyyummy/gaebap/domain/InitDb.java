@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 
 
 //@Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class InitDb {
 
-    private final InitService initService;
-
+//    private final InitService initService;
+//
 //    @PostConstruct
 //    public void init() {
 //        initService.dbInit1();

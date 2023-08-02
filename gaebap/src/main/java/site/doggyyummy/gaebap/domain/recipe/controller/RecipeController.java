@@ -7,6 +7,7 @@ import site.doggyyummy.gaebap.domain.recipe.service.RecipeService;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class RecipeController {
 
     private final RecipeService recipeService;
