@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class Image {
     private Long id;
 
     private String s3Url;
+    private String s3Key;
 
     private String name;
 }

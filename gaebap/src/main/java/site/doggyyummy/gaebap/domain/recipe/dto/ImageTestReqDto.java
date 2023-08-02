@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Setter
 @Getter
-public class ImageTestRequestDto {
+public class ImageTestReqDto {
     private String name;
+    private MultipartFile multipartFile;
+
 }

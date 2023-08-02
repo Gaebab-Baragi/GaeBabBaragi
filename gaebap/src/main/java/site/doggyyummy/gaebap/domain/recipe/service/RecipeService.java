@@ -27,10 +27,7 @@ import site.doggyyummy.gaebap.domain.recipe.repository.StepRepository;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -48,62 +45,67 @@ public class RecipeService {
     //레시피 등록
     //예외가 발생해도 DB에서 id는 계속 증가하는 문제 발생.. 어캐 해결하지 ㅅㅂ
     @Transactional(rollbackFor = IllegalArgumentException.class)
-    public RecipeUploadResponseDto uploadRecipe(RecipeUploadRequestDto reqDto){
+    public RecipeUploadResponseDto uploadRecipe(RecipeUploadRequestDto reqDto, MultipartFile recipeImage, MultipartFile recipeVideo, MultipartFile[] stepImages) throws IOException {
         //로그인 안되어있으면 로그인 exception handling
         Optional<Member> findMeberById = memberRepository.findById(reqDto.getMember().getId());
-
-        Recipe recipe=new Recipe();
-        if(reqDto.getTitle()==null || reqDto.getTitle().equals("")){
+        Member member = findMeberById.get();
+        Recipe recipe = new Recipe();
+        if (reqDto.getTitle() == null || reqDto.getTitle().equals("")) {
             throw new IllegalArgumentException("제목을 입력하세요");
-        }else {
+        } else {
             recipe.setTitle(reqDto.getTitle());
         }
-        if(reqDto.getDescription()==null || reqDto.getDescription().equals("")){
+        if (reqDto.getDescription() == null || reqDto.getDescription().equals("")) {
             throw new IllegalArgumentException("설명을 입력하세요");
-        }else{
+        } else {
             recipe.setDescription(reqDto.getDescription());
         }
-        if(reqDto.getImgLocalPath()==null || reqDto.getImgLocalPath().equals("")){
-            throw new IllegalArgumentException("대표 사진을 등록해주세요");
+        if (recipeImage.isEmpty()) {
+            throw new IllegalArgumentException("레시피 대표 사진을 등록해주세요");
         }
-
-        List<Step> steps=new ArrayList<>();
-        for(RecipeUploadRequestDto.StepDto s:reqDto.getSteps()){
-            if(s.getDescription()==null || s.getDescription().equals("")){
+        recipe.setMember(member);
+        recipeRepository.save(recipe);
+        List<Step> steps = new ArrayList<>();
+        for (RecipeUploadRequestDto.StepDto s : reqDto.getSteps()) {
+            if (s.getDescription() == null || s.getDescription().equals("")) {
                 throw new IllegalArgumentException("조리 순서에 대한 설명을 작성해주세요");
             }
-            Step step=new Step();
+            Step step = new Step();
             step.setOrderingNumber(s.getOrderingNumber());
             step.setDescription(s.getDescription());
-            step.setImgUrl(s.getImgLocalPath());
+            step.setRecipe(recipe);
+            Map<String, String> stepMap = uploadFile(step, stepImages[s.getOrderingNumber().intValue() - 1]);
+            if (stepMap != null) {
+                step.setS3Url(stepMap.get("s3Url"));
+                step.setS3Key(stepMap.get("s3Key"));
+            }
             steps.add(step);
         }
         stepRepository.saveAll(steps);
 
-        recipe.setMember(findMeberById.get());
         recipe.setSteps(steps);
         recipe.setNowTime(LocalDateTime.now());
-        Recipe savedRecipe = recipeRepository.save(recipe);
+        recipeRepository.save(recipe);
 
-        List<RecipeIngredient> recipeIngredients=new ArrayList<>();
-        for(RecipeUploadRequestDto.RecipeIngredientDto r:reqDto.getRecipeIngredients()){
-            if(r.getIngredientName()==null || r.getIngredientName().equals("")){
+        List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+        for (RecipeUploadRequestDto.RecipeIngredientDto r : reqDto.getRecipeIngredients()) {
+            if (r.getIngredientName() == null || r.getIngredientName().equals("")) {
                 throw new IllegalArgumentException("재료 명을 입력해주세요");
             }
-            if(r.getAmount()==null || r.getAmount().equals("")){
+            if (r.getAmount() == null || r.getAmount().equals("")) {
                 throw new IllegalArgumentException("수량을 입력해주세요");
             }
             Ingredient findIngredient = ingredientRepository.findByName(r.getIngredientName());
             //이미 ingredient 테이블에 같은 이름이 있는 데이터는 저장 X
-            Ingredient ingredient=new Ingredient();
-            if(findIngredient==null){
+            Ingredient ingredient = new Ingredient();
+            if (findIngredient == null) {
                 ingredient.setName(r.getIngredientName());
                 ingredientRepository.save(ingredient);
-            }else{
-                ingredient=findIngredient;
+            } else {
+                ingredient = findIngredient;
             }
 
-            RecipeIngredient recipeIngredient=new RecipeIngredient();
+            RecipeIngredient recipeIngredient = new RecipeIngredient();
             recipeIngredient.setAmount(r.getAmount());
             recipeIngredient.setIngredient(ingredient);
             recipeIngredients.add(recipeIngredient);
@@ -111,60 +113,64 @@ public class RecipeService {
         recipeIngredientRepository.saveAll(recipeIngredients);
         recipe.setRecipeIngredients(recipeIngredients);
         //레시피 대표 사진 및 동영상 업로드
-        uploadModifyS3Object(null, reqDto.getImgLocalPath(), savedRecipe, true, null);
-        uploadModifyS3Object(null,reqDto.getVideoLocalPath(),savedRecipe,false,null);
-        for(Step step:steps){
-            uploadModifyS3Object(null,step.getImgUrl(),savedRecipe,false,step);
-            stepRepository.save(step);
+        Map<String, String> ImageMap = uploadFile(recipe, recipeImage);
+        recipe.setImageUrl(ImageMap.get("s3Url"));
+        recipe.setImageKey(ImageMap.get("s3Key"));
+
+        if (!recipeVideo.isEmpty()) {
+            Map<String, String> VideoMap = uploadFile(recipe, recipeVideo);
+            recipe.setVideoUrl(VideoMap.get("s3Url"));
+            recipe.setVideoKey(VideoMap.get("s3Key"));
         }
-        savedRecipe.setSteps(steps);
-        savedRecipe = recipeRepository.save(recipe);
-        return new RecipeUploadResponseDto(savedRecipe.getTitle(),findMeberById.get(),HttpStatus.SC_OK,"upload success");
+        recipe.setSteps(steps);
+        recipe = recipeRepository.save(recipe);
+        return new RecipeUploadResponseDto(recipe.getTitle(), member, HttpStatus.SC_OK, "upload success");
     }
 
     //레시피 id로 조회 (레시피 제목, 설명,재료, steps, 작성자 이름)
     //readOnly=true일 때, 지연 로딩 불가 !!! -> 이거 해결 어캐하지
     @Transactional(readOnly = true)
-    public RecipeFindByIdResponseDto findRecipeByRecipeId(Long id){
+    public RecipeFindByIdResponseDto findRecipeByRecipeId(Long id) {
 
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
-        if(!findRecipe.isPresent()){
-            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST,"해당 레시피는 존재하지 않습니다.");
+        if (!findRecipe.isPresent()) {
+            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST, "해당 레시피는 존재하지 않습니다.");
         }
 
         Member member = findRecipe.get().getMember();
-        List<Step> steps=findRecipe.get().getSteps();
-        List<RecipeIngredient> recipeIngredients=findRecipe.get().getRecipeIngredients();
-        List<Ingredient> ingredients=new ArrayList<>();
-        for(RecipeIngredient r:recipeIngredients){
-            Ingredient ingredient=new Ingredient();
-            ingredient=r.getIngredient();
+        List<Step> steps = findRecipe.get().getSteps();
+        List<RecipeIngredient> recipeIngredients = findRecipe.get().getRecipeIngredients();
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (RecipeIngredient r : recipeIngredients) {
+            Ingredient ingredient = new Ingredient();
+            ingredient = r.getIngredient();
             ingredients.add(ingredient);
         }
 
-        return new RecipeFindByIdResponseDto(findRecipe.get(),member,steps,recipeIngredients,ingredients);
+        return new RecipeFindByIdResponseDto(findRecipe.get(), member, steps, recipeIngredients, ingredients);
     }
-    
+
     //hit 증가
     @Transactional
-    public void addHit(Long id){
+    public void addHit(Long id) {
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
-        if(!findRecipe.isPresent()){
-            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST,"해당 레시피는 존재하지 않습니다.");
+        if (!findRecipe.isPresent()) {
+            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST, "해당 레시피는 존재하지 않습니다.");
         }
         recipeRepository.addHits(id);
     }
+
     //작성자 id로 조회 (레시피 제목)
     @Transactional(readOnly = true)
-    public RecipeFindByMemberIdResponseDto findRecipeByMemberId(Long id){
+    public RecipeFindByMemberIdResponseDto findRecipeByMemberId(Long id) {
         Optional<Member> findMember = memberRepository.findById(id);
         List<Recipe> findRecipe = recipeRepository.findByMemberId(id);
-        return new RecipeFindByMemberIdResponseDto(findMember.get(),findRecipe);
+        return new RecipeFindByMemberIdResponseDto(findMember.get(), findRecipe);
     }
 
     //레시피 all 조회 (레시피 제목, 작성자 이름)
     @Transactional(readOnly = true)
-    public RecipeAllResponseDto allRecipe(){
+    public RecipeAllResponseDto allRecipe() {
         List<Recipe> allRecipes = recipeRepository.findAll();
 
         return new RecipeAllResponseDto(allRecipes);
@@ -172,185 +178,125 @@ public class RecipeService {
 
     //레시피 삭제
     @Transactional
-    public RecipeDeleteResponseDto deleteRecipe(Long id,RecipeDeleteRequestDto reqDto){
+    public RecipeDeleteResponseDto deleteRecipe(Long id, RecipeDeleteRequestDto reqDto) {
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
         //로그인 안하면 exception 터져
-        //삭제할 findRecipe가 존재하지 않으면 exception 터져 -> 완료
-        if(!findRecipe.isPresent()){
-            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST,"존재하지 않는 레시피입니다.");
+        Recipe recipe = findRecipe.get();
+        if (recipe == null) {
+            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST, "존재하지 않는 레시피입니다.");
         }
-        if(findRecipe.get().getMember().getId().equals(reqDto.getLoginMember().getId())) {
-            //S3에 해당 레시피 이미지 및 동영상 삭제
-            String imgUrl = findRecipe.get().getImageUrl();
-            String[] UrlSegments = imgUrl.split("/");
-            String folderKey = UrlSegments[UrlSegments.length - 2] + "/";
-            ObjectListing objectListing = awsS3Client.listObjects("sh-bucket", folderKey);
-            // 폴더 내의 모든 객체들을 삭제
-            for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                awsS3Client.deleteObject("sh-bucket", objectSummary.getKey());
-            }
-            // 폴더 삭제
-            awsS3Client.deleteObject("sh-bucket", folderKey);
-
-            recipeRepository.delete(findRecipe.get());
-
-            return new RecipeDeleteResponseDto(findRecipe.get());
-        }
-        else{ //작성자랑 로그인한 회원의 id가 다르면 권한 없는 exceptino 발생
-            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"권한이 없습니다.");
+        if (recipe.getMember().getId().equals(reqDto.getLoginMember().getId())) {
+            deleteFile(recipe);
+            recipeRepository.delete(recipe);
+            return new RecipeDeleteResponseDto(recipe);
+        } else {
+            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED, "권한이 없습니다.");
         }
 
     }
 
 
-    //AWS S3에 사진 or 동영상 업로드 또는 수정 메서드
-    public void uploadModifyS3Object(String oldUrl, String reqUrl,Recipe recipe, boolean isImg,Step step){ //oldUrl : DB에 있던 URL, reqUrl : 새로운 URL, isImg=true -> img, isImg=false -> video
-        if(oldUrl==null){ //DB에 저장안되어있으니까, 새로운 객체를 s3에 저장
-            if(reqUrl!=null) {
-                File img = new File(reqUrl);
-                String bucketName = "sh-bucket";
-                if(step==null){
-                    String imgKey = recipe.getId() + "/" + img.toPath().getFileName().toString();
-                    String newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
-                    awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
-                    if(isImg){
-                        recipe.setImageUrl(newUrl);
-                    }else{
-                        recipe.setVideoUrl(newUrl);
-                    }
-                }else{ //스텝 별 사진 등록
-                    String imgKey = recipe.getId() + "/"+step.getId()+"/" + img.toPath().getFileName().toString();
-                    String newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
-                    awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
-                    step.setImgUrl(newUrl);
-
-                }
-            }
-        }else{ //DB에 저장 되어 있으니까, 수정하거나 삭제하거나.
-            String newUrl=null;
-            String[] imgSegments = oldUrl.split("/");
-            if(reqUrl==null){//imgUrl을 삭제 한 경우 (등록되있던 사진 삭제한 경우)
-                String oldImgKey=null;
-                if(step==null) {
-                    oldImgKey = imgSegments[imgSegments.length - 2] + "/" + imgSegments[imgSegments.length - 1];
-                }else{
-                    oldImgKey=imgSegments[imgSegments.length - 3] + "/"+imgSegments[imgSegments.length - 2] + "/" + imgSegments[imgSegments.length - 1];
-                }
-                //s3에 기존에 있던 객체 삭제 해야함
-                awsS3Client.deleteObject("sh-bucket",oldImgKey);
-                if(step==null){
-                    if(isImg){
-                        recipe.setImageUrl(newUrl);
-                    }else{
-                        recipe.setVideoUrl(newUrl);
-                    }
-                }else{ //스텝 별 사진 등록
-                    step.setImgUrl(newUrl);
-                }
-            }
-            else if(!oldUrl.equals(reqUrl)){ //이미지 파일을 수정한 경우
-                String bucketName="sh-bucket";
-                String oldImgKey=null;
-                if(step==null) {
-                    oldImgKey = imgSegments[imgSegments.length - 2] + "/" + imgSegments[imgSegments.length - 1];
-
-                }else{
-                    oldImgKey=imgSegments[imgSegments.length - 3] + "/"+imgSegments[imgSegments.length - 2] + "/" + imgSegments[imgSegments.length - 1];
-                }
-                //s3에 기존에 있던 객체는 삭제
-                awsS3Client.deleteObject(bucketName,oldImgKey);
-                //s3에 새로운 사진 저장
-                File img=new File(reqUrl);
-                if(step==null) {
-                    String imgKey = recipe.getId().toString() + "/" + img.toPath().getFileName().toString();
-                    newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
-                    awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
-                }
-                else{
-                    String imgKey = recipe.getId() + "/"+step.getId()+"/" + img.toPath().getFileName().toString();
-                    newUrl = "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + imgKey;
-                    awsS3Client.putObject(new PutObjectRequest(bucketName, imgKey, img));
-                }
-                if(step==null){
-                    if(isImg){
-                        recipe.setImageUrl(newUrl);
-                    }else{
-                        recipe.setVideoUrl(newUrl);
-                    }
-                }else{ //스텝 별 사진 등록
-                    step.setImgUrl(newUrl);
-                }
-            }
-
-        }
-
-    }
     //레시피 수정 (등록자와 일치해야 수정 가능)
     @Transactional
-    public void modifyRecipe(Long id,RecipeModifyRequestDto reqDto){
+    public void modifyRecipe(Long id, RecipeModifyRequestDto reqDto,MultipartFile newRecipeImage,MultipartFile newRecipeVideo,MultipartFile[] newStepImages) throws IOException {
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
+
         //해당 레시피 없으면 exception
-        if(!findRecipe.isPresent()){
-            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST,"존재하지 않는 레시피입니다.");
+        if (!findRecipe.isPresent()) {
+            throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST, "존재하지 않는 레시피입니다.");
         }
 
         Recipe recipe = findRecipe.get();
         Member writer = recipe.getMember();
         RecipeModifyRequestDto.MemberDto loginMember = reqDto.getLoginMember();
-        if(loginMember==null){
+        if (loginMember == null) {
             //로그인하라고 exception
         }
 
-        if(loginMember!=null && writer.getId()==loginMember.getId()){
-            findRecipe.get().setTitle(reqDto.getTitle());
-            findRecipe.get().setDescription(reqDto.getDescription());
+        if (loginMember != null && writer.getId() == loginMember.getId()) {
+            recipe.setTitle(reqDto.getTitle());
+            recipe.setDescription(reqDto.getDescription());
 
-            String imgUrl=findRecipe.get().getImageUrl();
-            uploadModifyS3Object(imgUrl,reqDto.getImgUrl(),findRecipe.get(),true,null);
-            String videoUrl=findRecipe.get().getVideoUrl();
-            uploadModifyS3Object(videoUrl,reqDto.getVideoUrl(),findRecipe.get(),false,null);
-
-            List<Step> updateSteps=new ArrayList<>();
-
-            for(RecipeModifyRequestDto.StepDto s:reqDto.getSteps()){
-                Step findStep = stepRepository.findByRecipeIdAndOrderingNumber(id, s.getOrderingNumber());
-                if(findStep!=null){ //해당 id의 step이 있으면 수정하는거
-                    findStep.setOrderingNumber(s.getOrderingNumber());
-                    findStep.setDescription(s.getDescription());
-                    updateSteps.add(findStep);
-                    uploadModifyS3Object(findStep.getImgUrl(), s.getImgUrl(),findRecipe.get(),false,findStep);
-                    stepRepository.save(findStep);
-                }else{ //없으면, 추가해줘야대
-                    Step step=new Step();
-                    step.setOrderingNumber(s.getOrderingNumber());
-                    step.setDescription(s.getDescription());
-                    updateSteps.add(step);
-                    uploadModifyS3Object(findStep.getImgUrl(), s.getImgUrl(),findRecipe.get(),false,step);
-                    stepRepository.save(step);
+            if(!newRecipeImage.isEmpty()){ //레시피 사진 바꿔치기
+                //기존꺼는 삭제해야함
+                String oldImageS3Key=recipe.getImageKey();
+                awsS3Client.deleteObject("sh-bucket",oldImageS3Key);
+                Map<String,String> ImageMap=uploadFile(recipe,newRecipeImage);
+                recipe.setImageUrl(ImageMap.get("s3Url"));
+                recipe.setImageKey(ImageMap.get("s3Key"));
+            }
+            if(!newRecipeVideo.isEmpty()){ //비디오는 동영상 삭제하는 메서드 추가해야함 (기존 것이 없으면 추가해야지)
+                if(recipe.getVideoKey()==null){
+                    Map<String, String> VideoMap = uploadFile(recipe, newRecipeVideo);
+                    recipe.setVideoUrl(VideoMap.get("s3Url"));
+                    recipe.setVideoKey(VideoMap.get("s3Key"));
+                }else {
+                    String oldVideoS3Key = recipe.getVideoKey();
+                    awsS3Client.deleteObject("sh-bucket", oldVideoS3Key);
+                    Map<String, String> VideoMap = uploadFile(recipe, newRecipeVideo);
+                    recipe.setVideoUrl(VideoMap.get("s3Url"));
+                    recipe.setVideoKey(VideoMap.get("s3Key"));
                 }
-
             }
 
+            List<Step> updateSteps = new ArrayList<>();
+            for (RecipeModifyRequestDto.StepDto s : reqDto.getSteps()) {
+                Step findStep = stepRepository.findByRecipeIdAndOrderingNumber(id, s.getOrderingNumber());
+                if (findStep != null) { //해당 id의 step이 있으면 수정하는거
+                    findStep.setOrderingNumber(s.getOrderingNumber());
+                    findStep.setDescription(s.getDescription());
+                    if(!newStepImages[s.getOrderingNumber().intValue()-1].isEmpty()){
+                        if(findStep.getS3Key()==null){
+                            Map<String,String> stepMap=uploadFile(findStep,newStepImages[s.getOrderingNumber().intValue()-1]);
+                            findStep.setS3Key(stepMap.get("s3Key"));
+                            findStep.setS3Url(stepMap.get("s3Url"));
+                        }else {
+                            String oldStepImageKey = findStep.getS3Key();
+                            awsS3Client.deleteObject("sh-bucket", oldStepImageKey);
+                            Map<String, String> stepMap = uploadFile(findStep, newStepImages[s.getOrderingNumber().intValue() - 1]);
+                            findStep.setS3Key(stepMap.get("s3Key"));
+                            findStep.setS3Url(stepMap.get("s3Url"));
+                        }
+                    }else{
+                        if(findStep.getS3Key()!=null) {
+                            String oldStepImageKey = findStep.getS3Key();
+                            awsS3Client.deleteObject("sh-bucket", oldStepImageKey);
+                        }
+                    }
+                    updateSteps.add(findStep);
+                } else { //없으면, 추가해줘야대
+                    Step step = new Step();
+                    step.setOrderingNumber(s.getOrderingNumber());
+                    step.setDescription(s.getDescription());
+                    if(!newStepImages[s.getOrderingNumber().intValue()-1].isEmpty()){
+                        Map<String,String> stepMap=uploadFile(step,newStepImages[s.getOrderingNumber().intValue()-1]);
+                        step.setS3Key(stepMap.get("s3Key"));
+                        step.setS3Url(stepMap.get("s3Url"));
+                    }
+                    updateSteps.add(step);
+                }
+            }
+            stepRepository.saveAll(updateSteps);
             List<Step> originSteps = findRecipe.get().getSteps();
-            for(Step originStep : originSteps){
-                boolean flag=false;
-                for(Step updateStep:updateSteps){
-                    if(updateStep.getId()==originStep.getId()){
-                        flag=true;
+            for (Step originStep : originSteps) {
+                boolean flag = false;
+                for (Step updateStep : updateSteps) {
+                    if (updateStep.getId() == originStep.getId()) {
+                        flag = true;
                         break;
                     }
                 }
-                if(flag==false){
-                    if(originStep.getImgUrl()!=null){
-                        uploadModifyS3Object(originStep.getImgUrl(),null,findRecipe.get(),false,originStep);
-                    }
+                if (flag == false) {
+//                    if(originStep.getImgUrl()!=null){
+//                        uploadModifyS3Object(originStep.getImgUrl(),null,findRecipe.get(),false,originStep);
+//                    }
                     stepRepository.delete(originStep);
                 }
             }
             recipe.setSteps(updateSteps);
 
-            List<RecipeIngredient> updateRecipeIngredients=new ArrayList<>();
-            for(RecipeModifyRequestDto.RecipeIngredientDto r: reqDto.getRecipeIngredients()) {
+            List<RecipeIngredient> updateRecipeIngredients = new ArrayList<>();
+            for (RecipeModifyRequestDto.RecipeIngredientDto r : reqDto.getRecipeIngredients()) {
                 Ingredient findIngredient = ingredientRepository.findByName(r.getIngredientName());//ingredient찾음
 
                 Ingredient ingredient = new Ingredient();
@@ -360,42 +306,41 @@ public class RecipeService {
                 } else {
                     ingredient = findIngredient;
                 }
-                RecipeIngredient findRecipeIngredient=recipeIngredientRepository.findByIngredientIdAndRecipeId(ingredient.getId(), id);
+                RecipeIngredient findRecipeIngredient = recipeIngredientRepository.findByIngredientIdAndRecipeId(ingredient.getId(), id);
 
                 RecipeIngredient recipeIngredient = new RecipeIngredient();
 
-                if(findRecipeIngredient==null){
+                if (findRecipeIngredient == null) {
                     recipeIngredient.setAmount(r.getAmount());
                     recipeIngredient.setIngredient(ingredient);
                     updateRecipeIngredients.add(recipeIngredient);
                     recipeIngredientRepository.save(recipeIngredient);
-                }else{
-                    recipeIngredient=findRecipeIngredient;
+                } else {
+                    recipeIngredient = findRecipeIngredient;
                     recipeIngredient.setAmount(r.getAmount());
                     recipeIngredient.setIngredient(ingredient);
                     updateRecipeIngredients.add(recipeIngredient);
                 }
             }
 
-            List<RecipeIngredient> originRecipeIngredients=findRecipe.get().getRecipeIngredients();
-            for(RecipeIngredient origin:originRecipeIngredients){
-                boolean flag=false;
-                for(RecipeIngredient updateRecipeIngredient: updateRecipeIngredients) {
-                    if(origin.getIngredient().getId()==updateRecipeIngredient.getIngredient().getId()) {
+            List<RecipeIngredient> originRecipeIngredients = findRecipe.get().getRecipeIngredients();
+            for (RecipeIngredient origin : originRecipeIngredients) {
+                boolean flag = false;
+                for (RecipeIngredient updateRecipeIngredient : updateRecipeIngredients) {
+                    if (origin.getIngredient().getId() == updateRecipeIngredient.getIngredient().getId()) {
                         flag = true;
                         break;
                     }
                 }
-                if(flag==false) {
+                if (flag == false) {
                     recipeIngredientRepository.delete(origin);
                 }
             }
             recipe.setRecipeIngredients(updateRecipeIngredients);
             recipeRepository.save(recipe);
-        }
-        else{//작성자랑 수정하려는 자가 다르면 수정 불가 -> 삭제도 이거 추가해야 함
+        } else {//작성자랑 수정하려는 자가 다르면 수정 불가 -> 삭제도 이거 추가해야 함
             //권한 없음 exception
-            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"권한이 없습니다");
+            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED, "권한이 없습니다");
         }
 
     }
@@ -425,18 +370,18 @@ public class RecipeService {
 
     //레시피 제목은 like 검색, 재료는 equal로 검색
     @Transactional(readOnly = true)
-    public RecipeSearchLikeResponseDto searchRecipeLike(RecipeSearchLikeRequestDto reqDto){
-        if(reqDto.getIngredients()==null || reqDto.getIngredients().size()==0){
+    public RecipeSearchLikeResponseDto searchRecipeLike(RecipeSearchLikeRequestDto reqDto) {
+        if (reqDto.getIngredients() == null || reqDto.getIngredients().size() == 0) {
             List<Recipe> recipes = recipeRepository.findByTitleContaining(reqDto.getTitle());
             return new RecipeSearchLikeResponseDto(recipes);
-        }else{
+        } else {
             List<RecipeSearchLikeRequestDto.IngredientDto> ingredients = reqDto.getIngredients();
-            List<String> ingredientsName=new ArrayList<>();
-            for(RecipeSearchLikeRequestDto.IngredientDto i:ingredients){
+            List<String> ingredientsName = new ArrayList<>();
+            for (RecipeSearchLikeRequestDto.IngredientDto i : ingredients) {
                 ingredientsName.add(i.getName());
                 System.out.println("i.getName() = " + i.getName());
             }
-            List<Object[]> resultList= recipeIngredientRepository.findRecipesWithIngredientsAndTitle(ingredientsName,reqDto.getTitle(),ingredientsName.size());
+            List<Object[]> resultList = recipeIngredientRepository.findRecipesWithIngredientsAndTitle(ingredientsName, reqDto.getTitle(), ingredientsName.size());
 
             List<Recipe> recipes = new ArrayList<>();
 
@@ -458,14 +403,40 @@ public class RecipeService {
     }
 
     //aws s3에 업로드
-    public String uploadFile(MultipartFile multipartFile) throws IOException {
-        String s3FileName= UUID.randomUUID()+"-"+multipartFile.getOriginalFilename();
+    public Map<String, String> uploadFile(Object object, MultipartFile multipartFile) throws IOException {
+        String s3Key = "";
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            return null;
+        }
+        if (object instanceof Recipe) {
+            s3Key = "recipe/" + ((Recipe) object).getId() + "/" + UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
+        }
+        if (object instanceof Step) {
+            s3Key = "recipe/" + ((Step) object).getRecipe().getId() + "/step/" + UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
+        }
 
-        ObjectMetadata objMeta=new ObjectMetadata();
+        ObjectMetadata objMeta = new ObjectMetadata();
+        objMeta.setContentType(multipartFile.getContentType());
         objMeta.setContentLength(multipartFile.getInputStream().available());
 
-        awsS3Client.putObject("sh-bucket",s3FileName,multipartFile.getInputStream(),objMeta);
-        return awsS3Client.getUrl("sh-bucket",s3FileName).toString();
+        awsS3Client.putObject("sh-bucket", s3Key, multipartFile.getInputStream(), objMeta);
+        String s3Url = awsS3Client.getUrl("sh-bucket", s3Key).toString();
+        Map<String, String> map = new HashMap<>();
+        map.put("s3Key", s3Key);
+        map.put("s3Url", s3Url);
+        return map;
     }
+
+    //레시피 삭제
+    public void deleteFile(Recipe recipe) {
+        String folderKey = "recipe/"+recipe.getId()+"/";
+        ObjectListing objectListing = awsS3Client.listObjects("sh-bucket", folderKey);
+        for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+            awsS3Client.deleteObject("sh-bucket", objectSummary.getKey());
+        }
+        awsS3Client.deleteObject("sh-bucket", folderKey);
+    }
+
+
 
 }

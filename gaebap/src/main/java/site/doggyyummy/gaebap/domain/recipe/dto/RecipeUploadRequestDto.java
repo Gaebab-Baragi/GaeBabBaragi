@@ -14,8 +14,7 @@ public class RecipeUploadRequestDto {
     private MemberDto member; //레시피 등록자
     private List<StepDto> steps;
     private List<RecipeIngredientDto> recipeIngredients;
-    private String imgLocalPath; //아마 불필요할듯
-    private String videoLocalPath;
+
     public String getTitle(){
         if(title==null){
             return null;

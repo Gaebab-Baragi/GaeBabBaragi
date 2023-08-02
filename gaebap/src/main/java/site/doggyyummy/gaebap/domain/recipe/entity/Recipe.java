@@ -36,8 +36,10 @@ public class Recipe {
     private LocalDateTime nowTime;
 
     private String imageUrl;
+    private String imageKey;
 
     private String videoUrl;
+    private String videoKey;
 
     @OneToMany(mappedBy = "recipe", cascade=CascadeType.REMOVE)
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
@@ -47,7 +49,7 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
     private List<Meeting> meetings = new ArrayList<>();
-//    @OneToMany(mappedBy = "recipe")
+
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 

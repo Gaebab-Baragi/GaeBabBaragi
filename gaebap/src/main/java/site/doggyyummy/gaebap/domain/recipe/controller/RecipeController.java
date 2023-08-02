@@ -3,11 +3,14 @@ package site.doggyyummy.gaebap.domain.recipe.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.recipe.dto.*;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 import site.doggyyummy.gaebap.domain.recipe.exception.NotFoundRecipeException;
 import site.doggyyummy.gaebap.domain.recipe.exception.UnauthorizedException;
 import site.doggyyummy.gaebap.domain.recipe.service.RecipeService;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,9 +20,9 @@ public class RecipeController {
 
     //레시피 등록
     @PostMapping("/recipes/new")
-    public RecipeUploadResponseDto uploadRecipes(@RequestBody RecipeUploadRequestDto recipeUploadRequestDto) {
+    public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo,@RequestPart MultipartFile[] stepImages) throws IOException {
         try {
-            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(recipeUploadRequestDto);
+            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(recipeUploadRequestDto,recipeImage,recipeVideo,stepImages);
             return resDto;
         }catch (IllegalArgumentException e){
             return new RecipeUploadResponseDto(null,null,HttpStatus.SC_BAD_REQUEST,e.getMessage());
@@ -63,9 +66,9 @@ public class RecipeController {
 
     //레시피 수정
     @PutMapping("/recipes/{id}")
-    public RecipeModifyResponseDto modifyRecipe(@PathVariable("id") Long id,@RequestBody RecipeModifyRequestDto reqDto){
+    public RecipeModifyResponseDto modifyRecipe(@PathVariable("id") Long id,@RequestPart RecipeModifyRequestDto reqDto,@RequestPart MultipartFile newRecipeImage,@RequestPart MultipartFile newRecipeVideo,@RequestPart MultipartFile[] newStepImages) throws IOException{
         try {
-            recipeService.modifyRecipe(id, reqDto);
+            recipeService.modifyRecipe(id, reqDto,newRecipeImage,newRecipeVideo,newStepImages);
             return new RecipeModifyResponseDto(HttpStatus.SC_OK, "modify Success");
         }catch(UnauthorizedException e){
             return new RecipeModifyResponseDto(e.getStatusCode(),e.getMessage());
