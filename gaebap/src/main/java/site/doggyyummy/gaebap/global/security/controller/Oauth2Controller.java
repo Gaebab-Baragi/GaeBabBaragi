@@ -17,6 +17,7 @@ import site.doggyyummy.gaebap.global.security.service.JwtService;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/api")
 public class Oauth2Controller {
 
     private final JwtService jwtService;

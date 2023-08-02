@@ -100,7 +100,7 @@
 
   },
 
-  "proxy": "http://localhost:9999"
+  "proxy": "http://localhost:8083"
 
 }
 

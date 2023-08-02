@@ -75,12 +75,9 @@ public class JwtService {
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         log.info("토큰 뽑기");
-        Optional<String> ret =
-                Optional.ofNullable(request.getHeader(accessHeader))
+        return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(token -> token.startsWith(BEARER))
                 .map(token -> token.replace(BEARER, ""));
-        log.info("토큰 뽑음 : {}", ret.orElse("실패"));
-        return ret;
     }
 
     public Optional<String> extractName(String accessToken) {

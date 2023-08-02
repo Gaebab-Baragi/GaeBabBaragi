@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.global.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,10 +47,16 @@ public class SecurityConfig {
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    @Value("${current.back}")
+    private String backUrl;
+
+    @Value("${current.front}")
+    private String frontUrl;
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web
-                .ignoring().requestMatchers("/member/register/**");
+                .ignoring().requestMatchers("/api/member/register/**");
     }
 
     @Bean
@@ -57,7 +64,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        config.setAllowedOrigins(Arrays.asList(frontUrl));
         config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));
 
@@ -78,20 +85,21 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                        .requestMatchers("/api/member/modify/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login((oauth2login) ->
                     oauth2login
                             .successHandler(oAuth2LoginSuccessHandler)
-                            .failureUrl("http://localhost:3000/member/login")
+                            .failureUrl(frontUrl+"/login")
                             .failureHandler(oAuth2LoginFailureHandler)
                             .userInfoEndpoint((endpoint) ->
                                     endpoint.userService(customOAuth2UserService))
                 )
                 .logout((logout) ->
                         logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                                .logoutSuccessUrl("http://localhost:3000")
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/api/member/logout"))
+                                .logoutSuccessUrl(frontUrl)
                                 .invalidateHttpSession(true)
                 );
 

@@ -24,7 +24,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String LOGIN_URL = "/member/login";
+    private static final String LOGIN_URL = "api/member/login";
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;

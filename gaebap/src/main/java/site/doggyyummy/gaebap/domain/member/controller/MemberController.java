@@ -12,6 +12,7 @@ import site.doggyyummy.gaebap.domain.member.dto.request.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberRegisterDTO;
 import site.doggyyummy.gaebap.domain.member.dto.response.MemberResponseDTO;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.exception.custom.NoSuchUserException;
 import site.doggyyummy.gaebap.domain.member.exception.custom.NoSuchUsernameException;
 import site.doggyyummy.gaebap.domain.member.service.MemberMailService;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
@@ -71,7 +72,7 @@ public class MemberController {
 
 
     @GetMapping("/test")
-    public ResponseEntity<MemberResponseDTO> test() {
+    public ResponseEntity<MemberResponseDTO> test() throws NoSuchUserException {
         Member member = SecurityUtil.getCurrentLoginMember();
         MemberResponseDTO dto = MemberResponseDTO.toDTO((member));
         return new ResponseEntity<>(dto, HttpStatus.OK);
