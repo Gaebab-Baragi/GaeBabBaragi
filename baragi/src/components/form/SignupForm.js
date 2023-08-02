@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import './BasicForm.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
-import axios from 'axios';
+import axios from '../../axios/axios';
 import SocialLogin from '../social/SocialLogin';
 
 function SignupForm() {
@@ -115,7 +115,6 @@ function SignupForm() {
   //==================================================================================//
 
   //--------------- 회원 가입 기능 구현-------------------//
-  // 다른 버튼 누를 때 axois 요청되는 문제 해결하기
 
   const handleSubmit = (e) => { 
     e.preventDefault();
