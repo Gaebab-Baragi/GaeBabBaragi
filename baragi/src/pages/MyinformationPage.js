@@ -1,8 +1,10 @@
+import MemberModificationForm from "../components/form/MemberModificationForm";
+
 function MyinformationPage() {
     return (
-        <>
-            <div>내 정보 변경</div>
-        </>
+        <div>
+            <MemberModificationForm></MemberModificationForm>
+        </div>
       );
     }
 export default MyinformationPage;
