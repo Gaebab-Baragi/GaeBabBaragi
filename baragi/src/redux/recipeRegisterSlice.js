@@ -1,23 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// 레시피 검색  
+// 레시피 등록
 let recipeRegister= createSlice({
   name:'recipeRegister',
   initialState:{
-    step:[],
-    
+    image : '',
+    recipe_name : '',
+    recipe_infor : '',
+    material_list : [],
+    step_list : [],
   },
   reducers:{
-    request1: (state, action)=>{
-      // axios 요청 보내서 레시피 저장하기
-
-      
+    setImage: (state, action) =>{
+      state.image = action.payload
     },
-
+    setRecipeName2: (state, action) => {
+      state.recipe_name = action.payload
+      console.log('recipe_name : ' + state.recipe_name)
+    },
+    setRecipeInfor: (state, action)=>{
+      state.recipe_infor = action.payload
+      console.log('recipe_infor :' + state.recipe_infor)
+    },
+    setMaterialList: (state, action) =>{
+      state.material_list = action.payload;
+      console.log('material_list : ' + state.material_list)
+    },
     
-  }
+    setStepList :(state, action) =>{
+      state.step_list = action.payload
+      console.log(state.step_list)
+    },
+    }
 })
 
-export const {request1} = recipeRegister.actions;
+export const {setImage, setRecipeName2, setRecipeInfor, setMaterialList, setStepList} = recipeRegister.actions;
 
 export default recipeRegister;
