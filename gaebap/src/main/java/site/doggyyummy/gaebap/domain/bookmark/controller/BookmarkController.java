@@ -9,7 +9,7 @@ import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkServiceImpl;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/bookmark")
+@RequestMapping("/api/bookmark")
 public class BookmarkController {
 
     private final BookmarkServiceImpl bookmarkService;

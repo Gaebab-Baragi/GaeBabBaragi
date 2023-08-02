@@ -2,25 +2,24 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { loginUser } from "../../redux/userSlice";
+import { clearUser } from "../../redux/userSlice";
 
-const SocialLoginHandler= () => {
-
-    const params = useParams();
+const LogoutHandler= () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get("/oauth2/success", {
-            params : {token : params.token},
+        axios.post("/member/logout", {
             headers: {'content-type': 'application/json'}
         }
         )
         .then((res) => {
+            console.log(res);
             if (res.status === 200){
-                axios.defaults.headers.common['authorization'] = params.token;
-                dispatch(loginUser(res.data));
-                navigate("/");
+                window.sessionStorage.clear();
+                dispatch(clearUser());
+                alert("로그아웃되었습니다.");
+                navigate("/", {replace : true});
             }
         })
         .catch((res) => {
@@ -28,7 +27,7 @@ const SocialLoginHandler= () => {
         })
     }, [])
 
-    return (<div> 안녕 </div>);
+    return (<div> 빠이요 </div>);
 }
 
-export default SocialLoginHandler;
+export default LogoutHandler;
