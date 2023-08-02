@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
+import site.doggyyummy.gaebap.global.security.entity.PrincipalDetails;
 import site.doggyyummy.gaebap.global.security.service.JwtService;
 import site.doggyyummy.gaebap.global.security.util.PasswordUtil;
 
@@ -27,7 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
-
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
@@ -89,15 +89,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             password = PasswordUtil.generateRandomPassword();
         }
 
-        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
-                .username(member.getUsername())
-                .password(password)
-                .build();
+        PrincipalDetails principalDetails = new PrincipalDetails(member);
+        log.info("member {}", member);
 
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(userDetailsUser, null,
-                        authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
+                new UsernamePasswordAuthenticationToken(principalDetails, null,
+                        authoritiesMapper.mapAuthorities(principalDetails.getAuthorities()));
 
+        log.info("authentication : {}", authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

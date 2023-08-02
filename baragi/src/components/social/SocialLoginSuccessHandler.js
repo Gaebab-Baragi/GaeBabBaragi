@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios/axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,7 +18,9 @@ const SocialLoginHandler= () => {
         )
         .then((res) => {
             if (res.status === 200){
-                axios.defaults.headers.common['authorization'] = params.token;
+                const accessToken = params.token;
+                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+                console.log("token:" + accessToken);
                 dispatch(loginUser(res.data));
                 navigate("/");
             }

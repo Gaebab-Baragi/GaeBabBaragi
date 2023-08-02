@@ -1,32 +1,37 @@
 import { useCallback, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
-import Image from 'react-bootstrap/Image'
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../redux/userSlice';
+import axios from "../../axios/axios";
 import "./css/MemberModification.css"
 
 function MemberModificationForm(){
-    const navigate = useNavigate();
     const user = useSelector((state) => (state.user));
     const [nickname, setNickname] = useState('');
     const [nicknameDuplicateCheck, setNicknameDuplicateCheck] = useState(false);
     const [validNickname, setValidNickname] = useState(false);
     const [profileUrl, setProfileUrl] = useState(user.profileUrl);
-    
+    const [base64, setBase64] = useState('');
+    const [fileType, setFileType] = useState('');
+    const dispatch = useDispatch();
+
     useEffect(()=>{
-        if (nickname.length == 0) setNickname(user.nickname); 
         setValidNickname(nickname.length<=30)
+        if (nickname.length === 0) {
+            setNicknameDuplicateCheck(true);
+        }
+        else setNicknameDuplicateCheck(false);
     },[nickname])
 
     const handleNicknameDuplicateCheck = useCallback((e) => {
         e.preventDefault();
         console.log('Nickname-Duplication-Check')
+
         let body = JSON.stringify({
-            nickname : nickname,
+            nickname : nickname ? nickname : user.nickname,
         })
 
         axios.post('/member/modify/nickname', body, {
-        headers: { "Content-Type": `application/json; charset= UTF-8`}
         })
         .then((res)=>{
         if (res.status === 200) {
@@ -42,7 +47,7 @@ function MemberModificationForm(){
         else alert("이유를 알 수 없는 오류");
         })
 
-    }, [nickname]);
+    }, [nickname, user.nickname]);
 
 
     const onSubmit = (e) => {
@@ -51,21 +56,21 @@ function MemberModificationForm(){
             alert('중복 확인을 진행해주세요.')
         } 
         else {
-            let body = {
-                nickname : nickname,
-            };
-            axios.post('/member/modify', body)
+            let body = JSON.stringify({
+                username : user.username,
+                nickname : nickname ? nickname : user.nickname,
+                file : base64,
+                fileType : fileType
+            });
+            axios.put('/member/modify', body)
             .then((res)=>{
-            if (res.status ===200) {
-                console.log('signup success')
-
-            }
+                    let data = res.data;
+                    dispatch(loginUser(data))
             })
             .catch((res) => {
-            console.log(res);
+                console.log(res);
                 alert("회원정보를 수정할 수 없습니다.")
-            }
-            );
+            });
         }
     }
 
@@ -73,12 +78,36 @@ function MemberModificationForm(){
         e.preventDefault();
         if (!e.target.files || !e.target.files[0]) return;
         const file = e.target.files[0];
+        setFileType(file.type);
+        console.log(file.name);
+        console.log(file.type);
         const reader = new FileReader();
         reader.onload = () => {
             setProfileUrl(reader.result);
+            const dataIndex = reader.result.indexOf(',') + 1
+            setBase64(reader.result.substring(
+                            dataIndex,
+                            reader.result.length));
         }
         reader.readAsDataURL(file);
     }
+
+    const letsTest = (e) => {
+        e.preventDefault();
+        axios.get("/member/test")
+        .then((res) =>{
+        if (res.status === 200){
+            console.log("yes!");
+        }
+        console.log(res);
+        })
+        .catch((res) => {
+            console.log(axios.defaults.headers['Authorization']);
+            console.log(axios.defaults.baseURL);
+            console.log(res);
+        })
+    }
+
 
     return (
         <div className="formContainer">
@@ -88,7 +117,7 @@ function MemberModificationForm(){
 
             <label htmlFor="photo-upload" className="custom-file-upload fas">
                 <div className="img-wrap img-upload" >
-                    <img className="member-profile-img" src={profileUrl} htmlFor="photo-upload"/>
+                    <img className="member-profile-img" src={profileUrl} htmlFor="photo-upload" alt="프로필"/>
                 </div>
                 <input id="photo-upload" type="file" onChange={(e) => {onProfileChange(e)}}/> 
             </label>
@@ -105,7 +134,7 @@ function MemberModificationForm(){
             <div className="formGroup">
                 <label htmlFor="formNickname" className="member-info-label"> 닉네임 </label> 
                 <div className="formGroupComponent">
-                    <input className='formInput' onChange={e=>{setNickname(e.target.value); setNicknameDuplicateCheck(false);}} type="text" id='formNickname' placeholder={user.nickname} />
+                    <input className='formInput' onChange={e=>{setNickname(e.target.value)}} type="text" id='formNickname' placeholder={user.nickname} />
                     <button className='duplicationCheckButton' onClick={handleNicknameDuplicateCheck}>중복 확인</button>
                 </div>
                 { !validNickname && nickname.length>=1 && (
@@ -117,6 +146,7 @@ function MemberModificationForm(){
             프로필 수정 
             </button>
 
+            <button type="button" onClick={letsTest}>테스트입니다</button>
         </form>
         </div>
     );

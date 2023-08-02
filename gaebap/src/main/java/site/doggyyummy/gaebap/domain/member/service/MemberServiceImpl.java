@@ -42,14 +42,14 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void modify(Member member, String file, String fileType) throws Exception{
+    public Member modify(Member member, String file, String fileType) throws Exception{
         Member memberToModify = memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new NoSuchUserException());
         validateMemberModification(member);
 
         uploadImageByFile(member, file, fileType);
         memberToModify.setNickname(member.getNickname());
         memberToModify.setProfileUrl(member.getProfileUrl());
-        log.info("정보 수정 성공");
+        return memberToModify;
     }
 
     @Override
@@ -122,7 +122,6 @@ public class MemberServiceImpl implements MemberService{
         ObjectMetadata objectMetadata = new ObjectMetadata();
         InputStream fileInputStream = new ByteArrayInputStream(decodedBytes);
         objectMetadata.setContentType(fileType);
-
 
         if (imgKey != null && awsS3Client.doesObjectExist(bucketName,imgKey)) {
             awsS3Client.deleteObject(bucketName, imgKey);

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import './BasicForm.css'
-import axios from 'axios';
+import axios from '../../axios/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 import SocialLogin from '../social/SocialLogin';
@@ -41,8 +41,8 @@ function LoginForm() {
     axios.post('/member/login', body) 
     .then((res)=>{
       const { accessToken } = res.data;
-      console.log(res);
       axios.defaults.headers.common['Authorization'] =  accessToken;
+      console.log("token:" + accessToken);
       if (res.status === 200){
         let data = res.data;
         console.log(data);
@@ -59,12 +59,6 @@ function LoginForm() {
       }
     )
   }
-
-  const letsTest = (e) => {
-    e.preventDefault();
-    console.log(user);
-  }
-
   // ---------------------------------------------//
 
   return (
@@ -98,7 +92,6 @@ function LoginForm() {
         {/* 구글 로그인 */}
         <div className="formGroup">
           <SocialLogin/>
-          <button type="button" onClick={letsTest}>테스트입니다</button>
         </div>
       </form>
     </div>

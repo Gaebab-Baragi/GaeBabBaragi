@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface MemberService {
 
     void signUp(Member member) throws Exception;
-    void modify(Member member, String file, String fileType) throws Exception;
+    Member modify(Member member, String file, String fileType) throws Exception;
     Optional<Member> findByName(String username);
     void validateNicknameModification(Member member) throws Exception;
 
