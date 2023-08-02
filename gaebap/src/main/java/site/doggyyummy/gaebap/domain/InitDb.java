@@ -12,19 +12,23 @@ import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
+
+
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 
-//@Component
-//@RequiredArgsConstructor
+@Component
+@RequiredArgsConstructor
 public class InitDb {
 
-//    private final InitService initService;
-//
-//    @PostConstruct
-//    public void init() {
-//        initService.dbInit1();
-//    }
+   private final InitService initService;
+
+    @PostConstruct
+    public void init() {
+        initService.dbInit1();
+    }
 
     @Component
     @Transactional
@@ -34,12 +38,13 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit1() {
-            Member member1 = createMember("배찬일");
-            Member member2 = createMember("김선형");
-            Member member3 = createMember("유승아");
-            Member member4 = createMember("박영서");
-            Member member5 = createMember("김하늘");
-            Member member6 = createMember("박준형");
+            String url = "https://sh-bucket.s3.ap-northeast-2.amazonaws.com/image/1/7517bd2d-fedb-4fd6-b153-530fc95d07cc-teayang.jpg";
+            Member member1 = createMember("배찬일","배찬일","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member2 = createMember("김선형","김선형","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member3 = createMember("유승아","유승아","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member4 = createMember("박영서","박영서","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member5 = createMember("김하늘","김하늘","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member6 = createMember("박준형","박준형","user",url,new Timestamp(System.currentTimeMillis()));
             em.persist(member1);
             em.persist(member2);
             em.persist(member3);
@@ -47,9 +52,24 @@ public class InitDb {
             em.persist(member5);
             em.persist(member6);
 
-            Recipe recipe1 = createRecipe("제목1",member1);
-            Recipe recipe2 = createRecipe("제목2",member1);
-            Recipe recipe3 = createRecipe("제목3",member1);
+            Recipe recipe1 = createRecipe("제목1",member1,"레시피입니다1",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe2 = createRecipe("제목2",member1,"레시피입니다2",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe3 = createRecipe("제목3",member1,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe4 = createRecipe("제목4",member2,"레시피입니다4",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe5 = createRecipe("제목5",member2,"레시피입니다5",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe6 = createRecipe("제목6",member3,"레시피입니다6",
+                    url,
+                    LocalDateTime.now());
             em.persist(recipe1);
             em.persist(recipe2);
             em.persist(recipe3);
@@ -73,16 +93,25 @@ public class InitDb {
 /*            Forbidden forbidden = createForbidden(1L,1L);
             em.persist(forbidden);*/
         }
-        private Member createMember(String name) {
+        private Member createMember(String name, String nickName, String authority,
+                                    String profileUrl, Timestamp registerDate) {
+
             Member member = new Member();
+            member.setNickname(nickName);
             member.setUsername(name);
+            member.setAuthority(authority);
+            member.setProfileUrl(profileUrl);
+            member.setRegisterDate(registerDate);
 
             return member;
         }
-        private Recipe createRecipe(String title, Member member) {
+        private Recipe createRecipe(String title, Member member,String description,String imgageUrl,LocalDateTime nowTime) {
             Recipe recipe = new Recipe();
             recipe.setTitle(title);
             recipe.setMember(member);
+            recipe.setDescription(description);
+            recipe.setImageUrl(imgageUrl);
+            recipe.setNowTime(nowTime);
 
             return recipe;
         }
