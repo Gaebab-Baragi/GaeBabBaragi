@@ -4,17 +4,19 @@ import React, { Component } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 
-
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:9999/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
+
 
 class Streaming extends Component {
     constructor(props) {
         super(props);
-        
+        this.hasJoinedSession = false;
+
+
         this.state = {
-            mySessionId: props.sessionId,
-            myUserName: props.username,
+            mySessionId: props.sessionId.toString(),
+            myUserName: props.nickname,
             session: undefined,
             mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
             publisher: undefined,
@@ -31,6 +33,11 @@ class Streaming extends Component {
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.onbeforeunload);
+        // 이거 수정해야 됨!!!! 한 번 만 되는 걸로
+        if (!this.hasJoinedSession) {
+            this.joinSession();
+            this.hasJoinedSession = true; // Mark joinSession as called
+        }
     }
 
     componentWillUnmount() {
@@ -132,7 +139,8 @@ class Streaming extends Component {
                             let publisher = await this.OV.initPublisherAsync(undefined, {
                                 audioSource: undefined, // The source of audio. If undefined default microphone
                                 videoSource: undefined, // The source of video. If undefined default webcam
-                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                                /// 이거 나중에 수정!!!!!!!!!
+                                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                                 resolution: '640x480', // The resolution of your video
                                 frameRate: 30, // The frame rate of your video
@@ -185,6 +193,7 @@ class Streaming extends Component {
             mainStreamManager: undefined,
             publisher: undefined
         });
+        
     }
 
     async switchCamera() {
@@ -227,84 +236,41 @@ class Streaming extends Component {
         const myUserName = this.state.myUserName;
 
         return (
-            <div className="container">
-                {this.state.session === undefined ? (
-                    <div id="join">
-                        <div id="join-dialog" className="jumbotron vertical-center">
-                            <h1> Join a video session </h1>
-                            <form className="form-group" onSubmit={this.joinSession}>
-                                <p>
-                                    <label>Participant: </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="userName"
-                                        value={myUserName}
-                                        onChange={this.handleChangeUserName}
-                                        required
-                                    />
-                                </p>
-                                <p>
-                                    <label> Session: </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="sessionId"
-                                        value={mySessionId}
-                                        onChange={this.handleChangeSessionId}
-                                        required
-                                    />
-                                </p>
-                                <p className="text-center">
-                                    <input className="btn btn-lg btn-success" name="commit" type="submit" value="JOIN" />
-                                </p>
-                            </form>
-                        </div>
+            <div className="streamingContainer">
+
+                <div>이건 내 화면이고!!!!!!!!</div>
+
+                <div className='mainVideo'>
+                    <div className="stream-container " onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                        <UserVideoComponent
+                            streamManager={this.state.publisher} />
+                            <p>{this.state.nickname}</p>
                     </div>
-                ) : null}
+                </div>
 
-                {this.state.session !== undefined ? (
-                    <div id="session">
-                        <div id="session-header">
-                            <h1 id="session-title">{mySessionId}</h1>
-                            <input
-                                className="btn btn-large btn-danger"
-                                type="button"
-                                id="buttonLeaveSession"
-                                onClick={this.leaveSession}
-                                value="Leave session"
-                            />
-                            <input
-                                className="btn btn-large btn-success"
-                                type="button"
-                                id="buttonSwitchCamera"
-                                onClick={this.switchCamera}
-                                value="Switch Camera"
-                            />
-                        </div>
-
-                        {/* {this.state.mainStreamManager !== undefined ? (
-                            <div id="main-video" className="col-md-6">
-                                <UserVideoComponent streamManager={this.state.mainStreamManager} />
-
-                            </div>
-                        ) : null} */}
-                        <div id="video-container" className="col-md-6">
-                            {this.state.publisher !== undefined ? (
-                                <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                                    <UserVideoComponent
-                                        streamManager={this.state.publisher} />
-                                </div>
-                            ) : null}
-                            {this.state.subscribers.map((sub, i) => (
-                                <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
-                                    <span>{sub.id}</span>
-                                    <UserVideoComponent streamManager={sub} />
-                                </div>
-                            ))}
-                        </div>
+                <p>이건 남의 화면이야!!!!!!!!!!!</p>
+                <div className='subVideos'>
+                {this.state.subscribers.map((sub, i) => (
+                    <div key={sub.id} className="stream-container" onClick={() => this.handleMainVideoStream(sub)}>
+                        <span>{sub.id}</span>
+                        <UserVideoComponent streamManager={sub} />
+                        <br />
                     </div>
-                ) : null}
+
+                ))}
+                </div>
+                
+                <div className='streamingBottom'>
+                    {/* video on */}
+                    <ion-icon className="onIcon" name="videocam-outline"></ion-icon>
+                    {/* video off */}
+                    <ion-icon name="videocam-off-outline"  ></ion-icon>
+                    {/* mike on */}
+                    <ion-icon className="onIcon" name="volume-high-outline" ></ion-icon>
+                    {/* mike off */}
+                    <ion-icon name="volume-mute-outline" ></ion-icon>
+                    <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                </div>
             </div>
         );
     }
