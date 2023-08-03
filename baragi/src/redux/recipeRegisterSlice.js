@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const BASE_URL = 'http://localhost:9999'
 
 // 레시피 등록
 let recipeRegister = createSlice({
@@ -48,7 +47,7 @@ let recipeRegister = createSlice({
       };
       console.log(data)
       axios
-        .post(BASE_URL + "/recipes/new", data)
+        .post("/recipes/new", data)
         .then((res) => {
           console.log("Request successful : ", res.data);
         })

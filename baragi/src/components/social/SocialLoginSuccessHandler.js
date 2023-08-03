@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { loginUser } from "../../redux/userSlice";
 
-const BASE_URL = 'http://localhost:9999';
+
 
 const SocialLoginHandler= () => {
 
@@ -13,7 +13,7 @@ const SocialLoginHandler= () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get(BASE_URL + "/oauth2/success", {
+        axios.get( "/oauth2/success", {
             params : {token : params.token},
             headers: {'content-type': 'application/json'}
         }
