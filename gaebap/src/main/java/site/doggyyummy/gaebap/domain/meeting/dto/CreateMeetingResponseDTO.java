@@ -9,9 +9,8 @@ import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
-@Builder
-public class CreateMeetingResponseDTO {
+@Getter @Builder
+public class CreateMeetingResponseDTO implements ResponseDTO{
 
     private Long id;
 

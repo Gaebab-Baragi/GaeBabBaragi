@@ -17,11 +17,18 @@ public class RecipeFindByIdResponseDto {
     private String imgUrl;
     private String videoUrl;
 
+    private int statusCode;
+    private String errorMessage;
+
     private MemberDto member;
     private List<StepDto> steps;
     private List<RecipeIngredientDto> recipeIngredients;
     private List<IngredientDto> ingredients;
 
+    public RecipeFindByIdResponseDto(int statusCode,String errorMessage){
+        this.statusCode=statusCode;
+        this.errorMessage=errorMessage;
+    }
     public RecipeFindByIdResponseDto(String title, String description, MemberDto member, List<StepDto> steps, List<RecipeIngredientDto> recipeIngredients,List<IngredientDto> ingredients){
         this.title=title;
         this.description=description;
