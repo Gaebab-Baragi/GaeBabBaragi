@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setStreamingInfo } from "../redux/streamingInfoSlice";
 
-const BASE_URL = 'http://localhost:9999';
-
 function StreamingListPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -15,7 +13,7 @@ function StreamingListPage() {
   const nickname = user.nickname
 
   function getList() {
-    axios.get(BASE_URL + '/meetings')
+    axios.get( '/meetings')
       .then((res) => {
         console.log('get list is successful : ', res.data);
         setStreamingList(res.data);
@@ -27,7 +25,7 @@ function StreamingListPage() {
 
   function checkMeeting(streamingItem) {
     console.log(streamingItem.id)
-    axios.get(BASE_URL + `/meetings/join-request/${streamingItem.id}`)
+    axios.get(`/meetings/join-request/${streamingItem.id}`)
     .then((res)=>{
       console.log('request success : ', res.data);
 
