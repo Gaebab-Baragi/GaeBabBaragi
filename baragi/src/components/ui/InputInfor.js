@@ -38,7 +38,7 @@ function InputInfor() {
               value={recipeName}
               onChange={handleRecipeNameChange}
               placeholder="레시피 제목을 입력하세요."
-            />
+            />    
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1%' }}>
             <label htmlFor="recipeIntro" style={{ width: '15%' }}>레시피 소개:</label>
