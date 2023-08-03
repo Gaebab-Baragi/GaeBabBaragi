@@ -28,7 +28,7 @@ function RecipeListPage() {
         <SearchBar data={BookData}/>
         <IngredientTagBar/> 
         <DogSelectBar/>
-        <button onClick={()=>navigate('/recipe-regist')}>레시피 작성</button>
+        <button onClick={()=>navigate('/recipe-register')}>레시피 작성</button>
       </div>
     {
      filtered
