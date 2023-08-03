@@ -262,13 +262,13 @@ class Streaming extends Component {
                 
                 <div className='streamingBottom'>
                     {/* video on */}
-                    <ion-icon className="onIcon" name="videocam-outline" size="large"></ion-icon>
+                    <ion-icon className="onIcon" name="videocam-outline"></ion-icon>
                     {/* video off */}
-                    <ion-icon name="videocam-off-outline" size="large" ></ion-icon>
+                    <ion-icon name="videocam-off-outline"  ></ion-icon>
                     {/* mike on */}
-                    <ion-icon className="onIcon" name="volume-high-outline" size="large"></ion-icon>
+                    <ion-icon className="onIcon" name="volume-high-outline" ></ion-icon>
                     {/* mike off */}
-                    <ion-icon name="volume-mute-outline" size="large"></ion-icon>
+                    <ion-icon name="volume-mute-outline" ></ion-icon>
                     <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
                 </div>
             </div>
