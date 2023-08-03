@@ -10,7 +10,8 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage';
 import RecipeRegisterPage from './pages/RecipeRegisterPage';
 import RecipeListPage from './pages/RecipeListPage';
-import StreamingPage from './pages/StreamingPage';
+import StreamingRegisterPage from './pages/StreamingRegisterPage';
+import StreamingListPage from './pages/StreamingListPage';
 import MyinformationPage from './pages/MyinformationPage';
 import MyPetRegisterPage from './pages/MyPetRegisterPage';
 import MyRecipePage from './pages/MyRecipePage';
@@ -23,7 +24,6 @@ import LogoutHandler from './components/social/LogoutHandler';
 
 // -------------------PAGES-------------------//
 
-import Test2 from './components/ui/InputImage'
 
 function App() {  
   return (
@@ -42,11 +42,13 @@ function App() {
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
         <Route path='/recipe-regist' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
-        <Route path='/streaming' element={<StreamingPage/>}></Route>
+        <Route path='/streaming-register' element={<StreamingRegisterPage/>}></Route>
+        <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
-        <Route path='/logout' element={<LogoutHandler/>}></Route>
+        <Route path='/mypetregister' element={<MyPetRegisterPage/>}></Route>
+        <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>
 

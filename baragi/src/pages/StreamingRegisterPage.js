@@ -1,9 +1,7 @@
 /* eslint-disable */
 import StreamingForm from "../components/form/StreamingForm";
 
-
-
-function StreamingPage() {
+function StreamingRegisterPage() {
     return (
 
         <div style={{ marginLeft:'10%' , marginRight : '10%' , marginTop : '0.5%' , marginBottom : '10%'}}>
@@ -14,4 +12,4 @@ function StreamingPage() {
 
       );
     }
-    export default StreamingPage;
+    export default StreamingRegisterPage;
