@@ -1,13 +1,18 @@
 import './PetRegisterPage.css'
 import { ReactTags } from "react-tag-autocomplete";
 import React, {useCallback, useEffect, useState} from "react";
+import axios from 'axios';
 
 function PetRegisterPage() {
   const [selected, setSelected] = useState([]);
   const defaultImageUrl = './기본이미지.PNG';
   const [image, setImage] = useState(defaultImageUrl);
+  const [file, setFile] = useState('');
+  const [petName, setPetName] = useState('');
+  const [petAge, setPetAge] = useState('');
+  const [petWeight, setPetWeight] = useState(null);
 
-  // 기피 재료 등록
+  // =========================기피 재료 등록=====================//
   const suggestions = [
     {value:1, label:'고구마'},
     {value:2, label:'감자'},
@@ -27,17 +32,41 @@ function PetRegisterPage() {
     },
     [selected]
   )
-  // 사진 등록
+  // ==========================사진 등록===================//
   const handleImagePreview = (e) => {
     const selectedImage = e.target.files[0];
+    console.log(e)
+    setFile(selectedImage)
     if (selectedImage) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
       };
+      console.log(image)
       reader.readAsDataURL(selectedImage);
     }
   };
+
+
+  //==================== 제출=====================//
+  const handlePetRegister = () =>{
+    const formData = new FormData();
+    formData.append('file', file)
+    let variables = [{
+      petName: petName,
+      petAge : petAge,
+      petWeight:petWeight
+    }]
+    formData.append("data", new Blob([JSON.stringify(variables)]), {type:"application/json"})
+
+    axios.post('/api/pets', formData )
+      .then((res)=>{
+        console.log('axios success :', res.data)
+      })
+      .catch((err)=>{
+        console.log('error : ', err)
+      })
+    }
 
   return(
     <div className="pageContainer">
@@ -59,13 +88,13 @@ function PetRegisterPage() {
         {/* pet 이름 */}
         <div className='petInfoGroup'>
           <label>이름</label>
-          <input className='petInput' type="text" placeholder="" />
+          <input className='petInput' type="text" placeholder="" onChange={e=>{setPetName(e.target.value)}} />
           </div>
 
         {/* 나이 */}
         <div className='petInfoGroup'>
           <label>나이</label>
-          <input className='petInput' type="text" />
+          <input className='petInput' type="text" onChange={e=>{setPetAge(e.target.value)}} />
         </div>
 
         {/* 못 먹는 재료 */}
@@ -85,11 +114,11 @@ function PetRegisterPage() {
         {/* 몸무게 */}
         <div className='petInfoGroup'> 
           <label >몸무게</label>
-          <input className='petInput' type="number" />
+          <input className='petInput' type="number" onChange={e=>{setPetWeight(e.target.value)}}/>
         </div>
 
       {/* 등록 버튼 */}
-      <button className='petRegisterBtn'>등록하기</button>
+      <button onSubmit={handlePetRegister} className='petRegisterBtn'>등록하기</button>
 
       </div>
     </div>
