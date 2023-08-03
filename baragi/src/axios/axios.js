@@ -11,7 +11,6 @@ const instance = axios.create({//백쪽으로 보내는 경우임
     baseURL: `${URL[current]}`,
     headers : {
         'Content-Type' : 'application/json',
-        'Content-Type' : 'application/json',
         'Access-Control-Allow-Origin' : '*',
         'Access-Control-Request-Methods' : 'GET, POST, PUT, DELETE, OPTION'
     }

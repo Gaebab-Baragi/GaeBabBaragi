@@ -25,7 +25,7 @@ let recipeSearch= createSlice({
       }
 
       // axios 요청 보내서 레시피 저장하기
-      axios.post('/recipes/searchlike', data)
+      axios.post('/api/recipes/searchlike', data)
         .then((res)=>{
           console.log('request success : ' , res.data)
         })
