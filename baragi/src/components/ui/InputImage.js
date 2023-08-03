@@ -14,14 +14,12 @@ function InputImage() {
       reader.readAsDataURL(selectedImage);
     }
   };
-
   // 이미지 업로드 함수
   // const handleImageUpload = () => {
   //   // 이미지 업로드 로직을 구현합니다.
   //   // 이미지 데이터는 `image` 상태에 있는 base64 데이터로 사용할 수 있습니다.
   //   console.log('이미지 업로드:', image);
   // };
-
   return (
     <div style={{ display: 'flex', padding: '1%'}}>
       {/*  alignItems: 'center', justifyContent: 'center', */}
@@ -33,7 +31,8 @@ function InputImage() {
           {/* {image!== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '200px', height: '200px' }} />} */}
             <br />
           {/* 파일 업로드 입력 필드 */}
-          <input type="file" accept="image/*" onChange={handleImagePreview}/>
+          
+          <input type="file" accept="" onChange={handleImagePreview}/>
           {/* 이미지 업로드 버튼 */}
           {/* <button onClick={handleImageUpload}>이미지 업로드</button> */}
         </div>

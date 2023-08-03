@@ -1,14 +1,18 @@
 import axios from "axios";
 import { useState } from "react";
-import Streaming from "../streaming/Streaming";
 import { useSelector } from "react-redux";
-
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { setStreamingInfo } from "../redux/streamingInfoSlice";
 
 const BASE_URL = 'http://localhost:9999';
 
 function StreamingListPage() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [streamingList, setStreamingList] = useState([]);
   const user = useSelector((state) => (state.user));
+  const nickname = user.nickname
 
   function getList() {
     axios.get(BASE_URL + '/meetings')
@@ -21,17 +25,25 @@ function StreamingListPage() {
       });
   }
 
-  function joinMeeting(streamingItem) {
+  function checkMeeting(streamingItem) {
     console.log(streamingItem.id)
     axios.get(BASE_URL + `/meetings/join-request/${streamingItem.id}`)
     .then((res)=>{
       console.log('request success : ', res.data);
 
-      if (res.data.status === 'fail') {
+      if (res.data.status != 'fail') {
         alert(res.data.message);
       } else {
-        // openvidu 세션 & 토근 요청 axios
-        console.log('openvidu axios request ')
+        const data = {
+          meeting_id: streamingItem.id,
+          title : streamingItem.title,
+          recipe_id: streamingItem.recipe_id,
+          host_nickname: streamingItem.host_nickname,
+          max_participant: streamingItem.max_participant,
+          start_time:streamingItem.start_time
+        }
+        dispatch(setStreamingInfo(data))
+        navigate('/streaming-live')
       }
 
     })
@@ -42,15 +54,13 @@ function StreamingListPage() {
   return (
     <div>
       <button onClick={getList}>목록</button>
-
       <div>
         {streamingList.map((streamingItem) => (
           <div key={streamingItem.id}>
             <p>ID: {streamingItem.id}</p>
             <p>Title: {streamingItem.title}</p>
             <p>Description: {streamingItem.description}</p>
-            <button onClick={()=>joinMeeting(streamingItem)}>JOIN</button>
-            <Streaming sessionId={streamingItem.id} user={user}/>
+            <button onClick={()=>checkMeeting(streamingItem)}>CHECK MEETING AVAILABILITY</button>
             <hr/>
           </div>
         ))}
