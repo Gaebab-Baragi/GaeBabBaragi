@@ -34,12 +34,8 @@ let recipeRegister = createSlice({
   },
   reducers: {
     requestFilteredRecipeList: (state) => {
-<<<<<<< HEAD
-
-=======
       // console.log(state.recipeIngredients);
       // console.log(state.member.id);
->>>>>>> cfcc6357e4a4b0e4b6c948227d1895ff68e5f665
       // axios 요청 보내서 레시피 저장하기
       const data = {
         title: state.title,
@@ -51,10 +47,6 @@ let recipeRegister = createSlice({
         videoLocalPath: state.videoLocalPath,
       };
       console.log(data)
-<<<<<<< HEAD
-
-=======
->>>>>>> cfcc6357e4a4b0e4b6c948227d1895ff68e5f665
       axios
         .post(BASE_URL + "/recipes/new", data)
         .then((res) => {
