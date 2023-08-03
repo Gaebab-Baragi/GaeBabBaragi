@@ -9,6 +9,14 @@
     line-height: 130%; /* 62.4px */
 }
 
+.navbar-title{
+    color: #FA0;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: IBM Plex Sans KR;
+    font-style: normal;
+    font-weight: 700;
+}
+
 .list1{
     color: #000;
     text-align: center;

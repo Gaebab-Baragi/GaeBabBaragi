@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux';
+import { NavbarBrand } from 'react-bootstrap';
 
 
 function NaviBar() {
@@ -14,15 +15,29 @@ function NaviBar() {
     let user = useSelector((state) => state.user);
     return (
       <>
-      
-        <Navbar sticky="top" expand="lg" style={{backgroundColor: 'white'}}>
-          <Container >
-          {/* data-bs-theme="dark" */}
-            <img src="/개밥바라기.png" alt="My Image" width="5%" height="1%" />
-            <Navbar.Brand href="/" className = 'title' >개밥바라기</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className='mx-auto'>
+        <Navbar sticky="top" expand="lg" bg='white'>
+          <Container>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Brand href="/" className="d-inline-block align-top">
+              <img
+                alt="개밥바라기 로고"
+                src="/image/개밥바라기.png"
+                width="60"
+                height="60"
+              />{' '}
+              <span className='navbar-title'>개밥바라기</span>
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
+        <Navbar expand="lg" bg='white'>
+          <Container>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Brand>
+              <img alt="개밥바라기 logo" src="/image/개밥바라기.png" width="8%" height="8%" className='d-inline-block align-top'/>{' '}
+              <span className='title'>개밥바라기</span>
+            </Navbar.Brand>
+            <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className='me-auto my-2 my-lg-0'>
               <Nav.Link onClick={()=>{navigate('/recipe-list')}} className='list1'>레시피</Nav.Link>
               <Nav.Link onClick={()=>{navigate('/streaming-list')}}  className='list1'>스트리밍</Nav.Link>
             </Nav>
