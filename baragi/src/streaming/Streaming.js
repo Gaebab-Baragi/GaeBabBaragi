@@ -1,8 +1,10 @@
 import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
+import { useState } from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
@@ -11,6 +13,7 @@ const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'htt
 class Streaming extends Component {
     constructor(props) {
         super(props);
+
         this.hasJoinedSession = false;
 
 
@@ -139,8 +142,7 @@ class Streaming extends Component {
                             let publisher = await this.OV.initPublisherAsync(undefined, {
                                 audioSource: undefined, // The source of audio. If undefined default microphone
                                 videoSource: undefined, // The source of video. If undefined default webcam
-                                /// 이거 나중에 수정!!!!!!!!!
-                                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
+                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                                 resolution: '640x480', // The resolution of your video
                                 frameRate: 30, // The frame rate of your video
@@ -193,7 +195,6 @@ class Streaming extends Component {
             mainStreamManager: undefined,
             publisher: undefined
         });
-        
     }
 
     async switchCamera() {
@@ -234,9 +235,16 @@ class Streaming extends Component {
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
+        const publisher = this.state.publisher;
+        const streamingInfo = this.props.streamingInfo;
 
         return (
             <div className="streamingContainer">
+
+                <div className='streamingTop'>
+                    <h1>{streamingInfo.title}</h1>
+                    <p>시작 시간 : {streamingInfo.start_time}</p>
+                </div>
 
                 <div>이건 내 화면이고!!!!!!!!</div>
 
@@ -261,15 +269,46 @@ class Streaming extends Component {
                 </div>
                 
                 <div className='streamingBottom'>
-                    {/* video on */}
-                    <ion-icon className="onIcon" name="videocam-outline"></ion-icon>
-                    {/* video off */}
-                    <ion-icon name="videocam-off-outline"  ></ion-icon>
-                    {/* mike on */}
-                    <ion-icon className="onIcon" name="volume-high-outline" ></ion-icon>
-                    {/* mike off */}
-                    <ion-icon name="volume-mute-outline" ></ion-icon>
+                    {/* 화면 on off */}
+                    
+                    {this.state.videostate  ? (
+                        <div className='onIcon'>
+                            <ion-icon 
+                            onClick={() => {
+                                this.state.publisher.publishVideo(!this.state.videostate);
+                                this.setState({ videostate: !this.state.videostate });
+                            }}
+                            name="videocam-outline"
+                            ></ion-icon>
+
+                        </div>
+                    ) : (
+                        <ion-icon 
+                        onClick={() => {
+                            this.state.publisher.publishVideo(!this.state.videostate);
+                            this.setState({ videostate: !this.state.videostate });
+                        }}
+                        name="videocam-off-outline"></ion-icon>
+                    )}
+
                     <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                    
+                    {/* 내 마이크 on off */}
+                    {this.state.audiostate ?
+                        <ion-icon name="volume-mute-outline" 
+                        onClick={() => {
+                            this.state.publisher.publishAudio(!this.state.audiostate);
+                            this.setState({ audiostate: !this.state.audiostate });
+                        }}
+                        ></ion-icon>
+                    :
+                        <ion-icon name="volume-high-outline" 
+                        onClick={() => {
+                            this.state.publisher.publishAudio(!this.state.audiostate);
+                            this.setState({ audiostate: !this.state.audiostate });
+                        }}
+                        ></ion-icon>
+                    }
                 </div>
             </div>
         );
