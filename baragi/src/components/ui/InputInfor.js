@@ -26,8 +26,8 @@ function InputInfor() {
 
   return (
     <>
-      <div style={{ padding: '1%' }}>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginRight: '15%' }}>2. 기본 정보 입력</h4>
+      <div style={{ marginTop:'1%', marginBottom :'1%', background: '#0001' }}>
+        
         <form style={{ marginLeft: '2%', marginRight: '15%', padding: '1%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1%' }}>
             <label htmlFor="recipeName" style={{ width: '15%' }}>레시피 제목:</label>

@@ -13,7 +13,7 @@ function InputMat({ step, matName, matAmount, ingredientsChange }) {
 
   return (
     <>
-      <div style={{ width: '120%', borderRadius: '5px', backgroundColor: '#FFEACB', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{  borderRadius: '5px', backgroundColor: '#FFEACB', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ margin: '5% 0% 5% 5%' }}>
           <input
             type="text"
