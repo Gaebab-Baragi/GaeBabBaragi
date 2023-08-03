@@ -9,10 +9,7 @@ const LogoutHandler= () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        instance.post("/member/logout", {
-            headers: {'content-type': 'application/json'}
-        }
-        )
+        instance.post("/logout")
         .then((res) => {
             console.log(res);
             if (res.status === 200){
