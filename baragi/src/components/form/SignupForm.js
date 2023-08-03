@@ -3,6 +3,7 @@ import './BasicForm.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
 import axios from '../../axios/axios';
+// import axios from 'axios';
 import SocialLogin from '../social/SocialLogin';
 
 function SignupForm() {
@@ -53,7 +54,9 @@ function SignupForm() {
     })
 
     axios.post('/member/register/nickname', body, {
-      headers: { "Content-Type": `application/json; charset= UTF-8`}
+      headers: { 
+        "Content-Type": `application/json; charset= UTF-8`
+      }
       })
     .then((res)=>{
       if (res.status === 200) {
