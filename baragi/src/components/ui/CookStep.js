@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InputCookstep from './InputCookstep';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestFilteredRecipeList, updateStep } from '../../redux/recipeRegisterSlice';
+import useDidMountEffect from '../../useDidMountEffect'
 
 function CookStep() {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ function CookStep() {
     setInputCooksteps([...inputCooksteps, { orderingNumber: nextStepCount, description: '' }]);
   };
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     dispatch(updateStep(inputCooksteps));
     // InputCooksteps가 변경될 때마다 실행되는 함수
     // console.log('InputCooksteps가 변경되었습니다:', inputCooksteps);

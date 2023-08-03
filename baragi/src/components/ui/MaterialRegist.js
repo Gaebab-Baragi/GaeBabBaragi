@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import InputMat from './InputMat'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {updateRecipeMaterial} from '../../redux/recipeRegisterSlice'
-
+import useDidMountEffect from '../../useDidMountEffect'
 function MaterialRegist() {
   const dispatch = useDispatch();
   const [inputMats, setInputMats] = useState([{ingredientName:'', amount:''}]);
@@ -24,7 +24,7 @@ function MaterialRegist() {
       return updatedMats;
     });
   };
-  useEffect(() => {
+  useDidMountEffect(() => {
     // 레시피 이름과 레시피 소개를 상태 변경시마다 dispatch 하고 싶을 때
     // console.log('use에서' , inputMats)
 

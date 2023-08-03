@@ -31,8 +31,8 @@ function InputImage() {
           {/* {image!== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '200px', height: '200px' }} />} */}
             <br />
           {/* 파일 업로드 입력 필드 */}
-
-          <input type="file" accept="image/*" onChange={handleImagePreview}/>
+          
+          <input type="file" accept="" onChange={handleImagePreview}/>
           {/* 이미지 업로드 버튼 */}
           {/* <button onClick={handleImageUpload}>이미지 업로드</button> */}
         </div>

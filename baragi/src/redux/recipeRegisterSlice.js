@@ -34,8 +34,7 @@ let recipeRegister = createSlice({
   },
   reducers: {
     requestFilteredRecipeList: (state) => {
-      console.log(state.recipeIngredients);
-      console.log(state.member.id);
+
       // axios 요청 보내서 레시피 저장하기
       const data = {
         title: state.title,
@@ -46,6 +45,7 @@ let recipeRegister = createSlice({
         imgLocalPath: state.imgLocalPath,
         videoLocalPath: state.videoLocalPath,
       };
+      console.log(data)
 
       axios
         .post(BASE_URL + "/recipes/new", data)
@@ -63,7 +63,7 @@ let recipeRegister = createSlice({
       console.log('레시피 이름 : ', state.title ,' 레시피 소개 : ', state.description)
     },
     updateRecipeMaterial : (state, action) =>{
-      
+      console.log('재료 redux: ',action.payload)
       state.recipeIngredients = action.payload //['ingredientName']
       console.log('inputMats 변경되었습니다:', state.recipeIngredients);
     },
