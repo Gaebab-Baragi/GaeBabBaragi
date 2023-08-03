@@ -40,7 +40,7 @@ function App() {
         <Route path='/signup' element={<SignupPage/>}></Route>
         <Route path='/find-id' element={<FindIdPage/>}></Route>
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
-        <Route path='/recipe-regist' element={<RecipeRegisterPage/>}></Route>
+        <Route path='/recipe-register' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming-register' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
