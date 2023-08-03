@@ -1,7 +1,6 @@
 import kakaoLoginImg from "./kakaoLoginImg.png" 
 import "./socialLogin.css"
 import { URL, current } from "../../axios/axios"
-
 function KakaoLogin(){
     return (
         <div>
