@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -29,6 +30,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final MemberRepository memberRepository;
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+    @Value("${current.front}")
+    private String frontUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -64,7 +68,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private String makeRedirectUrl(String accessToken){
-       return UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect/" + accessToken)
+       return UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/redirect/" + accessToken)
                .build().toUriString();
     }
 }

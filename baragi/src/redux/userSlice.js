@@ -22,11 +22,6 @@ let user= createSlice({
       state.isLogin = true;
     },
     clearUser: (state) =>{
-      state.id = '';
-      state.username = '';
-      state.nickname = '';
-      state.profileUrl = '';
-      state.hostedMeeting = '';
       state.isLogin = false;
     }
   }

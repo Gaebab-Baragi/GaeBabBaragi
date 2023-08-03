@@ -53,7 +53,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private Member getMember(OAuth2Attributes attributes){
         String email = attributes.getOAuth2UserInfo().getEmail();
-        if (email == null) return null;
+        log.info("email : {}", email);
 
         Member member = memberRepository.findByUsername(email).orElse(null);
         if (member == null){
@@ -65,7 +65,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private Member createUser(OAuth2Attributes attributes){
        Member member = attributes.toEntity(attributes.getOAuth2UserInfo());
        Member saved = memberRepository.save(member);
-       member.setPassword(PasswordUtil.generateRandomPassword());
        return saved;
     }
 

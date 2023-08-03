@@ -16,7 +16,7 @@ public class PetRepository {
     }
     public Pet selectOne (long id){
         Pet pet = em.createQuery("select distinct p from Pet p " +
-                        "join fetch p.member m " +
+                        "left join fetch p.member m " +
                         "left join fetch p.forbiddens f " +
                         "where p.id = :id ",Pet.class)
                 .setParameter("id" ,id)

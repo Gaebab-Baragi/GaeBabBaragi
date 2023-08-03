@@ -1,4 +1,4 @@
-import axios from "axios";
+import instance from "../../axios/axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,10 +9,7 @@ const LogoutHandler= () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.post("/member/logout", {
-            headers: {'content-type': 'application/json'}
-        }
-        )
+        instance.post("/logout")
         .then((res) => {
             console.log(res);
             if (res.status === 200){
