@@ -12,20 +12,23 @@ public class RecipeSearchLikeResponseDto {
     private List<RecipeDto> recipes;
     public RecipeSearchLikeResponseDto(List<Recipe> recipes){
         this.recipes=recipes.stream()
-                .map(recipe->new RecipeDto(recipe.getTitle(),recipe.getMember()))
+                .map(recipe->new RecipeDto(recipe.getTitle(),recipe.getMember(),recipe.getId()))
                 .collect(Collectors.toList());
     }
     @Getter
     public static class RecipeDto {
         private String title;
+        private Long id;
         private MemberDto member;
-        public RecipeDto(String title,MemberDto member){
+        public RecipeDto(String title,MemberDto member,Long id){
             this.title=title;
             this.member=member;
+            this.id=id;
         }
-        public RecipeDto(String title, Member member){
+        public RecipeDto(String title, Member member,Long id){
             this.title=title;
             this.member=new MemberDto(member.getUsername());
+            this.id=id;
         }
     }
 
