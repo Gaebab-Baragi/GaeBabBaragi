@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {setRecipeName2, setRecipeInfor } from './../../redux/recipeRegisterSlice.js'
+import { setRecipeInfor } from './../../redux/recipeRegisterSlice.js'
 
 function InputInfor() {
   const dispatch = useDispatch();
