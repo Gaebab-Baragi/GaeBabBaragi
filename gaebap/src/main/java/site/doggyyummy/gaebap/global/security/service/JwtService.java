@@ -59,13 +59,6 @@ public class JwtService {
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
-    public void sendAccessToken(HttpServletResponse response, String accessToken) {
-        response.setStatus(HttpServletResponse.SC_OK);
-
-        response.setHeader(accessHeader, accessToken);
-        log.info("재발급된 Access Token : {}", accessToken);
-    }
-
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
 
@@ -81,6 +74,7 @@ public class JwtService {
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
+        log.info("토큰 뽑기");
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(token -> token.startsWith(BEARER))
                 .map(token -> token.replace(BEARER, ""));
@@ -88,6 +82,7 @@ public class JwtService {
 
     public Optional<String> extractName(String accessToken) {
         try {
+            log.info("이름 뽑기");
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
                     .build()
                     .verify(accessToken)
@@ -119,6 +114,7 @@ public class JwtService {
     public boolean isTokenValid(String token) {
         try {
             JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
+            log.info("유효성 검사 통과");
             return true;
         } catch (Exception e) {
             log.error("유효하지 않은 토큰입니다. {}", e.getMessage());

@@ -1,37 +1,29 @@
 package site.doggyyummy.gaebap.global.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
-import site.doggyyummy.gaebap.global.security.entity.oauth2.CustomOAuth2User;
 import site.doggyyummy.gaebap.global.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import site.doggyyummy.gaebap.global.security.filter.JwtAuthenticationFilter;
 import site.doggyyummy.gaebap.global.security.handler.LoginFailureHandler;
@@ -55,10 +47,16 @@ public class SecurityConfig {
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    @Value("${current.back}")
+    private String backUrl;
+
+    @Value("${current.front}")
+    private String frontUrl;
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web
-                .ignoring().requestMatchers("/member/register/**");
+                .ignoring().requestMatchers("/api/member/register/**");
     }
 
     @Bean
@@ -66,7 +64,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        config.setAllowedOrigins(Arrays.asList(frontUrl));
         config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));
 
@@ -87,21 +85,25 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers("/member/modify/**").authenticated()
+                        .requestMatchers("/api/member/modify/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login((oauth2login) ->
                     oauth2login
                             .successHandler(oAuth2LoginSuccessHandler)
-                            .failureUrl("http://localhost:3000/login")
+                            .failureUrl(frontUrl+"/login")
                             .failureHandler(oAuth2LoginFailureHandler)
+                            .authorizationEndpoint((endpoint) ->
+                                    endpoint.baseUri("/api/oauth2/authorization"))
+                            .redirectionEndpoint((endpoint) ->
+                                    endpoint.baseUri("/api/login/oauth2/code/*"))
                             .userInfoEndpoint((endpoint) ->
                                     endpoint.userService(customOAuth2UserService))
                 )
                 .logout((logout) ->
                         logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                                .logoutSuccessUrl("http://localhost:3000")
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+                                .logoutSuccessUrl(frontUrl)
                                 .invalidateHttpSession(true)
                 );
 
