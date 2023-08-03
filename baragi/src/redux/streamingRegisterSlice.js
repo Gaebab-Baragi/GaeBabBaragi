@@ -53,7 +53,7 @@ let streamingRegister= createSlice({
       console.log(data)
 
 
-      axios.post("/meetings", data)
+      axios.post("/api/meetings", data)
         .then((response) => {
           // Handle the response if needed
           console.log("Request successful:", response.data);
