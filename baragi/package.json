@@ -1,7 +1,5 @@
 {
 
-  "proxy": "http://localhost:9999",
-
   "name": "baragi",
 
   "version": "0.1.0",
@@ -107,5 +105,6 @@
     "http-proxy-middleware": "^2.0.6"
 
   }
+
 }
 
