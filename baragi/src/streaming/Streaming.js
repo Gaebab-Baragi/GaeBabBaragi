@@ -237,24 +237,16 @@ class Streaming extends Component {
 
         return (
             <div className="streamingContainer">
-                <button onClick={this.leaveSession}>LEAVE</button>
-                {/* {this.state.mainStreamManager !== undefined ? (
-                            <div id="main-video" className="col-md-6">
-                                <UserVideoComponent streamManager={this.state.mainStreamManager} />
-
-                            </div>
-                        ) : null} */}
 
                 <div>이건 내 화면이고!!!!!!!!</div>
 
-                {this.state.publisher !== undefined ? (
-                <div className="stream-container " onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                    <UserVideoComponent
-                        streamManager={this.state.publisher} />
-                        <p>{this.state.nickname}</p>
+                <div className='mainVideo'>
+                    <div className="stream-container " onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                        <UserVideoComponent
+                            streamManager={this.state.publisher} />
+                            <p>{this.state.nickname}</p>
+                    </div>
                 </div>
-                ) : null}
-
 
                 <p>이건 남의 화면이야!!!!!!!!!!!</p>
                 <div className='subVideos'>
@@ -267,10 +259,19 @@ class Streaming extends Component {
 
                 ))}
                 </div>
-
-
+                
+                <div className='streamingBottom'>
+                    {/* video on */}
+                    <ion-icon className="onIcon" name="videocam-outline" size="large"></ion-icon>
+                    {/* video off */}
+                    <ion-icon name="videocam-off-outline" size="large" ></ion-icon>
+                    {/* mike on */}
+                    <ion-icon className="onIcon" name="volume-high-outline" size="large"></ion-icon>
+                    {/* mike off */}
+                    <ion-icon name="volume-mute-outline" size="large"></ion-icon>
+                    <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                </div>
             </div>
-
         );
     }
 

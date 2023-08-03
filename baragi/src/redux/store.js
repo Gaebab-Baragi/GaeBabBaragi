@@ -7,7 +7,7 @@ import rootReducer from "./reducers";
 const persistConfg ={
   key : 'root',
   storage : sessionStorage,
-  whitelist: ['user'],
+  whitelist: ['user', 'streamingInfo'],
 }
 
 const persistedReducer = persistReducer(persistConfg, rootReducer);
