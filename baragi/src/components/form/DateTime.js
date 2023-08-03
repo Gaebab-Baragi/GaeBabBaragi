@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setStartTime } from '../../redux/streamingRegisterSlice';
+import useDidMountEffect from '../../useDidMountEffect';
+import { useEffect } from 'react';
 
 function DateTime() {
+  const dispatch = useDispatch();
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+
+
+  useEffect(()=>{
+    dispatch(setStartTime(selectedDate +' '+ selectedTime))
+  }, [selectedDate, selectedTime])
+
 
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);

@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import { ReactTags } from "react-tag-autocomplete";
 import './IngredientTagBar.css'
 import { useDispatch } from "react-redux";
-import { updateIngredients, requestFilteredRecipeList } from "../../redux/searchRecipeSlice";
+import { updateIngredients, requestFilteredRecipeList } from "../../redux/recipeSearchSlice";
 import useDidMountEffect from "../../useDidMountEffect";
 
 function IngredientTagBar() {

@@ -8,6 +8,7 @@ let recipeInfor= createSlice({
     recipetitle:'',
     foodname:'',
     recipeinformation:'',
+    test :[],
   },
   reducers:{
     requestRecipeTitle: (state, action)=>{
@@ -19,6 +20,7 @@ let recipeInfor= createSlice({
     requestRecipeInformation: (state, action) =>{
         //
     },
+    
 
   }
 })

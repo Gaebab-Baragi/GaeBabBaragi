@@ -24,7 +24,7 @@ function NaviBar() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className='mx-auto'>
               <Nav.Link onClick={()=>{navigate('/recipe-list')}} className='list1'>레시피</Nav.Link>
-              <Nav.Link onClick={()=>{navigate('/streaming')}}  className='list1'>스트리밍</Nav.Link>
+              <Nav.Link onClick={()=>{navigate('/streaming-list')}}  className='list1'>스트리밍</Nav.Link>
             </Nav>
                 {/* 로그인 X인경우 */}
             {

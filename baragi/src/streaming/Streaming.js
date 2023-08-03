@@ -1,9 +1,9 @@
 import { OpenVidu } from 'openvidu-browser';
-
 import axios from 'axios';
 import React, { Component } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
+
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:9999/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
@@ -11,10 +11,10 @@ const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'htt
 class Streaming extends Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
-            mySessionId: 'SessionA',
-            myUserName: 'Participant' + Math.floor(Math.random() * 100),
+            mySessionId: props.sessionId,
+            myUserName: props.username,
             session: undefined,
             mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
             publisher: undefined,
@@ -230,9 +230,6 @@ class Streaming extends Component {
             <div className="container">
                 {this.state.session === undefined ? (
                     <div id="join">
-                        <div id="img-div">
-                            <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="OpenVidu logo" />
-                        </div>
                         <div id="join-dialog" className="jumbotron vertical-center">
                             <h1> Join a video session </h1>
                             <form className="form-group" onSubmit={this.joinSession}>
@@ -286,12 +283,12 @@ class Streaming extends Component {
                             />
                         </div>
 
-                        {this.state.mainStreamManager !== undefined ? (
+                        {/* {this.state.mainStreamManager !== undefined ? (
                             <div id="main-video" className="col-md-6">
                                 <UserVideoComponent streamManager={this.state.mainStreamManager} />
 
                             </div>
-                        ) : null}
+                        ) : null} */}
                         <div id="video-container" className="col-md-6">
                             {this.state.publisher !== undefined ? (
                                 <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
@@ -335,10 +332,10 @@ class Streaming extends Component {
     }
 
     async createSession(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'meetings/sessions', { customSessionId: sessionId }, {
+        const response = await axios.post(APPLICATION_SERVER_URL + 'meetings/sessions',{ customSessionId: sessionId }, {
             headers: { 
-              'Content-Type': 'application/json', 
-          },
+            'Content-Type': 'application/json', 
+        },
         });
         return response.data; // The sessionId
     }
@@ -346,7 +343,7 @@ class Streaming extends Component {
     async createToken(sessionId) {
         const response = await axios.post(APPLICATION_SERVER_URL + 'meetings/sessions/' + sessionId + '/connections', {}, {
             headers: { 
-              'Content-Type': 'application/json', 
+            'Content-Type': 'application/json', 
             },
         });
         return response.data; // The token
