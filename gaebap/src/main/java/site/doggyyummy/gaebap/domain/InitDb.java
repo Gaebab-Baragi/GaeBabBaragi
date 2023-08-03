@@ -42,7 +42,7 @@ public class InitDb {
             Member member1 = createMember("배찬일","배찬일","user",url,new Timestamp(System.currentTimeMillis()));
             Member member2 = createMember("김선형","김선형","user",url,new Timestamp(System.currentTimeMillis()));
             Member member3 = createMember("유승아","유승아","user",url,new Timestamp(System.currentTimeMillis()));
-            Member member4 = createMember("박영서","박영서","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member4 = createMember("박영서","박박영서","user",url,new Timestamp(System.currentTimeMillis()));
             Member member5 = createMember("김하늘","김하늘","user",url,new Timestamp(System.currentTimeMillis()));
             Member member6 = createMember("박준형","박준형","user",url,new Timestamp(System.currentTimeMillis()));
             em.persist(member1);
