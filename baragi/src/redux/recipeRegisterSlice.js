@@ -45,7 +45,7 @@ let recipeRegister = createSlice({
       };
       console.log(data)
       axios
-        .post("/recipes/new", data)
+        .post("/api/recipes/new", data)
         .then((res) => {
           console.log("Request successful : ", res.data);
         })

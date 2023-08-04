@@ -21,21 +21,21 @@ function InputImage() {
   //   console.log('이미지 업로드:', image);
   // };
   return (
-    <div style={{ display: 'flex', padding: '1%'}}>
-      {/*  alignItems: 'center', justifyContent: 'center', */}
-        <h4 style={{textAlign:'left', marginLeft:'2%', marginRight : '15%'}}>1. 대표사진 등록</h4>
-        <div style ={{ justifyContent:'center', alignItems:'center'}}>
-          {/* 이미지 미리보기 */}
-          {image !== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '80%', height: '80%', marginBottom :'1%'}} />}
-          {image === defaultImageUrl && <img src={defaultImageUrl} alt="미리보기" style={{ width: '80%', height: '80%' ,marginBottom :'1%' }} />}
-          {/* {image!== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '200px', height: '200px' }} />} */}
-            <br />
-          {/* 파일 업로드 입력 필드 */}
-          
-          <input type="file" accept="" onChange={handleImagePreview}/>
-          {/* 이미지 업로드 버튼 */}
-          {/* <button onClick={handleImageUpload}>이미지 업로드</button> */}
-        </div>
+    <div style={{ marginTop : '1%', marginBottom : '1%' , backgroundColor : '#0001', justifyContent:'center', alignItems:'center'}}>
+      {/* 이미지 미리보기 */}
+      <div>
+      {image !== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '40%', height: '40%', marginBottom :'1%'}} />}
+      {image === defaultImageUrl && <img src={defaultImageUrl} alt="미리보기" style={{ width: '40%', height: '40%' ,marginBottom :'1%' }} />}
+      {/* {image!== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '200px', height: '200px' }} />} */}
+      </div>
+      {/* 파일 업로드 입력 필드 */}
+      <div>
+      <input type="file" accept="" onChange={handleImagePreview}/>
+      </div>
+      {/* 이미지 업로드 버튼 */}
+      {/* <button onClick={handleImageUpload}>이미지 업로드</button> */}
+      {/* <div style ={{ }}> */}
+      {/* </div> */}
     </div>
   );
 }
