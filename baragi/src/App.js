@@ -20,13 +20,8 @@ import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
-<<<<<<< HEAD
-import StreamingLivePage from './streaming/StreamingLive';
-import KakaoCallback from './components/social/KakaoCallback';
-=======
 import PetRegisterPage from './pages/PetRegisterPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
->>>>>>> 55f5e57e094a159ecedbedfb3e3657f673c4a76a
 // -------------------PAGES-------------------//
 
 
