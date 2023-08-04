@@ -85,7 +85,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .requiresChannel((requiresChannel) -> requiresChannel
-                        .requestMatchers("/oauth2/authorization").requiresSecure()
+                        .requestMatchers("/api/oauth2/authorization").requiresSecure()
                 )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/api/member/modify/**").authenticated()
