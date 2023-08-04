@@ -5,14 +5,14 @@ import axios from "axios";
 const KakaoCallback = (props) =>{
     const navigate = useNavigate();
     const code = new URL(window.location.href).searchParams.get("code");
-    const REDIRECT_URI = `http://localhost:3000/${process.env.REACT_APP_REDIRECT_URI}kakao`
+    const REDIRECT_URI = `http://localhost:3000${process.env.REACT_APP_REDIRECT_URI}kakao`
 
     //인가코드 백으로 보내는 코드
     useEffect(() => {
         const kakaoLogin = async () => {
             await axios({
             method: "GET",
-            url: `${REDIRECT_URI}/?code=${code}`,
+            url: `${REDIRECT_URI}?code=${code}`,
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
                 "Access-Control-Allow-Origin": "*", //이건 cors 에러때문에 넣어둔것. 당신의 프로젝트에 맞게 지워도됨

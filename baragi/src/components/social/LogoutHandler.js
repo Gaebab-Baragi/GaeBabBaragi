@@ -1,15 +1,16 @@
-import instance from "../../axios/axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { clearUser } from "../../redux/userSlice";
+import axios from "axios";
+
 
 const LogoutHandler= () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        instance.post("/logout")
+        axios.post("/api/logout")
         .then((res) => {
             console.log(res);
             if (res.status === 200){

@@ -2,7 +2,6 @@ import React, { useEffect, useCallback } from 'react';
 import './BasicForm.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
-// import axios from '../../axios/axios';
 import axios from 'axios';
 import SocialLogin from '../social/SocialLogin';
 
@@ -53,7 +52,7 @@ function SignupForm() {
       nickname : nickname,
     })
 
-    axios.post("/member/register/nickname", body, {
+    axios.post("/api/member/register/nickname", body, {
       headers: { 
         "Content-Type": `application/json; charset= UTF-8`
       }
