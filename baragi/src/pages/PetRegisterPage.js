@@ -2,6 +2,7 @@ import './PetRegisterPage.css'
 import { ReactTags } from "react-tag-autocomplete";
 import React, {useCallback, useEffect, useState} from "react";
 import axios from 'axios';
+import Swiper from 'swiper';
 
 function PetRegisterPage() {
   const [selected, setSelected] = useState([]);

@@ -4,6 +4,7 @@ import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
 import instance from '../../axios/axios';
 import SocialLogin from '../social/SocialLogin';
+import axios from 'axios';
 
 function SignupForm() {
   const navigate = useNavigate();
