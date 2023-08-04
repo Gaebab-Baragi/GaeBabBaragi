@@ -55,11 +55,11 @@ public class SecurityConfig {
     @Value("${current.front}")
     private String frontUrl;
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web
-                .ignoring().requestMatchers("/api/member/register/**");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web
+//                .ignoring().requestMatchers("/api/member/register/**");
+//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -67,7 +67,7 @@ public class SecurityConfig {
 
         config.setAllowCredentials(true);
         config.setAllowedOrigins(Arrays.asList(frontUrl));
-        config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
+        config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT", "OPTION"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowCredentials(true);
         log.info("here");
