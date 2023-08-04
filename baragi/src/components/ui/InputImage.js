@@ -6,6 +6,7 @@ function InputImage() {
   // 파일 선택 시 이미지 미리보기 함수
   const handleImagePreview = (e) => {
     const selectedImage = e.target.files[0];
+
     if (selectedImage) {
       const reader = new FileReader();
       reader.onloadend = () => {

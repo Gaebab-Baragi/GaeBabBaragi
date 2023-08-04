@@ -7,7 +7,7 @@ function ChatComponent() {
   return(
     <div className="ChatContainer">
       {chatList.map((chat)=>{
-          <p>{chat[content]}</p>
+          <p>{chat.content}</p>
       })}
     </div>
   )

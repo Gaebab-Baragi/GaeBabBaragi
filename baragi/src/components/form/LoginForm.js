@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import './BasicForm.css'
-import axios from '../../axios/axios';
+// import axios from '../../axios/axios';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 import SocialLogin from '../social/SocialLogin';
@@ -38,7 +39,7 @@ function LoginForm() {
       password : password
     };
 
-    axios.post('/member/login', body) 
+    axios.post('/api/login', body) 
     .then((res)=>{
       const { accessToken } = res.data;
       axios.defaults.headers.common['Authorization'] =  accessToken;

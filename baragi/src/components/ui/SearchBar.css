@@ -1,42 +1,50 @@
+/* SearchBar.css */
+.search {
+  position: relative;
+}
+
 .searchInputs {
   margin-top: 30px;
   display: flex;
+  align-items: center;
+  position: relative;
 }
 
-.search input {
+.searchInput {
   background-color: white;
   border-radius: 20px;
   font-size: 15px;
   color: black;
-  padding: 15px;
+  padding: 15px 50px 15px 15px;
   height: 40px;
   width: 450px;
+  box-sizing: border-box;
 }
 
 .searchIcon {
-  height: 40px;
-  width: 50px;
-  background-color: white;
-  display: grid;
-  place-items: center;
-}
-
-.searchIcon svg {
-  font-size: 35px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 2; /* Add this to make sure the icon appears above the input */
+  height: 30px; /* Adjust the height for the appropriate size */
+  width: 30px; /* Adjust the width for the appropriate size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
 }
 
 .dataResult {
   position: absolute;
-  /* 검색창 바로 밑에 띄우기 */
-  /* margin-left: 10%; */
-  /* margin-top: 5px; */
   width: 450px;
   height: 200px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   overflow: hidden;
   overflow-y: auto;
-  z-index:1;
+  z-index: 1;
 }
 
 .dataResult::-webkit-scrollbar {

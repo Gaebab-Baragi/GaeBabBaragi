@@ -3,8 +3,7 @@ import axios from 'axios';
 import React, { Component, useEffect } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
-import { useState } from 'react';
-import { configureStore } from '@reduxjs/toolkit';
+import ChatComponent from './Chat/ChatComponent';
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
@@ -15,7 +14,6 @@ class Streaming extends Component {
         super(props);
 
         this.hasJoinedSession = false;
-
 
         this.state = {
             mySessionId: props.sessionId.toString(),

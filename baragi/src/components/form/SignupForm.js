@@ -53,7 +53,7 @@ function SignupForm() {
       nickname : nickname,
     })
 
-    axios.post("/member/register/nickname", body, {
+    axios.post("/api/member/register/nickname", body, {
       headers: { 
         "Content-Type": `application/json; charset= UTF-8`
       }

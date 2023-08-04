@@ -1,7 +1,6 @@
 import BackGround from "../components/ui/BackGround";
 import CardCarousel from "../components/list/CardCarousel";
 
-
 function MainPage(){
     return(
         <div>
