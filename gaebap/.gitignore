@@ -38,3 +38,6 @@ out/
 
 ### OAUTH ###
 **/application-oauth.properties
+
+# AWS S3 Access Key
+application-aws-credentials.properties
