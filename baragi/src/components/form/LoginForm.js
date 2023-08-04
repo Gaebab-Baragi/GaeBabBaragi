@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import './BasicForm.css'
-// import axios from '../../axios/axios';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 import SocialLogin from '../social/SocialLogin';
+import axios from 'axios';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -41,11 +40,11 @@ function LoginForm() {
 
     axios.post('/api/login', body) 
     .then((res)=>{
-      const { accessToken } = res.data;
-      axios.defaults.headers.common['Authorization'] =  accessToken;
-      console.log("token:" + accessToken);
       if (res.status === 200){
-        let data = res.data;
+        const accessToken = res.headers['authorization'];
+
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; 
+        const data = res.data;
         console.log(data);
         dispatch(loginUser(data))
         navigate('/');

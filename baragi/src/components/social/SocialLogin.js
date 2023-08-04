@@ -5,9 +5,9 @@ import NaverLogin from "./NaverLogin";
 const SocialLogin = () => {
     return (
         <div>
-            <GoogleLogin/>
+            {/* <GoogleLogin/>
             <NaverLogin/>
-            <KakaoLogin/>
+            <KakaoLogin/> */}
         </div>
     );
 }

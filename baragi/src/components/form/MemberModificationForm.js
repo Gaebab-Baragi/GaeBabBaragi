@@ -2,8 +2,8 @@ import { useCallback, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
-import axios from "../../axios/axios";
 import "./css/MemberModification.css"
+import axios from "axios";
 
 function MemberModificationForm(){
     const user = useSelector((state) => (state.user));
