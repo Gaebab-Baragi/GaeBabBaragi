@@ -9,6 +9,7 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Forbidden {
 
     @Id
