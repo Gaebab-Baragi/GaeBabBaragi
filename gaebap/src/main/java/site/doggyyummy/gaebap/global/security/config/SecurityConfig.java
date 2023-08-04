@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.global.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +40,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
     private final MemberRepository memberRepository;
@@ -67,7 +69,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(Arrays.asList(frontUrl));
         config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));
-
+        config.setAllowCredentials(true);
+        log.info("here");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
@@ -76,10 +79,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain httpFilterChain (HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors((cors) ->
                         cors.configurationSource(corsConfigurationSource()))
+                .csrf((csrf) ->
+                        csrf.disable())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -93,6 +97,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login((oauth2login) ->
                     oauth2login
+                            .loginPage("/api/oauth2")
                             .successHandler(oAuth2LoginSuccessHandler)
                             .failureUrl(frontUrl+"/login")
                             .failureHandler(oAuth2LoginFailureHandler)
