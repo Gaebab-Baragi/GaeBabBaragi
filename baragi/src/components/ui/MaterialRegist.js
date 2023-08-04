@@ -43,7 +43,7 @@ function MaterialRegist() {
   return (
     <div style = {{  marginTop : '1%', marginBottom:'1%', background : '#0001'}}> 
 
-      <div style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '10px', background:'#0003' }}>
+      <div style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '10px' }}>
       {inputMats.map((inputMat, index) => (
         <div key={index}>
           <InputMat step={index} matName={inputMat.ingredientName} matAmount={inputMat.amount} ingredientsChange={handleIngredientsChange} />
