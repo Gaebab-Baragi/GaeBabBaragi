@@ -91,7 +91,8 @@ function LoginForm() {
 
         {/* 구글 로그인 */}
         <div className="formGroup">
-          <a href = "https://www.naver.com/">테스트</a>
+          <a href = "https://www.naver.com/">외부로 테스트</a>
+          <a href = "https://doggy-yummy.site/api/member?username=배찬일">다른 테스트</a>
           <SocialLogin/>
         </div>
       </form>
