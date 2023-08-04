@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.domain.recipe.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Ingredient {
 
     @Id
