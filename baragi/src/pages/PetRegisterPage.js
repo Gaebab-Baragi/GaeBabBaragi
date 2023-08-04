@@ -17,6 +17,7 @@ function PetRegisterPage() {
     {value:3, label:'소고기'},
     {value:4, label:'돼지고기'}
   ]
+
   const onAdd = useCallback(
     (newTag) => {
       setSelected([...selected, newTag])
@@ -51,6 +52,7 @@ function PetRegisterPage() {
     formData.append('file', file)
     let variables = [{
       petName: petName,
+      
     }]
     formData.append("data", new Blob([JSON.stringify(variables)]), {type:"application/json"})
 
@@ -99,7 +101,6 @@ function PetRegisterPage() {
           allowBackspace={true}
           />
         </div>
-
 
       {/* 등록 버튼 */}
       <button onSubmit={handlePetRegister} className='petRegisterBtn'>등록하기</button>
