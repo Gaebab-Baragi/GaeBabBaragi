@@ -52,8 +52,10 @@ function SignupForm() {
       nickname : nickname,
     })
 
-    instance.post('/member/register/nickname', body, {
-      headers: { "Content-Type": `application/json; charset= UTF-8`}
+    axios.post("/api/member/register/nickname", body, {
+      headers: { 
+        "Content-Type": `application/json; charset= UTF-8`
+      }
       })
     .then((res)=>{
       if (res.status === 200) {

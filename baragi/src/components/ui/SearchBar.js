@@ -90,7 +90,8 @@ function SearchBar({  data }) {
           onChange={handleFilter}
         />
         <div onClick={handleRequestFilteredList} className="searchIcon">
-          <SearchIcon/>
+          {/* <SearchIcon/> */}
+          <ion-icon name="search-outline"></ion-icon>
         </div>
       </div>
       {filteredData.length != 0 && needSearch && (
