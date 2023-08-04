@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import InputImage from './InputImage';
+import '../../pages/PetRegisterPage.css'
 
 
 function InputCookstep({ step, description, onCookstepChange, onDelete }) {
@@ -22,7 +23,7 @@ function InputCookstep({ step, description, onCookstepChange, onDelete }) {
           placeholder="예)요리방법 돼지고기 소고기 요리해줘"
           style = {{ flex : 1, marginRight : '3%' }}
         />
-        <div>
+        <div style={{ width: '20%', height :'120%'}}>
           <InputImage></InputImage>
         </div>
       </div>
