@@ -15,11 +15,12 @@ public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredie
             "FROM RecipeIngredient ri " +
             "WHERE ri.recipe.title LIKE %:recipeTitle% " +
             "AND ri.recipe.id IN ("+
-            "SELECT ri.recipe.id "+
-            "FROM ri WHERE ri.recipe.id "+
-            "NOT IN (SELECT ri.recipe.id "+
-            "FROM ri WHERE ri.ingredient.id "+
-            "IN (SELECT f.ingredient.id FROM Forbidden f WHERE f.pet.id IN :petId))) "+
+            "SELECT r.id "+
+            "FROM RecipeIngredient ri JOIN ri.recipe r " +
+            "WHERE r.id NOT IN (" +
+            "SELECT r2.id "+
+            "FROM RecipeIngredient ri2 JOIN ri2.recipe r2 JOIN ri2.ingredient i2 " +
+            "WHERE i2.id IN (SELECT f.ingredient.id FROM Forbidden f WHERE f.pet.id IN :petId))) "+
             "GROUP BY ri.recipe.id ")
     List<Object[]> findRecipesWithForbiddenIngredientsAndTitle(@Param("petId") List<Long> petId, @Param("recipeTitle") String recipeTitle);
 
@@ -36,8 +37,14 @@ public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredie
             "FROM RecipeIngredient ri " +
             "WHERE ri.ingredient.name IN :ingredientNames " +
             "AND ri.recipe.title LIKE %:recipeTitle% " +
-            "AND ri.ingredient.id NOT IN (SELECT f.ingredient.id FROM Forbidden f WHERE f.pet.id IN :petId) "+
-            "GROUP BY ri.recipe.id " +
+            "AND ri.recipe.id IN ("+
+            "SELECT r.id "+
+            "FROM RecipeIngredient ri JOIN ri.recipe r " +
+            "WHERE r.id NOT IN (" +
+            "SELECT r2.id "+
+            "FROM RecipeIngredient ri2 JOIN ri2.recipe r2 JOIN ri2.ingredient i2 " +
+            "WHERE i2.id IN (SELECT f.ingredient.id FROM Forbidden f WHERE f.pet.id IN :petId))) "+
+            "GROUP BY ri.recipe.id "+
             "HAVING COUNT(ri) >= :ingredientSize")
     List<Object[]> findRecipesWithIngredientsAndTitleAndForbiddenIngredients(@Param("ingredientNames") List<String> ingredientNames, @Param("recipeTitle") String recipeTitle, @Param("ingredientSize") Integer ingredientSize, @Param("petId") List<Long> petId);
 
