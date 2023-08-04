@@ -22,6 +22,7 @@ import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
 import StreamingLivePage from './streaming/StreamingLive';
+import KakaoCallback from './components/social/KakaoCallback';
 // -------------------PAGES-------------------//
 
 
@@ -46,10 +47,13 @@ function App() {
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
         <Route path='/streaming-live' element={<StreamingLivePage/>}></Route>
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
-        <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/mypetregister' element={<MyPetRegisterPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
+        {/*-----------------------로그인 관련-------------------------------*/}
+        <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
+        <Route path='/login/oauth2/code/kakao' element={<KakaoCallback/>}></Route>
+        {/*-----------------------로그인 관련-------------------------------*/}
         <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>
 

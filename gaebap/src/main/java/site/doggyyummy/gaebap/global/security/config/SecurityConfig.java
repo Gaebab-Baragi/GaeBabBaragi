@@ -84,6 +84,9 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .requiresChannel((requiresChannel) -> requiresChannel
+                        .requestMatchers("/api/oauth2/authorization").requiresSecure()
+                )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/api/member/modify/**").authenticated()
                         .anyRequest().permitAll()
@@ -93,10 +96,10 @@ public class SecurityConfig {
                             .successHandler(oAuth2LoginSuccessHandler)
                             .failureUrl(frontUrl+"/login")
                             .failureHandler(oAuth2LoginFailureHandler)
-                            .authorizationEndpoint((endpoint) ->
-                                    endpoint.baseUri("/api/oauth2/authorization"))
-                            .redirectionEndpoint((endpoint) ->
-                                    endpoint.baseUri("/api/login/oauth2/code/*"))
+                            .authorizationEndpoint((endpoint) -> endpoint
+                                    .baseUri("/api/oauth2/authorization"))
+                            .redirectionEndpoint((endpoint) -> endpoint
+                                    .baseUri("/api/login/oauth2/code/*"))
                             .userInfoEndpoint((endpoint) ->
                                     endpoint.userService(customOAuth2UserService))
                 )
