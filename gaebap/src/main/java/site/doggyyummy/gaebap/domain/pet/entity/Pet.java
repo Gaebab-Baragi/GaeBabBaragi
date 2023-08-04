@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@Builder
 public class Pet {
 
     @Id
@@ -27,15 +28,9 @@ public class Pet {
     private String name;
 
     @Column
-    private LocalDateTime birthDate;
-
-    @Column
-    private Double weight;
-
-    @Column
     private String imgUrl;
 
-    @OneToMany(mappedBy = "pet")
+    @OneToMany(mappedBy = "pet",cascade = CascadeType.ALL)
     private List<Forbidden> forbiddens = new ArrayList<>();
 
 }
