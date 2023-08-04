@@ -78,7 +78,7 @@ function LoginForm() {
 
         {/* 아이디 찾기 / 비밀번호 찾기 / 회원가입 */}
         <div className='formGroup' id='navigateNewPage'>
-          <span onClick={()=>{navigate('/find-id')}}>아이디 찾기</span>|<span onClick={()=>{navigate('/find-password')}}>비밀번호 찾기</span> | <span onClick={()=>navigate('/signup')}>회원가입</span>
+          <span onClick={()=>{navigate('/find-password')}}>비밀번호 찾기</span> | <span onClick={()=>navigate('/signup')}>회원가입</span>
         </div>
 
         {/* Login 버튼 */}
@@ -91,7 +91,6 @@ function LoginForm() {
 
         {/* 구글 로그인 */}
         <div className="formGroup">
-          <a href = "https://www.naver.com/">테스트</a>
           <SocialLogin/>
         </div>
       </form>
