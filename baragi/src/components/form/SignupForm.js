@@ -2,11 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import './BasicForm.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
-<<<<<<< HEAD
 import axios from 'axios';
-=======
-import instance from '../../axios/axios';
->>>>>>> 55f5e57e094a159ecedbedfb3e3657f673c4a76a
 import SocialLogin from '../social/SocialLogin';
 
 function SignupForm() {
@@ -98,7 +94,7 @@ function SignupForm() {
       nickname : nickname,
     })
 
-    instance.post('/member/register/username', body, {
+    axios.post('/api/member/register/username', body, {
       headers: { "Content-Type": `application/json; charset= UTF-8`}
       })
     .then((res)=>{
@@ -137,7 +133,7 @@ function SignupForm() {
           password : password1,
           nickname : nickname,
         };
-        instance.post('/member/register', body)
+        axios.post('/api/member/register', body)
         .then((res)=>{
           if (res.status ===201) {
             console.log('signup success')
