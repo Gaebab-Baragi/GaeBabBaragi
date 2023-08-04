@@ -13,7 +13,6 @@ import RecipeListPage from './pages/RecipeListPage';
 import StreamingRegisterPage from './pages/StreamingRegisterPage';
 import StreamingListPage from './pages/StreamingListPage';
 import MyinformationPage from './pages/MyinformationPage';
-import MyPetRegisterPage from './pages/MyPetRegisterPage';
 import MyRecipePage from './pages/MyRecipePage';
 import MainPage from './pages/MainPage';
 import FindIdPage from './pages/FindIdPage';
@@ -21,6 +20,7 @@ import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
+import PetRegisterPage from './pages/PetRegisterPage';
 import StreamingLivePage from './streaming/StreamingLive';
 // -------------------PAGES-------------------//
 
@@ -48,7 +48,7 @@ function App() {
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
-        <Route path='/mypetregister' element={<MyPetRegisterPage/>}></Route>
+        <Route path='/my-pet-register' element={<PetRegisterPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>

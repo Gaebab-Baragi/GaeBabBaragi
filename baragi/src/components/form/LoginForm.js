@@ -91,6 +91,7 @@ function LoginForm() {
 
         {/* 구글 로그인 */}
         <div className="formGroup">
+          <a href = "https://www.naver.com/">테스트</a>
           <SocialLogin/>
         </div>
       </form>
