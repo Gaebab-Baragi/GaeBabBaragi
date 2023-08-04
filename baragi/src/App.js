@@ -21,7 +21,7 @@ import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
 import PetRegisterPage from './pages/PetRegisterPage';
-import StreamingLivePage from './streaming/StreamingLive';
+import StreamingLivePage from './streaming/StreamingLivePage';
 // -------------------PAGES-------------------//
 
 
