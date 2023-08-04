@@ -31,7 +31,7 @@ function MemberModificationForm(){
             nickname : nickname ? nickname : user.nickname,
         })
 
-        axios.post('/member/modify/nickname', body, {
+        axios.post('/api/member/modify/nickname', body, {
         })
         .then((res)=>{
         if (res.status === 200) {
@@ -62,7 +62,7 @@ function MemberModificationForm(){
                 file : base64,
                 fileType : fileType
             });
-            axios.put('/member/modify', body)
+            axios.put('/api/member/modify', body)
             .then((res)=>{
                     let data = res.data;
                     dispatch(loginUser(data))
@@ -94,7 +94,7 @@ function MemberModificationForm(){
 
     const letsTest = (e) => {
         e.preventDefault();
-        axios.get("/member/test")
+        axios.get("/api/member/test")
         .then((res) =>{
         if (res.status === 200){
             console.log("yes!");

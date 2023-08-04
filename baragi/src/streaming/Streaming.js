@@ -7,7 +7,6 @@ import UserVideoComponent from './UserVideoComponent';
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
 
-
 class Streaming extends Component {
     constructor(props) {
         super(props);
@@ -139,8 +138,7 @@ class Streaming extends Component {
                             let publisher = await this.OV.initPublisherAsync(undefined, {
                                 audioSource: undefined, // The source of audio. If undefined default microphone
                                 videoSource: undefined, // The source of video. If undefined default webcam
-                                /// 이거 나중에 수정!!!!!!!!!
-                                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
+                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                                 resolution: '640x480', // The resolution of your video
                                 frameRate: 30, // The frame rate of your video
@@ -264,7 +262,7 @@ class Streaming extends Component {
                     {/* video on */}
                     <ion-icon className="onIcon" name="videocam-outline"></ion-icon>
                     {/* video off */}
-                    <ion-icon name="videocam-off-outline"  ></ion-icon>
+                    <ion-icon className="onIcon" name="videocam-outline"></ion-icon>
                     {/* mike on */}
                     <ion-icon className="onIcon" name="volume-high-outline" ></ion-icon>
                     {/* mike off */}
