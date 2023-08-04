@@ -25,7 +25,7 @@ function StreamingListPage() {
 
   function checkMeeting(streamingItem) {
     console.log(streamingItem.id)
-    axios.get(`/api/meetings/join-request/${streamingItem.id}`)
+    axios.get(`http://localhost:8083/api/meetings/join-request/${streamingItem.id}`)
     .then((res)=>{
       console.log('request success : ', res.data);
 
