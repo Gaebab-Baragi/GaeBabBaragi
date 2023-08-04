@@ -63,20 +63,4 @@ public class Member {
     public void updateRefreshToken(String refreshToken){
        this.refreshToken = refreshToken;
     }
-
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", authority='" + authority + '\'' +
-                ", profileUrl='" + profileUrl + '\'' +
-                ", registerDate=" + registerDate +
-                ", hostedMeeting=" + hostedMeeting +
-                ", refreshToken='" + refreshToken + '\'' +
-                '}';
-    }
 }
