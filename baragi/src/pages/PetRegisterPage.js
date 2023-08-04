@@ -9,8 +9,6 @@ function PetRegisterPage() {
   const [image, setImage] = useState(defaultImageUrl);
   const [file, setFile] = useState('');
   const [petName, setPetName] = useState('');
-  const [petAge, setPetAge] = useState('');
-  const [petWeight, setPetWeight] = useState(null);
 
   // =========================기피 재료 등록=====================//
   const suggestions = [
@@ -47,15 +45,12 @@ function PetRegisterPage() {
     }
   };
 
-
   //==================== 제출=====================//
   const handlePetRegister = () =>{
     const formData = new FormData();
     formData.append('file', file)
     let variables = [{
       petName: petName,
-      petAge : petAge,
-      petWeight:petWeight
     }]
     formData.append("data", new Blob([JSON.stringify(variables)]), {type:"application/json"})
 
@@ -91,12 +86,6 @@ function PetRegisterPage() {
           <input className='petInput' type="text" placeholder="" onChange={e=>{setPetName(e.target.value)}} />
           </div>
 
-        {/* 나이 */}
-        <div className='petInfoGroup'>
-          <label>나이</label>
-          <input className='petInput' type="text" onChange={e=>{setPetAge(e.target.value)}} />
-        </div>
-
         {/* 못 먹는 재료 */}
         <div className='petInfoGroup'>
           <label >못 먹는 재료 선택</label>
@@ -111,11 +100,6 @@ function PetRegisterPage() {
           />
         </div>
 
-        {/* 몸무게 */}
-        <div className='petInfoGroup'> 
-          <label >몸무게</label>
-          <input className='petInput' type="number" onChange={e=>{setPetWeight(e.target.value)}}/>
-        </div>
 
       {/* 등록 버튼 */}
       <button onSubmit={handlePetRegister} className='petRegisterBtn'>등록하기</button>
