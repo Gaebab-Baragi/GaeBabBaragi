@@ -12,20 +12,20 @@ function InputMat({ step, matName, matAmount, ingredientsChange }) {
   };
 
   return (
-    <>
-      <div style={{ width: '120%', borderRadius: '5px', backgroundColor: '#FFEACB', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ margin: '5% 0% 5% 5%' }}>
-          <input
+
+      <div style={{ marginLeft : '10%', marginRight:'10%', borderRadius: '5px', backgroundColor: '#FFEACB', display:'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        {/* <div style={{ margin : '5% 5% 5% 5%'}}> */}
+          <input 
             type="text"
             id={`Matname${step}`}
             name={`Matname${step}`}
             value={matName}
             onChange={handleMatnameChange}
             placeholder="재료를 입력하세요"
-            style={{ textAlign: 'center' }}
+            style={{width:'45%', textAlign: 'center', margin : '2%'}}
           />
-        </div>
-        <div style={{ margin: '5% 5% 5% 5%' }}>
+        {/* </div>
+        <div style={{ width : '150%' , margin: '5% -5% 5% 5%' }}> */}
           <input
             type="text"
             id={`matAmount${step}`}
@@ -33,11 +33,10 @@ function InputMat({ step, matName, matAmount, ingredientsChange }) {
             value={matAmount}
             onChange={handleMatamountChange}
             placeholder="양을 입력하세요"
-            style={{ textAlign: 'center' }}
+            style={{ width:'45%', textAlign: 'center', margin:'2%'}}
           />
-        </div>
+        {/* </div> */}
       </div>
-    </>
   );
 }
 

@@ -43,11 +43,7 @@ function CookStep() {
 
   return (
     <div>
-      <div style={{ display: 'flex', padding: '1%' }}>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginRight: '15%' }}>4. 요리 순서</h4>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1%', flexDirection: 'column', gap: '10px' }}>
+      <div style={{ display: 'flex', marginBottom: '1%', flexDirection: 'column', gap: '10px' , background : '#0001'}}>
         {inputCooksteps.map((inputCookstep, index) => (
           <div key={index}>
             <InputCookstep
