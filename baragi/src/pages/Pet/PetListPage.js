@@ -1,14 +1,28 @@
-import './PetRegisterPage.css'
+import './PetListPage.css'
 import React, {useCallback, useEffect, useState,useRef} from "react";
-import PetRegisterForm from '../components/form/PetRegisterForm';
+import PetRegisterForm from '../../components/form/PetRegisterForm';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination, Navigation, Mousewheel } from 'swiper/modules';
+import axios from 'axios';
+import IngredientTagBar from '../../components/ui/IngredientTagBar';
 
-function PetRegisterPage() {
+function PetListPage() {
+  const [petList, setPetList] = useState([])
+
+  useEffect(()=>{
+    axios.get(`/api/pet?member_id=${1}`)
+    .then((res)=>{
+      console.log('pet list : ' , res.data)
+      setPetList(res.data)
+    })
+    .catch((err)=>{
+      console.log('error : ' , err)
+    })
+  },[])
 
   return(
     <div>
@@ -32,19 +46,18 @@ function PetRegisterPage() {
         className="mySwiper"
       >
 
-        <SwiperSlide style={{width:"400px" }}>
-          <PetRegisterForm/>
-        </SwiperSlide>
-        <SwiperSlide style={{width:"400px"}}>
-            <PetRegisterForm/>
-        </SwiperSlide>
-        <SwiperSlide style={{width:"400px"}}>
-            <PetRegisterForm/>
-        </SwiperSlide>
+      {petList.map((pet)=>{
+        return(
+          <SwiperSlide style={{width:"400px" }}>
+            <PetRegisterForm pet={pet}/>
+          </SwiperSlide>
+        )
+      })}
+
       </Swiper>
     </div>
 
   )
 }
 
-export default PetRegisterPage;
+export default PetListPage;

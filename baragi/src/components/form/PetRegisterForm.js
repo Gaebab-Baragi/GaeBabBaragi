@@ -2,36 +2,17 @@ import { ReactTags } from "react-tag-autocomplete";
 import React, {useCallback, useEffect, useState,useRef} from "react";
 import axios from 'axios';
 import './PetRegisterForm.css'
+import IngredientTagBar from "../ui/IngredientTagBar";
 
-function PetRegisterForm() {
+function PetRegisterForm({pet}) {
 
-  const [selected, setSelected] = useState([]);
   const defaultImageUrl = './기본이미지.PNG';
   const [image, setImage] = useState(defaultImageUrl);
   const [file, setFile] = useState('');
   const [petName, setPetName] = useState('');
 
   // =========================기피 재료 등록=====================//
-  const suggestions = [
-    {value:1, label:'고구마'},
-    {value:2, label:'감자'},
-    {value:3, label:'소고기'},
-    {value:4, label:'돼지고기'}
-  ]
-
-  const onAdd = useCallback(
-    (newTag) => {
-      setSelected([...selected, newTag])
-    },
-    [selected]
-  )
-
-  const onDelete = useCallback(
-    (tagIndex) => {
-      setSelected(selected.filter((_, i) => i !== tagIndex))
-    },
-    [selected]
-  )
+  
   // ==========================사진 등록===================//
   const handleImagePreview = (e) => {
     const selectedImage = e.target.files[0];
@@ -49,16 +30,22 @@ function PetRegisterForm() {
 
   //==================== 제출=====================//
   const handlePetRegister = () =>{
-    console.log('때려치고 싶다')
     const formData = new FormData();
-    formData.append('file', file)
+    formData.append('imgUrl', file)
     let variables = [{
-      petName: petName,
-      
+      name: petName,
+      member_id: 1,
+      forbiddenIngredients:['0']
     }]
     formData.append("data", new Blob([JSON.stringify(variables)]), {type:"application/json"})
-
-    axios.post('http://localhost:8083/api/pets', formData )
+    let body = {
+      name : petName,
+      member_id: 1,
+      imgUrl : image,
+      forbiddenIngredients : [1]
+    };
+    console.log(body)
+    axios.post('http://localhost:8083/api/pet', body)
       .then((res)=>{
         console.log('axios success :', res.data)
       })
@@ -70,7 +57,7 @@ function PetRegisterForm() {
   return(
     <div className='petContainer'>
         {/* 제목 */}
-        <div className="petFormTitle">반려견 등록하기</div>
+        <div className="petFormTitle">내 반려견</div>
 
         {/* 사진 등록 */}
         <div className='petImgContainer'>
@@ -85,22 +72,12 @@ function PetRegisterForm() {
         {/* pet 이름 */}
         <div className='petInfoGroup'>
           <label>이름</label>
-          <input className='petInput' type="text" placeholder="" onChange={e=>{setPetName(e.target.value)}} />
+          <input className='petInput' type="text" placeholder={''} onChange={e=>{setPetName(e.target.value)}} />
           </div>
 
-        {/* 못 먹는 재료 */}
-        <div className='petInfoGroup'>
-          <label >못 먹는 재료 선택</label>
-          <ReactTags
-          suggestions={suggestions}
-          placeholderText="재료 선택"
-          selected={selected}
-          onAdd={onAdd}
-          onDelete={onDelete}
-          noOptionsText="일치하는 재료가 없습니다."
-          allowBackspace={true}
-          />
-        </div>
+        {/* 기피 재료 등록 */}
+        <IngredientTagBar/>
+        
 
       {/* 등록 버튼 */}
       <button onClick={handlePetRegister} className='petRegisterBtn'>등록하기</button>

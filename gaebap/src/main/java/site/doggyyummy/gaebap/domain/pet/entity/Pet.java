@@ -27,7 +27,7 @@ public class Pet {
     @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable=true)
     private String imgUrl;
 
     @OneToMany(mappedBy = "pet",cascade = CascadeType.ALL)
