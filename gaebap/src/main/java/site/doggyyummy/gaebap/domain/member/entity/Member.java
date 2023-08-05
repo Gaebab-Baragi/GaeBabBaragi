@@ -51,8 +51,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Pet> pets = new ArrayList<>();
 
-    @OneToOne(mappedBy = "host")
-    private Meeting hostedMeeting;
+    @OneToMany(mappedBy = "host")
+    private List<Meeting> hostedMeeting = new ArrayList<>();
 
     /**
      * 아래는 Security 및 OAuth2 관련한 필드

@@ -1,6 +1,12 @@
 package site.doggyyummy.gaebap.domain.meeting.controller;
 
 import io.openvidu.java.client.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +28,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/meetings")
+@Tag(name = "Meeting Controller", description = "미팅 API")
 public class MeetingController {
 
     private final MeetingService meetingService;
@@ -41,6 +48,11 @@ public class MeetingController {
         this.openvidu = new OpenVidu(OPENVIDU_URL, SECRET);
     }
 
+    @Operation(summary = "create meeting room", description = "미팅 룸 생성")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "CREATED", content = @Content(schema = @Schema(implementation = CreateMeetingResponseDTO.class))),
+        @ApiResponse(responseCode = "400", description = "미팅 예약 오류")
+    })
     @PostMapping
     public ResponseEntity<ResponseDTO> create(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO){ // 방 생성
 
