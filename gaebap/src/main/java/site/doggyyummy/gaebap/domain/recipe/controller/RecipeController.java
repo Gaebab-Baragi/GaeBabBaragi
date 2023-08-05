@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.recipe.dto.*;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 import site.doggyyummy.gaebap.domain.recipe.exception.NotFoundRecipeException;
 import site.doggyyummy.gaebap.domain.recipe.exception.UnauthorizedException;
 import site.doggyyummy.gaebap.domain.recipe.service.RecipeService;
-import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.io.IOException;
 
@@ -24,15 +22,8 @@ public class RecipeController {
     //레시피 등록
     @PostMapping("/recipes/new")
     public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo,@RequestPart MultipartFile[] stepImages) throws IOException {
-        Member member= new Member();
-        member.setId(1L);
-        member.setNickname("김김김");
-//        Member member=SecurityUtil.getCurrentLoginMember();
-        if(member==null){
-            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"로그인을 해주세요");
-        }
         try {
-            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(member,recipeUploadRequestDto,recipeImage,recipeVideo,stepImages);
+            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(recipeUploadRequestDto,recipeImage,recipeVideo,stepImages);
             return resDto;
         }catch (IllegalArgumentException e){
             return new RecipeUploadResponseDto(null,null,HttpStatus.SC_BAD_REQUEST,e.getMessage());
