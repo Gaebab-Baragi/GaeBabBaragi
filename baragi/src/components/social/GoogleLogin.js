@@ -5,7 +5,7 @@ function GoogleLogin(){
     return (
         
         <div>
-                <img className="loginButton" src={googleLoginImg} alt="google 계정으로 로그인" onClick={test}></img>
+                <img className="loginButton" src={googleLoginImg} alt="google 계정으로 로그인" ></img>
         </div>
     );
 }

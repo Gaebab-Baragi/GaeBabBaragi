@@ -25,7 +25,7 @@ public class PetRequestDTO {
     LocalDateTime birthdate;
     Double weight;
     String name;
-    String imgUrl;
+
     List<ForbiddenRequestDTO> forbiddens;
 
 
@@ -39,7 +39,6 @@ public class PetRequestDTO {
         pet.setBirthDate(this.birthdate);
         pet.setWeight(this.weight);
         pet.setName(this.name);
-        pet.setImgUrl(this.imgUrl);
 
         if (this.forbiddens != null) {
             List<Forbidden> forbiddens = this.forbiddens.stream()

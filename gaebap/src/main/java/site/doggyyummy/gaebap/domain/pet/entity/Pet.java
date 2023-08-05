@@ -33,7 +33,10 @@ public class Pet {
     private Double weight;
 
     @Column
-    private String imgUrl;
+    private String S3Key;
+
+    @Column
+    private String S3Url;
 
     @OneToMany(mappedBy = "pet")
     private List<Forbidden> forbiddens = new ArrayList<>();
