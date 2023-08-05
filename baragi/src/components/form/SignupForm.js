@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import './BasicForm.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
-import axios from '../../axios/axios';
+import axios from 'axios';
 import SocialLogin from '../social/SocialLogin';
 
 function SignupForm() {
@@ -52,8 +52,10 @@ function SignupForm() {
       nickname : nickname,
     })
 
-    axios.post('/member/register/nickname', body, {
-      headers: { "Content-Type": `application/json; charset= UTF-8`}
+    axios.post("/api/member/register/nickname", body, {
+      headers: { 
+        "Content-Type": `application/json; charset= UTF-8`
+      }
       })
     .then((res)=>{
       if (res.status === 200) {
@@ -92,7 +94,7 @@ function SignupForm() {
       nickname : nickname,
     })
 
-    axios.post('/member/register/username', body, {
+    axios.post('/api/member/register/username', body, {
       headers: { "Content-Type": `application/json; charset= UTF-8`}
       })
     .then((res)=>{
@@ -105,6 +107,7 @@ function SignupForm() {
       }
     })
     .catch((res) => {
+      console.log(res)
       res = res.response;
       if (res.status === 454) alert("잘못된 이메일입니다.")
       else if (res.status === 455) alert("이미 사용중인 이메일입니다.")
@@ -130,7 +133,7 @@ function SignupForm() {
           password : password1,
           nickname : nickname,
         };
-        axios.post('/member/register', body)
+        axios.post('/api/member/register', body)
         .then((res)=>{
           if (res.status ===201) {
             console.log('signup success')

@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import './BasicForm.css'
-import axios from '../../axios/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 import SocialLogin from '../social/SocialLogin';
+import axios from 'axios';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -38,13 +38,13 @@ function LoginForm() {
       password : password
     };
 
-    axios.post('/member/login', body) 
+    axios.post('/api/login', body) 
     .then((res)=>{
-      const { accessToken } = res.data;
-      axios.defaults.headers.common['Authorization'] =  accessToken;
-      console.log("token:" + accessToken);
       if (res.status === 200){
-        let data = res.data;
+        const accessToken = res.headers['authorization'];
+
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; 
+        const data = res.data;
         console.log(data);
         dispatch(loginUser(data))
         navigate('/');
@@ -78,7 +78,7 @@ function LoginForm() {
 
         {/* 아이디 찾기 / 비밀번호 찾기 / 회원가입 */}
         <div className='formGroup' id='navigateNewPage'>
-          <span onClick={()=>{navigate('/find-id')}}>아이디 찾기</span>|<span onClick={()=>{navigate('/find-password')}}>비밀번호 찾기</span> | <span onClick={()=>navigate('/signup')}>회원가입</span>
+          <span onClick={()=>{navigate('/find-password')}}>비밀번호 찾기</span> | <span onClick={()=>navigate('/signup')}>회원가입</span>
         </div>
 
         {/* Login 버튼 */}
@@ -91,8 +91,6 @@ function LoginForm() {
 
         {/* 구글 로그인 */}
         <div className="formGroup">
-          <a href = "https://www.naver.com/">외부로 테스트</a>
-          <a href = "https://doggy-yummy.site/api/member?username=배찬일">다른 테스트</a>
           <SocialLogin/>
         </div>
       </form>

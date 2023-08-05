@@ -1,11 +1,11 @@
 import kakaoLoginImg from "./kakaoLoginImg.png" 
 import "./socialLogin.css"
-import { URL, current } from "../../axios/axios"
-function KakaoLogin(){
+
+const KakaoLogin = () =>{
     return (
         <div>
-            <a href = {"https://doggy-yummy.site/oauth2/authorization/kakao"}>
-                <img className="loginButton" src={kakaoLoginImg}></img>
+            <a href = "/api/oauth2/authorization/kakao">
+                <img className = "loginButton" src={kakaoLoginImg} alt="naver"></img>
             </a>
         </div>
     );

@@ -6,8 +6,6 @@ let recipeRegister = createSlice({
   
   name: "recipeRegister",
   initialState: {
-    imgLocalPath: "C:\\Users\\SSAFY\\Desktop\\dogExample.jpg",
-    
     title: "과일 타르트 만들기",
     description: "상큼한 디저트 만들어봐요",
     member: {
@@ -47,7 +45,7 @@ let recipeRegister = createSlice({
       };
       console.log(data)
       axios
-        .post("/recipes/new", data)
+        .post("/api/recipes/new", data)
         .then((res) => {
           console.log("Request successful : ", res.data);
         })
