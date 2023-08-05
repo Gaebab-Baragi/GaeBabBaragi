@@ -7,10 +7,8 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination, Navigation, Mousewheel } from 'swiper/modules';
-import { PersistGate } from 'redux-persist/integration/react';
 
 function PetRegisterPage() {
-  
 
   return(
     <div>
@@ -18,36 +16,31 @@ function PetRegisterPage() {
         effect={'coverflow'}
         grabCursor={true}
         centeredSlides={true}
-        slidesPerView={'auto'}
+        slidesPerView={3}
         coverflowEffect={{
-          rotate: 10,
+          rotate: 50,
           stretch: 0,
           depth: 100,
           modifier: 1,
-          slideShadows: true,
+          slideShadows: false,
         }}
+        style={{width:"80%"}}
         pagination={true}
-        navigation={true}
+        // navigation={{nextEl:'.swiper-button-next', prevEl:'.swiper-button-prev', clickable:true,}}
         mousewheel={true}
-        modules={[EffectCoverflow, Pagination, ]}
+        modules={[EffectCoverflow, Pagination, Navigation]}
         className="mySwiper"
       >
 
-      <div>
-        <SwiperSlide>
+        <SwiperSlide style={{width:"400px" }}>
           <PetRegisterForm/>
         </SwiperSlide>
-        <SwiperSlide>
-          <div className='petForm'>
+        <SwiperSlide style={{width:"400px"}}>
             <PetRegisterForm/>
-          </div>
         </SwiperSlide>
-        <SwiperSlide>
-          <div className='petForm'>
+        <SwiperSlide style={{width:"400px"}}>
             <PetRegisterForm/>
-          </div>
         </SwiperSlide>
-      </div>
       </Swiper>
     </div>
 

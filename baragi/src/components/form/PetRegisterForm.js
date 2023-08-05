@@ -49,6 +49,7 @@ function PetRegisterForm() {
 
   //==================== 제출=====================//
   const handlePetRegister = () =>{
+    console.log('때려치고 싶다')
     const formData = new FormData();
     formData.append('file', file)
     let variables = [{
@@ -57,7 +58,7 @@ function PetRegisterForm() {
     }]
     formData.append("data", new Blob([JSON.stringify(variables)]), {type:"application/json"})
 
-    axios.post('/api/pets', formData )
+    axios.post('http://localhost:8083/api/pets', formData )
       .then((res)=>{
         console.log('axios success :', res.data)
       })
@@ -102,7 +103,7 @@ function PetRegisterForm() {
         </div>
 
       {/* 등록 버튼 */}
-      <button onSubmit={handlePetRegister} className='petRegisterBtn'>등록하기</button>
+      <button onClick={handlePetRegister} className='petRegisterBtn'>등록하기</button>
 
       </div>
   )
