@@ -5,7 +5,6 @@ import lombok.Setter;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class RecipeAllResponseDto {
     private List<RecipeDto> recipes;
     public RecipeAllResponseDto(List<Recipe> recipes){
         this.recipes=recipes.stream()
-                .map(recipe -> new RecipeDto(recipe.getTitle(),recipe.getWrittenTime(),recipe.getDescription(),recipe.getImageUrl(),recipe.getMember()))
+                .map(recipe -> new RecipeDto(recipe.getTitle(),recipe.getMember()))
                 .collect(Collectors.toList());
     }
 
@@ -24,23 +23,13 @@ public class RecipeAllResponseDto {
     public static class RecipeDto{
         private String title;
         private MemberDto member;
-        private LocalDateTime writtenTime;
-        private String description;
-        private String recipeImageUrl;
-
-        public RecipeDto(String title,LocalDateTime writtenTime,String description,String recipeImageUrl,MemberDto member){
+        public RecipeDto(String title,MemberDto member){
             this.title=title;
-            this.writtenTime=writtenTime;
-            this.description=description;
-            this.recipeImageUrl=recipeImageUrl;
             this.member=member;
         }
-        public RecipeDto(String title,LocalDateTime writtenTime,String description,String recipeImageUrl,Member member){
+        public RecipeDto(String title,Member member){
             this.title=title;
             this.member=new MemberDto(member.getUsername());
-            this.writtenTime=writtenTime;
-            this.description=description;
-            this.recipeImageUrl=recipeImageUrl;
         }
     }
 

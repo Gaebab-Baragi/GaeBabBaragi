@@ -10,15 +10,10 @@ import java.util.List;
 public class RecipeSearchLikeRequestDto {
     private String title;
     private List<IngredientDto> ingredients;
-    private List<PetDto> pets;
+
     @Getter
     public static class IngredientDto{
         private String name;
-    }
-
-    @Getter
-    public static class PetDto{
-        private Long id;
     }
 
 }
