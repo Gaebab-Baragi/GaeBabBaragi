@@ -37,7 +37,7 @@ function NaviBar() {
                 <Nav.Link onClick={()=>{navigate('/')}}>커뮤니티</Nav.Link>
               </Nav>
               {
-              user.isLogin ? ( 
+              !user.isLogin ? ( 
                 <Nav> {/* 로그인 X */}
                   <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='navbar-nav2-link-list' >로그인</Nav.Link>
                   <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='navbar-nav2-link-list' >회원가입</Nav.Link>
