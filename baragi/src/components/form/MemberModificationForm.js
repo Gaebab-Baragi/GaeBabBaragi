@@ -32,6 +32,9 @@ function MemberModificationForm(){
         })
 
         axios.post('/api/member/modify/nickname', body, {
+            headers: { 
+                "Content-Type": `application/json; charset= UTF-8`
+            }
         })
         .then((res)=>{
         if (res.status === 200) {
