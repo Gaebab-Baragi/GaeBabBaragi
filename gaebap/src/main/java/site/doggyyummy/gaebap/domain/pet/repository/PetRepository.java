@@ -14,6 +14,13 @@ public class PetRepository {
     public void create(Pet pet){
         em.persist(pet);
     }
+    public Long getMaxId(){
+        Long lastId = em.createQuery("select p.id from Pet p " +
+                        "ORDER BY p.id desc ", Long.class)
+                .setMaxResults(1)
+                .getSingleResult();
+        return lastId;
+    }
     public Pet selectOne (long id){
         Pet pet = em.createQuery("select distinct p from Pet p " +
                         "left join fetch p.member m " +
