@@ -2,10 +2,10 @@ import { ReactTags } from "react-tag-autocomplete";
 import React, {useCallback, useEffect, useState,useRef} from "react";
 import axios from 'axios';
 import './PetRegisterForm.css'
-import IngredientTagBar from "../ui/IngredientTagBar";
+import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 
 function PetRegisterForm({pet}) {
-
+  
   const defaultImageUrl = './기본이미지.PNG';
   const [image, setImage] = useState(defaultImageUrl);
   const [file, setFile] = useState('');
@@ -31,21 +31,14 @@ function PetRegisterForm({pet}) {
   //==================== 제출=====================//
   const handlePetRegister = () =>{
     const formData = new FormData();
-    formData.append('imgUrl', file)
-    let variables = [{
+    formData.append('petImage', file)
+    let dto = [{
       name: petName,
-      member_id: 1,
-      forbiddenIngredients:['0']
+      forbiddenIngredients:[0]
     }]
-    formData.append("data", new Blob([JSON.stringify(variables)]), {type:"application/json"})
-    let body = {
-      name : petName,
-      member_id: 1,
-      imgUrl : image,
-      forbiddenIngredients : [1]
-    };
-    console.log(body)
-    axios.post('http://localhost:8083/api/pet', body)
+    formData.append("dto", new Blob([JSON.stringify(dto)]), {type:"application/json"})
+
+    axios.post('http://localhost:8083/api/pet', formData)
       .then((res)=>{
         console.log('axios success :', res.data)
       })
@@ -76,7 +69,7 @@ function PetRegisterForm({pet}) {
           </div>
 
         {/* 기피 재료 등록 */}
-        <IngredientTagBar/>
+        <PetIngredientTagBar/>
         
 
       {/* 등록 버튼 */}
@@ -85,5 +78,7 @@ function PetRegisterForm({pet}) {
       </div>
   )
 }
+
+
 
 export default PetRegisterForm;
