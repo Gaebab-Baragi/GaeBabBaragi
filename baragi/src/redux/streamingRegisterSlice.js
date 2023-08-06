@@ -8,7 +8,6 @@ let streamingRegister= createSlice({
     title:'',
     max_participant:1,
     description:'',
-    member_id: 1,
     start_time:'',
     // 수정해야됨
     recipe_id:1,
@@ -28,9 +27,6 @@ let streamingRegister= createSlice({
     setMaxParticipant: (state, action)=>{
       state.max_participant = action.payload
       console.log('max participant :' + state.max_participant)
-    },
-    setMemberId :(state, action) =>{
-      state.member_id = action.payload
     },
     setStartTime: (state, action) =>{
       state.start_time = action.payload;
