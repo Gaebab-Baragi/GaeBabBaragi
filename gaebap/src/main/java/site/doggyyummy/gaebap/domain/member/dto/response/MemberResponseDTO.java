@@ -19,7 +19,6 @@ public class MemberResponseDTO {
     private String username;
     private String nickname;
     private String profileUrl;
-    private List<Meeting> hostedMeeting;
 
 
     public static MemberResponseDTO toDTO(Member member){
@@ -28,7 +27,6 @@ public class MemberResponseDTO {
                         .username(member.getUsername())
                         .nickname(member.getNickname())
                         .profileUrl(member.getProfileUrl())
-                        .hostedMeeting(member.getHostedMeeting())
                 .build();
     }
 
