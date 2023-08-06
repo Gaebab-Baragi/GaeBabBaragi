@@ -35,7 +35,7 @@ public class CreateMeetingRequestDTO {
     public Meeting toEntity(Long hostId) {
         // 호스트 멤버
         Member host = new Member();
-        Member.builder().id(hostId).build();
+        host.setId(hostId);
 
         // 레시피 정보 -> builder로 바꿀 예정
         Recipe recipe = new Recipe();
