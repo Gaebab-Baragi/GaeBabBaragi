@@ -157,7 +157,6 @@ public class InitDb {
             recipe.setMember(member);
             recipe.setDescription(description);
             recipe.setImageUrl(imgageUrl);
-            recipe.setWrittenTime(nowTime);
             return recipe;
         }
         private Recipe createRecipe(String title, Member member, String description, String imgageUrl, LocalDateTime nowTime, List<RecipeIngredient> recipeIngredients) {
@@ -166,7 +165,6 @@ public class InitDb {
             recipe.setMember(member);
             recipe.setDescription(description);
             recipe.setImageUrl(imgageUrl);
-            recipe.setWrittenTime(nowTime);
             recipe.setRecipeIngredients(recipeIngredients);
             return recipe;
         }
@@ -176,6 +174,7 @@ public class InitDb {
             member.setId(memberId);
             pet.setMember(member);
             pet.setName(name);
+
             return pet;
         }
 

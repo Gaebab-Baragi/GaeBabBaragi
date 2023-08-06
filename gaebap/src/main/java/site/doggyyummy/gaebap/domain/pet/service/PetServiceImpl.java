@@ -8,9 +8,7 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenResponseDTO;
+import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenRequestDTO;
 import site.doggyyummy.gaebap.domain.forbidden.repository.ForbiddenRepository;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.pet.dto.PetRequestDTO;
@@ -20,8 +18,6 @@ import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.pet.repository.PetRepository;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 
-import site.doggyyummy.gaebap.domain.recipe.repository.IngredientRepository;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,13 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PetServiceImpl implements PetService {
 
+
     private final PetRepository petRepository;
-
-    private final IngredientRepository ingredientRepository;
-
-    private  final ForbiddenRepository forbiddenRepository;
-    //aws
-    private final AmazonS3 awsS3Client;
 
     @Override
     @Transactional
@@ -44,21 +35,16 @@ public class PetServiceImpl implements PetService {
         Member member=new Member();
         member.setId(dto.getMemberId());
         Pet pet = dto.toEntity();
+        Long petMaxId = petRepository.getMaxId();
         List<Long> forbiddenList = dto.getForbiddenIngredients();
+        System.out.println("개수 : "  + forbiddenList.size());
         for (Long forbiddenId : forbiddenList){
             Ingredient ingredient = Ingredient.builder().id(forbiddenId).build();
             Forbidden forbidden = Forbidden.builder().ingredient(ingredient).pet(pet).build();
             pet.getForbiddens().add(forbidden);
         }
-
-        Map<String,String> map=uploadFile(petImage);
-        String S3Key=map.get("s3Key");
-        String S3Url=map.get("s3Url");
-        pet.setS3Key(S3Key);
-        pet.setS3Url(S3Url);
         petRepository.create(pet);
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -100,19 +86,7 @@ public class PetServiceImpl implements PetService {
         Pet findPet = petRepository.selectOne(dto.getId());
 
         findPet.setName(dto.getName());
-
-
-        if(!petImage.isEmpty()) {
-            String S3Key = findPet.getS3Key();
-            if(S3Key!=null || S3Key.equals("")) {
-                deleteFile(S3Key);
-            }
-            Map<String, String> map = uploadFile(petImage);
-            S3Key = map.get("s3Key");
-            String S3Url = map.get("s3Url");
-            findPet.setS3Url(S3Url);
-            findPet.setS3Key(S3Key);
-        }
+        findPet.setImgUrl(dto.getImgUrl());
 
         Member memberRef = new Member();
         memberRef.setId(dto.getMemberId());
@@ -122,20 +96,14 @@ public class PetServiceImpl implements PetService {
             forbiddenRepository.delete(forbidden);
         }
 
-        findPet.getForbiddens().clear();
-
-
         List<Long> forbiddenList = dto.getForbiddenIngredients();
         for (Long forbiddenId : forbiddenList){
             Ingredient ingredient = Ingredient.builder().id(forbiddenId).build();
             Forbidden forbidden = Forbidden.builder().ingredient(ingredient).pet(findPet).build();
+            findPet.getForbiddens().clear();
             findPet.getForbiddens().add(forbidden);
-            System.out.println(findPet.getForbiddens());
         }
-
-
     }
-
     @Override
     @Transactional
     public void delete(Long id) {

@@ -1,0 +1,97 @@
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import Paging from "../ui/Paging";
+import StreamingCardComponent from "../ui/StreamingCard";
+import axios from "axios";
+
+const CardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: 10%;
+  margin-right: 10%;
+`;
+
+const StyledCardWrapper = styled.div`
+  margin-bottom: 20px;
+`;
+
+
+function StreamingPaginationList({rowNum}) {
+  const [items, setItems] = useState([]); // 리스트에 나타낼 아이템
+  const [count, setCount] = useState(0); // 아이템 총 개수
+  const [currentpage, setCurrentpage] = useState(1); // 현재페이지
+  const [cardsPerRow, setCardsPerRow] = useState(4); // Number of cards in each row
+  const rowsPerPage = rowNum; // Number of rows per page
+  const [postPerPage, setPostPerPage] = useState(cardsPerRow * rowsPerPage);
+
+  // 스트리밍 목록 가져오기!!
+  useEffect(() => {
+    axios.get('/api/meetings')
+      .then((res) => {
+        console.log('get list is successful : ', res.data);
+        setItems(res.data);
+      })
+      .catch((err) => {
+        console.log('error : ', err);
+      });
+  }, []);
+
+  useEffect(() => {
+    setCount(items.length);
+  }, [items]);
+  
+  useEffect(() => {
+    const adjustCardsPerPage = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1200) {
+        return 4;
+      } else if (screenWidth >= 920) {
+        return 3;
+      } else if (screenWidth >= 700) {
+        return 2;
+      } else {
+        return 1;
+      }
+    };
+    const updateCardsPerPage = () => {
+      const newCardsPerRow = adjustCardsPerPage();
+      setCardsPerRow(newCardsPerRow);
+    };
+
+    function handleResize() {
+      setPostPerPage(cardsPerRow * rowsPerPage);
+    }
+
+    window.addEventListener("resize", updateCardsPerPage);
+    return () => {
+      window.removeEventListener("resize", updateCardsPerPage);
+    };
+  }, [window]);
+
+  const indexOfLastPost = currentpage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const currentPosts = items.slice(
+    indexOfFirstPost,
+    Math.min(indexOfLastPost, count)
+  );
+  
+  const setPage = (e) => {
+    setCurrentpage(e);
+  };
+
+  return (
+    <div>
+      <CardContainer>
+        {currentPosts.map((item) => (
+          <StyledCardWrapper key={item.id}>
+            <StreamingCardComponent/>
+          </StyledCardWrapper>
+        ))}
+      </CardContainer>
+      <Paging page={currentpage} count={count} setPage={setPage} />
+    </div>
+  );
+}
+
+export default StreamingPaginationList;

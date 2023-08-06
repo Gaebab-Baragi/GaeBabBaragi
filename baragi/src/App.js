@@ -20,8 +20,10 @@ import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
-import PetRegisterPage from './pages/PetRegisterPage';
+import PetRegisterPage from './pages/Pet/PetRegisterPage';
+import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
+
 // -------------------PAGES-------------------//
 
 
@@ -48,6 +50,8 @@ function App() {
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/my-pet-register' element={<PetRegisterPage/>}></Route>
+        <Route path='/my-pet-list' element={<PetListPage/>}></Route>
+
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         {/*-----------------------로그인 관련-------------------------------*/}
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>

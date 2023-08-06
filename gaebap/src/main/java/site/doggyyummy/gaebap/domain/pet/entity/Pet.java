@@ -27,11 +27,8 @@ public class Pet {
     @Column(nullable = false)
     private String name;
 
-    @Column
-    private String S3Key;
-
-    @Column
-    private String S3Url;
+    @Column(nullable=true)
+    private String imgUrl;
 
     @OneToMany(mappedBy = "pet",cascade = CascadeType.ALL)
     private List<Forbidden> forbiddens = new ArrayList<>();
