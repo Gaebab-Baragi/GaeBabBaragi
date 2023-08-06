@@ -36,7 +36,6 @@ public class PetRequestDTO {
 
         Member member = new Member();
         member.setId(this.memberId);
-
         pet.setMember(member);
         pet.setName(this.name);
         pet.setImgUrl(this.imgUrl);
