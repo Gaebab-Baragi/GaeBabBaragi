@@ -97,14 +97,13 @@ public class SecurityConfig {
                 )
                 .oauth2Login((oauth2login) ->
                     oauth2login
-                            .loginPage("/api/oauth2")
                             .successHandler(oAuth2LoginSuccessHandler)
                             .failureUrl(frontUrl+"/login")
                             .failureHandler(oAuth2LoginFailureHandler)
                             .authorizationEndpoint((endpoint) -> endpoint
                                     .baseUri("/api/oauth2/authorization"))
-                            .redirectionEndpoint((endpoint) -> endpoint
-                                    .baseUri("/api/login/oauth2/code/*"))
+                            .redirectionEndpoint((endpoint) ->
+                                    endpoint.baseUri("/api/login/oauth2/code/*"))
                             .userInfoEndpoint((endpoint) ->
                                     endpoint.userService(customOAuth2UserService))
                 )
@@ -113,7 +112,9 @@ public class SecurityConfig {
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
                                 .logoutSuccessUrl(frontUrl)
                                 .invalidateHttpSession(true)
+                                .deleteCookies("refreshToken")
                 );
+
 
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);

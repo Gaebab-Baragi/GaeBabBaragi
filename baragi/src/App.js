@@ -51,6 +51,8 @@ function App() {
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         {/*-----------------------로그인 관련-------------------------------*/}
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
+        <Route path='/logout' element={<LogoutHandler/>}></Route>
+        
         {/*-----------------------로그인 관련-------------------------------*/}
         <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>
