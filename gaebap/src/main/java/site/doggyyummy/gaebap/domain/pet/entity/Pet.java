@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@Builder
 public class Pet {
 
     @Id
@@ -27,18 +28,12 @@ public class Pet {
     private String name;
 
     @Column
-    private LocalDateTime birthDate;
-
-    @Column
-    private Double weight;
-
-    @Column
     private String S3Key;
 
     @Column
     private String S3Url;
 
-    @OneToMany(mappedBy = "pet")
+    @OneToMany(mappedBy = "pet",cascade = CascadeType.ALL)
     private List<Forbidden> forbiddens = new ArrayList<>();
 
 }

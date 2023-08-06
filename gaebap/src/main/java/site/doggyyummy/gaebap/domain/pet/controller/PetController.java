@@ -24,8 +24,8 @@ public class PetController {
     }
     @GetMapping("")
     public List<PetResponseDTO> selectByMember(@RequestParam(name= "member_id") Long memberId){
-        List<PetResponseDTO> pets = petService.selectByMember(memberId);
-        return pets;
+        List<PetResponseDTO> petDTO = petService.selectByMember(memberId);
+        return petDTO;
     }
 
     @PostMapping("")
