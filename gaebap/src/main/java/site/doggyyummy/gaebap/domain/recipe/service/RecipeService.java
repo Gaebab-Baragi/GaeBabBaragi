@@ -48,7 +48,6 @@ public class RecipeService {
     //예외가 발생해도 DB에서 id는 계속 증가하는 문제 발생.. 어캐 해결하지 ㅅㅂ
     @Transactional(rollbackFor = IllegalArgumentException.class)
     public RecipeUploadResponseDto uploadRecipe(Member member,RecipeUploadRequestDto reqDto, MultipartFile recipeImage, MultipartFile recipeVideo, MultipartFile[] stepImages) throws IOException {
-        member.setId(1L);//이거 나중에 지워야해
         Recipe recipe = new Recipe();
         if (reqDto.getTitle() == null || reqDto.getTitle().equals("")) {
             throw new IllegalArgumentException("제목을 입력하세요");

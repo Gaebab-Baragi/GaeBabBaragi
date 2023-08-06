@@ -63,9 +63,10 @@ public class Member {
     @Schema(description = "회원의 반려견")
     private List<Pet> pets = new ArrayList<>();
 
+
     @OneToOne(mappedBy = "host")
     @Schema(description = "회원이 호스팅할 화상 회의")
-    private Meeting hostedMeeting;
+    private List<Meeting> hostedMeeting = new ArrayList<>();
 
     /**
      * 아래는 Security 및 OAuth2 관련한 필드

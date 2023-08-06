@@ -24,10 +24,10 @@ public class RecipeController {
     //레시피 등록
     @PostMapping("/recipes/new")
     public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo,@RequestPart MultipartFile[] stepImages) throws IOException {
-        Member member= new Member();
+
+        Member member=new Member();
         member.setId(1L);
-        member.setNickname("김김김");
-//        Member member=SecurityUtil.getCurrentLoginMember();
+//        Member member = SecurityUtil.getCurrentLoginMember();
         if(member==null){
             throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"로그인을 해주세요");
         }
