@@ -25,9 +25,6 @@ public class CreateMeetingRequestDTO {
 
     private String description;
 
-    @JsonProperty("member_id")
-    private Long hostId;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     @JsonProperty("start_time")
     private LocalDateTime startTime;
@@ -52,7 +49,7 @@ public class CreateMeetingRequestDTO {
                 .host(host)
                 .startTime(this.startTime)
                 .recipe(recipe)
-                .status(Status.SCHEDULED)
+                .status(Status.ATTENDEE_WAIT)
                 .currentParticipants(1)
                 .build();
 
