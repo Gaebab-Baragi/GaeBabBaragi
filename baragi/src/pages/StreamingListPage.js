@@ -5,6 +5,26 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setStreamingInfo } from "../redux/streamingInfoSlice";
 import StreamingCardComponent from "../components/ui/StreamingCard";
+import styled from 'styled-components';
+
+const CenteredContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+const ItemsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  margin-left: 10%;
+  margin-right: 10%;
+`;
+
+
 
 function StreamingListPage() {
   const navigate = useNavigate();
@@ -52,8 +72,9 @@ function StreamingListPage() {
   }
 
   return (
-    <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+    <CenteredContainer>
+      <h1>방송 목록</h1>
+      <ItemsContainer>
         {streamingList.map((streamingItem) => (
           <div key={streamingItem.id} style={{ flexBasis: `${100 / itemsPerRow}%` }}>
             <StreamingCardComponent
@@ -69,8 +90,8 @@ function StreamingListPage() {
             />
           </div>
         ))}
-      </div>
-    </div>
+      </ItemsContainer>
+    </CenteredContainer>
   );
 }
 
