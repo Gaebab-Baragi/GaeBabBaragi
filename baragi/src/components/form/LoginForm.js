@@ -38,7 +38,7 @@ function LoginForm() {
       password : password
     };
 
-    axios.post('/api/login', body) 
+    axios.post('http://localhost:8083/api/login', body) 
     .then((res)=>{
       if (res.status === 200){
         const accessToken = res.headers['authorization'];
