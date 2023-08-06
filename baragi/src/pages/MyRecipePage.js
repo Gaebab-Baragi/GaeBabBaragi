@@ -1,7 +1,9 @@
+import MyRecipes from "../components/form/MyRecipes";
+
 function MyRecipePage() {
     return (
         <>
-         <div>내가 찜한 나의 레시피</div>
+        <MyRecipes></MyRecipes>
         </>
       );
     }
