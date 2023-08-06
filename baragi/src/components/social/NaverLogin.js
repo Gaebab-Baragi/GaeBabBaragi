@@ -4,7 +4,7 @@ import "./socialLogin.css"
 function NaverLogin(){
     return (
         <div>
-            <a href = "/api/oauth2/authorization/naver">
+            <a href = "http://localhost:8083/api/oauth2/authorization/naver">
                 <img className = "loginButton" src={naverLoginImg} alt="네이버 계정으로 로그인"></img>
             </a>
         </div>
