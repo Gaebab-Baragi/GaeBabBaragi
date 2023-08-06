@@ -64,7 +64,7 @@ public class Member {
     private List<Pet> pets = new ArrayList<>();
 
 
-    @OneToOne(mappedBy = "host")
+    @OneToMany(mappedBy = "host")
     @Schema(description = "회원이 호스팅할 화상 회의")
     private List<Meeting> hostedMeeting = new ArrayList<>();
 
