@@ -28,6 +28,7 @@ let recipeRegister = createSlice({
     ],
 
     videoLocalPath: null,
+    temp : []
   },
   reducers: {
     requestFilteredRecipeList: (state) => {
@@ -42,7 +43,9 @@ let recipeRegister = createSlice({
         steps: state.steps,
         imgLocalPath: state.imgLocalPath,
         videoLocalPath: state.videoLocalPath,
+        
       };
+      
       console.log(data)
       axios
         .post("/api/recipes/new", data)
@@ -67,7 +70,11 @@ let recipeRegister = createSlice({
     updateStep : (state,action) =>{
       state.steps = action.payload
       console.log('step 변경됨', state.steps)
-    }
+    },
+    updateStepImage : (state,action) =>{
+      state.temp =action.payload
+      console.log('스텝이미지 변경', state.temp)
+    },
     // updateKeyword: (state, action) =>{
     //   // 레시피 제목 검색 키워드 저장
     //   state.keyword = action.payload;
@@ -77,6 +84,6 @@ let recipeRegister = createSlice({
   },
 });
 
-export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep} = recipeRegister.actions;
+export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateStepImage} = recipeRegister.actions;
 
 export default recipeRegister;

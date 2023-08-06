@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import InputImage from './InputImage';
+import '../../pages/PetRegisterPage.css'
+
 
 function InputCookstep({ step, description, onCookstepChange, onDelete }) {
   const handleCookstepChange = (e) => {
@@ -8,8 +11,8 @@ function InputCookstep({ step, description, onCookstepChange, onDelete }) {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '200%', alignItems: 'center' }}>
-        <label htmlFor={`Cookstep${step}`}>{`STEP${step}:`}</label>
+      <div style={{ display: 'flex', marginLeft : '2%',  marginRgiht:'2%' }}>
+        <label style={{ width : '15%' }} htmlFor={`Cookstep${step}`}>{`STEP${step}:`}</label>
         <textarea
           rows="5"
           cols="30"
@@ -18,9 +21,13 @@ function InputCookstep({ step, description, onCookstepChange, onDelete }) {
           value={ description }
           onChange={handleCookstepChange}
           placeholder="예)요리방법 돼지고기 소고기 요리해줘"
+          style = {{ flex : 1, marginRight : '3%' }}
         />
-        <button onClick={onDelete}>-</button>
+        <div style={{ width: '20%', height :'120%'}}>
+          <InputImage></InputImage>
+        </div>
       </div>
+      <button onClick={onDelete}>-</button>
     </>
   );
 }
