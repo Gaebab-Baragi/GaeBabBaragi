@@ -176,8 +176,6 @@ public class InitDb {
             member.setId(memberId);
             pet.setMember(member);
             pet.setName(name);
-            pet.setWeight(weight);
-            pet.setBirthDate(birthdate);
             return pet;
         }
 
