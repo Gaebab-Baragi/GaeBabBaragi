@@ -8,6 +8,8 @@ import lombok.Getter;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 
+import java.util.List;
+
 @Getter
 @Builder
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -17,7 +19,7 @@ public class MemberResponseDTO {
     private String username;
     private String nickname;
     private String profileUrl;
-    private Meeting hostedMeeting;
+    private List<Meeting> hostedMeeting;
 
 
     public static MemberResponseDTO toDTO(Member member){
