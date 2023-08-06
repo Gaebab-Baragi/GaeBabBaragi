@@ -25,9 +25,6 @@ public class CreateMeetingRequestDTO {
 
     private String description;
 
-    @JsonProperty("member_id")
-    private Long hostId;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     @JsonProperty("start_time")
     private LocalDateTime startTime;
