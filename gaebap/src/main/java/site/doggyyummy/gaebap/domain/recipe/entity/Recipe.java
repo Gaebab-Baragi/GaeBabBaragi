@@ -33,7 +33,7 @@ public class Recipe {
 
     private Long hit=0L;
 
-    private LocalDateTime nowTime ;
+    private LocalDateTime writtenTime ;
 
     private String imageUrl;
     private String imageKey;

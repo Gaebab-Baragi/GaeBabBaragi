@@ -39,6 +39,7 @@ function IngredientTagBar() {
     [selected]
   )
 
+
   return(
     <div className="ingredientSelect">
       <ReactTags
