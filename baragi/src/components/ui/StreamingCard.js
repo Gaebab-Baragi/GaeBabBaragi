@@ -16,21 +16,21 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
     axios.get(`http://localhost:8083/api/meetings/join-request/${meeting_id}`)
     .then((res)=>{
       console.log('request success : ', res.data);
-
-      if (res.data.status != 'fail') {
-        alert(res.data.message);
-      } else {
         const data = {
-          meeting_id: {meeting_id},
-          title : {title},
-          recipe_id: {recipe_id},
-          host_nickname: {host_nickname},
-          max_participant: {max_participant},
-          start_time:{start_time}
+          meeting_id: meeting_id,
+          title : title,
+          recipe_id: recipe_id,
+          host_nickname: host_nickname,
+          max_participant: max_participant,
+          start_time:start_time
         }
         dispatch(setStreamingInfo(data))
+        axios.post(`http://localhost:8083/api/meetings/join/${meeting_id}`)
+        .then((res)=>{
+          console.log('미팅 참여 성공 ')
+        })
         navigate('/streaming-live')
-        }
+        
       })
     .catch((err)=>{
       console.log('error occured' + err)
@@ -48,7 +48,7 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
         src={recipeImg}
       />
       <div className='card-img-overlay' style={{color:'white',marginTop:'80px'}}>
-        <ion-icon onClick={checkMeeting} size="large" name="play-circle-outline"></ion-icon>
+        <ion-icon onClick={()=>checkMeeting()} size="large" name="play-circle-outline"></ion-icon>
       </div>
       <div className='CardBody'>
         {/* 제목 */}
