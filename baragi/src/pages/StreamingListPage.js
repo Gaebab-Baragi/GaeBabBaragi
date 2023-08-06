@@ -13,7 +13,7 @@ function StreamingListPage() {
   const nickname = user.nickname
 
   function getList() {
-    axios.get( '/meetings')
+    axios.get( '/api/meetings')
       .then((res) => {
         console.log('get list is successful : ', res.data);
         setStreamingList(res.data);
@@ -25,7 +25,7 @@ function StreamingListPage() {
 
   function checkMeeting(streamingItem) {
     console.log(streamingItem.id)
-    axios.get(`/meetings/join-request/${streamingItem.id}`)
+    axios.get(`http://localhost:8083/api/meetings/join-request/${streamingItem.id}`)
     .then((res)=>{
       console.log('request success : ', res.data);
 

@@ -5,12 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.doggyyummy.gaebap.domain.forbidden.dto.ForbiddenRequestDTO;
+import site.doggyyummy.gaebap.domain.forbidden.repository.ForbiddenRepository;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.pet.dto.PetRequestDTO;
 import site.doggyyummy.gaebap.domain.pet.dto.PetResponseDTO;
 import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.pet.repository.PetRepository;
+import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,16 +21,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PetServiceImpl implements PetService {
 
-    private final PetRepository petRepository;
 
+    private final PetRepository petRepository;
 
     @Override
     @Transactional
     public void create(PetRequestDTO dto) {
         Pet pet = dto.toEntity();
+        Long petMaxId = petRepository.getMaxId();
+        List<Long> forbiddenList = dto.getForbiddenIngredients();
+        System.out.println("개수 : "  + forbiddenList.size());
+        for (Long forbiddenId : forbiddenList){
+            Ingredient ingredient = Ingredient.builder().id(forbiddenId).build();
+            Forbidden forbidden = Forbidden.builder().ingredient(ingredient).pet(pet).build();
+            pet.getForbiddens().add(forbidden);
+        }
         petRepository.create(pet);
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -53,25 +62,20 @@ public class PetServiceImpl implements PetService {
         Pet findPet = petRepository.selectOne(dto.getId());
 
         findPet.setName(dto.getName());
-        findPet.setBirthDate(dto.getBirthdate());
-        findPet.setWeight(dto.getWeight());
         findPet.setImgUrl(dto.getImgUrl());
 
         Member memberRef = new Member();
         memberRef.setId(dto.getMemberId());
         findPet.setMember(memberRef);
 
-
-        if(dto.getForbiddens() != null && !dto.getForbiddens().isEmpty()) {
-            List<Forbidden> forbiddens = dto.getForbiddens().stream()
-                    .map(ForbiddenRequestDTO::toEntity)
-                    .collect(Collectors.toList());
-            findPet.setForbiddens(forbiddens);
+        List<Long> forbiddenList = dto.getForbiddenIngredients();
+        for (Long forbiddenId : forbiddenList){
+            Ingredient ingredient = Ingredient.builder().id(forbiddenId).build();
+            Forbidden forbidden = Forbidden.builder().ingredient(ingredient).pet(findPet).build();
+            findPet.getForbiddens().clear();
+            findPet.getForbiddens().add(forbidden);
         }
-
-
     }
-
     @Override
     @Transactional
     public void delete(Long id) {

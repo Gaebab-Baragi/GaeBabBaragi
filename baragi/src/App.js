@@ -13,7 +13,6 @@ import RecipeListPage from './pages/RecipeListPage';
 import StreamingRegisterPage from './pages/StreamingRegisterPage';
 import StreamingListPage from './pages/StreamingListPage';
 import MyinformationPage from './pages/MyinformationPage';
-import MyPetRegisterPage from './pages/MyPetRegisterPage';
 import MyRecipePage from './pages/MyRecipePage';
 import MainPage from './pages/MainPage';
 import FindIdPage from './pages/FindIdPage';
@@ -21,7 +20,10 @@ import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
-import StreamingLivePage from './streaming/StreamingLive';
+import PetRegisterPage from './pages/Pet/PetRegisterPage';
+import PetListPage from './pages/Pet/PetListPage';
+import StreamingLivePage from './streaming/StreamingLivePage';
+
 // -------------------PAGES-------------------//
 
 
@@ -46,10 +48,15 @@ function App() {
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
         <Route path='/streaming-live' element={<StreamingLivePage/>}></Route>
         <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
-        <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
-        <Route path='/mypetregister' element={<MyPetRegisterPage/>}></Route>
+        <Route path='/my-pet-register' element={<PetRegisterPage/>}></Route>
+        <Route path='/my-pet-list' element={<PetListPage/>}></Route>
+
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
+        {/*-----------------------로그인 관련-------------------------------*/}
+        <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
+        
+        {/*-----------------------로그인 관련-------------------------------*/}
         <Route path="*" element={ <div>없는페이지임</div> } />
       </Routes>
 
