@@ -3,6 +3,7 @@ import { async } from 'q';
 import React, {useState,useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import '../components/form/css/RecipeDetail.css';
+// props로 id 넘겨줄 예정입니다
 const RecipeDetailPage=()=>{
     const {id} =useParams();
     const [data,setData]=useState(null);
