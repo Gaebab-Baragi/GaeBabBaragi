@@ -132,6 +132,7 @@ public class RecipeService {
     public RecipeFindByIdResponseDto findRecipeByRecipeId(Long id) {
 
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
+        Recipe recipe=findRecipe.get();
         if (!findRecipe.isPresent()) {
             throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST, "해당 레시피는 존재하지 않습니다.");
         }
@@ -146,7 +147,7 @@ public class RecipeService {
             ingredients.add(ingredient);
         }
 
-        return new RecipeFindByIdResponseDto(findRecipe.get(), member, steps, recipeIngredients, ingredients);
+        return new RecipeFindByIdResponseDto(recipe,member, steps, recipeIngredients, ingredients);
     }
 
     //hit 증가
@@ -375,11 +376,9 @@ public class RecipeService {
     @Transactional(readOnly = true)
     public RecipeSearchLikeResponseDto searchRecipeLike(RecipeSearchLikeRequestDto reqDto) {
         if ((reqDto.getIngredients() == null || reqDto.getIngredients().size() == 0) && (reqDto.getPets()==null || reqDto.getPets().size()==0)) {
-            System.out.println("제목만 있는 경우");
             List<Recipe> recipes = recipeRepository.findByTitleContaining(reqDto.getTitle());
             return new RecipeSearchLikeResponseDto(recipes);
         } else if(reqDto.getIngredients()!=null&&reqDto.getIngredients().size()!=0&&reqDto.getPets()==null || reqDto.getPets().size()==0){ //재료만 있는 경우
-            System.out.println("재료만 있는 경우");
             List<RecipeSearchLikeRequestDto.IngredientDto> ingredients = reqDto.getIngredients();
             List<String> ingredientsName = new ArrayList<>();
 
@@ -387,17 +386,6 @@ public class RecipeService {
                 ingredientsName.add(i.getName());
             }
 
-//            List<RecipeSearchLikeRequestDto.PetDto> pets=reqDto.getPets();
-//            List<Long> petsId = new ArrayList<>();
-//            if(reqDto.getPets()!=null && reqDto.getPets().size()!=0) {
-//                for (RecipeSearchLikeRequestDto.PetDto p : pets) {
-//                    petsId.add(p.getId());
-//                    Pet pet=petRepository.selectOne(p.getId());
-//                    System.out.println("pet.getName() = " + pet.getName());
-//                }
-//            }
-
-//            List<Object[]> resultList = recipeIngredientRepository.findRecipesWithIngredientsAndTitleAndForbiddenIngredients(ingredientsName, reqDto.getTitle(), ingredientsName.size(),petsId);
             List<Object[]> resultList = recipeIngredientRepository.findRecipesWithIngredientsAndTitle(ingredientsName, reqDto.getTitle(), ingredientsName.size());
 
             List<Recipe> recipes = new ArrayList<>();
@@ -406,12 +394,7 @@ public class RecipeService {
                 Long count = (Long) result[0];
                 Long recipeId = (Long) result[1];
 
-                Recipe recipe = new Recipe();
-                // 이후 Recipe 엔티티의 필드에 값을 설정하는 로직 추가
-                // recipe.setCount(count);
-                recipe.setId(recipeId);
-                recipe.setTitle(recipeRepository.findById(recipeId).get().getTitle());
-                recipe.setMember(recipeRepository.findById(recipeId).get().getMember());
+                Recipe recipe = recipeRepository.findById(recipeId).get();
                 recipes.add(recipe);
             }
             return new RecipeSearchLikeResponseDto(recipes);
@@ -422,7 +405,6 @@ public class RecipeService {
             for (RecipeSearchLikeRequestDto.PetDto p : pets) {
                 petsId.add(p.getId());
                 Pet pet=petRepository.selectOne(p.getId());
-                System.out.println("pet.getName() = " + pet.getName());
             }
             List<Object[]> resultList = recipeIngredientRepository.findRecipesWithForbiddenIngredientsAndTitle(petsId, reqDto.getTitle());
             List<Recipe> recipes = new ArrayList<>();
@@ -431,12 +413,7 @@ public class RecipeService {
                 Long count = (Long) result[0];
                 Long recipeId = (Long) result[1];
 
-                Recipe recipe = new Recipe();
-                // 이후 Recipe 엔티티의 필드에 값을 설정하는 로직 추가
-                // recipe.setCount(count);
-                recipe.setId(recipeId);
-                recipe.setTitle(recipeRepository.findById(recipeId).get().getTitle());
-                recipe.setMember(recipeRepository.findById(recipeId).get().getMember());
+                Recipe recipe = recipeRepository.findById(recipeId).get();
                 recipes.add(recipe);
             }
             return new RecipeSearchLikeResponseDto(recipes);
@@ -461,12 +438,7 @@ public class RecipeService {
                 Long count = (Long) result[0];
                 Long recipeId = (Long) result[1];
 
-                Recipe recipe = new Recipe();
-                // 이후 Recipe 엔티티의 필드에 값을 설정하는 로직 추가
-                // recipe.setCount(count);
-                recipe.setId(recipeId);
-                recipe.setTitle(recipeRepository.findById(recipeId).get().getTitle());
-                recipe.setMember(recipeRepository.findById(recipeId).get().getMember());
+                Recipe recipe = recipeRepository.findById(recipeId).get();
                 recipes.add(recipe);
             }
             return new RecipeSearchLikeResponseDto(recipes);
