@@ -17,6 +17,7 @@ class Streaming extends Component {
         this.state = {
             mySessionId: props.sessionId.toString(),
             myUserName: props.nickname,
+            host: props.host_nickname,
             session: undefined,
             mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
             publisher: undefined,
@@ -33,7 +34,6 @@ class Streaming extends Component {
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.onbeforeunload);
-        // 이거 수정해야 됨!!!! 한 번 만 되는 걸로
         if (!this.hasJoinedSession) {
             this.joinSession();
             this.hasJoinedSession = true; // Mark joinSession as called
@@ -229,16 +229,15 @@ class Streaming extends Component {
             <div className='StreamingLiveContatiner'>
 
                 <div className="streamingContainer">
-                    <div>{this.state.myUserName}</div>
                     <div className='streamingTop'>
-                        <h1>{streamingInfo.title}</h1>
+                        <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
                         <p>시작 시간 : {streamingInfo.start_time}</p>
                     </div>
 
                     <div>이건 내 화면이고!!!!!!!!</div>
 
                     <div className='mainVideo'>
-                        <div className="stream-container " onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                        <div className="stream-container " >
                             <UserVideoComponent
                                 streamManager={this.state.publisher} />
                                 <p>{this.state.nickname}</p>
@@ -248,12 +247,11 @@ class Streaming extends Component {
                     <p>이건 남의 화면이야!!!!!!!!!!!</p>
                     <div className='subVideos'>
                     {this.state.subscribers.map((sub, i) => (
-                        <div key={sub.id} className="stream-container" onClick={() => this.handleMainVideoStream(sub)}>
+                        <div key={sub.id} className="stream-container">
                             <span>{sub.id}</span>
                             <UserVideoComponent streamManager={sub} />
                             <br />
                         </div>
-
                     ))}
                     </div>
                     
@@ -300,7 +298,7 @@ class Streaming extends Component {
                         }
                     </div>
                 </div>
-                <ChatComponent/>
+                <ChatComponent nickname={this.state.myUserName}/>
             </div>
         );
     }

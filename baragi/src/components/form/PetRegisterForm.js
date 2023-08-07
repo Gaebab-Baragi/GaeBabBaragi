@@ -68,7 +68,10 @@ function PetRegisterForm({ pet }) {
       <PetIngredientTagBar/>
 
       {/* 등록 버튼 */}
-      <button className="petRegisterBtn" onClick={()=>dispatch(sendPetRegisterRequest())}>
+      <button className="petRegisterBtn" onClick={()=>{
+        dispatch(sendPetRegisterRequest());
+        
+        }}>
         등록하기
       </button>
     </div>

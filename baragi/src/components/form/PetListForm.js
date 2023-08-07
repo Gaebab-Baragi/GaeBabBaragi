@@ -5,82 +5,32 @@ import "./PetRegisterForm.css";
 import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 import { compose } from "@reduxjs/toolkit";
 
-function PetRegisterForm({ pet }) {
+function PetListForm({ pet }) {
+  const [data, setData] = useState([])
+  const [forbidden, setForbidden] = useState();
   const defaultImageUrl = "./기본이미지.PNG";
-  const [image, setImage] = useState(defaultImageUrl);
-  const [file, setFile] = useState("");
-  const [petName, setPetName] = useState("");
 
-  // =========================기피 재료 등록=====================//
-
-  // ==========================사진 등록===================//
-  const handleImagePreview = (e) => {
-    const selectedImage = e.target.files[0];
-    setFile(selectedImage);
-    if (selectedImage) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      console.log(image);
-      reader.readAsDataURL(selectedImage);
-    }
-  };
-
-  //==================== 제출=====================//
-  const handlePetRegister = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    console.log("file is ", file);
-    // formData.append('petImage', file)
-    formData.append("petImage", file);
-    const datas = {
-      name: petName,
-      forbiddenIngredients: [],
-    };
-    formData.append(
-      "dto",
-      new Blob([JSON.stringify(datas)], { type: "application/json" })
-    );
-    for (let key of formData.keys()) {
-      console.log(key);
-    }
-
-    for (let value of formData.values()) {
-      console.log(value);
-    }
-    axios
-      .post("http://localhost:8083/api/pet", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log("axios success :", res.data);
-      })
-      .catch((err) => {
-        console.log("error : ", err);
-      });
-  };
+  useEffect(()=>{
+    console.log('pet is ', pet)
+    setData(pet)
+    const tmp = []
+    pet.forbiddens.map((i)=>{
+      tmp.push(i.ingredientName)
+    })
+    setForbidden(tmp)
+    console.log('tmp : ', tmp)
+  },[])
 
   return (
     <div className="petContainer">
       {/* 제목 */}
       <div className="petFormTitle">내 반려견</div>
 
-      {/* 사진 등록 */}
+      {/* 사진  */}
       <div className="petImgContainer">
         <div>
-          {image !== defaultImageUrl && (
-            <img className="petImgBox" src={image} alt="미리보기" />
-          )}
-          {image === defaultImageUrl && (
-            <img className="petImgBox" src={defaultImageUrl} alt="미리보기" />
-          )}
+            <img className="petImgBox" src={data.imgUrl} alt="미리보기" />
         </div>
-        <input
-          className="petImgInput"
-          type="file"
-          onChange={handleImagePreview}
-        />
       </div>
 
       {/* pet 이름 */}
@@ -89,22 +39,23 @@ function PetRegisterForm({ pet }) {
         <input
           className="petInput"
           type="text"
-          placeholder={""}
-          onChange={(e) => {
-            setPetName(e.target.value);
-          }}
+          placeholder={data.name}
+          disabled={true}
         />
       </div>
 
       {/* 기피 재료 등록 */}
-      <PetIngredientTagBar />
+      <div className="petInfoGroup">
+        <label>안 먹는 재료</label>
+        <input disabled={true} className="petInput" type="text" placeholder={forbidden}/>
+      </div>
 
       {/* 등록 버튼 */}
-      <button onClick={handlePetRegister} className="petRegisterBtn">
-        등록하기
+      <button className="petRegisterBtn">
+        수정하기
       </button>
     </div>
   );
 }
 
-export default PetRegisterForm;
+export default PetListForm;
