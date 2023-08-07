@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-function InputImage() {
+function InputImage({handleImageUpload}) {
   const defaultImageUrl = './기본이미지.PNG';
   const [image, setImage] = useState(defaultImageUrl);
   const fileInputRef = useRef(null);
@@ -16,12 +16,14 @@ function InputImage() {
       };
       reader.readAsDataURL(selectedImage);
     }
+      handleImageUpload(image);
   };
   const handleButtonClick = () => {
     // Trigger the file input element click when the button is clicked
     fileInputRef.current.click();
   };
-  // 이미지 업로드 함수
+
+
   // const handleImageUpload = () => {
   //   // 이미지 업로드 로직을 구현합니다.
   //   // 이미지 데이터는 `image` 상태에 있는 base64 데이터로 사용할 수 있습니다.

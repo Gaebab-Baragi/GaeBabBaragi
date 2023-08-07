@@ -8,45 +8,48 @@ let recipeRegister = createSlice({
   initialState: {
     title: "과일 타르트 만들기",
     description: "상큼한 디저트 만들어봐요",
-    member: {
-      id: 7,
-    },
-    recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     steps: [
       {
         orderingNumber: 1,
         description: "모든 재료를 잘라주세요.",
-        imgLocalPath: null,
       },
       {
         orderingNumber: 2,
         description: "재료를 끓여주세요.",
-        imgLocalPath: null,
       },
       { orderingNumber: 3, description: "구워주세요", imgLocalPath: null },
       { orderingNumber: 4, description: "플레이팅", imgLocalPath: null },
     ],
+    recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
+    recipeImage: '',
+    stepImages : []
 
-    videoLocalPath: null,
-    temp : []
   },
   reducers: {
     requestFilteredRecipeList: (state) => {
       // console.log(state.recipeIngredients);
       // console.log(state.member.id);
       // axios 요청 보내서 레시피 저장하기
+      const formData = new FormData();
+      console.log('file',state.recipeImage)
+      formData.append("recipeImage", state.recipeImage)
       const data = {
         title: state.title,
         description: state.description,
-        member: state.member,
-        recipeIngredients: state.recipeIngredients,
         steps: state.steps,
-        imgLocalPath: state.imgLocalPath,
-        videoLocalPath: state.videoLocalPath,
-        
+        recipeIngredients: state.recipeIngredients,
       };
-      
-      console.log(data)
+      formData.append(
+        "recipeUploadRequestDto",
+        new Blob([JSON.stringify(data)], { type: "application/json" })
+      );;
+
+      for (let key of formData.keys()) {
+        console.log(key);
+      }
+      for (let value of formData.values()) {
+        console.log(value);
+      }
       axios
         .post("http://localhost:8083/api/recipes/new", data)
         .then((res) => {
@@ -71,8 +74,12 @@ let recipeRegister = createSlice({
       state.steps = action.payload
       console.log('step 변경됨', state.steps)
     },
+    updateImage : (state,action) =>{
+      state.recipeImage = action.payload
+      console.log('레시피이미지',state.recipeImage)
+    },
     updateStepImage : (state,action) =>{
-      state.temp =action.payload
+      state.stepImages.append(action.payload)
       console.log('스텝이미지 변경', state.temp)
     },
     // updateKeyword: (state, action) =>{
@@ -84,6 +91,6 @@ let recipeRegister = createSlice({
   },
 });
 
-export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateStepImage} = recipeRegister.actions;
+export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateImage, updateStepImage} = recipeRegister.actions;
 
 export default recipeRegister;
