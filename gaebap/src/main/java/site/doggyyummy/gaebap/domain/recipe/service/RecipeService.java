@@ -274,8 +274,7 @@ public class RecipeService {
                     Step step = new Step();
                     step.setOrderingNumber(s.getOrderingNumber());
                     step.setDescription(s.getDescription());
-                    System.out.println("$$$$$$$$$$$$$$"+newStepImages.length);
-                    System.out.println("&&&&&&&&&&&&&"+s.getOrderingNumber().intValue());
+                    step.setRecipe(recipe);
                     if(!newStepImages[s.getOrderingNumber().intValue()-1].isEmpty()){
                         Map<String,String> stepMap=uploadFile(step,newStepImages[s.getOrderingNumber().intValue()-1]);
                         step.setS3Key(stepMap.get("s3Key"));
@@ -489,6 +488,9 @@ public class RecipeService {
         awsS3Client.deleteObject("sh-bucket", folderKey);
     }
 
-
+    public IngredientAllResponseDto searchAllIngredients(){
+        List<Ingredient> ingedients=ingredientRepository.findAll();
+        return new IngredientAllResponseDto(ingedients);
+    }
 
 }

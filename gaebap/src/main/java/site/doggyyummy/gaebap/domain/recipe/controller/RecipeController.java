@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
@@ -125,4 +126,8 @@ public class RecipeController {
         return recipeService.searchRecipeLike(reqDto);
     }
 
+    @GetMapping("/ingredients")
+    public IngredientAllResponseDto searchAllIngredients(){
+        return recipeService.searchAllIngredients();
+    }
 }
