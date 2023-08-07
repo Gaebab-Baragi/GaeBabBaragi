@@ -56,8 +56,18 @@ const RecipeDetailPage=()=>{
             </div>
             <div className='imgForm'>
                 <img className='imgsize' src={data.imgUrl}></img>
+                <div>
+                    <button>
+                        <img className='profileImg' src={data.member.memberImage}></img>
+                    </button>
+                    <div className='nickname'>
+                        {data.member.nickname}
+                    </div>
+                </div>
             </div>
-            <div>ㄻ널마ㅣ;ㄴ럼;ㄴㅇ</div>
+            <div className='descriptionForm'>
+                {data.description}
+            </div>
         </div>
     </div>
     );
