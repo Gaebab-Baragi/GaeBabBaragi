@@ -40,9 +40,7 @@ public class RecipeController {
     @PostMapping("/recipes/new")
     public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo,@RequestPart MultipartFile[] stepImages) throws IOException {
 
-        Member member=new Member();
-        member.setId(1L);
-//        Member member = SecurityUtil.getCurrentLoginMember();
+        Member member = SecurityUtil.getCurrentLoginMember();
         if(member==null){
             throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"로그인을 해주세요");
         }
@@ -85,9 +83,10 @@ public class RecipeController {
     //레시피 삭제
     @Operation(summary = "delete recipe", description = "레시피 삭제")
     @DeleteMapping("/recipes/{id}")
-    public RecipeDeleteResponseDto deleteRecipe(@PathVariable ("id") Long id,@RequestBody RecipeDeleteRequestDto reqDto){
+    public RecipeDeleteResponseDto deleteRecipe(@PathVariable ("id") Long id){
+        Member member = SecurityUtil.getCurrentLoginMember();
         try{
-            return recipeService.deleteRecipe(id,reqDto);
+            return recipeService.deleteRecipe(id,member);
         }catch (UnauthorizedException e){
             return new RecipeDeleteResponseDto(e.getStatusCode(),e.getMessage(),null);
         }catch (NotFoundRecipeException e){
@@ -99,8 +98,10 @@ public class RecipeController {
     @Operation(summary = "modify recipe", description = "레시피 수정")
     @PutMapping("/recipes/{id}")
     public RecipeModifyResponseDto modifyRecipe(@PathVariable("id") Long id,@RequestPart RecipeModifyRequestDto reqDto,@RequestPart MultipartFile newRecipeImage,@RequestPart MultipartFile newRecipeVideo,@RequestPart MultipartFile[] newStepImages) throws IOException{
+        Member member = SecurityUtil.getCurrentLoginMember();
         try {
-            recipeService.modifyRecipe(id, reqDto,newRecipeImage,newRecipeVideo,newStepImages);
+            System.out.println("^^^^^^^^"+newStepImages.length);
+            recipeService.modifyRecipe(member,id, reqDto,newRecipeImage,newRecipeVideo,newStepImages);
             return new RecipeModifyResponseDto(HttpStatus.SC_OK, "modify Success");
         }catch(UnauthorizedException e){
             return new RecipeModifyResponseDto(e.getStatusCode(),e.getMessage());

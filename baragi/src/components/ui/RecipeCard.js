@@ -10,7 +10,7 @@ function RecipeCard({item}) {
   }
 
   return (
-    <Card style={{ width: '16rem', margin : '1rem'}} onClick={onClick}>
+    <Card style={{ width: '16rem', margin : '1rem', cursor : 'pointer'}} onClick={onClick}>
       <Card.Img variant="top" src={item.recipeImageUrl} />
       <Card.Body>
         <Card.Title>{item.title}</Card.Title>

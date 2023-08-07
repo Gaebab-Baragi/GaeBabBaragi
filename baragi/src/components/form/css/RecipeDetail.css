@@ -1,0 +1,38 @@
+.detail {
+    flex: 1;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 10%;
+    background-color: aquamarine;
+  }
+  
+  .detailForm {
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-top:10%;
+    background-color: red;
+}
+.imgForm{
+    background-color: yellow;
+    position: relative;
+    width : 100%;
+    height :350px;
+}
+.imgsize{
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+}
+.hit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: brown;
+}
+
+.hit ion-icon {
+  margin-right: 5px;
+}
+.hit span{
+    margin-right: 5px;
+}
