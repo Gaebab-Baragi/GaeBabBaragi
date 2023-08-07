@@ -21,6 +21,7 @@ import site.doggyyummy.gaebap.domain.pet.repository.PetRepository;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 
 import site.doggyyummy.gaebap.domain.recipe.repository.IngredientRepository;
+import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -42,7 +43,7 @@ public class PetServiceImpl implements PetService {
     @Transactional
     public void create(PetRequestDTO dto, MultipartFile petImage) throws IOException{
         Member member=new Member();
-        member.setId(dto.getMemberId());
+        member.setId(SecurityUtil.getCurrentLoginMember().getId());
         Pet pet = dto.toEntity();
         List<Long> forbiddenList = dto.getForbiddenIngredients();
         for (Long forbiddenId : forbiddenList){
@@ -115,7 +116,7 @@ public class PetServiceImpl implements PetService {
         }
 
         Member memberRef = new Member();
-        memberRef.setId(dto.getMemberId());
+        memberRef.setId(SecurityUtil.getCurrentLoginMember().getId());
         findPet.setMember(memberRef);
         List<Forbidden> removeForbidden = findPet.getForbiddens();
         for (Forbidden forbidden :removeForbidden ){
