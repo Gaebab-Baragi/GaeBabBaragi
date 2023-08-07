@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
 @Setter
 public class PetRequestDTO {
     Long id;
-    @JsonProperty("member_id")
-    Long memberId;
     String name;
 
     List<Long> forbiddenIngredients = new ArrayList<>();
@@ -32,7 +30,6 @@ public class PetRequestDTO {
         Pet pet = new Pet();
 
         Member member = new Member();
-        member.setId(this.memberId);
         pet.setMember(member);
         pet.setName(this.name);
 
