@@ -9,9 +9,11 @@ import { requestFilteredRecipeList,updateImage} from '../redux/recipeRegisterSli
 
 function RecipeRegisterPage() {
   const dispatch = useDispatch();
-  const handleImageUpload = (imageData) => {
-    dispatch(updateImage(imageData));
-  };
+  
+  // const handleImageUpload = (imageData) => {
+  //   console.log('리덕스에 저장되냐?',imageData)
+  //   dispatch(updateImage(imageData));
+  // };
 
   return (
     <>
@@ -19,7 +21,7 @@ function RecipeRegisterPage() {
         <h1 style={{ textAlign : 'left' }}>레시피 등록</h1>
         <h4 style={{textAlign:'left', marginLeft:'2%'}}>1. 대표사진 등록</h4>
         <div style={{ marginTop : '1%', marginBottom : '1%' , backgroundColor : '#0001', justifyContent:'center', alignItems:'center'}}>
-          <InputImage handleImageUpload={handleImageUpload}></InputImage>
+          <InputImage></InputImage>
         </div>
         <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>2. 기본 정보 입력</h4>
         <InputInfor></InputInfor>

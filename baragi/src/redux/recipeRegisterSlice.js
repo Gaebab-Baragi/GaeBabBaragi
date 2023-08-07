@@ -17,12 +17,12 @@ let recipeRegister = createSlice({
         orderingNumber: 2,
         description: "재료를 끓여주세요.",
       },
-      { orderingNumber: 3, description: "구워주세요", imgLocalPath: null },
-      { orderingNumber: 4, description: "플레이팅", imgLocalPath: null },
+      { orderingNumber: 3, description: "구워주세요" },
+      { orderingNumber: 4, description: "플레이팅"},
     ],
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     recipeImage: '',
-    stepImages : []
+    stepImages : ["",""]
 
   },
   reducers: {
@@ -30,9 +30,11 @@ let recipeRegister = createSlice({
       // console.log(state.recipeIngredients);
       // console.log(state.member.id);
       // axios 요청 보내서 레시피 저장하기
+      console.log('1:',state.title, state.description, state.steps, state.recipeIngredients)
+      console.log('2:', state.recipeImage)
+
       const formData = new FormData();
-      console.log('file',state.recipeImage)
-      formData.append("recipeImage", state.recipeImage)
+      
       const data = {
         title: state.title,
         description: state.description,
@@ -42,7 +44,12 @@ let recipeRegister = createSlice({
       formData.append(
         "recipeUploadRequestDto",
         new Blob([JSON.stringify(data)], { type: "application/json" })
-      );;
+      );
+      console.log('file',state.recipeImage)
+
+      formData.append("recipeImage", state.recipeImage)
+      formData.append("recipeVideo",null)
+      formData.append("stepImages",[])
 
       for (let key of formData.keys()) {
         console.log(key);
@@ -50,10 +57,14 @@ let recipeRegister = createSlice({
       for (let value of formData.values()) {
         console.log(value);
       }
+
       axios
-        .post("http://localhost:8083/api/recipes/new", data)
+        .post("http://localhost:8083/api/recipes/new", formData
+        ,  {headers: { "Content-Type": "multipart/form-data" },
+      })
+      
         .then((res) => {
-          console.log("Request successful : ", res.data);
+          console.log("Request successful : ", res);
         })
         .catch((err) => {
           console.log("Error sending request : ", err);
@@ -78,15 +89,11 @@ let recipeRegister = createSlice({
       state.recipeImage = action.payload
       console.log('레시피이미지',state.recipeImage)
     },
-    updateStepImage : (state,action) =>{
-      state.stepImages.append(action.payload)
-      console.log('스텝이미지 변경', state.temp)
-    },
-    // updateKeyword: (state, action) =>{
-    //   // 레시피 제목 검색 키워드 저장
-    //   state.keyword = action.payload;
-    //   console.log('keyword updated: ' + state.keyword)
+    // updateStepImage : (state,action) =>{
+    //   state.stepImages.append(action.payload)
+    //   console.log('스텝이미지 변경', state.temp)
     // },
+
   
   },
 });
