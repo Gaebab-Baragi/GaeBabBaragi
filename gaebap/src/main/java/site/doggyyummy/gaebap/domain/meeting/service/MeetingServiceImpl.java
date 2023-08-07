@@ -127,6 +127,17 @@ public class MeetingServiceImpl implements MeetingService{
     }
 
     @Override
+    public List<FindMeetingResponseDTO> findByMember(Long memberId) {
+        List<Meeting> meetings = meetingRepository.findByMember(memberId);
+
+        List<FindMeetingResponseDTO> findMeetingResponseDTOS = meetings.stream()
+                .map(FindMeetingResponseDTO::toDTO)
+                .collect(Collectors.toList());
+
+        return findMeetingResponseDTOS;
+    }
+
+    @Override
     @Transactional
     public void startMeeting(Long id, Long hostId) {
         Meeting findMeeting = meetingRepository.findByIdJoinMember(id).orElseThrow(() -> new NotFoundMeetingException());
@@ -137,7 +148,6 @@ public class MeetingServiceImpl implements MeetingService{
 
         findMeeting.setStatus(Status.IN_PROGRESS);
     }
-
 
 /*
      미팅 방 참여 요청
@@ -153,6 +163,7 @@ public class MeetingServiceImpl implements MeetingService{
           2-2-2. 입장 가능 인원이 남지 않았다면 -> 입장 불가능 메세지 전달 -> return o
       2-3. IN_PROGRESS일 경우 -> 이미 시작된 미팅, 입장 불가능 -> return
 */
+
     @Override
     public MessageResponseDTO joinRequest(Long id, Long member_id) {
 

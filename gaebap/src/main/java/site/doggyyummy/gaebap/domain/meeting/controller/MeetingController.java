@@ -142,6 +142,17 @@ public class MeetingController {
         }
     }
 
+    @Operation(summary = "find meeting room list by member", description = "로그인 회원이 생성한 미팅 룸 리스트 조회")
+    @GetMapping("/my-meetings")
+    public ResponseEntity<List<FindMeetingResponseDTO>> findByMember() {
+
+        Member member = SecurityUtil.getCurrentLoginMember();
+
+        List<FindMeetingResponseDTO> findMeetingResponseDTOS = meetingService.findByMember(member.getId());
+
+        return new ResponseEntity<>(findMeetingResponseDTOS, HttpStatus.OK);
+    }
+
     @Operation(summary = "start meeting", description = "호스트 미팅 시작")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
