@@ -1,8 +1,17 @@
+.StreamingLiveContatiner {
+	display: flex;
+	flex-direction: row;
+	margin-left: 2%;
+	margin-right: 2%;
+}
+
 .streamingContainer {
 	background-color:#f9f9f9;
-	width: 60%;
+	width: 70%;
 	display: flex;
 	flex-direction: column;
+	margin-top: 1%;
+	border-radius: 10px;
 }
 
 .mainVideo {
@@ -40,5 +49,5 @@ ion-icon {
 
 .streamingTop {
 	text-align: left;
-	margin-left: 10%;
+	margin-left: 5%;
 }

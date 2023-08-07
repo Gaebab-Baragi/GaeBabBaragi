@@ -14,7 +14,7 @@ function PetListPage() {
   const [petList, setPetList] = useState([])
 
   useEffect(()=>{
-    axios.get(`/api/pet?member_id=${1}`)
+    axios.get(`/api/pet?member_id=${8}`)
     .then((res)=>{
       console.log('pet list : ' , res.data)
       setPetList(res.data)

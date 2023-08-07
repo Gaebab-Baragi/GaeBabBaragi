@@ -1,4 +1,38 @@
 .ChatContainer {
-  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 1%;
+  margin-top: 1%;
+  width: 40%;
   background-color: #f9f9f9;
+  padding: 1%;
+  box-sizing: border-box;
+  height: 80vh; /* 수정 */
+}
+
+.chatTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+.chatContent {
+  color: black;
+  background-color: white;
+}
+
+.ChatMessages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 1%;
+}
+.messageContainer{
+  width: fit-content;
+}
+
+.chatInput {
+  border-radius: 10px;
+  padding: 2%;
 }
