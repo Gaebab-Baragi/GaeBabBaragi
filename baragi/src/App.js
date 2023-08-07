@@ -20,8 +20,8 @@ import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
-import PetRegisterPage from './pages/PetRegisterPage';
-import StreamingLivePage from './streaming/StreamingLive';
+import PetRegisterPage from './pages/Pet/PetRegisterPage';
+import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
 // -------------------PAGES-------------------//
 
