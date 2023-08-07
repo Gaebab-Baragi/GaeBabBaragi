@@ -1,5 +1,5 @@
 //package site.doggyyummy.gaebap.domain;
-//
+
 //import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 //import io.swagger.v3.oas.annotations.info.Info;
 //import lombok.RequiredArgsConstructor;
@@ -7,6 +7,10 @@
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //
+
+//http://localhost:8083/swagger-ui.html
+
+
 //@OpenAPIDefinition(
 //        info = @Info(title = "Couple App",
 //                description = "couple app api명세",

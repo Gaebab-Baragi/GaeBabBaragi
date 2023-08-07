@@ -45,6 +45,7 @@ public class PetServiceImpl implements PetService {
         Member member=new Member();
         member.setId(SecurityUtil.getCurrentLoginMember().getId());
         Pet pet = dto.toEntity();
+        pet.setMember(member);
         List<Long> forbiddenList = dto.getForbiddenIngredients();
         for (Long forbiddenId : forbiddenList){
             Ingredient ingredient = Ingredient.builder().id(forbiddenId).build();
@@ -105,7 +106,7 @@ public class PetServiceImpl implements PetService {
 
         if(!petImage.isEmpty()) {
             String S3Key = findPet.getS3Key();
-            if(S3Key!=null || S3Key.equals("")) {
+            if(S3Key!=null) {
                 deleteFile(S3Key);
             }
             Map<String, String> map = uploadFile(petImage);
