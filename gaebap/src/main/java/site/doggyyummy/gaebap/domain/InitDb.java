@@ -111,9 +111,42 @@ public class InitDb {
             Recipe recipe3 = createRecipe("제목3",member7,"레시피입니다3",
                     url,
                     LocalDateTime.now());
+
+            Recipe recipe4 = createRecipe("제목4",member7,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe5 = createRecipe("제목5",member7,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe6 = createRecipe("제목6",member7,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe7 = createRecipe("제목7",member7,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe8 = createRecipe("제목8",member7,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe9 = createRecipe("제목9",member7,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe10 = createRecipe("제목10",member7,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
+            Recipe recipe11 = createRecipe("제목11",member7,"레시피입니다3",
+                    url,
+                    LocalDateTime.now());
             em.persist(recipe1);
             em.persist(recipe2);
             em.persist(recipe3);
+            em.persist(recipe4);
+            em.persist(recipe5);
+            em.persist(recipe6);
+            em.persist(recipe7);
+            em.persist(recipe8);
+            em.persist(recipe9);
+            em.persist(recipe10);
+            em.persist(recipe11);
 
 
 

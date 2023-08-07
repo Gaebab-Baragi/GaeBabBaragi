@@ -7,9 +7,8 @@ import axios from "axios";
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  margin-left: 10%;
-  margin-right: 10%;
+  
+  max-width : 1200px;
 `;
 
 const StyledCardWrapper = styled.div`
@@ -26,7 +25,6 @@ function RecipeCardPagination({rowNum, api}) {
 
   // 레시피 목록 가져오기!!
   useEffect(() => {
-    console.log(api);
     axios.get(api)
       .then((res) => {
           if (res.status === 200){
@@ -40,7 +38,6 @@ function RecipeCardPagination({rowNum, api}) {
 
   useEffect(() => {
     setCount(items.length);
-    console.log(items.length)
   }, [items]);
   
   useEffect(() => {
@@ -61,9 +58,7 @@ function RecipeCardPagination({rowNum, api}) {
       setCardsPerRow(newCardsPerRow);
     };
 
-    function handleResize() {
-      setPostPerPage(cardsPerRow * rowsPerPage);
-    }
+    setPostPerPage(cardsPerRow * rowsPerPage);
 
     window.addEventListener("resize", updateCardsPerPage);
     return () => {

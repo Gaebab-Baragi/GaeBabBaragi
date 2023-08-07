@@ -16,7 +16,7 @@ const StyledCardWrapper = styled.div`
 `;
 
 
-function CardPaginationList({rowNum, api}) {
+function CardPaginationList({rowNum}) {
   const [items, setItems] = useState([]); // 리스트에 나타낼 아이템
   const [count, setCount] = useState(0); // 아이템 총 개수
   const [currentpage, setCurrentpage] = useState(1); // 현재페이지

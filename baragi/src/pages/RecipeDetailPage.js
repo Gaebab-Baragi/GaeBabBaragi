@@ -1,6 +1,24 @@
-// import Comment from "../components/form/LoginForm";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function RecipeDetailPage() {
+
+    const params = useParams();
+    useEffect(() => {
+
+        axios.get(`/api/recipes/${params.id}`)
+        .then((res) => {
+            if (res.status === 200){
+                console.log(res.data);
+            }
+        })
+        .catch((res) => {
+            console.log(res);
+        })
+    }, [])
+
+
     return (
         <>
         <div>

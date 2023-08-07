@@ -24,8 +24,6 @@ const ItemsContainer = styled.div`
   margin-right: 10%;
 `;
 
-
-
 function StreamingListPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();

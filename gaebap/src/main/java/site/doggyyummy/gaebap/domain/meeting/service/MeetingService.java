@@ -27,4 +27,5 @@ public interface MeetingService {
     void join(Long id, Long memberId);
 
     void left(Long id, Long memberId);
+
 }
