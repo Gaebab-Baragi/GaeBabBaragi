@@ -24,6 +24,7 @@ let petRegister= createSlice({
         tmp.push(i.value)
       })
       state.forbiddenIngredients = tmp
+
     },
     sendPetRegisterRequest: (state) =>{
       const formData = new FormData();
@@ -43,6 +44,7 @@ let petRegister= createSlice({
       for (let value of formData.values()) {
         console.log(value);
       }
+
       axios
         .post("http://localhost:8083/api/pet", formData, {
           headers: { "Content-Type": "multipart/form-data" },
