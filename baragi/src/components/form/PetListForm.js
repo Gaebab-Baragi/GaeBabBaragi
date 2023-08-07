@@ -4,8 +4,10 @@ import axios from "axios";
 import "./PetRegisterForm.css";
 import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 import { compose } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router";
 
 function PetListForm({ pet }) {
+  const navigate = useNavigate();
   const [data, setData] = useState([])
   const [forbidden, setForbidden] = useState();
   const defaultImageUrl = "./기본이미지.PNG";
@@ -20,6 +22,11 @@ function PetListForm({ pet }) {
     setForbidden(tmp)
     console.log('tmp : ', tmp)
   },[])
+
+  const handleNavigate = ((e)=>{
+    e.preventDefault();
+    navigate(`/my-pet-register/${pet.id}`)
+  })
 
   return (
     <div className="petContainer">
@@ -51,7 +58,7 @@ function PetListForm({ pet }) {
       </div>
 
       {/* 등록 버튼 */}
-      <button className="petRegisterBtn">
+      <button onClick={handleNavigate} className="petRegisterBtn">
         수정하기
       </button>
     </div>

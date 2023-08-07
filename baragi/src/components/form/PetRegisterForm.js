@@ -6,12 +6,25 @@ import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 import { useDispatch } from "react-redux";
 import { setPetImage , setPetName, sendPetRegisterRequest} from "../../redux/petRegisterSlice";
 
-
-function PetRegisterForm({ pet }) {
+function PetRegisterForm({petId}) {
   const dispatch = useDispatch();
+  const [petList, setPetList] = useState([])
   const defaultImageUrl = "./기본이미지.PNG";
   const [image, setImage] = useState(defaultImageUrl);
   const [file, setFile] = useState("");
+
+  useEffect(()=>{
+    if (petId) {
+      axios.get(`/api/pet/${petId}`)
+        .then((res)=>{
+          console.log('pet list : ' , res.data)
+          setPetList(res.data)
+        })
+        .catch((err)=>{
+          console.log('error : ' , err)
+        })
+    }
+  },[])
 
   // ==========================사진 등록===================//
   const handleImagePreview = (e) => {
@@ -37,12 +50,20 @@ function PetRegisterForm({ pet }) {
       {/* 사진 등록 */}
       <div className="petImgContainer">
         <div>
-          {image !== defaultImageUrl && (
-            <img className="petImgBox" src={image} alt="미리보기" />
-          )}
-          {image === defaultImageUrl && (
-            <img className="petImgBox" src={defaultImageUrl} alt="미리보기" />
-          )}
+          {petId 
+          ?
+          (<img className="petImgBox" src={petList.imgUrl} alt="미리보기" /> )
+          :
+          <>
+            ({image !== defaultImageUrl && (
+              <img className="petImgBox" src={image} alt="미리보기" />
+            )}
+            {image === defaultImageUrl && (
+              <img className="petImgBox" src={defaultImageUrl} alt="미리보기" />
+            )})
+          </>
+          
+          }
         </div>
         <input
           className="petImgInput"
@@ -57,7 +78,7 @@ function PetRegisterForm({ pet }) {
         <input
           className="petInput"
           type="text"
-          placeholder={""}
+          placeholder={petId ? petList.name : ""}
           onChange={(e) => {
             dispatch(setPetName(e.target.value))
           }}
@@ -65,7 +86,9 @@ function PetRegisterForm({ pet }) {
       </div>
 
       {/* 기피 재료 등록 */}
-      <PetIngredientTagBar/>
+      {petId ? (
+        <PetIngredientTagBar forbiddens={petList.forbiddens} />
+      ) : <PetIngredientTagBar/>}
 
       {/* 등록 버튼 */}
       <button className="petRegisterBtn" onClick={()=>{
