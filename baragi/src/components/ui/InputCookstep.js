@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import InputImage from './InputImage';
 
+import {updateStepImage} from '../../redux/recipeRegisterSlice'
+import { useDispatch } from 'react-redux';
+
+
 function InputCookstep({ step, description, onCookstepChange, onDelete }) {
+  const dispatch = useDispatch()
+  
   const handleCookstepChange = (e) => {
     const newValue = e.target.value;
     onCookstepChange(step, newValue);
+  };
+  const handlestepimage = (imageData) => {
+    dispatch(updateStepImage(imageData));
   };
 
   return (
@@ -21,9 +30,9 @@ function InputCookstep({ step, description, onCookstepChange, onDelete }) {
           placeholder="예)요리방법 돼지고기 소고기 요리해줘"
           style = {{ flex : 1, marginRight : '3%' }}
         />
-        <div style={{ width: '20%', height :'120%'}}>
-          <InputImage></InputImage>
-        </div>
+        {/* <div style={{ width: '20%', height :'120%'}}>
+          <InputImage handlestepimage={handlestepimage}></InputImage>
+        </div> */}
       </div>
       <button onClick={onDelete}>-</button>
     </>

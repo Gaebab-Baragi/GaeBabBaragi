@@ -4,16 +4,16 @@ import InputInfor from '../components/ui/InputInfor';
 import MaterialRegist from '../components/ui/MaterialRegist';
 import CookStep from '../components/ui/CookStep';
 import { useDispatch } from 'react-redux';
-import { requestFilteredRecipeList} from '../redux/recipeRegisterSlice';
+import { requestFilteredRecipeList,updateImage} from '../redux/recipeRegisterSlice';
 
 
 function RecipeRegisterPage() {
   const dispatch = useDispatch();
-  const handleSubmit = ()=>{
-    const formData = {
-      
-    }
-  }
+  
+  // const handleImageUpload = (imageData) => {
+  //   console.log('리덕스에 저장되냐?',imageData)
+  //   dispatch(updateImage(imageData));
+  // };
 
   return (
     <>

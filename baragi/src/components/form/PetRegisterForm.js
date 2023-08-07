@@ -23,7 +23,7 @@ function PetRegisterForm({ pet }) {
       reader.onloadend = () => {
         setImage(reader.result);
       };
-      console.log(image);
+      console.log(file);
       reader.readAsDataURL(selectedImage);
     }
   };
