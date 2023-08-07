@@ -25,7 +25,6 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-
 @Slf4j
 @Tag(name = "Recipe Controller", description = "레시피 API")
 

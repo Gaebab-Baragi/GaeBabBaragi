@@ -1,0 +1,12 @@
+.myInfoSection{
+    min-height: 35em;
+    display:inline-block;
+    justify-content: center;
+}
+
+.myInfoHeader{
+    margin-top : 2rem;
+    margin-bottom: 2rem;
+
+
+}
