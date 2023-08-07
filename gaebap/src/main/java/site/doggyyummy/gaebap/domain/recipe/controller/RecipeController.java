@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +24,11 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+<<<<<<< gaebap/src/main/java/site/doggyyummy/gaebap/domain/recipe/controller/RecipeController.java
+@Slf4j
+=======
 @Tag(name = "Recipe Controller", description = "레시피 API")
+>>>>>>> gaebap/src/main/java/site/doggyyummy/gaebap/domain/recipe/controller/RecipeController.java
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -65,9 +70,11 @@ public class RecipeController {
 
     //멤버 id가 등록한 레시피 조회
     @Operation(summary = "search recipes by writer",description = "특정 작성자가 작성한 레시피 조회")
-    @GetMapping("/recipes/writer/{member_id}")
-    public RecipeFindByMemberIdResponseDto findRecipeByMemberId(@PathVariable ("member_id") Long id){
-        return recipeService.findRecipeByMemberId(id);
+    @GetMapping("/recipes/writer")
+    public RecipeFindByMemberIdResponseDto findRecipeByMemberId(){
+        Long memberId = SecurityUtil.getCurrentLoginMember().getId();
+        log.info("memberId = {}", memberId);
+        return recipeService.findRecipeByMemberId(memberId);
     }
 
     //레시피 전체 조회 (레시피 제목, 작성자)

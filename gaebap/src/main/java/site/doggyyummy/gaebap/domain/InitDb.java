@@ -41,19 +41,22 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit1() {
-            String url = "https://sh-bucket.s3.ap-northeast-2.amazonaws.com/image/1/7517bd2d-fedb-4fd6-b153-530fc95d07cc-teayang.jpg";
+            String url = "http://localhost:3000/image/%EA%B0%9C%EB%B0%A5%EB%B0%94%EB%9D%BC%EA%B8%B0.png";
             Member member1 = createMember("배찬일","배찬일","user",url,new Timestamp(System.currentTimeMillis()));
             Member member2 = createMember("김선형","김선형","user",url,new Timestamp(System.currentTimeMillis()));
             Member member3 = createMember("유승아","유승아","user",url,new Timestamp(System.currentTimeMillis()));
             Member member4 = createMember("박영서","박박영서","user",url,new Timestamp(System.currentTimeMillis()));
             Member member5 = createMember("김하늘","김하늘","user",url,new Timestamp(System.currentTimeMillis()));
             Member member6 = createMember("박준형","박준형","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member7 = createMember("pj0642@gmail.com","박영서","user",url,new Timestamp(System.currentTimeMillis()));
+
             em.persist(member1);
             em.persist(member2);
             em.persist(member3);
             em.persist(member4);
             em.persist(member5);
             em.persist(member6);
+            em.persist(member7);
 
             Ingredient ingredient1 = createIngredient("양파");
             Ingredient ingredient2=createIngredient("당근");
@@ -99,13 +102,13 @@ public class InitDb {
 //                    url,
 //                    LocalDateTime.now(),recipeIngredientList3);
 //            em.persist(recipe3);
-            Recipe recipe1 = createRecipe("제목1",member1,"레시피입니다1",
+            Recipe recipe1 = createRecipe("제목1", member7,"레시피입니다1",
                     url,
                     LocalDateTime.now());
-            Recipe recipe2 = createRecipe("제목2",member1,"레시피입니다2",
+            Recipe recipe2 = createRecipe("제목2",member7,"레시피입니다2",
                     url,
                     LocalDateTime.now());
-            Recipe recipe3 = createRecipe("제목3",member1,"레시피입니다3",
+            Recipe recipe3 = createRecipe("제목3",member7,"레시피입니다3",
                     url,
                     LocalDateTime.now());
             em.persist(recipe1);

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Paging from "../ui/Paging";
-import CardComponent from "../ui/Card";
+import RecipeCard from "../ui/RecipeCard";
+import axios from "axios";
 
 const CardContainer = styled.div`
   display: flex;
@@ -15,8 +16,7 @@ const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-
-function CardPaginationList({rowNum, api}) {
+function RecipeCardPagination({rowNum, api}) {
   const [items, setItems] = useState([]); // 리스트에 나타낼 아이템
   const [count, setCount] = useState(0); // 아이템 총 개수
   const [currentpage, setCurrentpage] = useState(1); // 현재페이지
@@ -26,16 +26,21 @@ function CardPaginationList({rowNum, api}) {
 
   // 레시피 목록 가져오기!!
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => res.json())
-      .then((data) =>{
-        setItems(data);
-      })
-  }, []);
-
+    console.log(api);
+    axios.get(api)
+      .then((res) => {
+          if (res.status === 200){
+            setItems(res.data.recipes)
+          }
+      }) 
+      .catch((res) => {
+        console.log(res) 
+      }) 
+  }, [api]);
 
   useEffect(() => {
     setCount(items.length);
+    console.log(items.length)
   }, [items]);
   
   useEffect(() => {
@@ -82,7 +87,7 @@ function CardPaginationList({rowNum, api}) {
       <CardContainer>
         {currentPosts.map((item) => (
           <StyledCardWrapper key={item.id}>
-            <CardComponent count={item.id} />
+            <RecipeCard item={item} />
           </StyledCardWrapper>
         ))}
       </CardContainer>
@@ -91,4 +96,4 @@ function CardPaginationList({rowNum, api}) {
   );
 }
 
-export default CardPaginationList;
+export default RecipeCardPagination;
