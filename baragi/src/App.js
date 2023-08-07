@@ -22,6 +22,7 @@ import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHan
 import LogoutHandler from './components/social/LogoutHandler';
 
 import PetRegisterPage from './pages/Pet/PetRegisterPage';
+import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
 import Footer from './components/ui/Footer'
@@ -52,6 +53,8 @@ function App() {
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/my-pet-register' element={<PetRegisterPage/>}></Route>
+        <Route path='/my-pet-list' element={<PetListPage/>}></Route>
+        
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         {/*-----------------------로그인 관련-------------------------------*/}
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>

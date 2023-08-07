@@ -28,4 +28,9 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
             "JOIN FETCH m.host h " +
             "where m.id = :id")
     Optional<Meeting> findByIdJoinMember(Long id);
+
+    @Query("SELECT m FROM Meeting m " +
+            "JOIN FETCH m.host h " +
+            "where h.id = :memberId")
+    List<Meeting> findByMember(Long memberId);
 }
