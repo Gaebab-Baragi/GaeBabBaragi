@@ -9,7 +9,7 @@ let recipeRegister = createSlice({
     title: "과일 타르트 만들기",
     description: "상큼한 디저트 만들어봐요",
     member: {
-      id: 1,
+      id: 7,
     },
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     steps: [
@@ -48,7 +48,7 @@ let recipeRegister = createSlice({
       
       console.log(data)
       axios
-        .post("/api/recipes/new", data)
+        .post("http://localhost:8083/api/recipes/new", data)
         .then((res) => {
           console.log("Request successful : ", res.data);
         })

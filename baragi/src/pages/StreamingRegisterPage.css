@@ -1,0 +1,17 @@
+.StreamingRegisterContainer {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.StreamingRegisterTitle {
+  text-align: left;
+}
+
+.StreamingRegisterSemiTitle {
+  text-align: left;
+  margin-left: 2%;
+}
+
+.inputComponent {
+  display: flex;
+}

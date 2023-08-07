@@ -1,0 +1,9 @@
+.CardBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.bodyComponent {
+  margin-bottom: 0;
+}
