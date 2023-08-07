@@ -24,11 +24,10 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-<<<<<<< gaebap/src/main/java/site/doggyyummy/gaebap/domain/recipe/controller/RecipeController.java
+
 @Slf4j
-=======
 @Tag(name = "Recipe Controller", description = "레시피 API")
->>>>>>> gaebap/src/main/java/site/doggyyummy/gaebap/domain/recipe/controller/RecipeController.java
+
 public class RecipeController {
 
     private final RecipeService recipeService;
