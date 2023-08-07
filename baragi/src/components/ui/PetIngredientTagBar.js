@@ -5,10 +5,22 @@ import { useDispatch } from "react-redux";
 import { setForbiddenIngredients } from "../../redux/petRegisterSlice";
 import axios from "axios";
 
-function PetIngredientTagBar() {
+function PetIngredientTagBar({forbiddens}) {
   const [selected, setSelected] = useState([]);
   const [suggestions, setSuggestions] = useState('');
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    console.log("dkk", forbiddens)
+    if (forbiddens) {
+      const tmp = []
+      forbiddens.map((i)=>{
+        tmp.push(i.ingredientName)
+      })
+      console.log(tmp)
+      setSelected(tmp)
+    }
+  },[])
 
   // 재료 리스트 받아와주기
   useEffect(()=>{
