@@ -22,7 +22,8 @@ let recipeRegister = createSlice({
     ],
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     recipeImage: '',
-    // stepImages : [],
+    // videoUrl : './기본이미지.png'
+    stepImages : [],
 
   },
   reducers: {
@@ -48,7 +49,7 @@ let recipeRegister = createSlice({
       console.log('file',state.recipeImage)
 
       formData.append("recipeImage", state.recipeImage)
-    
+      formData.append('',state.videoUrl) // 이거 이름수정
 
       for (let key of formData.keys()) {
         console.log(key);
@@ -88,15 +89,24 @@ let recipeRegister = createSlice({
       state.recipeImage = action.payload
       console.log('레시피이미지',state.recipeImage)
     },
-    // updateStepImage : (state,action) =>{
-    //   state.stepImages.append(action.payload)
-    //   console.log('스텝이미지 변경', state.temp)
-    // },
+
+    updateVideo : (state,action) =>{
+      state.videoUrl = action.payload
+      console.log('비디오', state.videoUrl) //이거 이름수정
+    },
+    updateStepImage : (state, action) =>{
+      state.stepImages.splice(action.payload[1]-1,0,action.payload[0]) // 다시 수정하고 +버튼에서 리스트 추가로 아무거나 하나 넣어주는거?
+      // state.stepImages = action.payload // 원래는 여기다가 slice 이용해서 추가하는기능
+      console.log('스탭 이미지 리스트', state.stepImages)
+    },
+    deletedStepImage : (state,action) =>{
+      state.stepImages = action.payload // 마찬가지로 삭제 요망
+    },
 
   
   },
 });
 
-export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateImage, updateStepImage} = recipeRegister.actions;
+export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateImage, updateStepImage, deletedStepImage, updateVideo} = recipeRegister.actions;
 
 export default recipeRegister;

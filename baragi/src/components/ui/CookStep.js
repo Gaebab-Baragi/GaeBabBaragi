@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import InputCookstep from './InputCookstep';
 import { useDispatch, useSelector } from 'react-redux';
-import { requestFilteredRecipeList, updateStep } from '../../redux/recipeRegisterSlice';
+import { requestFilteredRecipeList, updateStep,updateStepImage } from '../../redux/recipeRegisterSlice';
 import useDidMountEffect from '../../useDidMountEffect'
 
 function CookStep() {
@@ -33,6 +33,9 @@ function CookStep() {
     setStepCount(nextStepCount);
     setInputCooksteps([...inputCooksteps, { orderingNumber: nextStepCount, description: '' }]);
   };
+  const handleCookstepImage = (step, selectedImage) =>{
+    dispatch(updateStepImage(selectedImage,step));
+  }
 
   useDidMountEffect(() => {
     dispatch(updateStep(inputCooksteps));
@@ -50,6 +53,7 @@ function CookStep() {
               step={inputCookstep.orderingNumber}
               description={inputCookstep.description}
               onCookstepChange={handleCookstepChange}
+              onStepImageChange={handleCookstepImage}
               onDelete={() => handleDeleteInputCookstep(inputCookstep.orderingNumber)}
             />
           </div>

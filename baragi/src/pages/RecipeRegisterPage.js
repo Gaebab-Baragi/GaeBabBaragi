@@ -4,12 +4,29 @@ import InputInfor from '../components/ui/InputInfor';
 import MaterialRegist from '../components/ui/MaterialRegist';
 import CookStep from '../components/ui/CookStep';
 import { useDispatch } from 'react-redux';
-import { requestFilteredRecipeList,updateImage} from '../redux/recipeRegisterSlice';
+import { requestFilteredRecipeList,updateVideo} from '../redux/recipeRegisterSlice';
+import  { useState } from 'react';
 
 
 function RecipeRegisterPage() {
   const dispatch = useDispatch();
+  const [video, setVideo] = useState('./기본이미지.PNG');
+  const [file, setFile] = useState("");
+
   
+  const handleVideoChange = (e)=>{
+    const selectedVideo = e.target.files[0];
+    dispatch(updateVideo(selectedVideo));
+    setFile(selectedVideo);
+    if (selectedVideo) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setVideo(reader.result);
+      };
+      reader.readAsDataURL(selectedVideo);
+
+    }
+  }
   // const handleImageUpload = (imageData) => {
   //   console.log('리덕스에 저장되냐?',imageData)
   //   dispatch(updateImage(imageData));
@@ -29,7 +46,12 @@ function RecipeRegisterPage() {
         <MaterialRegist></MaterialRegist>
         <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>4. 요리 순서</h4>
         <CookStep></CookStep>
+        <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>5. 동영상 제출</h4>
+        <input type="file" accept="" onChange={handleVideoChange}/>
+
+        <div style={{ marginTop : '1%', marginBottom : '1%' , backgroundColor : '#0001', justifyContent:'center', alignItems:'center'}}>
         <button onClick={()=>{dispatch(requestFilteredRecipeList())}}>제출</button>
+        </div>
     </div>
     </>
   );

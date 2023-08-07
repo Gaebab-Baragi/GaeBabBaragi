@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
-import InputImage from './InputImage';
+import React, { useState, useRef } from 'react';
+// import InputImage from './InputImage';
 
 import {updateStepImage} from '../../redux/recipeRegisterSlice'
 import { useDispatch } from 'react-redux';
 
 
-function InputCookstep({ step, description, onCookstepChange, onDelete }) {
+
+function InputCookstep({ step, description, onCookstepChange, onDelete , onStepImageChange}) {
   const dispatch = useDispatch()
   
   const handleCookstepChange = (e) => {
     const newValue = e.target.value;
     onCookstepChange(step, newValue);
   };
-  const handlestepimage = (imageData) => {
-    dispatch(updateStepImage(imageData));
-  };
+
+  const defaultImageUrl = './기본이미지.PNG';
+  const [image, setImage] = useState(defaultImageUrl);
+  const [file, setFile] = useState("");
+  const fileInputRef = useRef(null);
+
+  const handleStepImage = (e)=>{
+    const selectedImage = e.target.files[0];
+    // dispatch(updateStepImage(selectedImage,step));
+    setFile(selectedImage);
+    onStepImageChange(step,selectedImage)
+    if (selectedImage) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      console.log(file);
+      reader.readAsDataURL(selectedImage);
+    
+  }}
+
 
   return (
     <>
@@ -30,9 +49,7 @@ function InputCookstep({ step, description, onCookstepChange, onDelete }) {
           placeholder="예)요리방법 돼지고기 소고기 요리해줘"
           style = {{ flex : 1, marginRight : '3%' }}
         />
-        {/* <div style={{ width: '20%', height :'120%'}}>
-          <InputImage handlestepimage={handlestepimage}></InputImage>
-        </div> */}
+        <input type="file" accept="" onChange={handleStepImage}/>
       </div>
       <button onClick={onDelete}>-</button>
     </>
