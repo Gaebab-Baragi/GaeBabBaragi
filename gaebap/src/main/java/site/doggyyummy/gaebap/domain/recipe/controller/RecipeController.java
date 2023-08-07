@@ -26,6 +26,7 @@ import java.io.IOException;
 @RequestMapping("/api")
 @Slf4j
 @Tag(name = "Recipe Controller", description = "레시피 API")
+
 public class RecipeController {
 
     private final RecipeService recipeService;
