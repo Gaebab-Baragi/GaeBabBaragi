@@ -11,7 +11,6 @@ import java.util.List;
 public class RecipeUploadRequestDto {
     private String title;
     private String description;
-    private MemberDto member; //레시피 등록자
     private List<StepDto> steps;
     private List<RecipeIngredientDto> recipeIngredients;
 
@@ -28,11 +27,6 @@ public class RecipeUploadRequestDto {
         return description.trim();
     }
     @Getter
-    public static class MemberDto{
-        private Long id;
-    }
-
-    @Getter
     public static class StepDto{
         private Long orderingNumber;
         private String description;
@@ -43,12 +37,9 @@ public class RecipeUploadRequestDto {
             return description.trim();
         }
 
-        private String imgLocalPath;
     }
     @Getter
     public static class RecipeIngredientDto {
-        private Long recipeId;
-        private Long ingredientId;
         private String ingredientName;
         public String getIngredientName(){
             if(ingredientName==null){

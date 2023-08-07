@@ -4,9 +4,11 @@ package site.doggyyummy.gaebap.domain.pet.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.pet.dto.PetRequestDTO;
 import site.doggyyummy.gaebap.domain.pet.dto.PetResponseDTO;
 import site.doggyyummy.gaebap.domain.pet.service.PetService;
+import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.io.IOException;
 import java.util.List;
