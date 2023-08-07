@@ -22,6 +22,7 @@ import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHan
 import LogoutHandler from './components/social/LogoutHandler';
 import PetRegisterPage from './pages/PetRegisterPage';
 import StreamingLivePage from './streaming/StreamingLive';
+import ObjectDetectionPage from './pages/ObjectDetectionPage';
 // -------------------PAGES-------------------//
 
 
@@ -51,6 +52,7 @@ function App() {
         <Route path='/my-pet-register' element={<PetRegisterPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         <Route path="*" element={ <div>없는페이지임</div> } />
+        <Route path='/object-detect' element={<ObjectDetectionPage></ObjectDetectionPage>}></Route>
       </Routes>
 
     </div>
