@@ -45,10 +45,9 @@ public class InitDb {
             Member member1 = createMember("배찬일","배찬일","user",url,new Timestamp(System.currentTimeMillis()));
             Member member2 = createMember("김선형","김선형","user",url,new Timestamp(System.currentTimeMillis()));
             Member member3 = createMember("유승아","유승아","user",url,new Timestamp(System.currentTimeMillis()));
-            Member member4 = createMember("박영서","박박영서","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member4 = createMember("pj0642@gmail.com","박박영서","user",url,new Timestamp(System.currentTimeMillis()));
             Member member5 = createMember("김하늘","김하늘","user",url,new Timestamp(System.currentTimeMillis()));
             Member member6 = createMember("박준형","박준형","user",url,new Timestamp(System.currentTimeMillis()));
-            Member member7 = createMember("pj0642@gmail.com","박영서","user",url,new Timestamp(System.currentTimeMillis()));
 
             em.persist(member1);
             em.persist(member2);
@@ -56,7 +55,6 @@ public class InitDb {
             em.persist(member4);
             em.persist(member5);
             em.persist(member6);
-            em.persist(member7);
 
             Ingredient ingredient1 = createIngredient("양파");
             Ingredient ingredient2=createIngredient("당근");
@@ -102,38 +100,38 @@ public class InitDb {
 //                    url,
 //                    LocalDateTime.now(),recipeIngredientList3);
 //            em.persist(recipe3);
-            Recipe recipe1 = createRecipe("제목1", member7,"레시피입니다1",
+            Recipe recipe1 = createRecipe("제목1", member4,"레시피입니다1",
                     url,
                     LocalDateTime.now());
-            Recipe recipe2 = createRecipe("제목2",member7,"레시피입니다2",
+            Recipe recipe2 = createRecipe("제목2",member4,"레시피입니다2",
                     url,
                     LocalDateTime.now());
-            Recipe recipe3 = createRecipe("제목3",member7,"레시피입니다3",
+            Recipe recipe3 = createRecipe("제목3",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
 
-            Recipe recipe4 = createRecipe("제목4",member7,"레시피입니다3",
+            Recipe recipe4 = createRecipe("제목4",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe5 = createRecipe("제목5",member7,"레시피입니다3",
+            Recipe recipe5 = createRecipe("제목5",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe6 = createRecipe("제목6",member7,"레시피입니다3",
+            Recipe recipe6 = createRecipe("제목6",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe7 = createRecipe("제목7",member7,"레시피입니다3",
+            Recipe recipe7 = createRecipe("제목7",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe8 = createRecipe("제목8",member7,"레시피입니다3",
+            Recipe recipe8 = createRecipe("제목8",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe9 = createRecipe("제목9",member7,"레시피입니다3",
+            Recipe recipe9 = createRecipe("제목9",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe10 = createRecipe("제목10",member7,"레시피입니다3",
+            Recipe recipe10 = createRecipe("제목10",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe11 = createRecipe("제목11",member7,"레시피입니다3",
+            Recipe recipe11 = createRecipe("제목11",member4,"레시피입니다3",
                     url,
                     LocalDateTime.now());
             em.persist(recipe1);

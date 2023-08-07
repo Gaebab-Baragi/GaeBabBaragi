@@ -2,7 +2,6 @@ import Card from 'react-bootstrap/Card';
 import { useNavigate } from 'react-router-dom';
 
 function RecipeCard({item}) {
-  console.log(item);
   const navigate = useNavigate();
 
   const onClick = (e) => {
