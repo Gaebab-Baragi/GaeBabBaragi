@@ -21,7 +21,7 @@ import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
 import PetRegisterPage from './pages/PetRegisterPage';
-import StreamingLivePage from './streaming/StreamingLive';
+import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
 // -------------------PAGES-------------------//
 
@@ -45,8 +45,9 @@ function App() {
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/streaming-register' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
+    
         <Route path='/streaming-live' element={<StreamingLivePage/>}></Route>
-        <Route path='/recipe-detail' element={<RecipeDetailPage/>}></Route>
+        <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/my-pet-register' element={<PetRegisterPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
