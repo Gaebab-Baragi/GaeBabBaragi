@@ -59,6 +59,12 @@ function LoginForm() {
       }
     )
   }
+
+  const letsTest = (e) => {
+    e.preventDefault();
+    console.log(user);
+  }
+
   // ---------------------------------------------//
 
   return (
@@ -92,6 +98,7 @@ function LoginForm() {
         {/* 구글 로그인 */}
         <div className="formGroup">
           <SocialLogin/>
+          <button type="button" onClick={letsTest}>테스트입니다</button>
         </div>
       </form>
     </div>
