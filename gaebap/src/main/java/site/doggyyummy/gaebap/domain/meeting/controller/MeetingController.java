@@ -254,4 +254,5 @@ public class MeetingController {
             return new ResponseEntity<>(MessageResponseDTO.toDTO(e.getMessage()), e.getHttpStatus());
         }
     }
+
 }

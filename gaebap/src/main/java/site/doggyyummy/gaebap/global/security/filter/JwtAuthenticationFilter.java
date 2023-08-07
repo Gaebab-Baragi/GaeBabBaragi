@@ -58,18 +58,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (refreshToken == null) return;
 
-        log.info("checkRefresh&ReissueAccess refreshToken :{}", refreshToken);
-        log.info("checkRefresh&ReissueAccess member: {}", memberRepository.findByUsername("pj0642@gmail.com"));
         memberRepository.findByRefreshToken(refreshToken)
                 .ifPresent(member-> {
                     String reIssuedRefreshToken = reIssueRefreshToken(member);
                     jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getUsername()),
                             reIssuedRefreshToken);
                     jwtService.updateRefreshToken(member.getUsername(), reIssuedRefreshToken);
-                    log.info("reissuedToken :{}", refreshToken);
-                    log.info("member : {}", member);
-                    log.info("재발급 통과");
                     saveAuthentication(member);
+                    log.info("authenticatedMember : {}", member);
                 });
     }
 

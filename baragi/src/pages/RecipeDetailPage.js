@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import '../components/form/css/RecipeDetail.css';
 // props로 id 넘겨줄 예정입니다
 const RecipeDetailPage=()=>{
-    const {id} =useParams();
+    const {id} = useParams();
     const [data,setData]=useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
@@ -17,6 +17,7 @@ const RecipeDetailPage=()=>{
                     throw new Error('request fail!!!!!!!!!!!');
                 }
                 const data=await response.json();
+                console.log(data);
                 setData(data);
             }catch(error){
                 console.error('Error occured ',error);
