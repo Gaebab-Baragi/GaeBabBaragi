@@ -8,7 +8,6 @@ import ChatComponent from './Chat/ChatComponent';
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
 
-
 class Streaming extends Component {
     constructor(props) {
         super(props);
@@ -227,77 +226,81 @@ class Streaming extends Component {
         const streamingInfo = this.props.streamingInfo;
 
         return (
-            <div className="streamingContainer">
+            <div className='StreamingLiveContatiner'>
 
-                <div className='streamingTop'>
-                    <h1>{streamingInfo.title}</h1>
-                    <p>시작 시간 : {streamingInfo.start_time}</p>
-                </div>
-
-                <div>이건 내 화면이고!!!!!!!!</div>
-
-                <div className='mainVideo'>
-                    <div className="stream-container " onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                        <UserVideoComponent
-                            streamManager={this.state.publisher} />
-                            <p>{this.state.nickname}</p>
-                    </div>
-                </div>
-
-                <p>이건 남의 화면이야!!!!!!!!!!!</p>
-                <div className='subVideos'>
-                {this.state.subscribers.map((sub, i) => (
-                    <div key={sub.id} className="stream-container" onClick={() => this.handleMainVideoStream(sub)}>
-                        <span>{sub.id}</span>
-                        <UserVideoComponent streamManager={sub} />
-                        <br />
+                <div className="streamingContainer">
+                    <div>{this.state.myUserName}</div>
+                    <div className='streamingTop'>
+                        <h1>{streamingInfo.title}</h1>
+                        <p>시작 시간 : {streamingInfo.start_time}</p>
                     </div>
 
-                ))}
-                </div>
-                
-                <div className='streamingBottom'>
-                    {/* 화면 on off */}
+                    <div>이건 내 화면이고!!!!!!!!</div>
+
+                    <div className='mainVideo'>
+                        <div className="stream-container " onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                            <UserVideoComponent
+                                streamManager={this.state.publisher} />
+                                <p>{this.state.nickname}</p>
+                        </div>
+                    </div>
+
+                    <p>이건 남의 화면이야!!!!!!!!!!!</p>
+                    <div className='subVideos'>
+                    {this.state.subscribers.map((sub, i) => (
+                        <div key={sub.id} className="stream-container" onClick={() => this.handleMainVideoStream(sub)}>
+                            <span>{sub.id}</span>
+                            <UserVideoComponent streamManager={sub} />
+                            <br />
+                        </div>
+
+                    ))}
+                    </div>
                     
-                    {this.state.videostate  ? (
-                        <div className='onIcon'>
+                    <div className='streamingBottom'>
+                        {/* 화면 on off */}
+                        
+                        {this.state.videostate  ? (
+                            <div className='onIcon'>
+                                <ion-icon 
+                                onClick={() => {
+                                    this.state.publisher.publishVideo(!this.state.videostate);
+                                    this.setState({ videostate: !this.state.videostate });
+                                }}
+                                name="videocam-outline"
+                                ></ion-icon>
+
+                            </div>
+                        ) : (
                             <ion-icon 
                             onClick={() => {
                                 this.state.publisher.publishVideo(!this.state.videostate);
                                 this.setState({ videostate: !this.state.videostate });
                             }}
-                            name="videocam-outline"
+                            name="videocam-off-outline"></ion-icon>
+                        )}
+
+                        <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                        
+                        {/* 내 마이크 on off */}
+                        {this.state.audiostate ?
+                            <ion-icon name="volume-mute-outline" 
+                            onClick={() => {
+                                this.state.publisher.publishAudio(!this.state.audiostate);
+                                this.setState({ audiostate: !this.state.audiostate });
+                            }}
                             ></ion-icon>
-
-                        </div>
-                    ) : (
-                        <ion-icon 
-                        onClick={() => {
-                            this.state.publisher.publishVideo(!this.state.videostate);
-                            this.setState({ videostate: !this.state.videostate });
-                        }}
-                        name="videocam-off-outline"></ion-icon>
-                    )}
-
-                    <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
-                    
-                    {/* 내 마이크 on off */}
-                    {this.state.audiostate ?
-                        <ion-icon name="volume-mute-outline" 
-                        onClick={() => {
-                            this.state.publisher.publishAudio(!this.state.audiostate);
-                            this.setState({ audiostate: !this.state.audiostate });
-                        }}
-                        ></ion-icon>
-                    :
-                        <ion-icon name="volume-high-outline" 
-                        onClick={() => {
-                            this.state.publisher.publishAudio(!this.state.audiostate);
-                            this.setState({ audiostate: !this.state.audiostate });
-                        }}
-                        ></ion-icon>
-                    }
+                        :
+                            <ion-icon name="volume-high-outline" 
+                            onClick={() => {
+                                this.state.publisher.publishAudio(!this.state.audiostate);
+                                this.setState({ audiostate: !this.state.audiostate });
+                            }}
+                            ></ion-icon>
+                        }
+                    </div>
                 </div>
+                <ChatComponent/>
             </div>
         );
     }
