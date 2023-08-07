@@ -9,7 +9,6 @@ const RecipeDetailPage=()=>{
     const [data,setData]=useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
-
     useEffect(()=>{
         const fetchData=async()=>{
             try{
@@ -60,13 +59,31 @@ const RecipeDetailPage=()=>{
                     <button>
                         <img className='profileImg' src={data.member.memberImage}></img>
                     </button>
-                    <div className='nickname'>
-                        {data.member.nickname}
-                    </div>
+                </div>
+                <div className='nickname'>
+                    {data.member.nickname}
                 </div>
             </div>
             <div className='descriptionForm'>
                 {data.description}
+            </div>
+            <hr></hr>
+            <div className="stepForm">
+                <h1>ingredient</h1>
+                {data.ingredients.map((ingredient, index) => (
+                    <div key={index}>
+                    {ingredient.name} - {data.recipeIngredients[index].amount}
+                    </div>
+                ))}
+            </div>
+            <hr></hr>
+            <div>
+                <h1>steps</h1>
+                {data.steps.map((step,index)=>(
+                    <div key={index}>
+                        {step.orderingNumber} - {step.description}
+                    </div>
+                ))}
             </div>
         </div>
     </div>
