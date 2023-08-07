@@ -4,7 +4,7 @@ import axios from "axios";
 import "./PetRegisterForm.css";
 import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 import { useDispatch } from "react-redux";
-import { setPetImage , setPetName} from "../../redux/petRegisterSlice";
+import { setPetImage , setPetName, sendPetRegisterRequest} from "../../redux/petRegisterSlice";
 
 
 function PetRegisterForm({ pet }) {
@@ -12,9 +12,6 @@ function PetRegisterForm({ pet }) {
   const defaultImageUrl = "./기본이미지.PNG";
   const [image, setImage] = useState(defaultImageUrl);
   const [file, setFile] = useState("");
-
-
-  // =========================기피 재료 등록=====================//
 
   // ==========================사진 등록===================//
   const handleImagePreview = (e) => {
@@ -31,39 +28,6 @@ function PetRegisterForm({ pet }) {
     }
   };
 
-  //==================== 제출=====================//
-  // const handlePetRegister = (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   console.log("file is ", file);
-  //   // formData.append('petImage', file)
-  //   formData.append("petImage", file);
-  //   const datas = {
-  //     name: petName,
-  //     forbiddenIngredients: [],
-  //   };
-  //   formData.append(
-  //     "dto",
-  //     new Blob([JSON.stringify(datas)], { type: "application/json" })
-  //   );
-  //   for (let key of formData.keys()) {
-  //     console.log(key);
-  //   }
-
-  //   for (let value of formData.values()) {
-  //     console.log(value);
-  //   }
-  //   axios
-  //     .post("http://localhost:8083/api/pet", formData, {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     })
-  //     .then((res) => {
-  //       console.log("axios success :", res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log("error : ", err);
-  //     });
-  // };
 
   return (
     <div className="petContainer">
@@ -104,7 +68,7 @@ function PetRegisterForm({ pet }) {
       <PetIngredientTagBar/>
 
       {/* 등록 버튼 */}
-      <button className="petRegisterBtn">
+      <button className="petRegisterBtn" onClick={()=>dispatch(sendPetRegisterRequest())}>
         등록하기
       </button>
     </div>

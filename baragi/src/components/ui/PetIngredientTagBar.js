@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import { ReactTags } from "react-tag-autocomplete";
 import './PetIngredientTagBar.css'
 import { useDispatch } from "react-redux";
+import { setForbiddenIngredients } from "../../redux/petRegisterSlice";
 
 function PetIngredientTagBar() {
   const [selected, setSelected] = useState([]);
@@ -17,6 +18,7 @@ function PetIngredientTagBar() {
 
   useEffect(()=>{
     console.log(selected)
+    dispatch(setForbiddenIngredients(selected))
   },[selected])
 
   const onAdd = useCallback(
