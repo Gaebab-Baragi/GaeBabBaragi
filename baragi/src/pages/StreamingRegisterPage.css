@@ -1,17 +1,218 @@
 .StreamingRegisterContainer {
+  width: 71.4%;
   margin-left: 10%;
   margin-right: 10%;
+  font-weight: 500;
+}
+
+.StreamingHeader {
+  justify-content: left;
+  width: 100%;
+  margin-top: 30px;
+  margin-left: 13vw;
+  margin-bottom: 30px;
 }
 
 .StreamingRegisterTitle {
   text-align: left;
+  margin-bottom: 35px;
+  font-weight: 700;
+  color: #FA0;
 }
 
 .StreamingRegisterSemiTitle {
   text-align: left;
-  margin-left: 2%;
+  font-weight: 500;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  text-align: left;
+  height: 400px;
+}
+
+.inputContainer-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-items: right;
+  width: 28.6vw;
+
+}
+
+.inputContainer-left>label {
+  display: flex;
+  height: 50px;
+  width: 20vw;
+  justify-content: left;
+  align-items: center;
+  margin-left: 13vw;
+  margin-right: 1vw;
+  font-size: 1.8vw;
+}
+
+.inputContainer-right {
+  margin-left: 30px;
+  margin-right: 20px;
+  width: 100%;
 }
 
 .inputComponent {
+  width: 36vw;
+  height: 50px;
   display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 20vw;
+}
+
+
+span {
+  display: flex;
+  align-items: center;
+
+}
+
+.roomName {
+  border-radius: 10px;
+  border: 2px solid #000;
+  background: #FFF;
+  width: 32vw;
+  height: 40px;
+  flex-shrink: 0;
+  font-size: 1vw;
+  font-weight: 700;
+  text-indent: 10px;
+}
+
+.recipeName {
+  font-size: 1vw;
+  font-weight: 700;
+  height: 40px;
+}
+
+.startTime {
+  display: flex;
+  width: 15vw;
+  height: 40px;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #000;
+  text-align: center;
+  font-size: 1vw;
+  font-weight: 700;
+  line-height: 130%;
+  margin-right: 2vw;
+  border-radius: 10px;
+  border: 2px solid #000
+}
+
+.plusBtn {
+  display: flex;
+  color: goldenrod;
+  border-color: #FA0;
+  background-color: #FFF;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border-width: 1px;
+  font-size: 2vw;
+  font-weight: bolder;
+  justify-content: center;
+  align-items: center;
+  border-width: 2px;
+}
+
+.minusBtn {
+  display: flex;
+  color: goldenrod;
+  border-color: #FA0;
+  background-color: #FFF;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border-width: 1px;
+  font-size: 2vw;
+  font-weight: bolder;
+  justify-content: center;
+  align-items: center;
+  border-width: 2px;
+}
+
+.maxParticipant {
+
+  display: flex;
+  justify-content: center;
+  width: 34px;
+
+}
+
+.password {
+  border-radius: 10px;
+  border: 2px solid #000;
+  background: #FFF;
+  width: 150px;
+  height: 40px;
+  flex-shrink: 0;
+  text-indent: 10px;
+}
+
+.descriptionComponent {
+  display: flex;
+  width: 500px;
+  height: 100px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.description {
+  border-radius: 10px;
+  border: 2px solid #000;
+  background: #FFF;
+  width: 32vw;
+  height: 100px;
+  flex-shrink: 0;
+  font-size: 1vw;
+  font-weight: 700;
+  margin-left: 10px;
+  text-indent: 10px;
+}
+
+.inputContainer-bottom {
+  display: flex;
+  justify-content: right;
+}
+
+.registerBtn {
+  display: flex;
+  width: 81px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  color: #FFF;
+  background-color: #FA0;
+  font-size: 1vw;
+  font-weight: 700;
+  border-color: #FA0;
+  border-radius: 10px;
+}
+
+input:hover{
+  border-color:#FA0;
+}
+input:focus{
+  border-color:#FA0;
+} 
+
+@media (max-width : 1000px){
+  .inputContainer-left>label {
+    font-size: 17px;
+  }
 }
