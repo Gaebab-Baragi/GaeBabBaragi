@@ -15,6 +15,10 @@ function PetIngredientTagBar() {
     {value:4, label:'돼지고기'}
   ]
 
+  useEffect(()=>{
+    console.log(selected)
+  },[selected])
+
   const onAdd = useCallback(
     (newTag) => {
       setSelected([...selected, newTag])
@@ -31,7 +35,7 @@ function PetIngredientTagBar() {
 
 
   return(
-    <div className="ingredientSelect">
+    <div className="petIngredientSelect">
       <ReactTags
         suggestions={suggestions}
         placeholderText="재료 선택"
