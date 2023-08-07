@@ -4,7 +4,10 @@ import React, { Component, useEffect } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 import ChatComponent from './Chat/ChatComponent';
+import UserModel from './user-model';
 
+
+var localUser = new UserModel();
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
 
@@ -22,11 +25,12 @@ class Streaming extends Component {
             mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
             publisher: undefined,
             subscribers: [],
+            chatDisplay: true,
         };
 
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
-    
+        this.toggleChat = this.toggleChat.bind(this);
     
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.onbeforeunload = this.onbeforeunload.bind(this);

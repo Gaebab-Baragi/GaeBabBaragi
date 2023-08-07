@@ -69,11 +69,13 @@
   margin-right: 20vw;
 }
 
-
-span {
+.recipeName {
   display: flex;
   align-items: center;
-
+}
+.maxParticipant {
+  display: flex;
+  align-items: center;
 }
 
 .roomName {
@@ -204,15 +206,34 @@ span {
   border-radius: 10px;
 }
 
-input:hover{
-  border-color:#FA0;
-}
-input:focus{
-  border-color:#FA0;
-} 
-
 @media (max-width : 1000px){
   .inputContainer-left>label {
     font-size: 17px;
   }
+}
+
+
+.roomName:focus{
+  border-color:#FA0;
+}
+.startTime:focus{
+  border-color:#FA0;
+}
+.password:focus{
+  border-color:#FA0;
+}
+.description:focus{
+  border-color:#FA0;
+}
+.roomName:hover{
+  border-color:#FA0;
+}
+.startTime:hover{
+  border-color:#FA0;
+}
+.password:hover{
+  border-color:#FA0;
+}
+.description:hover{
+  border-color:#FA0;
 }
