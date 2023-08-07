@@ -25,9 +25,6 @@ public class CreateMeetingRequestDTO {
 
     private String description;
 
-    @JsonProperty("member_id")
-    private Long hostId;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     @JsonProperty("start_time")
     private LocalDateTime startTime;
@@ -38,7 +35,7 @@ public class CreateMeetingRequestDTO {
     public Meeting toEntity(Long hostId) {
         // 호스트 멤버
         Member host = new Member();
-        Member.builder().id(hostId).build();
+        host.setId(hostId);
 
         // 레시피 정보 -> builder로 바꿀 예정
         Recipe recipe = new Recipe();
@@ -52,7 +49,7 @@ public class CreateMeetingRequestDTO {
                 .host(host)
                 .startTime(this.startTime)
                 .recipe(recipe)
-                .status(Status.SCHEDULED)
+                .status(Status.ATTENDEE_WAIT)
                 .currentParticipants(1)
                 .build();
 
