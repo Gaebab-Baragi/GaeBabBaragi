@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import InputImage from './InputImage';
-import '../../pages/PetRegisterPage.css'
-
 
 function InputCookstep({ step, description, onCookstepChange, onDelete }) {
   const handleCookstepChange = (e) => {
