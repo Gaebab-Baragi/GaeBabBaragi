@@ -22,7 +22,7 @@ let recipeRegister = createSlice({
     ],
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     recipeImage: '',
-    stepImages : ["",""]
+    // stepImages : [],
 
   },
   reducers: {
@@ -48,8 +48,7 @@ let recipeRegister = createSlice({
       console.log('file',state.recipeImage)
 
       formData.append("recipeImage", state.recipeImage)
-      formData.append("recipeVideo",null)
-      formData.append("stepImages",[])
+    
 
       for (let key of formData.keys()) {
         console.log(key);
