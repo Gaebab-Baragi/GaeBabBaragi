@@ -24,13 +24,15 @@ function StreamingRegisterPage() {
     }
   };
 
-  /*   const handleRegisterSubmit = () => {
+  const handleRegisterSubmit = ()=>{
+    const startDateTime = new Date(selectedDate + 'T' + selectedTime + ':00');
+    const isoStartDateTime = startDateTime.toISOString();
     const data = {
       title: roomTitle,
       description: roomDescription,
       password: password,
       max_participant: maxParticipant,
-      start_time: selectedDate + " " + selectedTime,
+      start_time: isoStartDateTime,
       // 추후 수정!!!!!!!!!!!!!!
       recipe_id: 1,
     };
@@ -51,12 +53,12 @@ function StreamingRegisterPage() {
     console.log(1);
   }
   return (
+
+    
     <div className="StreamingRegisterContainer">
-      <div className="StreamingHeader">
-        <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
-        <hr></hr>
-        <h4 className="StreamingRegisterSemiTitle">스트리밍 기본 정보 입력</h4>
-      </div>
+      <StreamingForm/>
+      <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
+      <h4 className="StreamingRegisterSemiTitle">스트리밍 기본 정보 입력</h4>
       <div className="inputContainer">
         <div className="inputContainer-left">
           <label>방 제목 </label>

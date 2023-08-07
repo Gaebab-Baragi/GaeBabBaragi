@@ -44,6 +44,7 @@ public class PetServiceImpl implements PetService {
     public void create(PetRequestDTO dto, MultipartFile petImage) throws IOException{
         Member member=new Member();
         member.setId(SecurityUtil.getCurrentLoginMember().getId());
+        System.out.println("member.getUsername() = " + member.getUsername());
         Pet pet = dto.toEntity();
         pet.setMember(member);
         List<Long> forbiddenList = dto.getForbiddenIngredients();

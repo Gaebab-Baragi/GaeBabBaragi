@@ -1,6 +1,5 @@
 import './PetListPage.css'
-import React, {useCallback, useEffect, useState,useRef} from "react";
-import PetRegisterForm from '../../components/form/PetRegisterForm';
+import React, { useEffect, useState,useRef} from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
@@ -8,13 +7,14 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination, Navigation, Mousewheel } from 'swiper/modules';
 import axios from 'axios';
-import IngredientTagBar from '../../components/ui/IngredientTagBar';
-
+import { useSelector } from 'react-redux';
+import PetListForm from '../../components/form/PetListForm';
 function PetListPage() {
   const [petList, setPetList] = useState([])
+  const user = useSelector(state=>state.user)
 
   useEffect(()=>{
-    axios.get(`/api/pet?member_id=${1}`)
+    axios.get(`/api/pet?member_id=${user.id}`)
     .then((res)=>{
       console.log('pet list : ' , res.data)
       setPetList(res.data)
@@ -49,7 +49,7 @@ function PetListPage() {
       {petList.map((pet)=>{
         return(
           <SwiperSlide style={{width:"400px" }}>
-            <PetRegisterForm pet={pet}/>
+            <PetListForm pet={pet}/>
           </SwiperSlide>
         )
       })}

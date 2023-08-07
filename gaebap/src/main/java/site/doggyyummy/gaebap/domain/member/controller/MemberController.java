@@ -31,9 +31,9 @@ public class MemberController {
     private final MemberMailService memberMailService;
 
     @GetMapping("")
-    @Operation(description = "이메일을 통한 회원 조회")
-    public ResponseEntity<MemberResponseDTO> findByName(String username) throws NoSuchUsernameException {
-       return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.findByName(username).orElseThrow(() -> new NoSuchUsernameException()))
+    @Operation(description = "현재 로그인 중인 회원 정보를 조회")
+    public ResponseEntity<MemberResponseDTO> findCurrentLoginMember() throws NoSuchUsernameException {
+       return new ResponseEntity<>(MemberResponseDTO.toDTO(SecurityUtil.getCurrentLoginMember())
                                 , HttpStatus.OK);
     }
 
