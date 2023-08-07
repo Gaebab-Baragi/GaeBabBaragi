@@ -3,7 +3,7 @@ import './App.css';
 import React, {useState} from 'react';
 import { configureStore } from '@reduxjs/toolkit'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
-import NaviBar from './components/ui/NaviBar';
+import NaviBar from './components/ui/navbar/NaviBar';
 
 // -------------------PAGES--------------------//
 import LoginPage from './pages/LoginPage'
@@ -20,8 +20,8 @@ import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
-import PetRegisterPage from './pages/PetRegisterPage';
-import StreamingLivePage from './streaming/StreamingLive';
+import PetRegisterPage from './pages/Pet/PetRegisterPage';
+import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
 // -------------------PAGES-------------------//
 

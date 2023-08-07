@@ -1,0 +1,28 @@
+/* Colors */
+:root {
+    --color-default: #000;
+    --color-primary: #FFEACB;
+    --color-secondary: #493100;
+}
+
+/* Smooth scroll behavior */
+:root {
+    scroll-behavior: smooth;
+}
+
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+.mainPage {
+    color: var(--color-default);
+}
+
+.mainPage a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.mainPage a:hover {
+    color: #493100;
+    text-decoration: none;
+}

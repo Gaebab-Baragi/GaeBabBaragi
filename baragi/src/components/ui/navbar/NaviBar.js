@@ -1,5 +1,5 @@
 /* eslint-disable */
-import './css/NaviBar.css';
+import './NaviBar.css';
 import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
