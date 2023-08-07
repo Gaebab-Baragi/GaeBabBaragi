@@ -1,6 +1,8 @@
 package site.doggyyummy.gaebap.domain.member.controller;
 
 import com.nimbusds.jose.proc.SecurityContext;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
@@ -22,12 +24,14 @@ import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
 @Slf4j
+@Schema(description = "회원 관리 컨트롤러")
 public class MemberController {
 
     private final MemberService memberService;
     private final MemberMailService memberMailService;
 
     @GetMapping("")
+    @Operation(description = "이메일을 통한 회원 조회")
     public ResponseEntity<MemberResponseDTO> findByName(String username) throws NoSuchUsernameException {
        return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.findByName(username).orElseThrow(() -> new NoSuchUsernameException()))
                                 , HttpStatus.OK);
@@ -36,6 +40,7 @@ public class MemberController {
     //=================================================================================
 
     @PostMapping("/register")
+    @Operation(description = "회원 가입")
     public ResponseEntity<String> signUp(@RequestBody MemberRegisterDTO registerDTO) throws Exception{
         log.info("registerDTO : {}", registerDTO);
         memberService.signUp(MemberRegisterDTO.toEntity(registerDTO));
@@ -45,12 +50,14 @@ public class MemberController {
     //=================================================================================
 
     @PostMapping("/register/username")
+    @Operation(description = "회원 가입 시 이메일의 유효성을 검사")
     public ResponseEntity<String> validateRegisterUsername(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
         memberService.validateRegistrationUsername(registerDTO.getRegisterName());
         return new ResponseEntity<>(memberMailService.sendEmail(registerDTO.getRegisterName()), HttpStatus.OK);
     }
 
     @PostMapping("/register/nickname")
+    @Operation(description = "회원 가입 시 닉네임 유효성을 검사")
     public ResponseEntity<String> validateRegisterNickname(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
         memberService.validateRegistrationNickname(registerDTO.getNickname());
         return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
@@ -58,11 +65,13 @@ public class MemberController {
 
     //=================================================================================
     @PutMapping("/modify")
+    @Operation(description = "회원 정보 수정")
     public ResponseEntity<MemberResponseDTO> modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
         return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.modify(MemberModifyDTO.toEntity(modifyDTO), modifyDTO.getFile(), modifyDTO.getFileType())), HttpStatus.OK);
     }
 
     @PostMapping("/modify/nickname")
+    @Operation(description = "회원 정보 수정 시 닉네임을 검사")
     public ResponseEntity<String> validateModifyNickname(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
         memberService.validateNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
         return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
@@ -70,11 +79,11 @@ public class MemberController {
 
     //====================================================================================
 
-
     @GetMapping("/test")
     public ResponseEntity<MemberResponseDTO> test() throws NoSuchUserException {
         Member member = SecurityUtil.getCurrentLoginMember();
         MemberResponseDTO dto = MemberResponseDTO.toDTO((member));
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
+
 }

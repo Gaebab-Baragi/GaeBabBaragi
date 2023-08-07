@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
+import site.doggyyummy.gaebap.domain.pet.entity.Pet;
+import site.doggyyummy.gaebap.domain.pet.repository.PetRepository;
 import site.doggyyummy.gaebap.domain.recipe.dto.*;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
@@ -37,7 +39,7 @@ public class RecipeService {
     private final StepRepository stepRepository;
     private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
-
+    private final PetRepository petRepository;
     //AWS S3
     private final AmazonS3 awsS3Client;
 
@@ -45,10 +47,7 @@ public class RecipeService {
     //레시피 등록
     //예외가 발생해도 DB에서 id는 계속 증가하는 문제 발생.. 어캐 해결하지 ㅅㅂ
     @Transactional(rollbackFor = IllegalArgumentException.class)
-    public RecipeUploadResponseDto uploadRecipe(RecipeUploadRequestDto reqDto, MultipartFile recipeImage, MultipartFile recipeVideo, MultipartFile[] stepImages) throws IOException {
-        //로그인 안되어있으면 로그인 exception handling
-        Optional<Member> findMeberById = memberRepository.findById(reqDto.getMember().getId());
-        Member member = findMeberById.get();
+    public RecipeUploadResponseDto uploadRecipe(Member member,RecipeUploadRequestDto reqDto, MultipartFile recipeImage, MultipartFile recipeVideo, MultipartFile[] stepImages) throws IOException {
         Recipe recipe = new Recipe();
         if (reqDto.getTitle() == null || reqDto.getTitle().equals("")) {
             throw new IllegalArgumentException("제목을 입력하세요");
@@ -84,7 +83,7 @@ public class RecipeService {
         stepRepository.saveAll(steps);
 
         recipe.setSteps(steps);
-        recipe.setNowTime(LocalDateTime.now());
+        recipe.setWrittenTime(LocalDateTime.now());
         recipeRepository.save(recipe);
 
         List<RecipeIngredient> recipeIngredients = new ArrayList<>();
@@ -133,6 +132,7 @@ public class RecipeService {
     public RecipeFindByIdResponseDto findRecipeByRecipeId(Long id) {
 
         Optional<Recipe> findRecipe = recipeRepository.findById(id);
+        Recipe recipe=findRecipe.get();
         if (!findRecipe.isPresent()) {
             throw new NotFoundRecipeException(HttpStatus.SC_BAD_REQUEST, "해당 레시피는 존재하지 않습니다.");
         }
@@ -147,7 +147,7 @@ public class RecipeService {
             ingredients.add(ingredient);
         }
 
-        return new RecipeFindByIdResponseDto(findRecipe.get(), member, steps, recipeIngredients, ingredients);
+        return new RecipeFindByIdResponseDto(recipe,member, steps, recipeIngredients, ingredients);
     }
 
     //hit 증가
@@ -369,18 +369,23 @@ public class RecipeService {
     }
 
     //레시피 제목은 like 검색, 재료는 equal로 검색
+    //제목만 있는 경우 o
+    //제목은 있으나 마나임
+    //재료 이름만 있는 경우
+    //펫 id만 있는 경우
     @Transactional(readOnly = true)
     public RecipeSearchLikeResponseDto searchRecipeLike(RecipeSearchLikeRequestDto reqDto) {
-        if (reqDto.getIngredients() == null || reqDto.getIngredients().size() == 0) {
+        if ((reqDto.getIngredients() == null || reqDto.getIngredients().size() == 0) && (reqDto.getPets()==null || reqDto.getPets().size()==0)) {
             List<Recipe> recipes = recipeRepository.findByTitleContaining(reqDto.getTitle());
             return new RecipeSearchLikeResponseDto(recipes);
-        } else {
+        } else if(reqDto.getIngredients()!=null&&reqDto.getIngredients().size()!=0&&reqDto.getPets()==null || reqDto.getPets().size()==0){ //재료만 있는 경우
             List<RecipeSearchLikeRequestDto.IngredientDto> ingredients = reqDto.getIngredients();
             List<String> ingredientsName = new ArrayList<>();
+
             for (RecipeSearchLikeRequestDto.IngredientDto i : ingredients) {
                 ingredientsName.add(i.getName());
-                System.out.println("i.getName() = " + i.getName());
             }
+
             List<Object[]> resultList = recipeIngredientRepository.findRecipesWithIngredientsAndTitle(ingredientsName, reqDto.getTitle(), ingredientsName.size());
 
             List<Recipe> recipes = new ArrayList<>();
@@ -389,12 +394,51 @@ public class RecipeService {
                 Long count = (Long) result[0];
                 Long recipeId = (Long) result[1];
 
-                Recipe recipe = new Recipe();
-                // 이후 Recipe 엔티티의 필드에 값을 설정하는 로직 추가
-                // recipe.setCount(count);
-                recipe.setId(recipeId);
-                recipe.setTitle(recipeRepository.findById(recipeId).get().getTitle());
-                recipe.setMember(recipeRepository.findById(recipeId).get().getMember());
+                Recipe recipe = recipeRepository.findById(recipeId).get();
+                recipes.add(recipe);
+            }
+            return new RecipeSearchLikeResponseDto(recipes);
+        }else if(reqDto.getPets()!=null && reqDto.getPets().size()!=0 && reqDto.getIngredients()==null || reqDto.getIngredients().size()==0){ //펫만 있는 경우
+            List<RecipeSearchLikeRequestDto.PetDto> pets=reqDto.getPets();
+            List<Long> petsId = new ArrayList<>();
+            System.out.println("팻만 있는 경우");
+            for (RecipeSearchLikeRequestDto.PetDto p : pets) {
+                petsId.add(p.getId());
+                Pet pet=petRepository.selectOne(p.getId());
+            }
+            List<Object[]> resultList = recipeIngredientRepository.findRecipesWithForbiddenIngredientsAndTitle(petsId, reqDto.getTitle());
+            List<Recipe> recipes = new ArrayList<>();
+
+            for (Object[] result : resultList) {
+                Long count = (Long) result[0];
+                Long recipeId = (Long) result[1];
+
+                Recipe recipe = recipeRepository.findById(recipeId).get();
+                recipes.add(recipe);
+            }
+            return new RecipeSearchLikeResponseDto(recipes);
+        }else{
+            System.out.println("둘다 있는 경우");
+            List<RecipeSearchLikeRequestDto.IngredientDto> ingredients = reqDto.getIngredients();
+            List<String> ingredientsName = new ArrayList<>();
+
+            for (RecipeSearchLikeRequestDto.IngredientDto i : ingredients) {
+                ingredientsName.add(i.getName());
+            }
+            List<RecipeSearchLikeRequestDto.PetDto> pets=reqDto.getPets();
+            List<Long> petsId = new ArrayList<>();
+
+            for (RecipeSearchLikeRequestDto.PetDto p : pets) {
+                petsId.add(p.getId());
+            }
+            List<Object[]> resultList = recipeIngredientRepository.findRecipesWithIngredientsAndTitleAndForbiddenIngredients(ingredientsName,reqDto.getTitle(),ingredientsName.size(),petsId);
+            List<Recipe> recipes = new ArrayList<>();
+
+            for (Object[] result : resultList) {
+                Long count = (Long) result[0];
+                Long recipeId = (Long) result[1];
+
+                Recipe recipe = recipeRepository.findById(recipeId).get();
                 recipes.add(recipe);
             }
             return new RecipeSearchLikeResponseDto(recipes);

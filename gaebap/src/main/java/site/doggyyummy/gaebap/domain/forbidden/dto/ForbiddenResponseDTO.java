@@ -13,6 +13,7 @@ public class ForbiddenResponseDTO {      //순환 참조 방지용으로 DTO 필
     private Long petId;
     private Long ingredientId;
 
+    private String ingredientName;
     public static ForbiddenResponseDTO toDTO(Forbidden forbidden){
         ForbiddenResponseDTO forbiddenResponseDTO = new ForbiddenResponseDTO();
         forbiddenResponseDTO.setIngredientId(forbidden.getIngredient().getId());

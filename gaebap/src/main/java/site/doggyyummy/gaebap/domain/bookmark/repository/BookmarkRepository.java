@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
 
 import java.util.List;
 
@@ -43,5 +44,14 @@ public class BookmarkRepository {
                 .setParameter("recipeId" ,bookmark.getRecipe().getId())
                 .setParameter("memberId" ,bookmark.getMember().getId())
                 .executeUpdate();
+    }
+
+    public List<Bookmark> selectByMember(Member member){
+        List<Bookmark> bookmark = em.createQuery("select b from Bookmark b" +
+                        " where b.member.id = :memberId"
+                )
+                .setParameter("memberId" ,member.getId())
+                .getResultList();
+        return bookmark;
     }
 }

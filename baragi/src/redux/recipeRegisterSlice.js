@@ -6,12 +6,10 @@ let recipeRegister = createSlice({
   
   name: "recipeRegister",
   initialState: {
-    imgLocalPath: "C:\\Users\\SSAFY\\Desktop\\dogExample.jpg",
-    
     title: "과일 타르트 만들기",
     description: "상큼한 디저트 만들어봐요",
     member: {
-      id: 1,
+      id: 7,
     },
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     steps: [
@@ -30,6 +28,7 @@ let recipeRegister = createSlice({
     ],
 
     videoLocalPath: null,
+    temp : []
   },
   reducers: {
     requestFilteredRecipeList: (state) => {
@@ -44,10 +43,12 @@ let recipeRegister = createSlice({
         steps: state.steps,
         imgLocalPath: state.imgLocalPath,
         videoLocalPath: state.videoLocalPath,
+        
       };
+      
       console.log(data)
       axios
-        .post("/recipes/new", data)
+        .post("http://localhost:8083/api/recipes/new", data)
         .then((res) => {
           console.log("Request successful : ", res.data);
         })
@@ -69,7 +70,11 @@ let recipeRegister = createSlice({
     updateStep : (state,action) =>{
       state.steps = action.payload
       console.log('step 변경됨', state.steps)
-    }
+    },
+    updateStepImage : (state,action) =>{
+      state.temp =action.payload
+      console.log('스텝이미지 변경', state.temp)
+    },
     // updateKeyword: (state, action) =>{
     //   // 레시피 제목 검색 키워드 저장
     //   state.keyword = action.payload;
@@ -79,6 +84,6 @@ let recipeRegister = createSlice({
   },
 });
 
-export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep} = recipeRegister.actions;
+export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateStepImage} = recipeRegister.actions;
 
 export default recipeRegister;

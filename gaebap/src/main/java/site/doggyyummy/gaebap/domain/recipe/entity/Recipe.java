@@ -33,7 +33,7 @@ public class Recipe {
 
     private Long hit=0L;
 
-    private LocalDateTime nowTime ;
+    private LocalDateTime writtenTime ;
 
     private String imageUrl;
     private String imageKey;
@@ -47,13 +47,13 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade=CascadeType.REMOVE)
     private List<Step> steps = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.REMOVE)
     private List<Meeting> meetings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe",cascade=CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     public void setMember(Member member){

@@ -2,8 +2,8 @@ import { useCallback, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
-import axios from "../../axios/axios";
 import "./css/MemberModification.css"
+import axios from "axios";
 
 function MemberModificationForm(){
     const user = useSelector((state) => (state.user));
@@ -31,7 +31,10 @@ function MemberModificationForm(){
             nickname : nickname ? nickname : user.nickname,
         })
 
-        axios.post('/member/modify/nickname', body, {
+        axios.post('/api/member/modify/nickname', body, {
+            headers: { 
+                "Content-Type": `application/json; charset= UTF-8`
+            }
         })
         .then((res)=>{
         if (res.status === 200) {
@@ -62,7 +65,7 @@ function MemberModificationForm(){
                 file : base64,
                 fileType : fileType
             });
-            axios.put('/member/modify', body)
+            axios.put('/api/member/modify', body)
             .then((res)=>{
                     let data = res.data;
                     dispatch(loginUser(data))
@@ -94,7 +97,7 @@ function MemberModificationForm(){
 
     const letsTest = (e) => {
         e.preventDefault();
-        axios.get("/member/test")
+        axios.get("/api/member/test")
         .then((res) =>{
         if (res.status === 200){
             console.log("yes!");

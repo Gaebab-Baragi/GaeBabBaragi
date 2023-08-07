@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 public class PetResponseDTO {
     Long id;
     Long memberId;
-    LocalDateTime birthdate;
-    Double weight;
     String name;
     String imgUrl;
     List<ForbiddenResponseDTO> forbiddens;
@@ -25,8 +23,6 @@ public class PetResponseDTO {
     public static PetResponseDTO toDTO(Pet pet){
         PetResponseDTO dto = new PetResponseDTO();
         dto.setId(pet.getId());
-        dto.setBirthdate(pet.getBirthDate());
-        dto.setWeight(pet.getWeight());
         dto.setMemberId(pet.getMember().getId());
         dto.setName(pet.getName());
          List<ForbiddenResponseDTO> forbiddensDTO = pet.getForbiddens().stream()

@@ -26,10 +26,10 @@ function InputInfor() {
 
   return (
     <>
-      <div style={{ padding: '1%' }}>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginRight: '15%' }}>2. 기본 정보 입력</h4>
-        <form style={{ marginLeft: '2%', marginRight: '15%', padding: '1%' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1%' }}>
+      <div style={{ marginTop:'1%', marginBottom :'1%', background: '#0001' }}>
+        
+        <form style={{  marginLeft: '2%', marginRight: '2%', padding: '1%'}}>
+          <div style={{ display: 'flex',  marginBottom: '1%' }}>
             <label htmlFor="recipeName" style={{ width: '15%' }}>레시피 제목:</label>
             <input
               type="text"
@@ -38,17 +38,20 @@ function InputInfor() {
               value={recipeName}
               onChange={handleRecipeNameChange}
               placeholder="레시피 제목을 입력하세요."
-            />
+              style = {{ flex:1 }}
+            />    
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1%' }}>
+          <div style={{ display: 'flex' , marginBottom: '1%' }}>
             <label htmlFor="recipeIntro" style={{ width: '15%' }}>레시피 소개:</label>
-            <input
-              type="text"
+            <textarea
+              rows="5"
+              cols="30"
               id="recipeIntro"
               name="recipeIntro"
               value={recipeIntro}
               onChange={handleRecipeIntroChange}
               placeholder="레시피를 소개하세요."
+              style = {{ flex:1 }}
             />
           </div>
         </form>

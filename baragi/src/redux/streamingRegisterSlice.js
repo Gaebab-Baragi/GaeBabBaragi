@@ -8,7 +8,6 @@ let streamingRegister= createSlice({
     title:'',
     max_participant:1,
     description:'',
-    member_id: 1,
     start_time:'',
     // 수정해야됨
     recipe_id:1,
@@ -29,9 +28,6 @@ let streamingRegister= createSlice({
       state.max_participant = action.payload
       console.log('max participant :' + state.max_participant)
     },
-    setMemberId :(state, action) =>{
-      state.member_id = action.payload
-    },
     setStartTime: (state, action) =>{
       state.start_time = action.payload;
       console.log('start time : ' + state.start_time)
@@ -46,14 +42,13 @@ let streamingRegister= createSlice({
         title: state.title, 
         max_participant: state.max_participant,
         description : state.description,
-        member_id: state.member_id,
+        // member_id: state.member_id,
         start_time: state.start_time,
         recipe_id: state.recipe_id,
       };
       console.log(data)
 
-
-      axios.post("/meetings", data)
+      axios.post("http://localhost:8083/api/meetings", data)
         .then((response) => {
           // Handle the response if needed
           console.log("Request successful:", response.data);
