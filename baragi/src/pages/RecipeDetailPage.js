@@ -29,7 +29,6 @@ const copyUrlToClipboard = () => {
   };
 
 
-// props로 id 넘겨줄 예정입니다
 const RecipeDetailPage=()=>{
     const {id} = useParams();
     const [data,setData]=useState(null);
@@ -39,10 +38,16 @@ const RecipeDetailPage=()=>{
         const fetchData=async()=>{
             try{
                 const response =await fetch(`/api/recipes/${id}`);
+
                 if(!response.ok){
-                    throw new Error('request fail!!!!!!!!!!!');
+                    console.log('에러에러 error: ');
                 }
                 const data=await response.json();
+                if(data.statusCode==400){
+                    alert(data.errorMessage);
+                    navigate('/'); // 메인 페이지로 리다이렉트
+                    return; // 리다이렉트 후 함수 종료
+                }
                 console.log(data);
                 setData(data);
             }catch(error){
@@ -63,82 +68,88 @@ const RecipeDetailPage=()=>{
             setIsLiked((prevIsLiked) => !prevIsLiked);
         }
     };
-
-    if(data){
-        console.log();
-    }
     
     if(!data){
         return <div> Loading ...</div>;
     }
     return (
-    <div className='detail'>
-        <div className='detailForm'>
-            <h1 className='recipeTitle'>{data.title}</h1>
-            <div className="hit">
-                <div className="icon-container">
-                    {/* 로그인 상태와 좋아요 여부에 따라 아이콘 표시 */}
-                    {!isLoggedIn && !isLiked ? (
-                    <ion-icon name="heart-outline" onClick={handleLikeClick}></ion-icon>
-                    ) : (
-                    <ion-icon name="heart" onClick={handleLikeClick}></ion-icon>
-                    )}
-                    <span>10</span>
-                    <ion-icon name="eye-outline"></ion-icon>
-                    <span>{data.hit}</span>
-                    <CopyToClipboard text={window.location.href}>
-                        <ion-icon name="share-social-outline" onClick={copyUrlToClipboard}></ion-icon>
-                    </CopyToClipboard>
+    <div>
+        <div className='detail'>
+            <div className='detailForm'>
+                <h1 className='recipeTitle'>{data.title}</h1>
+                <div className="hit">
+                    <div className="icon-container">
+                        {/* 로그인 상태와 좋아요 여부에 따라 아이콘 표시 */}
+                        {isLoggedIn && isLiked ? (
+                            <ion-icon name="heart" onClick={handleLikeClick}></ion-icon>
+                            ) : (
+                            <ion-icon name="heart-outline" onClick={handleLikeClick}></ion-icon>
+                        )}
+                        <span>{data.bookmarks}</span>
+                        <ion-icon name="eye-outline"></ion-icon>
+                        <span>{data.hit}</span>
+                        <CopyToClipboard text={window.location.href}>
+                            <ion-icon name="share-social-outline" onClick={copyUrlToClipboard}></ion-icon>
+                        </CopyToClipboard>
+                    </div>
                 </div>
-            </div>
-            <div className='imgForm'>
-                <img className='imgsize' src={data.imgUrl}></img>
-                <div>
-                    <button>
-                        <img className='profileImg' src={data.member.memberImage}></img>
-                    </button>
+                <div className='imgForm'>
+                    <img className='imgsize' src={data.imgUrl}></img>
+                    <div>
+                        <button>
+                            <img className='profileImg' src={data.member.memberImage}></img>
+                        </button>
+                    </div>
+                    <div className='nickname'>
+                        {data.member.nickname}
+                    </div>
                 </div>
-                <div className='nickname'>
-                    {data.member.nickname}
+                <div className='descriptionForm'>
+                    {data.description}
                 </div>
-            </div>
-            <div className='descriptionForm'>
-                {data.description}
-            </div>
-            <hr></hr>
-            <div className="ingredientsForm">
-                <h2>재료</h2>
-                <ul className="ingredient-list">
-                    {data.ingredients.map((ingredient, index) => (
-                        <li key={index} className={`ingredient-item ${index % 2 === 0 ? 'even' : 'odd'}`}>
-                            <div className="ingredient-info">
-                                <div className="ingredient-details">
-                                    <div className="ingredient-name">{ingredient.name}</div>
-                                    <div className="ingredient-amount">{data.recipeIngredients[index].amount}</div>
+                <hr></hr>
+                <div className="ingredientsForm">
+                    <h2>재료</h2>
+                    <ul className="ingredient-list">
+                        {data.ingredients.map((ingredient, index) => (
+                            <li key={index} className={`ingredient-item ${index % 2 === 0 ? 'even' : 'odd'}`}>
+                                <div className="ingredient-info">
+                                    <div className="ingredient-details">
+                                        <div className="ingredient-name">{ingredient.name}</div>
+                                        <div className="ingredient-amount">{data.recipeIngredients[index].amount}</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <hr></hr>
-            <div className='stepForm'>
-                <h2>조리 순서</h2>
-                <ul className='step-list'>
-                    {data.steps.map((step,index)=>(
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <hr></hr>
+                <div className='stepForm'>
+                    <h2>조리 순서</h2>
+                    <ul className='step-list'>
+                        {data.steps.map((step, index) => (
                         <li key={index} className='step-item'>
                             <div className='step-info'>
+                                <div>
+                                    <img className='step-img' src={step.stepImage} alt={`Step ${step.orderingNumber}`} />
+                                </div>
                                 <div className='step-details'>
                                     <div className='step-ordering'>Step {step.orderingNumber}</div>
                                     <div className='step-description'>{step.description}</div>
                                 </div>
                             </div>
                         </li>
-                    ))}
-                </ul>
+                        ))}
+                    </ul>
+                </div>
             </div>
-        </div>
+            
     </div>
+    <div className='floatingDiv'>
+        <div><ion-icon name="radio-outline"></ion-icon></div>
+        <div onClick={()=>navigate(`/streaming-register/${id}`)}>스트리밍 예약하기</div>
+    </div>
+</div>
     );
 };
 export default RecipeDetailPage;

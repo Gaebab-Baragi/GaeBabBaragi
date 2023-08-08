@@ -3,6 +3,8 @@ import StreamingForm from "../components/form/StreamingForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./StreamingRegisterPage.css";
+import { useParams } from "react-router";
+
 function StreamingRegisterPage() {
   const [roomTitle, setRoomTitle] = useState("");
   const [roomDescription, setRoomDescription] = useState("");
@@ -10,6 +12,7 @@ function StreamingRegisterPage() {
   const [selectedTime, setSelectedTime] = useState("");
   const [maxParticipant, setMaxParticipant] = useState(1);
   const [password, setPassword] = useState("");
+  const {id} = useParams();
   const handleIncrease = (e) => {
     e.preventDefault();
     if (maxParticipant < 5) {
@@ -77,7 +80,7 @@ function StreamingRegisterPage() {
           </div>
           {/* 레시피 */}
           <div className="inputComponent">
-            <span className="recipeName">가져오기!!</span>
+            <span className="recipeName">{id}</span>
           </div>
           {/* 스트리밍 시작 시간 */}
           <div className="inputComponent">

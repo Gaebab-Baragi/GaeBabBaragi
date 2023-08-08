@@ -46,11 +46,11 @@ function App() {
         <Route path='/find-id' element={<FindIdPage/>}></Route>
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
         {/* 레시피 */}
-        <Route path='/recipe-register' element={<RecipeRegisterPage/>}></Route>
+        <Route path='/recipe-register/' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
         {/* 스트리밍 */}
-        <Route path='/streaming-register' element={<StreamingRegisterPage/>}></Route>
+        <Route path='/streaming-register/:id' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
         <Route path='/streaming-live' element={<StreamingLivePage/>}></Route>
         {/* 내 정보 */}
