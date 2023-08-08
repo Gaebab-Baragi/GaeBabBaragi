@@ -7,7 +7,7 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 import java.util.List;
 
 public interface BookmarkService {
-    void create(BookmarkRequestDTO bookmarkRequestDTO);
+    void create(Member loginMember,Long id);
     long selectByRecipe (Long recipeId);
     void delete(BookmarkRequestDTO bookmarkRequestDTO);
 
