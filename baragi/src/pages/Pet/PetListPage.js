@@ -1,16 +1,18 @@
 import './PetListPage.css'
-import React, { useEffect, useState,useRef} from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useEffect, useState } from "react";
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
-import { EffectCoverflow, Pagination, Navigation, Mousewheel } from 'swiper/modules';
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import axios from 'axios';
 import PetRegisterForm from '../../components/form/PetRegisterForm';
+import { useParams } from 'react-router-dom';
 
 function PetListPage() {
   const [petList, setPetList] = useState([])
+  const { idx } = useParams();
 
   useEffect(()=>{
     axios.get(`/api/pet`)
@@ -23,15 +25,15 @@ function PetListPage() {
     .catch((err)=>{
       console.log('error : ' , err)
     })
-  },[])
+  },[idx])
 
   return(
-    <div>
+    <div className='pageContainer'>
       <Swiper
         effect={'coverflow'}
         grabCursor={true}
         centeredSlides={true}
-        slidesPerView={3}
+        slidesPerView={"auto"}
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
@@ -41,20 +43,23 @@ function PetListPage() {
         }}
         style={{width:"80%"}}
         pagination={true}
-        // navigation={{nextEl:'.swiper-button-next', prevEl:'.swiper-button-prev', clickable:true,}}
         mousewheel={true}
         modules={[EffectCoverflow, Pagination, Navigation]}
         className="mySwiper"
+        slideToClickedSlide={true}
+        noSwipingClass='react-tags__listbox-option'
+        initialSlide={idx}
       >
-
-      {petList.map((petInfo)=>{
+      {petList.map((petInfo, index)=>{
         return(
-          <SwiperSlide style={{width:"400px" }}>
-            <PetRegisterForm pet={petInfo}/>
+          <SwiperSlide style={{width:"400px" }} key= {index +1}>
+            <PetRegisterForm className='swiper-no-swiping' petInfo={petInfo} idx={index + 1}/>
           </SwiperSlide>
         )
       })}
-
+        <SwiperSlide style={{width:"400px" }} key= {petList.length + 1}>
+          <PetRegisterForm className='swiper-no-swiping' idx={petList.length +1 }/>
+        </SwiperSlide>
       </Swiper>
     </div>
 

@@ -38,11 +38,10 @@ function LoginForm() {
       password : password
     };
 
-    axios.post('http://localhost:8083/api/login', body) 
+    axios.post('/api/login', body) 
     .then((res)=>{
       if (res.status === 200){
         const accessToken = res.headers['authorization'];
-
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; 
         const data = res.data;
         console.log(data);
