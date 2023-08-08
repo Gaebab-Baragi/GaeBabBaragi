@@ -21,6 +21,7 @@ import site.doggyyummy.gaebap.domain.recipe.service.RecipeService;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class RecipeController {
             @ApiResponse(responseCode = "400", description = "upload fail")
     })
     @PostMapping("/recipes/new")
-    public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo,@RequestPart MultipartFile[] stepImages) throws IOException {
+    public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo,@RequestPart List<MultipartFile> stepImages) throws IOException {
 
         Member member = SecurityUtil.getCurrentLoginMember();
         if(member==null){
@@ -53,25 +54,6 @@ public class RecipeController {
         }
     }
 
-//    @Operation(summary = "create recipe", description = "레시피 등록")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200",description = "upload success", content=@Content(schema = @Schema(implementation = RecipeUploadResponseDto.class))),
-//            @ApiResponse(responseCode = "400", description = "upload fail")
-//    })
-//    @PostMapping("/recipes/new")
-//    public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo) throws IOException {
-//
-//        Member member = SecurityUtil.getCurrentLoginMember();
-//        if(member==null){
-//            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"로그인을 해주세요");
-//        }
-//        try {
-//            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(member,recipeUploadRequestDto,recipeImage,recipeVideo);
-//            return resDto;
-//        }catch (IllegalArgumentException e){
-//            return new RecipeUploadResponseDto(null,null,HttpStatus.SC_BAD_REQUEST,e.getMessage());
-//        }
-//    }
     //레시피 id로 조회
     @Operation(summary = "search recipe by recipeId",description = "레시피 상세 조회")
     @GetMapping("/recipes/{id}")
