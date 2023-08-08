@@ -7,6 +7,7 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 import site.doggyyummy.gaebap.domain.recipe.entity.RecipeIngredient;
 import site.doggyyummy.gaebap.domain.recipe.entity.Step;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,8 @@ public class RecipeFindByIdResponseDto {
     private String description;
     private String imgUrl;
     private String videoUrl;
+    private Long hit;
+    private LocalDateTime writtenTime;
 
     private int statusCode;
     private String errorMessage;
@@ -29,8 +32,10 @@ public class RecipeFindByIdResponseDto {
         this.statusCode=statusCode;
         this.errorMessage=errorMessage;
     }
-    public RecipeFindByIdResponseDto(String title, String description, MemberDto member, List<StepDto> steps, List<RecipeIngredientDto> recipeIngredients,List<IngredientDto> ingredients){
+    public RecipeFindByIdResponseDto(String title, Long hit,LocalDateTime writtenTime, String description, MemberDto member, List<StepDto> steps, List<RecipeIngredientDto> recipeIngredients,List<IngredientDto> ingredients){
         this.title=title;
+        this.hit=hit;
+        this.writtenTime=writtenTime;
         this.description=description;
         this.member=member;
         this.steps=steps;
@@ -40,10 +45,11 @@ public class RecipeFindByIdResponseDto {
     public RecipeFindByIdResponseDto(Recipe recipe, Member member, List<Step> steps,List<RecipeIngredient> recipeIngredients,List<Ingredient> ingredients){
         this.title=recipe.getTitle();
         this.description=recipe.getDescription();
-
+        this.hit=recipe.getHit();
+        this.writtenTime=recipe.getWrittenTime();
         this.imgUrl=recipe.getImageUrl();
         this.videoUrl=recipe.getVideoUrl();
-        this.member=new MemberDto(member.getUsername());
+        this.member=new MemberDto(member.getUsername(),member.getNickname(),member.getProfileUrl());
         // Convert List<Step> to List<StepDto>
         this.steps = steps.stream()
                 .map(step -> new StepDto(step.getOrderingNumber(), step.getDescription()))
@@ -59,8 +65,12 @@ public class RecipeFindByIdResponseDto {
     @Getter
     public static class MemberDto{
         private String name;
-        public MemberDto(String name){
+        private String nickname;
+        private String memberImage;
+        public MemberDto(String name,String nickname,String memberImage){
             this.name=name;
+            this.nickname=nickname;
+            this.memberImage=memberImage;
         }
     }
     @Getter

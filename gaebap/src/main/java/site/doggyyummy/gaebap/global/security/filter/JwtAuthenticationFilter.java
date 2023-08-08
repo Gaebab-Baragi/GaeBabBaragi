@@ -19,6 +19,7 @@ import site.doggyyummy.gaebap.global.security.service.JwtService;
 import site.doggyyummy.gaebap.global.security.util.PasswordUtil;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -37,46 +38,52 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String refreshToken = jwtService.extractRefreshToken(request)
-                .filter(jwtService::isTokenValid)
-                .orElse(null);
-
-        if (refreshToken != null) {
-            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-            return;
-        }
-
-        if (refreshToken == null) {
-            checkAccessTokenAndAuthentication(request, response, filterChain);
-        }
+        checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 
     private String reIssueRefreshToken(Member member) {
         log.info("reIssueRefreshToken() 호출");
         String reIssuedRefreshToken = jwtService.createRefreshToken();
-        member.updateRefreshToken(reIssuedRefreshToken);
-        memberRepository.saveAndFlush(member);
+        log.info("reissue: member : {}", member);
         return reIssuedRefreshToken;
     }
 
-    public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
+    public void checkRefreshTokenAndReIssueAccessToken(HttpServletRequest request, HttpServletResponse response) {
+
         log.info("checkRefreshTokenAndReIssueAccessToken() 호출");
+
+        String refreshToken = jwtService.extractRefreshToken(request)
+                .filter(jwtService::isTokenValid)
+                .orElse(null);
+
+        if (refreshToken == null) return;
+
         memberRepository.findByRefreshToken(refreshToken)
                 .ifPresent(member-> {
                     String reIssuedRefreshToken = reIssueRefreshToken(member);
                     jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getUsername()),
                             reIssuedRefreshToken);
+                    jwtService.updateRefreshToken(member.getUsername(), reIssuedRefreshToken);
+                    saveAuthentication(member);
+                    log.info("authenticatedMember : {}", member);
                 });
     }
 
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
                                                   FilterChain filterChain) throws ServletException, IOException {
         log.info("checkAccessTokenAndAuthentication() 호출");
-        jwtService.extractAccessToken(request)
-                .filter(jwtService::isTokenValid)
-                .ifPresent(accessToken -> jwtService.extractName(accessToken)
-                        .ifPresent(name-> memberRepository.findByUsername(name)
-                                .ifPresent(this::saveAuthentication)));
+
+        Optional<String> accessToken = jwtService.extractAccessToken(request);
+        if (accessToken.isPresent() && jwtService.isTokenValid(accessToken.get())){
+            Optional<String> name = jwtService.extractName(accessToken.get());
+            if (name.isPresent()){
+                Optional<Member> member = memberRepository.findByUsername(name.get());
+                if (member.isPresent()) saveAuthentication(member.get());
+                else checkRefreshTokenAndReIssueAccessToken(request, response);
+            }
+            else checkRefreshTokenAndReIssueAccessToken(request, response);
+        }
+        else checkRefreshTokenAndReIssueAccessToken(request, response);
 
         filterChain.doFilter(request, response);
     }

@@ -14,7 +14,9 @@ public class SecurityUtil {
     public static Member getCurrentLoginMember() throws NoSuchUserException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            log.info("authentication: {}", authentication);
             Object principal = authentication.getPrincipal();
+            log.info("principal: {}", principal);
             PrincipalDetails principalDetails = (PrincipalDetails) principal;
             return principalDetails.getMember();
         }

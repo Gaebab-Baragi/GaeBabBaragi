@@ -22,9 +22,12 @@ public interface MeetingService {
 
     FindOneMeetingResponseDTO findOne(Long id);
 
+    List<FindMeetingResponseDTO> findByMember(Long memberId);
+
     MessageResponseDTO joinRequest(Long id, Long member_id);
 
     void join(Long id, Long memberId);
 
     void left(Long id, Long memberId);
+
 }

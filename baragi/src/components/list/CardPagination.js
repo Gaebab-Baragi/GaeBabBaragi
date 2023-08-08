@@ -33,6 +33,7 @@ function CardPaginationList({rowNum}) {
       })
   }, []);
 
+
   useEffect(() => {
     setCount(items.length);
   }, [items]);

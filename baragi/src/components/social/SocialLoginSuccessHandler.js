@@ -1,10 +1,8 @@
-import axios from "../../axios/axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { loginUser } from "../../redux/userSlice";
-
-
+import axios from "axios";
 
 const SocialLoginHandler= () => {
 
@@ -13,7 +11,7 @@ const SocialLoginHandler= () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get( "/oauth2/success", {
+        axios.get( "/api/oauth2/success", {
             params : {token : params.token},
             headers: {'content-type': 'application/json'}
         }
@@ -21,7 +19,6 @@ const SocialLoginHandler= () => {
         .then((res) => {
             if (res.status === 200){
                 const accessToken = params.token;
-                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
                 dispatch(loginUser(res.data));
                 navigate("/");
             }

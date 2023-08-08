@@ -1,19 +1,34 @@
 import { useCallback, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../../redux/userSlice';
-import axios from "../../axios/axios";
 import "./css/MemberModification.css"
+import axios from "axios";
 
 function MemberModificationForm(){
-    const user = useSelector((state) => (state.user));
+    const [username, setUsername] = useState('');
+    const [profileUrl, setProfileUrl] = useState('');
     const [nickname, setNickname] = useState('');
+    const [originNickname, setOriginNickname] = useState('');
     const [nicknameDuplicateCheck, setNicknameDuplicateCheck] = useState(false);
     const [validNickname, setValidNickname] = useState(false);
-    const [profileUrl, setProfileUrl] = useState(user.profileUrl);
     const [base64, setBase64] = useState('');
     const [fileType, setFileType] = useState('');
-    const dispatch = useDispatch();
+
+    useEffect(()=> {
+        axios.get("/api/member")
+        .then((res) => {
+            if (res.status === 200){
+                setOriginNickname(res.data.nickname);
+                setUsername(res.data.username);
+                setProfileUrl(res.data.profile_url);
+            }
+            else {
+                alert("회원 정보를 불러 올 수 없습니다.");
+            }
+        })
+        .catch((res) => {
+            alert("회원 정보를 불러 올 수 없습니다.");
+        })
+    }, [])
 
     useEffect(()=>{
         setValidNickname(nickname.length<=30)
@@ -28,10 +43,13 @@ function MemberModificationForm(){
         console.log('Nickname-Duplication-Check')
 
         let body = JSON.stringify({
-            nickname : nickname ? nickname : user.nickname,
+            nickname : nickname ? nickname : originNickname,
         })
 
-        axios.post('/member/modify/nickname', body, {
+        axios.post('/api/member/modify/nickname', body, {
+            headers: { 
+                "Content-Type": `application/json; charset= UTF-8`
+            }
         })
         .then((res)=>{
         if (res.status === 200) {
@@ -47,7 +65,7 @@ function MemberModificationForm(){
         else alert("이유를 알 수 없는 오류");
         })
 
-    }, [nickname, user.nickname]);
+    }, [nickname, originNickname]);
 
 
     const onSubmit = (e) => {
@@ -57,15 +75,15 @@ function MemberModificationForm(){
         } 
         else {
             let body = JSON.stringify({
-                username : user.username,
-                nickname : nickname ? nickname : user.nickname,
+                username : username,
+                nickname : nickname ? nickname : originNickname,
                 file : base64,
                 fileType : fileType
             });
-            axios.put('/member/modify', body)
+            axios.put('/api/member/modify', body)
             .then((res)=>{
                     let data = res.data;
-                    dispatch(loginUser(data))
+                    alert("회원 정보를 수정했습니다.");
             })
             .catch((res) => {
                 console.log(res);
@@ -94,7 +112,7 @@ function MemberModificationForm(){
 
     const letsTest = (e) => {
         e.preventDefault();
-        axios.get("/member/test")
+        axios.get("/api/member/test")
         .then((res) =>{
         if (res.status === 200){
             console.log("yes!");
@@ -115,11 +133,11 @@ function MemberModificationForm(){
             <div className="formTitle">프로필 수정</div>
             {/* 프로필 이미지 */}
 
-            <label htmlFor="photo-upload" className="custom-file-upload fas">
+            <label htmlFor={username} className="custom-file-upload fas">
                 <div className="img-wrap img-upload" >
-                    <img className="member-profile-img" src={profileUrl} htmlFor="photo-upload" alt="프로필"/>
+                    <img className="member-profile-img" src={profileUrl} htmlFor={username} alt="프로필"/>
                 </div>
-                <input id="photo-upload" type="file" onChange={(e) => {onProfileChange(e)}}/> 
+                <input id={username} type="file" className="photo-upload" onChange={(e) => {onProfileChange(e)}}/> 
             </label>
 
             <hr/>
@@ -127,14 +145,14 @@ function MemberModificationForm(){
             {/* 내 아이디(이메일) */}
             <div className="formGroup">
                 <label htmlFor="formNickname" className="member-info-label"> 이메일 </label> 
-                <input className='formInput' type="id" id="myEmail" placeholder={user.username} disabled />
+                <input className='formInput' type="id" id="myEmail" placeholder={username} disabled />
             </div>
 
             {/* 닉네임 수정*/}
             <div className="formGroup">
                 <label htmlFor="formNickname" className="member-info-label"> 닉네임 </label> 
                 <div className="formGroupComponent">
-                    <input className='formInput' onChange={e=>{setNickname(e.target.value)}} type="text" id='formNickname' placeholder={user.nickname} />
+                    <input className='formInput' onChange={e=>{setNickname(e.target.value)}} type="text" id='formNickname' placeholder={originNickname} />
                     <button className='duplicationCheckButton' onClick={handleNicknameDuplicateCheck}>중복 확인</button>
                 </div>
                 { !validNickname && nickname.length>=1 && (

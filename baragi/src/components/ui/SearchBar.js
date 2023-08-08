@@ -4,8 +4,6 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import "./SearchBar.css";
-import SearchIcon from '@mui/icons-material/Search';
-import '@mui/icons-material'
 import { useDispatch } from "react-redux";
 import {updateKeyword, requestFilteredRecipeList} from "../../redux/recipeSearchSlice";
 import useDidMountEffect from "../../useDidMountEffect";
@@ -90,7 +88,8 @@ function SearchBar({  data }) {
           onChange={handleFilter}
         />
         <div onClick={handleRequestFilteredList} className="searchIcon">
-          <SearchIcon/>
+          {/* <SearchIcon/> */}
+          <ion-icon name="search-outline"></ion-icon>
         </div>
       </div>
       {filteredData.length != 0 && needSearch && (
