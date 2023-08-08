@@ -13,12 +13,14 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
     @Query("SELECT m FROM Meeting m " +
             "JOIN FETCH m.recipe r " +
+            "JOIN FETCH m.host h " +
             "WHERE m.status != 'IN_PROGRESS' " +
             "ORDER BY m.startTime")
     List<Meeting> findAll();
 
     @Query("SELECT m FROM Meeting m " +
             "JOIN FETCH m.recipe r " +
+            "JOIN FETCH m.host h " +
             "WHERE r.id = :recipeId " +
             "AND m.status != :status " +
             "ORDER BY m.startTime ASC")
