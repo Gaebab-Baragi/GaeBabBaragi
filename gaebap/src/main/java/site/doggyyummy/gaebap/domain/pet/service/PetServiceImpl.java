@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PetServiceImpl implements PetService {
 
     private final PetRepository petRepository;
@@ -42,9 +44,8 @@ public class PetServiceImpl implements PetService {
     @Override
     @Transactional
     public void create(PetRequestDTO dto, MultipartFile petImage) throws IOException{
-        Member member=new Member();
-        member.setId(SecurityUtil.getCurrentLoginMember().getId());
-        System.out.println("member.getUsername() = " + member.getUsername());
+        Member member=SecurityUtil.getCurrentLoginMember();
+        log.info("member.getUsername() = {}", member.getUsername());
         Pet pet = dto.toEntity();
         pet.setMember(member);
         List<Long> forbiddenList = dto.getForbiddenIngredients();
@@ -104,8 +105,7 @@ public class PetServiceImpl implements PetService {
 
         findPet.setName(dto.getName());
 
-
-        if(!petImage.isEmpty()) {
+        if(!(petImage == null) && !petImage.isEmpty()) {
             String S3Key = findPet.getS3Key();
             if(S3Key!=null) {
                 deleteFile(S3Key);
@@ -117,9 +117,6 @@ public class PetServiceImpl implements PetService {
             findPet.setS3Key(S3Key);
         }
 
-        Member memberRef = new Member();
-        memberRef.setId(SecurityUtil.getCurrentLoginMember().getId());
-        findPet.setMember(memberRef);
         List<Forbidden> removeForbidden = findPet.getForbiddens();
         for (Forbidden forbidden :removeForbidden ){
             forbiddenRepository.delete(forbidden);
@@ -135,8 +132,6 @@ public class PetServiceImpl implements PetService {
             findPet.getForbiddens().add(forbidden);
             System.out.println(findPet.getForbiddens());
         }
-
-
     }
 
     @Override

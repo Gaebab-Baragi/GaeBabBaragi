@@ -113,6 +113,7 @@ public class SecurityConfig {
                                 .logoutSuccessUrl(frontUrl)
                                 .invalidateHttpSession(true)
                                 .deleteCookies("refreshToken")
+                                .invalidateHttpSession(true)
                 );
 
 

@@ -31,6 +31,7 @@ let streamingRegister= createSlice({
     setStartTime: (state, action) =>{
       state.start_time = action.payload;
       console.log('start time : ' + state.start_time)
+      console.log('start time : ' + typeof(state.start_time))
     },
     setRecipeId : (state, action) => {
       // 추후 수정
