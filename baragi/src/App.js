@@ -68,6 +68,7 @@ function App() {
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         {/* 펫  */}
+        <Route path='/my-pet-list/:idx' element={<PetListPage/>}></Route>
         <Route path='/my-pet-list' element={<PetListPage/>}></Route>
         
         {/*-----------------------로그인 관련-------------------------------*/}

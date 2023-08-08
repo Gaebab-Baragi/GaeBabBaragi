@@ -5,9 +5,9 @@ import './css/BasicForm.css'
 import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 import { useDispatch } from "react-redux";
 import defaultImg from "./default.png"
+import { useNavigate } from "react-router-dom";
 
 function PetRegisterForm({petInfo, idx}) {
-  const dispatch = useDispatch();
   const [pet, setPet] = useState({})
   const [petName, setPetName] = useState('')
   const [forbiddens, setForbiddens] = useState([])
@@ -15,16 +15,16 @@ function PetRegisterForm({petInfo, idx}) {
   const [file, setFile] = useState('')
   const [selected, setSelected] = useState([]);
 
+  const navigate = useNavigate();
+
   useEffect(()=>{
     if (petInfo) {
-      console.log("petInfo: ", petInfo);
       setPet(petInfo.pet);
       setPetName(petInfo.name);
       setPetImage(petInfo.imgUrl);
       setForbiddens(petInfo.forbiddens);
-      console.log(idx);
     }
-  },[])
+  },[idx])
 
   useEffect(() => {
     if (!petImage) {
@@ -80,6 +80,8 @@ function PetRegisterForm({petInfo, idx}) {
       })
       .then((res) => {
         console.log("axios success :", res.data);
+        alert("추가되었습니다.")
+        navigate("/my-pet-list/"+ idx);
       })
       .catch((err) => {
         console.log("error : ", err);
@@ -110,6 +112,7 @@ function PetRegisterForm({petInfo, idx}) {
       })
       .then((res) => {
         console.log("axios success :", res.data);
+        alert("수정되었습니다.")
       })
       .catch((err) => {
         console.log("error : ", err);

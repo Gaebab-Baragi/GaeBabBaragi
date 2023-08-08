@@ -1,6 +1,6 @@
 import './PetListPage.css'
 import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -8,9 +8,11 @@ import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import axios from 'axios';
 import PetRegisterForm from '../../components/form/PetRegisterForm';
+import { useParams } from 'react-router-dom';
 
 function PetListPage() {
   const [petList, setPetList] = useState([])
+  const { idx } = useParams();
 
   useEffect(()=>{
     axios.get(`/api/pet`)
@@ -23,7 +25,7 @@ function PetListPage() {
     .catch((err)=>{
       console.log('error : ' , err)
     })
-  },[])
+  },[idx])
 
   return(
     <div className='pageContainer'>
@@ -46,16 +48,17 @@ function PetListPage() {
         className="mySwiper"
         slideToClickedSlide={true}
         noSwipingClass='react-tags__listbox-option'
+        initialSlide={idx}
       >
       {petList.map((petInfo, index)=>{
         return(
-          <SwiperSlide style={{width:"400px" }} key= {index}>
-            <PetRegisterForm className='swiper-no-swiping' petInfo={petInfo} idx={index}/>
+          <SwiperSlide style={{width:"400px" }} key= {index +1}>
+            <PetRegisterForm className='swiper-no-swiping' petInfo={petInfo} idx={index + 1}/>
           </SwiperSlide>
         )
       })}
-        <SwiperSlide style={{width:"400px" }} key= "add">
-          <PetRegisterForm className='swiper-no-swiping' idx={petList.length}/>
+        <SwiperSlide style={{width:"400px" }} key= {petList.length + 1}>
+          <PetRegisterForm className='swiper-no-swiping' idx={petList.length +1 }/>
         </SwiperSlide>
       </Swiper>
     </div>
