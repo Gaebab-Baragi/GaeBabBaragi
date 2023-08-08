@@ -56,9 +56,11 @@ function StreamingRegisterPage() {
 
     
     <div className="StreamingRegisterContainer">
-      <StreamingForm/>
+      {/* <StreamingForm/> */}
+      <div className="StreamingHeader">
       <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
       <h4 className="StreamingRegisterSemiTitle">스트리밍 기본 정보 입력</h4>
+      </div>
       <div className="inputContainer">
         <div className="inputContainer-left">
           <label>방 제목 </label>

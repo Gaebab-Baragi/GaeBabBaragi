@@ -19,20 +19,25 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
   const [file, setFile] = useState("");
   const fileInputRef = useRef(null);
 
-  const handleStepImage = (e)=>{
+  const handleStepImage = (e, step) => {
     const selectedImage = e.target.files[0];
+    console.log('handlestep임', step,selectedImage)
+    const context = {
+      'step' : step,
+      'selectedImage' : selectedImage
+    } 
+    dispatch(updateStepImage(context));
     // dispatch(updateStepImage(selectedImage,step));
-    setFile(selectedImage);
-    onStepImageChange(step,selectedImage)
-    if (selectedImage) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      console.log(file);
-      reader.readAsDataURL(selectedImage);
+    // setFile(selectedImage);
+    // if (selectedImage) {
+    //   const reader = new FileReader();
+    //   reader.onloadend = () => {
+    //     setImage(reader.result);
+    //   };
+    //   console.log(file);
+    //   reader.readAsDataURL(selectedImage);
     
-  }}
+  }
 
 
   return (
@@ -49,7 +54,7 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
           placeholder="예)요리방법 돼지고기 소고기 요리해줘"
           style = {{ flex : 1, marginRight : '3%' }}
         />
-        <input type="file" accept="" onChange={handleStepImage}/>
+      <input type="file" accept="" onChange={(e) => handleStepImage(e, step)}/>
       </div>
       <button onClick={onDelete}>-</button>
     </>

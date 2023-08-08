@@ -34,10 +34,11 @@ function RecipeRegisterPage() {
 
   return (
     <>
-    <div style={{ marginLeft:'10%' , marginRight : '10%' , marginTop : '0.5%' , marginBottom : '10%'}}>
-        <h1 style={{ textAlign : 'left' }}>레시피 등록</h1>
-        <h4 style={{textAlign:'left', marginLeft:'2%'}}>1. 대표사진 등록</h4>
-        <div style={{ marginTop : '1%', marginBottom : '1%' , backgroundColor : '#0001', justifyContent:'center', alignItems:'center'}}>
+    <div style={{ marginLeft:'15%' , marginRight : '15%' , marginTop : '0.5%' , marginBottom : '10%'}}>
+        <h1 style={{ textAlign : 'left',marginBottom :'1%' }}>레시피 등록</h1>
+        <h4 style={{textAlign:'left', marginLeft:'5%'}}>1. 대표사진 등록</h4>
+        <div style={{ marginTop : '1%', marginBottom : '1%' ,  justifyContent:'center', alignItems:'center'}}> 
+        {/* backgroundColor : '#0001', */}
           <InputImage></InputImage>
         </div>
         <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>2. 기본 정보 입력</h4>

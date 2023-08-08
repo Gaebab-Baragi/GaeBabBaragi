@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import InputCookstep from './InputCookstep';
 import { useDispatch, useSelector } from 'react-redux';
-import { requestFilteredRecipeList, updateStep,updateStepImage } from '../../redux/recipeRegisterSlice';
+import { requestFilteredRecipeList,addStepImage, updateStep,updateStepImage,deletedStepImage} from '../../redux/recipeRegisterSlice';
 import useDidMountEffect from '../../useDidMountEffect'
 
 function CookStep() {
@@ -26,16 +26,22 @@ function CookStep() {
         orderingNumber: index + 1,
       }));
     });
+    dispatch(deletedStepImage(step))
   };
 
   const handleAddInputCookstep = () => {
     const nextStepCount = inputCooksteps.length + 1;
     setStepCount(nextStepCount);
     setInputCooksteps([...inputCooksteps, { orderingNumber: nextStepCount, description: '' }]);
+    dispatch(addStepImage())
+
   };
-  const handleCookstepImage = (step, selectedImage) =>{
-    dispatch(updateStepImage(selectedImage,step));
-  }
+
+
+  // const handleCookstepImage = (step, selectedImage) =>{
+  //   console.log('Cookstep에서', step, selectedImage);
+  //   dispatch(updateStepImage(step,selectedImage));
+  // }
 
   useDidMountEffect(() => {
     dispatch(updateStep(inputCooksteps));
@@ -53,7 +59,8 @@ function CookStep() {
               step={inputCookstep.orderingNumber}
               description={inputCookstep.description}
               onCookstepChange={handleCookstepChange}
-              onStepImageChange={handleCookstepImage}
+              // onStepImageChange ={handleCookstepImage}
+              // onStepImageChange={(step, selectedImage) => handleCookstepImage(step, selectedImage)}
               onDelete={() => handleDeleteInputCookstep(inputCookstep.orderingNumber)}
             />
           </div>

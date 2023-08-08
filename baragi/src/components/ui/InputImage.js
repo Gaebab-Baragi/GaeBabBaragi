@@ -40,7 +40,7 @@ function InputImage({handleImageUpload}) {
   //   console.log('이미지 업로드:', image);
   // };
   return (
-    <>
+     <div>
       {/* 이미지 미리보기 */}
       <div>
         {image !== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '50%', height: '50%', marginBottom :'1%'}} />}
@@ -51,7 +51,7 @@ function InputImage({handleImageUpload}) {
         <button onClick={handleButtonClick}>이미지선택</button>
         <input style = {{display:'none' }} type="file" ref={fileInputRef} accept="" onChange={handleImagePreview}/>
       </div>
-    </>
+    </div>
   );
 }
 
