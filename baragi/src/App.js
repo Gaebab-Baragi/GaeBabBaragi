@@ -27,9 +27,20 @@ import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
 import Footer from './components/ui/Footer'
 // -------------------PAGES-------------------//
-
+import axios from 'axios';
 
 function App() {  
+  axios.interceptors.response.use(
+    (res) => {
+      if (res.headers['authorization']) {
+        axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
+      }
+
+      return res;
+    }
+  )
+
+
   return (
     <>
     <div className="App">
@@ -57,8 +68,7 @@ function App() {
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         {/* 펫  */}
-        <Route path='/my-pet-register' exact element={<PetRegisterPage/>}></Route>
-        <Route path='/my-pet-register/:id' element={<PetRegisterPage/>}></Route>
+        <Route path='/my-pet-list/:idx' element={<PetListPage/>}></Route>
         <Route path='/my-pet-list' element={<PetListPage/>}></Route>
         
         {/*-----------------------로그인 관련-------------------------------*/}
