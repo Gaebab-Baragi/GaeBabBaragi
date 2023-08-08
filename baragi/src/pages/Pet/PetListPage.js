@@ -7,17 +7,18 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination, Navigation, Mousewheel } from 'swiper/modules';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import PetListForm from '../../components/form/PetListForm';
+import PetRegisterForm from '../../components/form/PetRegisterForm';
+
 function PetListPage() {
   const [petList, setPetList] = useState([])
-  const user = useSelector(state=>state.user)
 
   useEffect(()=>{
-    axios.get(`/api/pet?member_id=${user.id}`)
+    axios.get(`/api/pet`)
     .then((res)=>{
-      console.log('pet list : ' , res.data)
-      setPetList(res.data)
+      if (res.status === 200){
+        console.log('pet list : ' , res.data)
+        setPetList(res.data)
+      }
     })
     .catch((err)=>{
       console.log('error : ' , err)
@@ -46,10 +47,10 @@ function PetListPage() {
         className="mySwiper"
       >
 
-      {petList.map((pet)=>{
+      {petList.map((petInfo)=>{
         return(
           <SwiperSlide style={{width:"400px" }}>
-            <PetListForm pet={pet}/>
+            <PetRegisterForm pet={petInfo}/>
           </SwiperSlide>
         )
       })}

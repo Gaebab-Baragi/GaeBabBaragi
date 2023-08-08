@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.domain.pet.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
@@ -25,14 +26,14 @@ public class PetController {
         return petDTO;
     }
     @GetMapping("")
-    public List<PetResponseDTO> selectByMember(@RequestParam(name= "member_id") Long memberId){
-        List<PetResponseDTO> petDTO = petService.selectByMember(memberId);
+    public List<PetResponseDTO> selectByMember(){
+        List<PetResponseDTO> petDTO = petService.selectByMember(SecurityUtil.getCurrentLoginMember().getId());
         return petDTO;
     }
 
-    @PostMapping("")
-    public void create(@RequestPart PetRequestDTO dto, @RequestPart MultipartFile petImage) throws IOException {
-        petService.create(dto,petImage);
+    @PostMapping(value = "", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void create(@RequestPart(value= "dto") PetRequestDTO dto, @RequestPart(value="petImage") MultipartFile petImage) throws IOException {
+        petService.create(dto, petImage);
     }
     @PutMapping("")
     public void modify(@RequestPart PetRequestDTO dto,@RequestPart MultipartFile petImage) throws IOException{
