@@ -65,7 +65,6 @@ function App() {
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/logout' element={<LogoutHandler/>}></Route>
         
-        {/*-----------------------로그인 관련-------------------------------*/}
         <Route path="*" element={ <div>없는페이지임</div> } />
         <Route path='/object-detect' element={<ObjectDetectionPage></ObjectDetectionPage>}></Route>
       </Routes>

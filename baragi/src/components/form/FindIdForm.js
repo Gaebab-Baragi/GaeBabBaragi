@@ -1,7 +1,7 @@
 import React from 'react';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
-import './BasicForm.css'
+import './css/BasicForm.css'
 
 function FindIdForm() {
   const navigate = useNavigate();

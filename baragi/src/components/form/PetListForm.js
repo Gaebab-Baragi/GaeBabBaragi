@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 
 function PetListForm({ pet }) {
   const navigate = useNavigate();
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   const [forbidden, setForbidden] = useState();
   const defaultImageUrl = "./기본이미지.PNG";
 
