@@ -1,40 +1,31 @@
-.ChatContainer {
+#chatContainer {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-left: 1%;
+  justify-content: flex-start;
+  /* align-items: flex-start; */
+  margin-left: 3%;
   margin-top: 1%;
-  width: 40%;
   background-color: #f9f9f9;
   padding: 1%;
-  box-sizing: border-box;
-  height: 80vh; /* 수정 */
-}
-
-.chatTitle {
-  font-weight: bold;
-  margin-top: 1%;
-  margin-bottom: 1%;
-}
-
-.chatContent {
-  color: black;
-  background-color: white;
-}
-
-.ChatMessages {
-  flex-grow: 1;
-  overflow-y: auto;
-  margin-bottom: 1%;
-  width: 100%;
-}
-.messageContainer{
-  width: fit-content;
-  font-size: 20px;
-}
-
-.chatInput {
+  width: 27%;
+  margin-right: 0;
   border-radius: 10px;
-  padding: 2%;
-  width: 100%;
 }
+
+.msg-info {
+  text-align: start;
+}
+
+.messageInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Center items vertically */
+  justify-content: space-between; /* Space between messageSendInput and icon */
+  width: 100%;
+  text-align: left;
+}
+
+.messageSendInput {
+  border-radius: 10px;
+}
+

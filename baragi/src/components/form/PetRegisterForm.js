@@ -41,7 +41,6 @@ function PetRegisterForm({petId}) {
     }
   };
 
-
   return (
     <div className="petContainer">
       {/* 제목 */}

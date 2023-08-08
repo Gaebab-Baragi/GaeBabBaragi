@@ -3,9 +3,8 @@ import axios from 'axios';
 import React, { Component, useEffect } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
-import ChatComponent from './Chat/ChatComponent';
 import UserModel from './user-model';
-
+import ChatComponent from './Chat/ChatComponent';
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
@@ -30,7 +29,7 @@ class Streaming extends Component {
 
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
-        this.toggleChat = this.toggleChat.bind(this);
+        // this.toggleChat = this.toggleChat.bind(this);
     
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.onbeforeunload = this.onbeforeunload.bind(this);
@@ -157,6 +156,9 @@ class Streaming extends Component {
                                 mainStreamManager: publisher,
                                 publisher: publisher,
                             });
+                            localUser.setNickname(this.state.myUserName);
+                            localUser.setConnectionId(this.state.session.connection.connectionId);
+                            localUser.setStreamManager(publisher);
                         })
                         .catch((error) => {
                             console.log('There was an error connecting to the session:', error.code, error.message);
@@ -166,8 +168,31 @@ class Streaming extends Component {
         );
     }
 
-    leaveSession() {
+    updateSubscribers() {
+      var subscribers = this.remotes;
+      this.setState(
+          {
+              subscribers: subscribers,
+          },
+          () => {
+              if (this.state.localUser) {
+                  this.sendSignalUserChanged({
+                      isAudioActive: this.state.localUser.isAudioActive(),
+                      isVideoActive: this.state.localUser.isVideoActive(),
+                      nickname: this.state.localUser.getNickname(),
+                      isScreenShareActive: this.state.localUser.isScreenShareActive(),
+                  });
+              }
+              this.updateLayout();
+          },
+      );
+  }
 
+
+    leaveSession() {
+      const sessionId = parseInt(this.state.mySessionId)
+      console.log(sessionId, typeof(sessionId))
+      axios.post(`http://localhost:8083/api/meetings/left/${sessionId}` )
         // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
         const mySession = this.state.session;
@@ -188,41 +213,20 @@ class Streaming extends Component {
         });
     }
 
-    async switchCamera() {
-        try {
-            const devices = await this.OV.getDevices()
-            var videoDevices = devices.filter(device => device.kind === 'videoinput');
+    camStatusChanged() {
+      localUser.setVideoActive(!localUser.isVideoActive());
+      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+      this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
+      this.setState({ localUser: localUser });
+  }
 
-            if (videoDevices && videoDevices.length > 1) {
-
-                var newVideoDevice = videoDevices.filter(device => device.deviceId !== this.state.currentVideoDevice.deviceId)
-
-                if (newVideoDevice.length > 0) {
-                    // Creating a new publisher with specific videoSource
-                    // In mobile devices the default and first camera is the front one
-                    var newPublisher = this.OV.initPublisher(undefined, {
-                        videoSource: newVideoDevice[0].deviceId,
-                        publishAudio: true,
-                        publishVideo: true,
-                        mirror: true
-                    });
-
-                    //newPublisher.once("accessAllowed", () => {
-                    await this.state.session.unpublish(this.state.mainStreamManager)
-
-                    await this.state.session.publish(newPublisher)
-                    this.setState({
-                        currentVideoDevice: newVideoDevice[0],
-                        mainStreamManager: newPublisher,
-                        publisher: newPublisher,
-                    });
-                }
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
+  micStatusChanged() {
+      localUser.setAudioActive(!localUser.isAudioActive());
+      localUser.getStreamManager().publishAudio(localUser.isAudioActive());
+      this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
+      this.setState({ localUser: localUser });
+  }
+    
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
@@ -302,7 +306,7 @@ class Streaming extends Component {
                         }
                     </div>
                 </div>
-                <ChatComponent nickname={this.state.myUserName}/>
+                <ChatComponent user={localUser} className="ChatComponent"/>
             </div>
         );
     }

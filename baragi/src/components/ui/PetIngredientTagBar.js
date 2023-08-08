@@ -57,7 +57,6 @@ function PetIngredientTagBar({forbiddens}) {
     [selected]
   )
 
-
   return(
     <div className="petIngredientSelect">
       <ReactTags

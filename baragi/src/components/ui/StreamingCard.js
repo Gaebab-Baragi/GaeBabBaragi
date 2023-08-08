@@ -29,6 +29,7 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
         .then((res)=>{
           console.log('미팅 참여 성공 ')
         })
+        // window.open('http://localhost:3000/streaming-live','_blank')
         navigate('/streaming-live')
         
       })
