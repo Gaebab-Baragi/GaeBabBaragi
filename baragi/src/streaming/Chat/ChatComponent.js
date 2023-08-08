@@ -20,10 +20,11 @@ export default class ChatComponent extends Component {
         // Delay the execution of the component initialization
         setTimeout(() => {
             this.initializeChat();
-        }, 2000); // Adjust the delay time as needed
+        },1000); // Adjust the delay time as needed
     }
 
     initializeChat() {
+      console.log(this.props.user.getStreamManager())
         this.props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
             const data = JSON.parse(event.data);
             let messageList = this.state.messageList;

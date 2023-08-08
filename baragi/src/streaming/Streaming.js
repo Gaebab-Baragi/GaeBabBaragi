@@ -131,7 +131,7 @@ class Streaming extends Component {
 
                             // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
                             // element: we will manage it on our own) and with the desired properties
-                            let publisher = await this.OV.initPublisherAsync(undefined, {
+                            let publisher = await this.OV.initPublisherAsync(this.state.myUserName, {
                                 audioSource: undefined, // The source of audio. If undefined default microphone
                                 videoSource: undefined, // The source of video. If undefined default webcam
                                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
@@ -140,7 +140,7 @@ class Streaming extends Component {
                                 frameRate: 30, // The frame rate of your video
                                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                                 mirror: false, // Whether to mirror your local video or not
-                            });
+                              });
 
                             // --- 6) Publish your stream ---
 
@@ -158,11 +158,13 @@ class Streaming extends Component {
                                   currentVideoDevice: currentVideoDevice,
                                   mainStreamManager: publisher,
                                   publisher: publisher,
+
                               });
                             } else {
                                 this.setState({
                                     currentVideoDevice: currentVideoDevice,
                                     publisher: publisher,
+                                    mainStreamManager: publisher,
                                 });
                             }
                             localUser.setNickname(this.state.myUserName);
@@ -271,11 +273,13 @@ class Streaming extends Component {
                             </div>
                         </div>
                       </>
-                  )  : (
+                  )  : 
                     //  호스트 찾기!!!!!!!!!!!
-                    console.log(this.state.subscribers)
+                    this.state.subscribers.map((sub,i)=>{
+                      console.log( JSON.parse(sub.streamManager.stream.connection.data).clientData)
+                    })
                     
-                  )}
+                  }
 
                   <p>이건 그외 의 화면이야!!!!!!!!!!!</p>
                   <div className='subVideos'>

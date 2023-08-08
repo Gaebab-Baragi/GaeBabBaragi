@@ -32,11 +32,13 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
         })
         // window.open('http://localhost:3000/streaming-live','_blank')
         .catch((err)=>{
-          console.log('error after join accepted', err)
+          
+          console.log('error after join accepted', err.message)
         })
       })
     .catch((err)=>{
-      console.log('error occured' + err.message)
+      alert(err.response.data.message)
+      console.log('error occured' , err.response.data)
     })
     }
     
