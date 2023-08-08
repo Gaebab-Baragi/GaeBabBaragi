@@ -1,0 +1,47 @@
+.navbar{
+    border-bottom: 2px solid #ccc;
+}
+
+.navbar-brand{
+    margin-right: 2vw;
+}
+
+.navbar-logo{
+    width: 5vw;
+    height: auto;
+}
+
+.navbar-title{
+    color: #FA0;
+    font-size: 3vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.nav-link{
+    color: #000;
+    font-size: 2vw;
+    font-weight: 500;
+}
+
+.active-link{
+    color: #FA0;
+}
+
+.nav-link:hover{
+    color: #FFEACB;
+}
+
+.navbar-nav2-link-list{
+    font-size: 1.3vw;
+}
+
+.navbar-nav2-dropdown{
+    text-align: center;
+    font-size: 1.2vw;
+}

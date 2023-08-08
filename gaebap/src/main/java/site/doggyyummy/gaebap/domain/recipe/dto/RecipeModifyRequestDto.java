@@ -14,19 +14,11 @@ public class RecipeModifyRequestDto {
 
     private List<RecipeIngredientDto> recipeIngredients;
     private List<StepDto> steps;
-    private MemberDto member;
-    private MemberDto loginMember;
 
-
-    @Getter
-    public static class MemberDto{
-        private Long id;
-    }
     @Getter
     public static class StepDto{
         private Long orderingNumber;
         private String description;
-        private String imgUrl;
     }
 
     @Getter

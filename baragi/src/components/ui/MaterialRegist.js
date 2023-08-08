@@ -41,21 +41,18 @@ function MaterialRegist() {
   // }, [inputMats]); // inputMats 변경될 때마다 실행됩니다.
 
   return (
-    <>
-    <div style={{ display: 'flex', padding: '1%'}}>
-        <h4 style={{textAlign:'left', marginLeft:'2%', marginRight : '15%'}}>3. 재료 등록</h4>
-    </div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px 0' ,flexDirection: 'column', gap: '10px' }}>
+    <div style = {{  marginTop : '1%', marginBottom:'1%', background : '#0001'}}> 
+
+      <div style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '10px' }}>
       {inputMats.map((inputMat, index) => (
         <div key={index}>
           <InputMat step={index} matName={inputMat.ingredientName} matAmount={inputMat.amount} ingredientsChange={handleIngredientsChange} />
           <button onClick={() => handleDeleteInputMat(index)}>-</button>
-          </div>
+        </div>
         ))}
-
       </div>
       <button onClick={handleAddInputMat}>+</button>
-    </>
+    </div>
   );
 }
 

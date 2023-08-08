@@ -10,7 +10,7 @@
     margin-bottom:40px;
 }
 
-#photo-upload{
+.photo-upload{
     display: none;
 }
 
@@ -46,6 +46,7 @@
 .member-profile-img {
     width: 200px;
     height: 200px;
+    object-fit: cover;
 }
 
 .member-info-label{
