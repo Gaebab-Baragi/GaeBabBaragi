@@ -44,7 +44,7 @@ function PetRegisterForm({petInfo}) {
   return (
     <div className="formContainer">
       {/* 제목 */}
-      <form className = "form" onSubmit={onSubmit}>
+      <form className = "form">
       <div className="formTitle">내 반려견</div>
 
       {/* 사진 등록 */}

@@ -28,13 +28,15 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
         axios.post(`http://localhost:8083/api/meetings/join/${meeting_id}`)
         .then((res)=>{
           console.log('미팅 참여 성공 ')
+          navigate('/streaming-live')
         })
         // window.open('http://localhost:3000/streaming-live','_blank')
-        navigate('/streaming-live')
-        
+        .catch((err)=>{
+          console.log('error after join accepted', err)
+        })
       })
     .catch((err)=>{
-      console.log('error occured' + err)
+      console.log('error occured' + err.message)
     })
     }
     

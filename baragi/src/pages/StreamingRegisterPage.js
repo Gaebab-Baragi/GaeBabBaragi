@@ -3,6 +3,9 @@ import StreamingForm from "../components/form/StreamingForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./StreamingRegisterPage.css";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 function StreamingRegisterPage() {
   const [roomTitle, setRoomTitle] = useState("");
   const [roomDescription, setRoomDescription] = useState("");
@@ -10,6 +13,16 @@ function StreamingRegisterPage() {
   const [selectedTime, setSelectedTime] = useState("");
   const [maxParticipant, setMaxParticipant] = useState(2);
   const [password, setPassword] = useState("");
+  const user = useSelector(state=>state.user)
+  const navigate = useNavigate();
+  // 로그인 안된 유저는 접근 안됨
+  useEffect(()=>{
+    if (!user.id) {
+      alert('로그인 후 이용해주세요.')
+      navigate('/login')
+    }
+  },[])
+
   const handleIncrease = (e) => {
     e.preventDefault();
     if (maxParticipant < 5) {

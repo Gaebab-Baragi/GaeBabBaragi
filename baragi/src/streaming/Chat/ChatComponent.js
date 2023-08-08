@@ -74,11 +74,13 @@ export default class ChatComponent extends Component {
   render() {
 
     return (
-        <div id="chatContainer">
+      <div className='totalChatContainer'>
           {/* 제목 */}
           <div className="titleContainer">
-            <p> 레시피 보기 | 채팅</p>
+            <p className='chatTitleDetail'> 레시피 보기 | 채팅</p>
           </div>
+
+        <div id="chatContainer">
           {/* 채팅 목록 */}
           <div id="chatComponent">
             <div className="message-wrap" ref={this.chatScroll}>
@@ -102,16 +104,16 @@ export default class ChatComponent extends Component {
           <div id="messageInput">
             <input
               className='messageSendInput'
-              placeholder="Send a messge"
+              placeholder=""
               id="chatInput"
               value={this.state.message}
               onChange={this.handleChange}
               onKeyPress={this.handlePressKey}
             />
             <ion-icon class="messageSendButton" name="arrow-forward-circle-outline" onClick={this.sendMessage}></ion-icon>
-              
           </div>
         </div>
+      </div>
     );
   }
 }

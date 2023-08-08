@@ -5,8 +5,8 @@ import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
-
 var localUser = new UserModel();
+
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
 
@@ -188,29 +188,36 @@ class Streaming extends Component {
       );
   }
 
-
     leaveSession() {
+      window.location.replace('/streaming-list')
       const sessionId = parseInt(this.state.mySessionId)
-      console.log(sessionId, typeof(sessionId))
-      axios.post(`http://localhost:8083/api/meetings/left/${sessionId}` )
-        // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+        console.log(sessionId, typeof(sessionId))
+        axios.post(`http://localhost:8083/api/meetings/left/${sessionId}`)
+            .then(() => {
+                // Leave the session and perform navigation after the axios call
+                const mySession = this.state.session;
 
-        const mySession = this.state.session;
+                if (mySession) {
+                    mySession.disconnect();
+                }
 
-        if (mySession) {
-            mySession.disconnect();
-        }
+                this.OV = null;
+                this.setState({
+                    session: undefined,
+                    subscribers: [],
+                    mySessionId: 'SessionA',
+                    myUserName: 'Participant' + Math.floor(Math.random() * 100),
+                    mainStreamManager: undefined,
+                    publisher: undefined
+                });
 
-        // Empty all properties...
-        this.OV = null;
-        this.setState({
-            session: undefined,
-            subscribers: [],
-            mySessionId: 'SessionA',
-            myUserName: 'Participant' + Math.floor(Math.random() * 100),
-            mainStreamManager: undefined,
-            publisher: undefined
-        });
+                window.location.replace('/streaming-list')
+            })
+            .catch(error => {
+                console.error('Error leaving session:', error);
+            });
+
+        
     }
 
     camStatusChanged() {
