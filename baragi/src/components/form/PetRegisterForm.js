@@ -4,31 +4,44 @@ import './css/MemberModification.css'
 import './css/BasicForm.css'
 import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 import { useDispatch } from "react-redux";
+import defaultImg from "./default.png"
 
-function PetRegisterForm({petInfo}) {
+function PetRegisterForm({petInfo, idx}) {
   const dispatch = useDispatch();
   const [pet, setPet] = useState({})
   const [petName, setPetName] = useState('')
-  const defaultImageUrl = "./default.png";
-  const [petImage, setPetImage] = useState(defaultImageUrl)
+  const [forbiddens, setForbiddens] = useState([])
+  const [petImage, setPetImage] = useState(defaultImg)
   const [file, setFile] = useState('')
   const [selected, setSelected] = useState([]);
 
   useEffect(()=>{
     if (petInfo) {
+      console.log("petInfo: ", petInfo);
       setPet(petInfo.pet);
       setPetName(petInfo.name);
       setPetImage(petInfo.imgUrl);
+      setForbiddens(petInfo.forbiddens);
+      console.log(idx);
     }
   },[])
 
+  useEffect(() => {
+    if (!petImage) {
+      setPetImage(defaultImg);
+      setFile(null);
+    }
+  }, [petImage, file]);
+
   const selectIngredients = (sel) => {
+    console.log("sel:", sel);
     setSelected(sel);
   }
 
   // ==========================사진 등록===================//
   const handleImagePreview = (e) => {
     e.preventDefault();
+    console.log(idx);
     const selectedImage = e.target.files[0];
     setPetImage(selectedImage)
     setFile(selectedImage)
@@ -41,7 +54,7 @@ function PetRegisterForm({petInfo}) {
     }
   };
 
-  const onSubmit = (e) => {
+  const registerPet = (e) => {
     e.preventDefault();
     let tmp = []
     selected.map((i)=>{
@@ -63,7 +76,37 @@ function PetRegisterForm({petInfo}) {
 
     axios
       .post("/api/pet", formData, {
-       
+        headers : { 'Content-Type' : 'multipart/form-data'}
+      })
+      .then((res) => {
+        console.log("axios success :", res.data);
+      })
+      .catch((err) => {
+        console.log("error : ", err);
+      });
+  }
+
+  const modifyPet = (e) => {
+      e.preventDefault();
+      let tmp = []
+      selected.map((i)=>{
+        tmp.push(i.value)
+      })
+      const formData = new FormData();
+      if (file) formData.append("petImage", file);
+      const datas = {
+        id : petInfo.id,
+        name: petName,
+        forbiddenIngredients: tmp 
+      };
+      formData.append(
+        "dto",
+        new Blob([JSON.stringify(datas)], { type: "application/json" })
+      );
+
+    axios
+      .post("/api/pet/modify", formData, {
+        headers : { 'Content-Type' : 'multipart/form-data'}
       })
       .then((res) => {
         console.log("axios success :", res.data);
@@ -72,20 +115,23 @@ function PetRegisterForm({petInfo}) {
         console.log("error : ", err);
       });
 
+
   }
+
+
 
   return (
     <div className="formContainer">
       {/* 제목 */}
-      <form className = "form" onSubmit={onSubmit}>
+      <form className = "form">
       <div className="formTitle">내 반려견</div>
 
       {/* 사진 등록 */}
-      <label htmlFor="photo-upload" className="custom-file-upload fas">
+      <label htmlFor={"upload-"+idx} className="custom-file-upload fas">
           <div className="img-wrap img-upload" >
-              <img className="member-profile-img" src={petImage} htmlFor="photo-upload" alt="프로필"/>
+              <img className="member-profile-img" src={petImage} htmlFor={"upload-"+idx} alt="프로필"/>
           </div>
-          <input id="photo-upload" type="file" onChange={(e) => {handleImagePreview(e)}}/> 
+          <input id={"upload-"+idx} className="photo-upload" type="file" onChange={(e) => {handleImagePreview(e)}}/> 
       </label>
 
       {/* pet 이름 */}
@@ -93,7 +139,7 @@ function PetRegisterForm({petInfo}) {
         <input
           className="formInput"
           type="text"
-          placeholder={petInfo? pet.name : "이름이 뭔가요?"}
+          placeholder={petInfo? petInfo.name : "이름이 뭔가요?"}
           onChange={(e) => {
             setPetName(e.target.value);
           }}
@@ -102,14 +148,18 @@ function PetRegisterForm({petInfo}) {
 
       {/* 기피 재료 등록 */}
       {petInfo? (
-        <PetIngredientTagBar forbiddens={pet.forbiddens} selectIngredients={selectIngredients} />
-      ) : <PetIngredientTagBar selectIngredients={selectIngredients}/>}
+        <PetIngredientTagBar forbiddens={petInfo.forbiddens} selectIngredients={selectIngredients} />
+      ) : <PetIngredientTagBar selectIngredients={selectIngredients} id={0}/>}
 
       {/* 등록 버튼 */}
-      <button className="petRegisterBtn" onClick={()=>{
-        
+      <button className="submitButton" onClick={(e)=>{
+          e.preventDefault();
+          if (petInfo) modifyPet(e);
+          else registerPet(e);
         }}>
-        등록하기
+          {
+            petInfo? '수정하기' : '등록하기'
+        }
       </button>
       </form>
     </div>

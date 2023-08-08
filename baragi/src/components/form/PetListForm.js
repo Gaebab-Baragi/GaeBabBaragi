@@ -23,10 +23,6 @@ function PetListForm({ pet }) {
     console.log('tmp : ', tmp)
   },[])
 
-  const handleNavigate = ((e)=>{
-    e.preventDefault();
-    navigate(`/my-pet-register/${pet.id}`)
-  })
 
   return (
     <div className="petContainer">

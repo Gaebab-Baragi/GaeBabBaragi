@@ -1,11 +1,11 @@
 import './PetListPage.css'
-import React, { useEffect, useState,useRef} from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
-import { EffectCoverflow, Pagination, Navigation, Mousewheel } from 'swiper/modules';
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import axios from 'axios';
 import PetRegisterForm from '../../components/form/PetRegisterForm';
 
@@ -26,12 +26,12 @@ function PetListPage() {
   },[])
 
   return(
-    <div>
+    <div className='pageContainer'>
       <Swiper
         effect={'coverflow'}
         grabCursor={true}
         centeredSlides={true}
-        slidesPerView={3}
+        slidesPerView={"auto"}
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
@@ -41,20 +41,22 @@ function PetListPage() {
         }}
         style={{width:"80%"}}
         pagination={true}
-        // navigation={{nextEl:'.swiper-button-next', prevEl:'.swiper-button-prev', clickable:true,}}
         mousewheel={true}
         modules={[EffectCoverflow, Pagination, Navigation]}
         className="mySwiper"
+        slideToClickedSlide={true}
+        noSwipingClass='react-tags__listbox-option'
       >
-
-      {petList.map((petInfo)=>{
+      {petList.map((petInfo, index)=>{
         return(
-          <SwiperSlide style={{width:"400px" }}>
-            <PetRegisterForm pet={petInfo}/>
+          <SwiperSlide style={{width:"400px" }} key= {index}>
+            <PetRegisterForm className='swiper-no-swiping' petInfo={petInfo} idx={index}/>
           </SwiperSlide>
         )
       })}
-
+        <SwiperSlide style={{width:"400px" }} key= "add">
+          <PetRegisterForm className='swiper-no-swiping' idx={petList.length}/>
+        </SwiperSlide>
       </Swiper>
     </div>
 
