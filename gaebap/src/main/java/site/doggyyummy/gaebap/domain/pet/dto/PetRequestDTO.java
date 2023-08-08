@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class PetRequestDTO {
     Long id;
     String name;
-
     List<Long> forbiddenIngredients = new ArrayList<>();
 
 

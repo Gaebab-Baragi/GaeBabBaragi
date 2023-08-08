@@ -27,6 +27,9 @@ public class FindMeetingResponseDTO {
     @JsonProperty("host_nickname")
     private String hostNickname;
 
+    @JsonProperty("host_profile_url")
+    private String hostProfileUrl;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     @JsonProperty("start_time")
     private LocalDateTime startTime;
@@ -52,6 +55,7 @@ public class FindMeetingResponseDTO {
                 .title(meeting.getTitle())
                 .description(meeting.getDescription())
                 .hostNickname(meeting.getHost().getNickname())
+                .hostProfileUrl(meeting.getHost().getProfileUrl())
                 .startTime(meeting.getStartTime())
                 .recipeId(meeting.getRecipe().getId())
                 .recipeTitle(meeting.getRecipe().getTitle())

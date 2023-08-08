@@ -49,6 +49,7 @@ function StreamingRegisterPage() {
         console.error("Error sending request:", error);
       });
   };
+
   return (
 
     
