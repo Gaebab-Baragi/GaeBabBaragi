@@ -3,7 +3,7 @@ import './App.css';
 import React, {useState} from 'react';
 import { configureStore } from '@reduxjs/toolkit'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
-import NaviBar from './components/ui/NaviBar';
+import NaviBar from './components/ui/navbar/NaviBar';
 
 // -------------------PAGES--------------------//
 import LoginPage from './pages/LoginPage'
