@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { updateDogs, requestFilteredRecipeList } from '../../redux/recipeSearchSlice.js';
 import { useEffect, useState } from 'react';
 import useDidMountEffect from '../../useDidMountEffect';
+import { redirect } from 'react-router-dom';
 
 // button 누르면 반려견 등록 페이지로 navigate 해주는 기능 추가해주기
 

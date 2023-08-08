@@ -3,7 +3,9 @@ import axios from 'axios';
 import React, { Component, useEffect } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
+import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
+var localUser = new UserModel();
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
@@ -22,11 +24,12 @@ class Streaming extends Component {
             mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
             publisher: undefined,
             subscribers: [],
+            chatDisplay: true,
         };
 
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
-    
+        // this.toggleChat = this.toggleChat.bind(this);
     
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.onbeforeunload = this.onbeforeunload.bind(this);
@@ -91,6 +94,8 @@ class Streaming extends Component {
                     // so OpenVidu doesn't create an HTML video by its own
                     var subscriber = mySession.subscribe(event.stream, undefined);
                     var subscribers = this.state.subscribers;
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    console.log('subscribers : ', subscribers)
                     subscribers.push(subscriber);
 
                     // Update the state with the new subscribers
@@ -148,11 +153,21 @@ class Streaming extends Component {
                             var currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
 
                             // Set the main video in the page to display our webcam and store our Publisher
-                            this.setState({
-                                currentVideoDevice: currentVideoDevice,
-                                mainStreamManager: publisher,
-                                publisher: publisher,
-                            });
+                            if (this.state.myUserName === this.state.host) {
+                              this.setState({
+                                  currentVideoDevice: currentVideoDevice,
+                                  mainStreamManager: publisher,
+                                  publisher: publisher,
+                              });
+                            } else {
+                                this.setState({
+                                    currentVideoDevice: currentVideoDevice,
+                                    publisher: publisher,
+                                });
+                            }
+                            localUser.setNickname(this.state.myUserName);
+                            localUser.setConnectionId(this.state.session.connection.connectionId);
+                            localUser.setStreamManager(publisher);
                         })
                         .catch((error) => {
                             console.log('There was an error connecting to the session:', error.code, error.message);
@@ -162,143 +177,160 @@ class Streaming extends Component {
         );
     }
 
+    updateSubscribers() {
+      var subscribers = this.remotes;
+      this.setState(
+          {
+              subscribers: subscribers,
+          },
+          () => {
+              if (this.state.localUser) {
+                  this.sendSignalUserChanged({
+                      isAudioActive: this.state.localUser.isAudioActive(),
+                      isVideoActive: this.state.localUser.isVideoActive(),
+                      nickname: this.state.localUser.getNickname(),
+                      isScreenShareActive: this.state.localUser.isScreenShareActive(),
+                  });
+              }
+              this.updateLayout();
+          },
+      );
+  }
+
     leaveSession() {
+      window.location.replace('/streaming-list')
+      const sessionId = parseInt(this.state.mySessionId)
+        console.log(sessionId, typeof(sessionId))
+        axios.post(`http://localhost:8083/api/meetings/left/${sessionId}`)
+            .then(() => {
+                // Leave the session and perform navigation after the axios call
+                const mySession = this.state.session;
 
-        // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
-        const mySession = this.state.session;
-
-        if (mySession) {
-            mySession.disconnect();
-        }
-
-        // Empty all properties...
-        this.OV = null;
-        this.setState({
-            session: undefined,
-            subscribers: [],
-            mySessionId: 'SessionA',
-            myUserName: 'Participant' + Math.floor(Math.random() * 100),
-            mainStreamManager: undefined,
-            publisher: undefined
-        });
-    }
-
-    async switchCamera() {
-        try {
-            const devices = await this.OV.getDevices()
-            var videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-            if (videoDevices && videoDevices.length > 1) {
-
-                var newVideoDevice = videoDevices.filter(device => device.deviceId !== this.state.currentVideoDevice.deviceId)
-
-                if (newVideoDevice.length > 0) {
-                    // Creating a new publisher with specific videoSource
-                    // In mobile devices the default and first camera is the front one
-                    var newPublisher = this.OV.initPublisher(undefined, {
-                        videoSource: newVideoDevice[0].deviceId,
-                        publishAudio: true,
-                        publishVideo: true,
-                        mirror: true
-                    });
-
-                    //newPublisher.once("accessAllowed", () => {
-                    await this.state.session.unpublish(this.state.mainStreamManager)
-
-                    await this.state.session.publish(newPublisher)
-                    this.setState({
-                        currentVideoDevice: newVideoDevice[0],
-                        mainStreamManager: newPublisher,
-                        publisher: newPublisher,
-                    });
+                if (mySession) {
+                    mySession.disconnect();
                 }
-            }
-        } catch (e) {
-            console.error(e);
-        }
+
+                this.OV = null;
+                this.setState({
+                    session: undefined,
+                    subscribers: [],
+                    mySessionId: 'SessionA',
+                    myUserName: 'Participant' + Math.floor(Math.random() * 100),
+                    mainStreamManager: undefined,
+                    publisher: undefined
+                });
+
+                window.location.replace('/streaming-list')
+            })
+            .catch(error => {
+                console.error('Error leaving session:', error);
+            });
+
+        
     }
 
+    camStatusChanged() {
+      localUser.setVideoActive(!localUser.isVideoActive());
+      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+      this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
+      this.setState({ localUser: localUser });
+  }
+
+  micStatusChanged() {
+      localUser.setAudioActive(!localUser.isAudioActive());
+      localUser.getStreamManager().publishAudio(localUser.isAudioActive());
+      this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
+      this.setState({ localUser: localUser });
+  }
+    
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
         const publisher = this.state.publisher;
+        const host_nickname = this.state.host
         const streamingInfo = this.props.streamingInfo;
 
         return (
             <div className='StreamingLiveContatiner'>
 
-                <div className="streamingContainer">
-                    <div className='streamingTop'>
-                        <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
-                        <p>시작 시간 : {streamingInfo.start_time}</p>
-                    </div>
-
-                    <div>이건 내 화면이고!!!!!!!!</div>
-
-                    <div className='mainVideo'>
-                        <div className="stream-container " >
-                            <UserVideoComponent
-                                streamManager={this.state.publisher} />
+              <div className="streamingContainer">
+                  <div className='streamingTop'>
+                      <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
+                      <p>시작 시간 : {streamingInfo.start_time}</p>
+                  </div>
+                  {console.log(myUserName, host_nickname)}
+                  {/* !!!!!!!!!!!!!!!호스트 화면!!!!!!!!!!!!!!!!! */}
+                  {myUserName === host_nickname ? (
+                    <>
+                        <div>이건 호스트 화면이고!!!!!!!!</div>
+                        <div className='mainVideo'>
+                            <div className="stream-container " >
+                                <UserVideoComponent
+                                    streamManager={this.state.publisher} />
                                 <p>{this.state.nickname}</p>
-                        </div>
-                    </div>
-
-                    <p>이건 남의 화면이야!!!!!!!!!!!</p>
-                    <div className='subVideos'>
-                    {this.state.subscribers.map((sub, i) => (
-                        <div key={sub.id} className="stream-container">
-                            <span>{sub.id}</span>
-                            <UserVideoComponent streamManager={sub} />
-                            <br />
-                        </div>
-                    ))}
-                    </div>
-                    
-                    <div className='streamingBottom'>
-                        {/* 화면 on off */}
-                        
-                        {this.state.videostate  ? (
-                            <div className='onIcon'>
-                                <ion-icon 
-                                onClick={() => {
-                                    this.state.publisher.publishVideo(!this.state.videostate);
-                                    this.setState({ videostate: !this.state.videostate });
-                                }}
-                                name="videocam-outline"
-                                ></ion-icon>
-
                             </div>
-                        ) : (
-                            <ion-icon 
-                            onClick={() => {
-                                this.state.publisher.publishVideo(!this.state.videostate);
-                                this.setState({ videostate: !this.state.videostate });
-                            }}
-                            name="videocam-off-outline"></ion-icon>
-                        )}
+                        </div>
+                      </>
+                  )  : (
+                    //  호스트 찾기!!!!!!!!!!!
+                    console.log(this.state.subscribers)
+                    
+                  )}
 
-                        <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
-                        
-                        {/* 내 마이크 on off */}
-                        {this.state.audiostate ?
-                            <ion-icon name="volume-mute-outline" 
-                            onClick={() => {
-                                this.state.publisher.publishAudio(!this.state.audiostate);
-                                this.setState({ audiostate: !this.state.audiostate });
-                            }}
-                            ></ion-icon>
-                        :
-                            <ion-icon name="volume-high-outline" 
-                            onClick={() => {
-                                this.state.publisher.publishAudio(!this.state.audiostate);
-                                this.setState({ audiostate: !this.state.audiostate });
-                            }}
-                            ></ion-icon>
-                        }
-                    </div>
-                </div>
-                <ChatComponent nickname={this.state.myUserName}/>
+                  <p>이건 그외 의 화면이야!!!!!!!!!!!</p>
+                  <div className='subVideos'>
+                  {this.state.subscribers.map((sub, i) => (
+                      <div key={sub.id} className="stream-container">
+                          <span>{sub.id}</span>
+                          <UserVideoComponent streamManager={sub} />
+                          <br />
+                      </div>
+                  ))}
+                  </div>
+                  
+                  <div className='streamingBottom'>
+                      {/* 화면 on off */}
+                      {this.state.videostate  ? (
+                          <div className='onIcon'>
+                              <ion-icon 
+                              onClick={() => {
+                                  this.state.publisher.publishVideo(!this.state.videostate);
+                                  this.setState({ videostate: !this.state.videostate });
+                              }}
+                              name="videocam-outline"
+                              ></ion-icon>
+
+                          </div>
+                      ) : (
+                          <ion-icon 
+                          onClick={() => {
+                              this.state.publisher.publishVideo(!this.state.videostate);
+                              this.setState({ videostate: !this.state.videostate });
+                          }}
+                          name="videocam-off-outline"></ion-icon>
+                      )}
+
+                      <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                      
+                      {/* 내 마이크 on off */}
+                      {this.state.audiostate ?
+                          <ion-icon name="volume-mute-outline" 
+                          onClick={() => {
+                              this.state.publisher.publishAudio(!this.state.audiostate);
+                              this.setState({ audiostate: !this.state.audiostate });
+                          }}
+                          ></ion-icon>
+                      :
+                          <ion-icon name="volume-high-outline" 
+                          onClick={() => {
+                              this.state.publisher.publishAudio(!this.state.audiostate);
+                              this.setState({ audiostate: !this.state.audiostate });
+                          }}
+                          ></ion-icon>
+                      }
+                  </div>
+              </div>
+              <ChatComponent user={localUser} className="ChatComponent"/>
             </div>
         );
     }
