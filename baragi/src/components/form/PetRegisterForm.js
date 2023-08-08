@@ -1,101 +1,84 @@
-import { ReactTags } from "react-tag-autocomplete";
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import axios from "axios";
-import "./PetRegisterForm.css";
+import './css/MemberModification.css'
+import './css/BasicForm.css'
 import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 import { useDispatch } from "react-redux";
-import { setPetImage , setPetName, sendPetRegisterRequest} from "../../redux/petRegisterSlice";
 
-function PetRegisterForm({petId}) {
+function PetRegisterForm({petInfo}) {
   const dispatch = useDispatch();
-  const [petList, setPetList] = useState([])
-  const defaultImageUrl = "./기본이미지.PNG";
-  const [image, setImage] = useState(defaultImageUrl);
-  const [file, setFile] = useState("");
+  const [pet, setPet] = useState({})
+  const [petName, setPetName] = useState('')
+  const defaultImageUrl = "./default.png";
+  const [petImage, setPetImage] = useState(defaultImageUrl)
+  const [file, setFile] = useState('')
+  const [selected, setSelected] = useState([]);
 
   useEffect(()=>{
-    if (petId) {
-      axios.get(`/api/pet/${petId}`)
-        .then((res)=>{
-          console.log('pet list : ' , res.data)
-          setPetList(res.data)
-        })
-        .catch((err)=>{
-          console.log('error : ' , err)
-        })
+    if (petInfo) {
+      setPet(petInfo.pet);
+      setPetName(petInfo.name);
+      setPetImage(petInfo.imgUrl);
     }
   },[])
 
+  const selectIngredients = (sel) => {
+    setSelected(sel);
+  }
+
   // ==========================사진 등록===================//
   const handleImagePreview = (e) => {
+    e.preventDefault();
     const selectedImage = e.target.files[0];
-    dispatch(setPetImage(selectedImage))
-    setFile(selectedImage);
+    setPetImage(selectedImage)
+    setFile(selectedImage)
     if (selectedImage) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
+        setPetImage(reader.result);
       };
-      console.log(file);
       reader.readAsDataURL(selectedImage);
     }
   };
 
   return (
-    <div className="petContainer">
+    <div className="formContainer">
       {/* 제목 */}
-      <div className="petFormTitle">내 반려견</div>
+      <form className = "form" onSubmit={onSubmit}>
+      <div className="formTitle">내 반려견</div>
 
       {/* 사진 등록 */}
-      <div className="petImgContainer">
-        <div>
-          {petId 
-          ?
-          (<img className="petImgBox" src={petList.imgUrl} alt="미리보기" /> )
-          :
-          <>
-            ({image !== defaultImageUrl && (
-              <img className="petImgBox" src={image} alt="미리보기" />
-            )}
-            {image === defaultImageUrl && (
-              <img className="petImgBox" src={defaultImageUrl} alt="미리보기" />
-            )})
-          </>
-          
-          }
-        </div>
-        <input
-          className="petImgInput"
-          type="file"
-          onChange={handleImagePreview}
-        />
-      </div>
+      <label htmlFor="photo-upload" className="custom-file-upload fas">
+          <div className="img-wrap img-upload" >
+              <img className="member-profile-img" src={petImage} htmlFor="photo-upload" alt="프로필"/>
+          </div>
+          <input id="photo-upload" type="file" onChange={(e) => {handleImagePreview(e)}}/> 
+      </label>
 
       {/* pet 이름 */}
-      <div className="petInfoGroup">
-        <label>이름</label>
+      <div className="formGroup">
         <input
-          className="petInput"
+          className="formInput"
           type="text"
-          placeholder={petId ? petList.name : ""}
+          placeholder={petInfo? pet.name : "이름이 뭔가요?"}
           onChange={(e) => {
-            dispatch(setPetName(e.target.value))
+            setPetName(e.target.value);
           }}
         />
       </div>
 
       {/* 기피 재료 등록 */}
-      {petId ? (
-        <PetIngredientTagBar forbiddens={petList.forbiddens} />
-      ) : <PetIngredientTagBar/>}
+      {petInfo? (
+        <PetIngredientTagBar forbiddens={pet.forbiddens} selectIngredients={selectIngredients} />
+      ) : <PetIngredientTagBar selectIngredients={selectIngredients}/>}
 
       {/* 등록 버튼 */}
       <button className="petRegisterBtn" onClick={()=>{
-        dispatch(sendPetRegisterRequest());
         
         }}>
         등록하기
       </button>
+      </form>
     </div>
   );
 }

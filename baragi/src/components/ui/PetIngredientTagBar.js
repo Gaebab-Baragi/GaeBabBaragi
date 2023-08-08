@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setForbiddenIngredients } from "../../redux/petRegisterSlice";
 import axios from "axios";
 
-function PetIngredientTagBar({forbiddens}) {
+function PetIngredientTagBar({forbiddens, selectIngredients}) {
   const [selected, setSelected] = useState([]);
   const [suggestions, setSuggestions] = useState('');
   const dispatch = useDispatch();
@@ -41,6 +41,7 @@ function PetIngredientTagBar({forbiddens}) {
   useEffect(()=>{
     console.log(selected)
     dispatch(setForbiddenIngredients(selected))
+    selectIngredients(selected);
   },[selected])
 
   const onAdd = useCallback(
@@ -61,13 +62,13 @@ function PetIngredientTagBar({forbiddens}) {
     <div className="petIngredientSelect">
       <ReactTags
         suggestions={suggestions}
-        placeholderText="재료 선택"
+        placeholderText={selected.length ? '' : "이건 먹으면 안 돼요"}
         selected={selected}
         onAdd={onAdd}
         onDelete={onDelete}
         noOptionsText="일치하는 재료가 없습니다."
         allowBackspace={true}
-
+        inline
       />
     </div>
   );

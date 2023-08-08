@@ -3,7 +3,7 @@ import './App.css';
 import React, {useState} from 'react';
 import { configureStore } from '@reduxjs/toolkit'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
-import NaviBar from './components/ui/NaviBar';
+import NaviBar from './components/ui/navbar/NaviBar';
 
 // -------------------PAGES--------------------//
 import LoginPage from './pages/LoginPage'
@@ -65,7 +65,6 @@ function App() {
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/logout' element={<LogoutHandler/>}></Route>
         
-        {/*-----------------------로그인 관련-------------------------------*/}
         <Route path="*" element={ <div>없는페이지임</div> } />
         <Route path='/object-detect' element={<ObjectDetectionPage></ObjectDetectionPage>}></Route>
       </Routes>

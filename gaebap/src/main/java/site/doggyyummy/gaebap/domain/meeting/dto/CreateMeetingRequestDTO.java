@@ -49,8 +49,8 @@ public class CreateMeetingRequestDTO {
                 .host(host)
                 .startTime(this.startTime)
                 .recipe(recipe)
-                .status(Status.ATTENDEE_WAIT)
-                .currentParticipants(1)
+                .status(Status.SCHEDULED)
+                .currentParticipants(0)
                 .build();
 
         return meeting;

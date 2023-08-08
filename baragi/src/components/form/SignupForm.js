@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import './BasicForm.css';
+import './css/BasicForm.css';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios';
