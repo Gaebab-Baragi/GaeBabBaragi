@@ -89,6 +89,16 @@
   font-weight: 700;
   text-indent: 10px;
 }
+.roomName2 {
+  border-radius: 10px;
+  border: 2px solid #000;
+  background: #FFF;
+  width: 32vw;
+  flex-shrink: 0;
+  font-size: 1vw;
+  font-weight: 700;
+  text-indent: 10px;
+}
 
 .recipeName {
   font-size: 1vw;
