@@ -1,12 +1,12 @@
-import BackGround from "../components/ui/BackGround";
-import CardCarousel from "../components/list/CardCarousel";
+import './MainPage.css';
+import HeroSection from "../components/ui/mainPage/HeroSection";
+import ServiceInfo from '../components/ui/mainPage/ServiceInfo';
 
 function MainPage(){
     return(
-        <div>
-            <BackGround></BackGround>
-            <h2>추천레시피</h2>
-            <CardCarousel/>
+        <div className='mainPage'>
+            <HeroSection></HeroSection>
+            <ServiceInfo></ServiceInfo>
         </div>
     )
 }
