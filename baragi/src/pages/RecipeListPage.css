@@ -16,3 +16,10 @@
   margin-left: 5%;
   margin-bottom: 3%;
 }
+.dogImage{
+  height: 70px;
+  width: 100px;
+}
+.dogImageContainer{
+  height: 80px;
+}

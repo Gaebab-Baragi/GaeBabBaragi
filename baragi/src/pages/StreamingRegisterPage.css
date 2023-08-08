@@ -69,13 +69,6 @@
   margin-right: 20vw;
 }
 
-
-span {
-  display: flex;
-  align-items: center;
-
-}
-
 .roomName {
   border-radius: 10px;
   border: 2px solid #000;
@@ -89,6 +82,8 @@ span {
 }
 
 .recipeName {
+  display: flex;
+  align-items: center;
   font-size: 1vw;
   font-weight: 700;
   height: 40px;
@@ -145,8 +140,8 @@ span {
 }
 
 .maxParticipant {
-
   display: flex;
+  align-items: center;
   justify-content: center;
   width: 34px;
 
@@ -204,12 +199,10 @@ span {
   border-radius: 10px;
 }
 
-input:hover{
+/* input:hover{
   border-color:#FA0;
-}
-input:focus{
-  border-color:#FA0;
-} 
+} */
+
 
 @media (max-width : 1000px){
   .inputContainer-left>label {

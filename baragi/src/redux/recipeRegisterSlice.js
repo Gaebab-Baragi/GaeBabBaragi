@@ -93,7 +93,7 @@ let recipeRegister = createSlice({
     //   console.log('스텝이미지 변경', state.temp)
     // },
 
-  
+    
   },
 });
 
