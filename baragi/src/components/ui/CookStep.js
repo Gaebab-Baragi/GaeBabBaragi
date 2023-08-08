@@ -52,7 +52,7 @@ function CookStep() {
 
   return (
     <div>
-      <div style={{ display: 'flex', marginBottom: '1%', flexDirection: 'column', gap: '10px' , background : '#0001'}}>
+      <div style={{ display: 'flex', marginBottom: '1%', flexDirection: 'column', gap: '10px' }}>
         {inputCooksteps.map((inputCookstep, index) => (
           <div key={index}>
             <InputCookstep

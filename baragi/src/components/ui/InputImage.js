@@ -48,7 +48,7 @@ function InputImage({handleImageUpload}) {
       {/* {image!== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '200px', height: '200px' }} />} */}
       </div>
       <div >
-        <button onClick={handleButtonClick}>이미지선택</button>
+        <button  onClick={handleButtonClick}>이미지선택</button>
         <input style = {{display:'none' }} type="file" ref={fileInputRef} accept="" onChange={handleImagePreview}/>
       </div>
     </div>

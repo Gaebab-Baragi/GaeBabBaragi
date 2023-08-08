@@ -47,6 +47,12 @@ let recipeRegister = createSlice({
         "recipeUploadRequestDto",
         new Blob([JSON.stringify(data)], { type: "application/json" })
       );
+      formData.append(
+        "stepImages",
+        new Blob([state.stepImages], { type: "multipart/form-data" })
+      );
+
+
       console.log('file',state.recipeImage)
 
       formData.append("recipeImage", state.recipeImage)
@@ -55,7 +61,7 @@ let recipeRegister = createSlice({
       // state.stepImages.map((step)=>{
       //   formData.append('stepImages',step)
       // })
-      formData.append('stepImages',state.stepImages)
+      // formData.append('stepImages',state.stepImages)
       for (let key of formData.keys()) {
         console.log(key);
       }

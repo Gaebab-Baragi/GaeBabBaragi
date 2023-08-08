@@ -41,16 +41,16 @@ function RecipeRegisterPage() {
         {/* backgroundColor : '#0001', */}
           <InputImage></InputImage>
         </div>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>2. 기본 정보 입력</h4>
+        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>2. 기본 정보 입력</h4>
         <InputInfor></InputInfor>
-        <h4 style={{textAlign:'left', marginLeft:'2%'}}>3. 재료 등록</h4>
+        <h4 style={{textAlign:'left', marginLeft:'2%', marginLeft:'5%'}}>3. 재료 등록</h4>
         <MaterialRegist></MaterialRegist>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>4. 요리 순서</h4>
+        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>4. 요리 순서</h4>
         <CookStep></CookStep>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>5. 동영상 제출</h4>
+        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>5. 동영상 제출</h4>
         <input type="file" accept="" onChange={handleVideoChange}/>
 
-        <div style={{ marginTop : '1%', marginBottom : '1%' , backgroundColor : '#0001', justifyContent:'center', alignItems:'center'}}>
+        <div style={{ marginTop : '1%', marginBottom : '1%' , justifyContent:'center', alignItems:'center'}}>
         <button onClick={()=>{dispatch(requestFilteredRecipeList())}}>제출</button>
         </div>
     </div>
