@@ -12,8 +12,10 @@ import site.doggyyummy.gaebap.domain.meeting.exception.MeetingEntryConditionNotM
 import site.doggyyummy.gaebap.domain.meeting.exception.MeetingForbiddenException;
 import site.doggyyummy.gaebap.domain.meeting.exception.NotFoundMeetingException;
 import site.doggyyummy.gaebap.domain.meeting.repository.MeetingRepository;
+import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class MeetingServiceImpl implements MeetingService{
 
     private final MeetingRepository meetingRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     @Transactional
