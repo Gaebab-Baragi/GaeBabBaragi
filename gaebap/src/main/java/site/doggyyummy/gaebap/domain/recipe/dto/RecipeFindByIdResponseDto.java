@@ -27,12 +27,13 @@ public class RecipeFindByIdResponseDto {
     private List<StepDto> steps;
     private List<RecipeIngredientDto> recipeIngredients;
     private List<IngredientDto> ingredients;
+    private Long bookmarks;
 
     public RecipeFindByIdResponseDto(int statusCode,String errorMessage){
         this.statusCode=statusCode;
         this.errorMessage=errorMessage;
     }
-    public RecipeFindByIdResponseDto(String title, Long hit,LocalDateTime writtenTime, String description, MemberDto member, List<StepDto> steps, List<RecipeIngredientDto> recipeIngredients,List<IngredientDto> ingredients){
+    public RecipeFindByIdResponseDto(String title, Long hit,LocalDateTime writtenTime, String description, MemberDto member, List<StepDto> steps, List<RecipeIngredientDto> recipeIngredients,List<IngredientDto> ingredients,Long bookmarks){
         this.title=title;
         this.hit=hit;
         this.writtenTime=writtenTime;
@@ -41,18 +42,20 @@ public class RecipeFindByIdResponseDto {
         this.steps=steps;
         this.recipeIngredients=recipeIngredients;
         this.ingredients=ingredients;
+        this.bookmarks=bookmarks;
     }
-    public RecipeFindByIdResponseDto(Recipe recipe, Member member, List<Step> steps,List<RecipeIngredient> recipeIngredients,List<Ingredient> ingredients){
+    public RecipeFindByIdResponseDto(Recipe recipe, Member member, List<Step> steps,List<RecipeIngredient> recipeIngredients,List<Ingredient> ingredients,Long bookmarks){
         this.title=recipe.getTitle();
         this.description=recipe.getDescription();
         this.hit=recipe.getHit();
         this.writtenTime=recipe.getWrittenTime();
         this.imgUrl=recipe.getImageUrl();
         this.videoUrl=recipe.getVideoUrl();
+        this.bookmarks=bookmarks;
         this.member=new MemberDto(member.getUsername(),member.getNickname(),member.getProfileUrl());
         // Convert List<Step> to List<StepDto>
         this.steps = steps.stream()
-                .map(step -> new StepDto(step.getOrderingNumber(), step.getDescription()))
+                .map(step -> new StepDto(step.getOrderingNumber(), step.getDescription(),step.getS3Url()))
                 .collect(Collectors.toList());
         this.recipeIngredients=recipeIngredients.stream()
                 .map(recipeIngredient->new RecipeIngredientDto(recipeIngredient.getAmount()))
@@ -77,9 +80,11 @@ public class RecipeFindByIdResponseDto {
     public static class StepDto{
         private Long orderingNumber;
         private String description;
-        public StepDto(Long orderingNumber,String description){
+        private String stepImage;
+        public StepDto(Long orderingNumber,String description,String stepImage){
             this.description=description;
             this.orderingNumber=orderingNumber;
+            this.stepImage=stepImage;
         }
     }
     @Getter

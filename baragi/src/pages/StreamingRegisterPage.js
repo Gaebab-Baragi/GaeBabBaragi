@@ -91,7 +91,7 @@ function StreamingRegisterPage() {
           </div>
           {/* 레시피 */}
           <div className="inputComponent">
-            <span className="recipeName">가져오기!!</span>
+            <span className="recipeName">{id}</span>
           </div>
           {/* 스트리밍 시작 시간 */}
           <div className="inputComponent">

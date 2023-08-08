@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkRequestDTO;
 import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkResponseDTO;
 import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkServiceImpl;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.util.List;
@@ -37,9 +38,10 @@ public class BookmarkController {
     }
 
     @Operation(description = "좋아요 등록")
-    @PostMapping("")
-    public void create(@RequestBody BookmarkRequestDTO bookmarkRequestDTO) {
-        bookmarkService.create(bookmarkRequestDTO);
+    @PostMapping("/{recipe_id}")
+    public void create(@PathVariable Long recipe_id) {
+        Member loginMember=SecurityUtil.getCurrentLoginMember();
+        bookmarkService.create(loginMember,recipe_id);
     }
 
     @Operation(description = "좋아요 해제")

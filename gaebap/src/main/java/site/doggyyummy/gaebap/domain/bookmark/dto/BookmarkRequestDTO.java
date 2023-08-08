@@ -24,13 +24,9 @@ public class BookmarkRequestDTO {    //필요 없는데 걍 만듬 ,연습용 + 
     public Bookmark toEntity(){
         Bookmark bookmark = new Bookmark();
 
-        Member member = new Member();
-        member.setId(memberId);
-
         Recipe recipe = new Recipe();
         recipe.setId(recipeId);
 
-        bookmark.setMember(member);
         bookmark.setRecipe(recipe);
 
         return bookmark;
