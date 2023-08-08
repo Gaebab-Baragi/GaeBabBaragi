@@ -48,10 +48,7 @@ function StreamingRegisterPage() {
         // Handle errors if necessary
         console.error("Error sending request:", error);
       });
-  }; */
-  function handleRegisterSubmit() {
-    console.log(1);
-  }
+  };
   return (
 
     
