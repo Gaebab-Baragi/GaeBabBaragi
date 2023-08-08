@@ -207,10 +207,10 @@ public class MeetingServiceImpl implements MeetingService{
         if(findMeeting.getHost().getId() == memberId) { // 호스트 입장일 경우
             // 미팅 상태 변경
             findMeeting.setStatus(Status.ATTENDEE_WAIT);
-        } else { // 일반 멤버 입장일 경우
-            // 미팅 현재 참여 인원 변경
-            findMeeting.setCurrentParticipants(findMeeting.getCurrentParticipants() + 1);
         }
+
+        // 미팅 현재 참여 인원 변경
+        findMeeting.setCurrentParticipants(findMeeting.getCurrentParticipants() + 1);
     }
 
     @Override
