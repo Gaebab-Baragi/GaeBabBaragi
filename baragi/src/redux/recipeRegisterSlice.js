@@ -8,49 +8,62 @@ let recipeRegister = createSlice({
   initialState: {
     title: "과일 타르트 만들기",
     description: "상큼한 디저트 만들어봐요",
-    member: {
-      id: 7,
-    },
-    recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     steps: [
       {
         orderingNumber: 1,
         description: "모든 재료를 잘라주세요.",
-        imgLocalPath: null,
       },
       {
         orderingNumber: 2,
         description: "재료를 끓여주세요.",
-        imgLocalPath: null,
       },
-      { orderingNumber: 3, description: "구워주세요", imgLocalPath: null },
-      { orderingNumber: 4, description: "플레이팅", imgLocalPath: null },
+      { orderingNumber: 3, description: "구워주세요" },
+      { orderingNumber: 4, description: "플레이팅"},
     ],
+    recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
+    recipeImage: '',
+    // stepImages : [],
 
-    videoLocalPath: null,
-    temp : []
   },
   reducers: {
     requestFilteredRecipeList: (state) => {
       // console.log(state.recipeIngredients);
       // console.log(state.member.id);
       // axios 요청 보내서 레시피 저장하기
+      console.log('1:',state.title, state.description, state.steps, state.recipeIngredients)
+      console.log('2:', state.recipeImage)
+
+      const formData = new FormData();
+      
       const data = {
         title: state.title,
         description: state.description,
-        member: state.member,
-        recipeIngredients: state.recipeIngredients,
         steps: state.steps,
-        imgLocalPath: state.imgLocalPath,
-        videoLocalPath: state.videoLocalPath,
-        
+        recipeIngredients: state.recipeIngredients,
       };
-      
-      console.log(data)
+      formData.append(
+        "recipeUploadRequestDto",
+        new Blob([JSON.stringify(data)], { type: "application/json" })
+      );
+      console.log('file',state.recipeImage)
+
+      formData.append("recipeImage", state.recipeImage)
+    
+
+      for (let key of formData.keys()) {
+        console.log(key);
+      }
+      for (let value of formData.values()) {
+        console.log(value);
+      }
+
       axios
-        .post("http://localhost:8083/api/recipes/new", data)
+        .post("http://localhost:8083/api/recipes/new", formData
+        ,  {headers: { "Content-Type": "multipart/form-data" },
+      })
+      
         .then((res) => {
-          console.log("Request successful : ", res.data);
+          console.log("Request successful : ", res);
         })
         .catch((err) => {
           console.log("Error sending request : ", err);
@@ -71,19 +84,19 @@ let recipeRegister = createSlice({
       state.steps = action.payload
       console.log('step 변경됨', state.steps)
     },
-    updateStepImage : (state,action) =>{
-      state.temp =action.payload
-      console.log('스텝이미지 변경', state.temp)
+    updateImage : (state,action) =>{
+      state.recipeImage = action.payload
+      console.log('레시피이미지',state.recipeImage)
     },
-    // updateKeyword: (state, action) =>{
-    //   // 레시피 제목 검색 키워드 저장
-    //   state.keyword = action.payload;
-    //   console.log('keyword updated: ' + state.keyword)
+    // updateStepImage : (state,action) =>{
+    //   state.stepImages.append(action.payload)
+    //   console.log('스텝이미지 변경', state.temp)
     // },
+
   
   },
 });
 
-export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateStepImage} = recipeRegister.actions;
+export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateImage, updateStepImage} = recipeRegister.actions;
 
 export default recipeRegister;

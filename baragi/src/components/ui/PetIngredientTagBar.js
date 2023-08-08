@@ -2,18 +2,47 @@ import React, {useCallback, useEffect, useState} from "react";
 import { ReactTags } from "react-tag-autocomplete";
 import './PetIngredientTagBar.css'
 import { useDispatch } from "react-redux";
+import { setForbiddenIngredients } from "../../redux/petRegisterSlice";
+import axios from "axios";
 
-function PetIngredientTagBar() {
+function PetIngredientTagBar({forbiddens, selectIngredients}) {
   const [selected, setSelected] = useState([]);
+  const [suggestions, setSuggestions] = useState('');
   const dispatch = useDispatch();
 
+  useEffect(()=>{
+    console.log("dkk", forbiddens)
+    if (forbiddens) {
+      const tmp = []
+      forbiddens.map((i)=>{
+        tmp.push(i.ingredientName)
+      })
+      console.log(tmp)
+      setSelected(tmp)
+    }
+  },[])
+
   // 재료 리스트 받아와주기
-  const suggestions = [
-    {value:1, label:'고구마'},
-    {value:2, label:'감자'},
-    {value:3, label:'소고기'},
-    {value:4, label:'돼지고기'}
-  ]
+  useEffect(()=>{
+    axios.get('/api/ingredients')
+    .then((res)=>{
+      console.log('res data : ' ,res.data)
+      const tmp = []
+      res.data.ingredients.map((i)=>{
+        tmp.push({value:i.id, label:i.name})
+      })
+      setSuggestions(tmp)
+    })
+    .catch((err)=>{
+      console.log('error is : ', err)
+    })
+  },[])
+
+  useEffect(()=>{
+    console.log(selected)
+    dispatch(setForbiddenIngredients(selected))
+    selectIngredients(selected);
+  },[selected])
 
   const onAdd = useCallback(
     (newTag) => {
@@ -31,16 +60,16 @@ function PetIngredientTagBar() {
 
 
   return(
-    <div className="ingredientSelect">
+    <div className="petIngredientSelect">
       <ReactTags
         suggestions={suggestions}
-        placeholderText="재료 선택"
+        placeholderText={selected.length ? '' : "이건 먹으면 안 돼요"}
         selected={selected}
         onAdd={onAdd}
         onDelete={onDelete}
         noOptionsText="일치하는 재료가 없습니다."
         allowBackspace={true}
-
+        inline
       />
     </div>
   );

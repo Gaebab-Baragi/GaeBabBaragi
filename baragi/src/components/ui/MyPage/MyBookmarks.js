@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Paging from "../ui/Paging";
-import RecipeCard from "../ui/RecipeCard";
+import Paging from "../Paging";
+import RecipeCard from "../RecipeCard";
 import axios from "axios";
 
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  margin-left: 10%;
-  margin-right: 10%;
+  
+  max-width : 1200px;
 `;
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-function RecipeCardPagination({rowNum, api}) {
+function MyBookmarks({rowNum, list}) {
   const [items, setItems] = useState([]); // 리스트에 나타낼 아이템
   const [count, setCount] = useState(0); // 아이템 총 개수
   const [currentpage, setCurrentpage] = useState(1); // 현재페이지
@@ -26,8 +25,7 @@ function RecipeCardPagination({rowNum, api}) {
 
   // 레시피 목록 가져오기!!
   useEffect(() => {
-    console.log(api);
-    axios.get(api)
+    axios.get("/api/bookmark/my")
       .then((res) => {
           if (res.status === 200){
             setItems(res.data.recipes)
@@ -36,11 +34,10 @@ function RecipeCardPagination({rowNum, api}) {
       .catch((res) => {
         console.log(res) 
       }) 
-  }, [api]);
+  }, []);
 
   useEffect(() => {
     setCount(items.length);
-    console.log(items.length)
   }, [items]);
   
   useEffect(() => {
@@ -56,6 +53,7 @@ function RecipeCardPagination({rowNum, api}) {
         return 1;
       }
     };
+
     const updateCardsPerPage = () => {
       const newCardsPerRow = adjustCardsPerPage();
       setCardsPerRow(newCardsPerRow);
@@ -63,7 +61,7 @@ function RecipeCardPagination({rowNum, api}) {
 
     function handleResize() {
       setPostPerPage(cardsPerRow * rowsPerPage);
-    }
+      }
 
     window.addEventListener("resize", updateCardsPerPage);
     return () => {
@@ -96,4 +94,4 @@ function RecipeCardPagination({rowNum, api}) {
   );
 }
 
-export default RecipeCardPagination;
+export default MyBookmarks;

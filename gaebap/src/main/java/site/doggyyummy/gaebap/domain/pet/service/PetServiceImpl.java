@@ -21,6 +21,7 @@ import site.doggyyummy.gaebap.domain.pet.repository.PetRepository;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 
 import site.doggyyummy.gaebap.domain.recipe.repository.IngredientRepository;
+import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -42,8 +43,10 @@ public class PetServiceImpl implements PetService {
     @Transactional
     public void create(PetRequestDTO dto, MultipartFile petImage) throws IOException{
         Member member=new Member();
-        member.setId(dto.getMemberId());
+        member.setId(SecurityUtil.getCurrentLoginMember().getId());
+        System.out.println("member.getUsername() = " + member.getUsername());
         Pet pet = dto.toEntity();
+        pet.setMember(member);
         List<Long> forbiddenList = dto.getForbiddenIngredients();
         for (Long forbiddenId : forbiddenList){
             Ingredient ingredient = Ingredient.builder().id(forbiddenId).build();
@@ -104,7 +107,7 @@ public class PetServiceImpl implements PetService {
 
         if(!petImage.isEmpty()) {
             String S3Key = findPet.getS3Key();
-            if(S3Key!=null || S3Key.equals("")) {
+            if(S3Key!=null) {
                 deleteFile(S3Key);
             }
             Map<String, String> map = uploadFile(petImage);
@@ -115,7 +118,7 @@ public class PetServiceImpl implements PetService {
         }
 
         Member memberRef = new Member();
-        memberRef.setId(dto.getMemberId());
+        memberRef.setId(SecurityUtil.getCurrentLoginMember().getId());
         findPet.setMember(memberRef);
         List<Forbidden> removeForbidden = findPet.getForbiddens();
         for (Forbidden forbidden :removeForbidden ){

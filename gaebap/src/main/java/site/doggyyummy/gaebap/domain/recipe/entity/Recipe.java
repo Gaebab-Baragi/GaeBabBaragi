@@ -1,6 +1,7 @@
 package site.doggyyummy.gaebap.domain.recipe.entity;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
@@ -55,6 +56,7 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe",cascade=CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
+
 
     public void setMember(Member member){
         this.member=member;

@@ -75,7 +75,7 @@ public class JwtService {
                 .flatMap(cookies -> Arrays.stream(cookies)
                         .filter(e-> e.getName().equals("refreshToken"))
                         .findAny())
-                .map(token->token.getValue().replace(BEARER, ""));
+                .map(token->token.getValue());
         log.info("refreshToken: {}", tk.orElse("없음"));
         return tk;
 
@@ -124,7 +124,6 @@ public class JwtService {
                             log.info("updateRefreshToken : refreshToken 재발급할 멤버 : {}", member);
                             member.updateRefreshToken(refreshToken);
                             memberRepository.saveAndFlush(member);
-                            log.info(member.getRefreshToken());
                         },
                         () -> new Exception("일치하는 회원이 없습니다.")
                 );

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
@@ -26,27 +27,46 @@ import java.io.IOException;
 @RequestMapping("/api")
 @Slf4j
 @Tag(name = "Recipe Controller", description = "레시피 API")
+
 public class RecipeController {
 
     private final RecipeService recipeService;
 
     //레시피 등록
+//    @Operation(summary = "create recipe", description = "레시피 등록")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200",description = "upload success", content=@Content(schema = @Schema(implementation = RecipeUploadResponseDto.class))),
+//            @ApiResponse(responseCode = "400", description = "upload fail")
+//    })
+//    @PostMapping("/recipes/new")
+//    public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo,@RequestPart MultipartFile[] stepImages) throws IOException {
+//
+//        Member member = SecurityUtil.getCurrentLoginMember();
+//        if(member==null){
+//            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"로그인을 해주세요");
+//        }
+//        try {
+//            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(member,recipeUploadRequestDto,recipeImage,recipeVideo,stepImages);
+//            return resDto;
+//        }catch (IllegalArgumentException e){
+//            return new RecipeUploadResponseDto(null,null,HttpStatus.SC_BAD_REQUEST,e.getMessage());
+//        }
+//    }
+
     @Operation(summary = "create recipe", description = "레시피 등록")
     @ApiResponses({
             @ApiResponse(responseCode = "200",description = "upload success", content=@Content(schema = @Schema(implementation = RecipeUploadResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "upload fail")
     })
     @PostMapping("/recipes/new")
-    public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo,@RequestPart MultipartFile[] stepImages) throws IOException {
+    public RecipeUploadResponseDto uploadRecipes(@RequestPart RecipeUploadRequestDto recipeUploadRequestDto, @RequestPart MultipartFile recipeImage,@RequestPart MultipartFile recipeVideo) throws IOException {
 
-        Member member=new Member();
-        member.setId(1L);
-//        Member member = SecurityUtil.getCurrentLoginMember();
+        Member member = SecurityUtil.getCurrentLoginMember();
         if(member==null){
             throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED,"로그인을 해주세요");
         }
         try {
-            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(member,recipeUploadRequestDto,recipeImage,recipeVideo,stepImages);
+            RecipeUploadResponseDto resDto=recipeService.uploadRecipe(member,recipeUploadRequestDto,recipeImage,recipeVideo);
             return resDto;
         }catch (IllegalArgumentException e){
             return new RecipeUploadResponseDto(null,null,HttpStatus.SC_BAD_REQUEST,e.getMessage());
@@ -84,9 +104,10 @@ public class RecipeController {
     //레시피 삭제
     @Operation(summary = "delete recipe", description = "레시피 삭제")
     @DeleteMapping("/recipes/{id}")
-    public RecipeDeleteResponseDto deleteRecipe(@PathVariable ("id") Long id,@RequestBody RecipeDeleteRequestDto reqDto){
+    public RecipeDeleteResponseDto deleteRecipe(@PathVariable ("id") Long id){
+        Member member = SecurityUtil.getCurrentLoginMember();
         try{
-            return recipeService.deleteRecipe(id,reqDto);
+            return recipeService.deleteRecipe(id,member);
         }catch (UnauthorizedException e){
             return new RecipeDeleteResponseDto(e.getStatusCode(),e.getMessage(),null);
         }catch (NotFoundRecipeException e){
@@ -98,8 +119,10 @@ public class RecipeController {
     @Operation(summary = "modify recipe", description = "레시피 수정")
     @PutMapping("/recipes/{id}")
     public RecipeModifyResponseDto modifyRecipe(@PathVariable("id") Long id,@RequestPart RecipeModifyRequestDto reqDto,@RequestPart MultipartFile newRecipeImage,@RequestPart MultipartFile newRecipeVideo,@RequestPart MultipartFile[] newStepImages) throws IOException{
+        Member member = SecurityUtil.getCurrentLoginMember();
         try {
-            recipeService.modifyRecipe(id, reqDto,newRecipeImage,newRecipeVideo,newStepImages);
+            System.out.println("^^^^^^^^"+newStepImages.length);
+            recipeService.modifyRecipe(member,id, reqDto,newRecipeImage,newRecipeVideo,newStepImages);
             return new RecipeModifyResponseDto(HttpStatus.SC_OK, "modify Success");
         }catch(UnauthorizedException e){
             return new RecipeModifyResponseDto(e.getStatusCode(),e.getMessage());
@@ -122,4 +145,9 @@ public class RecipeController {
         return recipeService.searchRecipeLike(reqDto);
     }
 
+    @Operation(summary = "search all ingredients",description = "모든 재료 조회")
+    @GetMapping("/ingredients")
+    public IngredientAllResponseDto searchAllIngredients(){
+        return recipeService.searchAllIngredients();
+    }
 }

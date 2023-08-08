@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Paging from "../ui/Paging";
-import CardComponent from "../ui/Card";
+import Paging from "../Paging";
+import RecipeCard from "../RecipeCard";
+import axios from "axios";
 
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  margin-left: 10%;
-  margin-right: 10%;
+  
+  max-width : 1200px;
 `;
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-
-function CardPaginationList({rowNum}) {
+function RecipeCardPagination({rowNum}) {
   const [items, setItems] = useState([]); // 리스트에 나타낼 아이템
   const [count, setCount] = useState(0); // 아이템 총 개수
   const [currentpage, setCurrentpage] = useState(1); // 현재페이지
@@ -26,13 +25,17 @@ function CardPaginationList({rowNum}) {
 
   // 레시피 목록 가져오기!!
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => res.json())
-      .then((data) =>{
-        setItems(data);
-      })
+    axios.get("/api/recipes/writer")
+      .then((res) => {
+          if (res.status === 200){
+            console.log(res.data.recipes);
+            setItems(res.data.recipes)
+          }
+      }) 
+      .catch((res) => {
+        console.log(res) 
+      }) 
   }, []);
-
 
   useEffect(() => {
     setCount(items.length);
@@ -51,6 +54,7 @@ function CardPaginationList({rowNum}) {
         return 1;
       }
     };
+
     const updateCardsPerPage = () => {
       const newCardsPerRow = adjustCardsPerPage();
       setCardsPerRow(newCardsPerRow);
@@ -58,7 +62,7 @@ function CardPaginationList({rowNum}) {
 
     function handleResize() {
       setPostPerPage(cardsPerRow * rowsPerPage);
-    }
+      }
 
     window.addEventListener("resize", updateCardsPerPage);
     return () => {
@@ -82,7 +86,7 @@ function CardPaginationList({rowNum}) {
       <CardContainer>
         {currentPosts.map((item) => (
           <StyledCardWrapper key={item.id}>
-            <CardComponent count={item.id} />
+            <RecipeCard item={item} />
           </StyledCardWrapper>
         ))}
       </CardContainer>
@@ -91,4 +95,4 @@ function CardPaginationList({rowNum}) {
   );
 }
 
-export default CardPaginationList;
+export default RecipeCardPagination;
