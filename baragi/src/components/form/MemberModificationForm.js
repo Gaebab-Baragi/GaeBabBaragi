@@ -133,11 +133,11 @@ function MemberModificationForm(){
             <div className="formTitle">프로필 수정</div>
             {/* 프로필 이미지 */}
 
-            <label htmlFor="photo-upload" className="custom-file-upload fas">
+            <label htmlFor={username} className="custom-file-upload fas">
                 <div className="img-wrap img-upload" >
-                    <img className="member-profile-img" src={profileUrl} htmlFor="photo-upload" alt="프로필"/>
+                    <img className="member-profile-img" src={profileUrl} htmlFor={username} alt="프로필"/>
                 </div>
-                <input id="photo-upload" type="file" onChange={(e) => {onProfileChange(e)}}/> 
+                <input id={username} type="file" className="photo-upload" onChange={(e) => {onProfileChange(e)}}/> 
             </label>
 
             <hr/>

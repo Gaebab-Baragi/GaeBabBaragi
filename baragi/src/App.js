@@ -27,9 +27,20 @@ import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
 import Footer from './components/ui/Footer'
 // -------------------PAGES-------------------//
-
+import axios from 'axios';
 
 function App() {  
+  axios.interceptors.response.use(
+    (res) => {
+      if (res.headers['authorization']) {
+        axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
+      }
+
+      return res;
+    }
+  )
+
+
   return (
     <>
     <div className="App">
