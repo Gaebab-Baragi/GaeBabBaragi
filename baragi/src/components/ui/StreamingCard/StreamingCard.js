@@ -45,15 +45,38 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
     
     return (
         <>
-            <Card className="streaming-card">
+            <Card className="streaming-card" onClick={()=>checkMeeting()}>
                 <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg'/>
                 <Card.Img src={recipe_image_url} alt="레시피 대표 이미지" />
-                <Card.ImgOverlay>
+                <Card.ImgOverlay className='overlay-icon'>
                     <ion-icon name="play-circle-outline"></ion-icon>
-                    <Card.Text>
-                        
-                    </Card.Text>
                 </Card.ImgOverlay>
+                    {
+                        status === "ATTENDEE_WAIT" && (
+                            <Card.ImgOverlay className='overlay-participants'>
+                                <div className='participants'>
+                                    <ion-icon name="person-sharp"></ion-icon>
+                                    <p> {current_participants} / {max_participant}</p>
+                                </div>
+                            </Card.ImgOverlay>
+                        )
+                    }
+                    {
+                        status == 'ATTENDEE_WAIT' ? (
+                            <Card.ImgOverlay className='overlay-wait'>
+                                <div className='status-attendee-wait'>
+                                    <p>시작 대기 중</p>
+                                </div>
+                            </Card.ImgOverlay>
+                        )
+                        : (
+                            <Card.ImgOverlay className='overlay-scheduled'>
+                                <div className='status-scheduled'>
+                                    <p>예정</p>
+                                </div>
+                            </Card.ImgOverlay>
+                        )
+                    }
             </Card>
         </>
     );

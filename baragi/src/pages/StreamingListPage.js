@@ -4,8 +4,10 @@ import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setStreamingInfo } from "../redux/streamingInfoSlice";
-import StreamingCardComponent from "../components/ui/StreamingCard";
+import StreamingCardComponent from "../components/ui/StreamingCard/StreamingCard";
 import styled from 'styled-components';
+
+import "./StreamingListPage.css";
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -74,7 +76,7 @@ function StreamingListPage() {
       <h1>방송 목록</h1>
       <ItemsContainer>
         {streamingList.map((streamingItem) => (
-          <div key={streamingItem.id} style={{ flexBasis: `${100 / itemsPerRow}%` }}>
+          <div key={streamingItem.id}>
             <StreamingCardComponent
               title={streamingItem.title}
               description={streamingItem.description}
