@@ -6,18 +6,19 @@ import axios from "axios";
 function MemberModificationForm(){
     const [username, setUsername] = useState('');
     const [profileUrl, setProfileUrl] = useState('');
+    const [originProfileUrl, setOriginProfileUrl] = useState('');
     const [nickname, setNickname] = useState('');
     const [originNickname, setOriginNickname] = useState('');
     const [nicknameDuplicateCheck, setNicknameDuplicateCheck] = useState(false);
     const [validNickname, setValidNickname] = useState(false);
-    const [base64, setBase64] = useState('');
-    const [fileType, setFileType] = useState('');
+    const [uploadFile, setUploadFile] = useState('');
 
     useEffect(()=> {
         axios.get("/api/member")
         .then((res) => {
             if (res.status === 200){
                 setOriginNickname(res.data.nickname);
+                setOriginProfileUrl(res.data.profile_url);
                 setUsername(res.data.username);
                 setProfileUrl(res.data.profile_url);
             }
@@ -42,9 +43,12 @@ function MemberModificationForm(){
         e.preventDefault();
         console.log('Nickname-Duplication-Check')
 
-        let body = JSON.stringify({
+        let body = {
+            username : username,
             nickname : nickname ? nickname : originNickname,
-        })
+            profileUrl : profileUrl === originProfileUrl ? profileUrl : "null"
+        };
+ 
 
         axios.post('/api/member/modify/nickname', body, {
             headers: { 
@@ -73,21 +77,35 @@ function MemberModificationForm(){
         if (!nicknameDuplicateCheck) {
             alert('중복 확인을 진행해주세요.')
         } 
+        else if (uploadFile && uploadFile.size.toString().length >= 7) alert("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요.")
         else {
-            let body = JSON.stringify({
+            const formData = new FormData();
+            formData.append("file", uploadFile);
+                            
+            let body = {
                 username : username,
                 nickname : nickname ? nickname : originNickname,
-                file : base64,
-                fileType : fileType
-            });
-            axios.put('/api/member/modify', body)
+                profileUrl : profileUrl === originProfileUrl ? profileUrl : "null"
+            };
+            
+            formData.append(
+                "dto",
+                new Blob([JSON.stringify(body)], { type: "application/json" })
+            );
+
+            axios.put('/api/member/modify', formData)
             .then((res)=>{
-                    let data = res.data;
+                if (res.status === 200) {
                     alert("회원 정보를 수정했습니다.");
+                }
             })
             .catch((res) => {
-                console.log(res);
-                alert("회원정보를 수정할 수 없습니다.")
+                if (res.status === 463){
+                    alert("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요")
+                }
+                else {
+                    alert("회원정보를 수정할 수 없습니다.")
+                }
             });
         }
     }
@@ -96,36 +114,13 @@ function MemberModificationForm(){
         e.preventDefault();
         if (!e.target.files || !e.target.files[0]) return;
         const file = e.target.files[0];
-        setFileType(file.type);
-        console.log(file.name);
-        console.log(file.type);
+        setUploadFile(file);
         const reader = new FileReader();
         reader.onload = () => {
             setProfileUrl(reader.result);
-            const dataIndex = reader.result.indexOf(',') + 1
-            setBase64(reader.result.substring(
-                            dataIndex,
-                            reader.result.length));
         }
         reader.readAsDataURL(file);
     }
-
-    const letsTest = (e) => {
-        e.preventDefault();
-        axios.get("/api/member/test")
-        .then((res) =>{
-        if (res.status === 200){
-            console.log("yes!");
-        }
-        console.log(res);
-        })
-        .catch((res) => {
-            console.log(axios.defaults.headers['Authorization']);
-            console.log(axios.defaults.baseURL);
-            console.log(res);
-        })
-    }
-
 
     return (
         <div className="formContainer">
@@ -161,10 +156,9 @@ function MemberModificationForm(){
             </div>
 
             <button className="submitButton" type="submit">
-            프로필 수정 
+                프로필 수정 
             </button>
 
-            <button type="button" onClick={letsTest}>테스트입니다</button>
         </form>
         </div>
     );

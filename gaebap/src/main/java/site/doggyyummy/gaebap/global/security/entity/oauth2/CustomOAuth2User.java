@@ -3,6 +3,7 @@ package site.doggyyummy.gaebap.global.security.entity.oauth2;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.entity.Role;
 
 import java.util.Collection;
 import java.util.Map;
@@ -35,5 +36,11 @@ public class CustomOAuth2User extends DefaultOAuth2User {
         return super.getAttribute(name);
     }
 
+    public Role getRole(){
+        return this.member.getRole();
+    }
 
+    public Member getMember() {
+        return member;
+    }
 }

@@ -2,11 +2,16 @@
 import StreamingForm from "../components/form/StreamingForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./StreamingRegisterPage.css";
+import "./css/StreamingRegisterPage.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+
+import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 function StreamingRegisterPage() {
+  const location = useLocation();
+  const { id } = useParams();
+  const { recipeTitle } = location.state;
   const [roomTitle, setRoomTitle] = useState("");
   const [roomDescription, setRoomDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -54,7 +59,7 @@ function StreamingRegisterPage() {
     console.log(data);
 
     axios
-      .post("http://localhost:8083/api/meetings", data)
+      .post("/api/meetings", data)
       .then((response) => {
         // Handle the response if needed
         alert('스트리밍 예약이 완료되었습니다.')
@@ -65,8 +70,7 @@ function StreamingRegisterPage() {
         alert('빈 칸을 채워주세요.')
         console.error("Error sending request:", error.response);
       });
-  }
-
+  };
   return (
 
     
@@ -97,7 +101,7 @@ function StreamingRegisterPage() {
           </div>
           {/* 레시피 */}
           <div className="inputComponent">
-            <span className="recipeName">{id}</span>
+            <span className="recipeName">{recipeTitle}</span>
           </div>
           {/* 스트리밍 시작 시간 */}
           <div className="inputComponent">

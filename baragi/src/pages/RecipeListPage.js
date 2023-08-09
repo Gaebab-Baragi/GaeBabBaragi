@@ -6,7 +6,7 @@ import IngredientTagBar from "../components/ui/IngredientTagBar";
 import BookData from './Data.json'
 import { useNavigate } from 'react-router-dom'
 import CardCarousel from "../components/list/CardCarousel";
-import './RecipeListPage.css'
+import './css/RecipeListPage.css'
 import DogSelectBar from "../components/ui/DogSelectBar";
 
 function RecipeListPage() {

@@ -18,8 +18,8 @@ const SocialLoginHandler= () => {
         )
         .then((res) => {
             if (res.status === 200){
-                const accessToken = params.token;
-                dispatch(loginUser(res.data));
+                const data = {...res.data, accessToken:params.token}
+                dispatch(loginUser(data));
                 navigate("/");
             }
         })

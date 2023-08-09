@@ -69,6 +69,16 @@
   margin-right: 20vw;
 }
 
+.recipeName {
+  display: flex;
+  align-items: center;
+}
+.maxParticipant {
+  display: flex;
+  align-items: center;
+}
+
+
 .roomName {
   border-radius: 10px;
   border: 2px solid #000;
@@ -198,6 +208,8 @@
   border-color: #FA0;
   border-radius: 10px;
 }
+
+
 
 /* input:hover{
   border-color:#FA0;

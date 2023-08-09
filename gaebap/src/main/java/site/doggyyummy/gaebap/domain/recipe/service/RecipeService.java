@@ -155,13 +155,7 @@ public class RecipeService {
             ingredient = r.getIngredient();
             ingredients.add(ingredient);
         }
-
-        long bookmark=0;
-        List<Bookmark> bookmarks=bookmarkRepository.selectByRecipe(recipe.getId());
-        if(bookmarks!=null){
-            bookmark=bookmarks.size();
-        }
-        return new RecipeFindByIdResponseDto(recipe,member, steps, recipeIngredients, ingredients,bookmark);
+        return new RecipeFindByIdResponseDto(recipe,member, steps, recipeIngredients, ingredients);
     }
 
     //hit 증가
