@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
@@ -33,20 +32,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().equals(LOGIN_URL)) {
+        if (request.getRequestURI().equals(LOGIN_URL)) {//일반
             filterChain.doFilter(request, response);
             return;
         }
-
+        if (request.getRequestURI().equals("")) {//OAUTH2
+            filterChain.doFilter(request, response);
+            return;
+        }
         checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 
-    private String reIssueRefreshToken(Member member) {
-        log.info("reIssueRefreshToken() 호출");
-        String reIssuedRefreshToken = jwtService.createRefreshToken();
-        log.info("reissue: member : {}", member);
-        return reIssuedRefreshToken;
-    }
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletRequest request, HttpServletResponse response) {
 
@@ -60,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         memberRepository.findByRefreshToken(refreshToken)
                 .ifPresent(member-> {
-                    String reIssuedRefreshToken = reIssueRefreshToken(member);
+                    String reIssuedRefreshToken = jwtService.createRefreshToken();
                     jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getUsername()),
                             reIssuedRefreshToken);
                     jwtService.updateRefreshToken(member.getUsername(), reIssuedRefreshToken);
@@ -78,13 +74,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Optional<String> name = jwtService.extractName(accessToken.get());
             if (name.isPresent()){
                 Optional<Member> member = memberRepository.findByUsername(name.get());
-                if (member.isPresent()) saveAuthentication(member.get());
-                else checkRefreshTokenAndReIssueAccessToken(request, response);
+                if (member.isPresent()) {
+                    saveAuthentication(member.get());
+                    filterChain.doFilter(request, response);
+                    return;
+                }
             }
-            else checkRefreshTokenAndReIssueAccessToken(request, response);
         }
-        else checkRefreshTokenAndReIssueAccessToken(request, response);
-
+        checkRefreshTokenAndReIssueAccessToken(request, response);
         filterChain.doFilter(request, response);
     }
 

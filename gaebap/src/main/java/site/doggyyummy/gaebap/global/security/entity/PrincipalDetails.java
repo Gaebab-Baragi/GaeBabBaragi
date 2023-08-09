@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +19,9 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(()-> this.member.getAuthority()); //추후에 수정
+        ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(() -> "ROLE_"+  member.getRole());
+        return authorities;
     }
 
     @Override

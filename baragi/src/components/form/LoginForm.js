@@ -43,8 +43,7 @@ function LoginForm() {
       if (res.status === 200){
         const accessToken = res.headers['authorization'];
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; 
-        const data = res.data;
-        console.log(data);
+        const data = {...res.data, accessToken};
         dispatch(loginUser(data))
         navigate('/');
       }

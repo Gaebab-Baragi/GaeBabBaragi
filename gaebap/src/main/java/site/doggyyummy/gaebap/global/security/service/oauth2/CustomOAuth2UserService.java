@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.entity.Role;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.global.security.dto.SocialType;
 import site.doggyyummy.gaebap.global.security.dto.OAuth2Attributes;
@@ -44,7 +45,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Member member = getMember(oAuth2Attributes);
 
         return new CustomOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("Guest")),
+                Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())),
                 attributes,
                 oAuth2Attributes.getNameAttributeKey(),
                 member
@@ -67,8 +68,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
        if (member.getPassword() == null){
            member.setPassword(PasswordUtil.generateRandomPassword());
        }
-       Member saved = memberRepository.save(member);
-       return saved;
+       if (!memberRepository.existsByNickname(member.getNickname())){
+           member.setRole(Role.USER);
+           Member saved = memberRepository.save(member);
+       }
+       return member;
     }
-
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import InputImage from "../components/ui/InputImage";
-import './ObjectDetectionPage.css'
+import './css/ObjectDetectionPage.css'
 
 function ObjectDetectionPage() {
 

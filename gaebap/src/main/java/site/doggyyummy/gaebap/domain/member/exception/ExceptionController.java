@@ -2,6 +2,7 @@ package site.doggyyummy.gaebap.domain.member.exception;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -56,6 +57,17 @@ public class ExceptionController {
     public ResponseEntity<String> handleIncorrectPasswordException(NoSuchUsernameException err){
         return getResponseEntity(ExceptionCode.NO_SUCH_USERNAME_EXCEPTION);
     }
+
+    @ExceptionHandler(FileSizeLimitExceededException.class)
+    public ResponseEntity<String> fileSizeLimitExceededException(FileSizeLimitExceededException err){
+        return getResponseEntity(ExceptionCode.FILE_SIZE_LIMIT_EXCEEDED_EXCEPTION);
+    }
+
+    @ExceptionHandler(AccessTokenInvalidException.class)
+    public ResponseEntity<String> accessTokenInvalidException(AccessTokenInvalidException err){
+        return getResponseEntity(ExceptionCode.ACCESS_TOKEN_INVALID_EXCEPTION);
+    }
+
     public static ResponseEntity<String> getResponseEntity(ExceptionCode code){
         return ResponseEntity
                 .status(code.getErrorCode())
