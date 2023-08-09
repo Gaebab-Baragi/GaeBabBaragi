@@ -30,7 +30,7 @@ function StreamingListPage() {
   const [streamingList, setStreamingList] = useState([]);
   const user = useSelector((state) => (state.user));
   const nickname = <user className="nickname"></user>;
-
+  
   useEffect(() => {
     axios.get('http://localhost:8083/api/meetings')
       .then((res) => {
