@@ -6,7 +6,12 @@ import "./StreamingRegisterPage.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 function StreamingRegisterPage() {
+  const location = useLocation();
+  const { id } = useParams();
+  const { recipeTitle } = location.state;
   const [roomTitle, setRoomTitle] = useState("");
   const [roomDescription, setRoomDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -61,15 +66,15 @@ function StreamingRegisterPage() {
         // Handle errors if necessary
         console.error("Error sending request:", error);
       });
-  }; 
-
+  };
   return (
 
     
     <div className="StreamingRegisterContainer">
-      <StreamingForm/>
+      <div className="StreamingHeader">
       <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
       <h4 className="StreamingRegisterSemiTitle">스트리밍 기본 정보 입력</h4>
+      </div>
       <div className="inputContainer">
         <div className="inputContainer-left">
           <label>방 제목 </label>
@@ -91,7 +96,7 @@ function StreamingRegisterPage() {
           </div>
           {/* 레시피 */}
           <div className="inputComponent">
-            <span className="recipeName">{id}</span>
+            <span className="recipeName">{recipeTitle}</span>
           </div>
           {/* 스트리밍 시작 시간 */}
           <div className="inputComponent">

@@ -1,9 +1,9 @@
 import React from "react";
 import "./Footer.css";
 
-function App() {
+function Footer() {
   return (
-    <div className="App">
+    <div className="Footer">
       <div className="footer__inner">
         <div className="footer__content_first">
           <div className="footer_content left">
@@ -90,4 +90,4 @@ function App() {
   );
 }
 
-export default App;
+export default Footer;
