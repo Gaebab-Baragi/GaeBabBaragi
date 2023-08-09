@@ -51,8 +51,8 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
         variant="top"
         src={recipe_image_url}
       />
-      <div className='card-img-overlay' style={{color:'white',marginTop:'80px'}}>
-        <ion-icon onClick={()=>checkMeeting()} size="large" name="play-circle-outline"></ion-icon>
+      <div onClick={()=>checkMeeting()} className='card-img-overlay' style={{color:'white',marginTop:'80px'}}>
+        <ion-icon size="large" name="play-circle-outline"></ion-icon>
       </div>
       <div className='CardBody'>
         {/* 제목 */}
