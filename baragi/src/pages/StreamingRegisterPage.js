@@ -2,7 +2,7 @@
 import StreamingForm from "../components/form/StreamingForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./StreamingRegisterPage.css";
+import "./css/StreamingRegisterPage.css";
 function StreamingRegisterPage() {
   const [roomTitle, setRoomTitle] = useState("");
   const [roomDescription, setRoomDescription] = useState("");
@@ -39,7 +39,7 @@ function StreamingRegisterPage() {
     console.log(data);
 
     axios
-      .post("http://localhost:8083/api/meetings", data)
+      .post("/api/meetings", data)
       .then((response) => {
         // Handle the response if needed
         console.log("Request successful:", response.data);

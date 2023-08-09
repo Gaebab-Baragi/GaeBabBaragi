@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberRegisterDTO;
 import site.doggyyummy.gaebap.domain.member.dto.response.MemberResponseDTO;
@@ -64,10 +66,11 @@ public class MemberController {
     }
 
     //=================================================================================
-    @PutMapping("/modify")
+    @PutMapping(value = "/modify", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(description = "회원 정보 수정")
-    public ResponseEntity<MemberResponseDTO> modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
-        return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.modify(MemberModifyDTO.toEntity(modifyDTO), modifyDTO.getFile(), modifyDTO.getFileType())), HttpStatus.OK);
+    public ResponseEntity<String> modify(@RequestPart(value="dto") MemberModifyDTO modifyDTO, @RequestPart(value="file", required = false) MultipartFile file) throws Exception{
+        memberService.modify(MemberModifyDTO.toEntity(modifyDTO), file);
+        return new ResponseEntity<>("modified successfully", HttpStatus.OK);
     }
 
     @PostMapping("/modify/nickname")

@@ -97,9 +97,9 @@ public class SecurityConfig {
                 )
                 .oauth2Login((oauth2login) ->
                     oauth2login
+                            .loginPage("/api/login")
                             .successHandler(oAuth2LoginSuccessHandler)
-                            .failureUrl(frontUrl+"/login")
-                            .failureHandler(oAuth2LoginFailureHandler)
+                            .failureUrl(frontUrl+"/")
                             .authorizationEndpoint((endpoint) -> endpoint
                                     .baseUri("/api/oauth2/authorization"))
                             .redirectionEndpoint((endpoint) ->

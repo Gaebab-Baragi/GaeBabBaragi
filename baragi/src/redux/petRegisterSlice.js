@@ -46,7 +46,7 @@ let petRegister= createSlice({
       }
 
       axios
-        .post("http://localhost:8083/api/pet", formData, {
+        .post("/api/pet", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
