@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.meeting.entity.Status;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.service.MemberServiceImpl;
 import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
@@ -29,7 +30,7 @@ public class InitDb {
    private final InitService initService;
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         initService.dbInit1();
     }
 
@@ -39,22 +40,17 @@ public class InitDb {
     static class InitService {
 
         private final EntityManager em;
+        private final MemberServiceImpl memberService;
 
-        public void dbInit1() {
+        public void dbInit1() throws Exception {
             String url = "http://localhost:3000/image/%EA%B0%9C%EB%B0%A5%EB%B0%94%EB%9D%BC%EA%B8%B0.png";
-            Member member1 = createMember("배찬일","배찬일","user",url,new Timestamp(System.currentTimeMillis()));
-            Member member2 = createMember("김선형","김선형","user",url,new Timestamp(System.currentTimeMillis()));
-            Member member3 = createMember("유승아","유승아","user",url,new Timestamp(System.currentTimeMillis()));
-            Member member4 = createMember("pj0642@gmail.com","박박영서","user",url,new Timestamp(System.currentTimeMillis()));
-            Member member5 = createMember("김하늘","김하늘","user",url,new Timestamp(System.currentTimeMillis()));
-            Member member6 = createMember("박준형","박준형","user",url,new Timestamp(System.currentTimeMillis()));
+            Member member1 = createMember("test1","test1","user1", url);
+            Member member2 = createMember("test2","test2","user2", url);
+            Member member3 = createMember("test3","test3","user3", url);
 
-            em.persist(member1);
-            em.persist(member2);
-            em.persist(member3);
-            em.persist(member4);
-            em.persist(member5);
-            em.persist(member6);
+            memberService.signUp(member1);
+            memberService.signUp(member2);
+            memberService.signUp(member3);
 
             Ingredient ingredient1 = createIngredient("양파");
             Ingredient ingredient2=createIngredient("당근");
@@ -100,38 +96,38 @@ public class InitDb {
 //                    url,
 //                    LocalDateTime.now(),recipeIngredientList3);
 //            em.persist(recipe3);
-            Recipe recipe1 = createRecipe("제목1", member4,"레시피입니다1",
+            Recipe recipe1 = createRecipe("제목1", member1,"레시피입니다1",
                     url,
                     LocalDateTime.now());
-            Recipe recipe2 = createRecipe("제목2",member4,"레시피입니다2",
+            Recipe recipe2 = createRecipe("제목2",member1,"레시피입니다2",
                     url,
                     LocalDateTime.now());
-            Recipe recipe3 = createRecipe("제목3",member4,"레시피입니다3",
+            Recipe recipe3 = createRecipe("제목3",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
 
-            Recipe recipe4 = createRecipe("제목4",member4,"레시피입니다3",
+            Recipe recipe4 = createRecipe("제목4",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe5 = createRecipe("제목5",member4,"레시피입니다3",
+            Recipe recipe5 = createRecipe("제목5",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe6 = createRecipe("제목6",member4,"레시피입니다3",
+            Recipe recipe6 = createRecipe("제목6",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe7 = createRecipe("제목7",member4,"레시피입니다3",
+            Recipe recipe7 = createRecipe("제목7",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe8 = createRecipe("제목8",member4,"레시피입니다3",
+            Recipe recipe8 = createRecipe("제목8",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe9 = createRecipe("제목9",member4,"레시피입니다3",
+            Recipe recipe9 = createRecipe("제목9",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe10 = createRecipe("제목10",member4,"레시피입니다3",
+            Recipe recipe10 = createRecipe("제목10",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
-            Recipe recipe11 = createRecipe("제목11",member4,"레시피입니다3",
+            Recipe recipe11 = createRecipe("제목11",member1,"레시피입니다3",
                     url,
                     LocalDateTime.now());
             em.persist(recipe1);
@@ -157,10 +153,10 @@ public class InitDb {
 
 
             em.persist(createMeeting(null, 2, "1", "1", 1L, LocalDateTime.of(2023, 7, 27, 15, 10), 1L, Status.ATTENDEE_WAIT, 0));
-            em.persist(createMeeting(null, 2, "2", "2", 2L, LocalDateTime.of(2023, 7, 26, 18, 0), 1L, Status.SCHEDULED,  0));
-            em.persist(createMeeting(null, 2, "3", "3", 3L, LocalDateTime.of(2023, 7, 26, 15, 0), 2L, Status.SCHEDULED, 0));
-            em.persist(createMeeting(null, 2, "4", "4", 4L, LocalDateTime.of(2023, 7, 26, 15, 0), 2L, Status.SCHEDULED, 0));
-            em.persist(createMeeting(null, 2, "5", "5", 5L, LocalDateTime.of(2023, 7, 29, 15, 0), 2L, Status.SCHEDULED, 0));
+            em.persist(createMeeting(null, 2, "2", "2", 1L, LocalDateTime.of(2023, 7, 26, 18, 0), 1L, Status.SCHEDULED,  0));
+            em.persist(createMeeting(null, 2, "3", "3", 2L, LocalDateTime.of(2023, 7, 26, 15, 0), 2L, Status.SCHEDULED, 0));
+            em.persist(createMeeting(null, 2, "4", "4", 2L, LocalDateTime.of(2023, 7, 26, 15, 0), 2L, Status.SCHEDULED, 0));
+            em.persist(createMeeting(null, 2, "5", "5", 3L, LocalDateTime.of(2023, 7, 29, 15, 0), 2L, Status.SCHEDULED, 0));
 
             Forbidden forbidden = createForbidden(1L,1L);
             em.persist(forbidden);
@@ -173,15 +169,13 @@ public class InitDb {
             return recipeIngredient;
         }
 
-        private Member createMember(String name, String nickName, String authority,
-                                    String profileUrl, Timestamp registerDate) {
+        private Member createMember(String username, String password, String nickname, String profileUrl) {
 
             Member member = new Member();
-            member.setNickname(nickName);
-            member.setUsername(name);
-            member.setAuthority(authority);
+            member.setUsername(username);
+            member.setPassword(password);
+            member.setNickname(nickname);
             member.setProfileUrl(profileUrl);
-            member.setRegisterDate(registerDate);
 
             return member;
         }
