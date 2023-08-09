@@ -31,6 +31,7 @@ class Streaming extends Component {
 
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
+        this.endSession = this.endSession.bind(this);
         // this.toggleChat = this.toggleChat.bind(this);
     
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
@@ -239,6 +240,19 @@ class Streaming extends Component {
         
     }
 
+    endSession() {
+        const sessionId = parseInt(this.state.mySessionId)
+        console.log(sessionId, typeof(sessionId))
+        axios.post(`http://localhost:8083/api/meetings/close/${sessionId}`)
+        .then((res)=>{
+            console.log('succesfully close meeting')
+            window.location.replace('/streaming-list')
+        })
+        .catch((err)=>{
+            console.log('error in closing meeting',err)
+        })
+    }
+
     sendSignalUserChanged(data) {
         const signalOptions = {
             data: JSON.stringify(data),
@@ -280,6 +294,7 @@ class Streaming extends Component {
                     <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
                     <p>시작 시간 : {streamingInfo.start_time}</p>
                 </div>
+
 
             {/* !!!!!!!!!!!!!!!호스트 화면!!!!!!!!!!!!!!!!! */}
             {
@@ -337,7 +352,6 @@ class Streaming extends Component {
                 
                 <div className='streamingBottom'>
                       {/* 화면 on off */}
-                    <button onClick={this.camStatusChanged}>test</button>
                     {this.state.videostate  ? (
                         <div className='onIcon'>
                             <ion-icon 
@@ -357,19 +371,21 @@ class Streaming extends Component {
                         }}
                         name="videocam-off-outline"></ion-icon>
                     )}
-
-                    <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
-                    
+                    {
+                        myUserName === host_nickname 
+                        ?<button className='leaveButton' onClick={this.endSession}>미팅 끝내기</button>
+                        :<button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                    }
                       {/* 내 마이크 on off */}
                     {this.state.audiostate ?
-                        <ion-icon name="volume-mute-outline" 
+                        <ion-icon name="volume-high-outline" 
                         onClick={() => {
                             this.state.publisher.publishAudio(!this.state.audiostate);
                             this.setState({ audiostate: !this.state.audiostate });
                         }}
                         ></ion-icon>
                     :
-                        <ion-icon name="volume-high-outline" 
+                        <ion-icon name="volume-mute-outline" 
                         onClick={() => {
                             this.state.publisher.publishAudio(!this.state.audiostate);
                             this.setState({ audiostate: !this.state.audiostate });
@@ -378,7 +394,11 @@ class Streaming extends Component {
                     }
                 </div>
             </div>
+
                 <ChatComponent recipeData={recipeData} user={localUser} className="ChatComponent"/>
+                
+
+
             </div>
         );
     }

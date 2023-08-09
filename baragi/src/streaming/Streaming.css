@@ -3,11 +3,13 @@
 	flex-direction: row;
 	margin-left: 5%;
 	margin-right: 5%;
-	margin-top:1%
+	margin-top:0.5%;
+	margin-bottom: 1%;
 }
 
 .stream-container {
 	width: 100%;
+	justify-content: center;
 	/* height: 200px; */
 }
 
@@ -55,6 +57,7 @@ width: 30%;
 	padding-right: 20%;
 	padding-left: 20%;
 	justify-content: space-around;
+	margin-bottom: 1%;
 }
 
 ion-icon {
@@ -66,3 +69,4 @@ ion-icon {
 	margin-left: 5%;
 	margin-top: 2%;
 }
+

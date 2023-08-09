@@ -1,23 +1,39 @@
 /* Update the CSS for the video container */
 .streamcomponent-largeStream {
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
   width: 50%;
   /* height: 100%; */
   /* background-color: aqua; */
+  margin-left: 25%;
 }
 
 /* Update the CSS for the video container */
 .streamcomponent-smallStream {
   position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
   /* width: 50%; */
   height: 100%;
-  background-color: aqua;
+  /* background-color: aqua; */
 }
 
+.nameTag {
+  position: absolute;
+  bottom: 1%;
+  left: 1%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: inline-block;
+  width: fit-content;
+  border-radius: 20px;
+  padding: 1%;
+
+}
 /* Update the CSS for the video element */
 .streamcomponent video {
   /* position: absolute; */
