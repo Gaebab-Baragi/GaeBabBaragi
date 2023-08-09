@@ -48,6 +48,7 @@ let streamingRegister= createSlice({
         recipe_id: state.recipe_id,
       };
       console.log(data)
+      console.log(typeof(state.start_time), state.start_time)
 
       axios.post("http://localhost:8083/api/meetings", data)
         .then((response) => {

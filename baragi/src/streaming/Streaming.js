@@ -4,7 +4,7 @@ import React, { Component, useEffect } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 import UserModel from './user-model';
-import ChatComponent from './Chat/ChatComponent';
+// import ChatComponent from './Chat/ChatComponent';
 var localUser = new UserModel();
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
@@ -32,7 +32,7 @@ class Streaming extends Component {
         // this.toggleChat = this.toggleChat.bind(this);
     
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
-        this.onbeforeunload = this.onbeforeunload.bind(this);
+        // this.onbeforeunload = this.onbeforeunload.bind(this);
     }
 
     componentDidMount() {
@@ -48,9 +48,9 @@ class Streaming extends Component {
         this.leaveSession()
     }
 
-    onbeforeunload(event) {
-        this.leaveSession();
-    }
+    // onbeforeunload(event) {
+    //     this.leaveSession();
+    // }
 
 
     handleMainVideoStream(stream) {
@@ -95,8 +95,12 @@ class Streaming extends Component {
                     var subscriber = mySession.subscribe(event.stream, undefined);
                     var subscribers = this.state.subscribers;
                     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    console.log('subscribers : ', subscribers)
                     subscribers.push(subscriber);
+                    console.log('이것이 subscribers다!!!! : ', subscribers)
+                    subscribers.map((sub,i)=>{
+                        console.log('이것이 필요한 정보다!!!!!!!', JSON.parse(sub.stream.connection.data).clientData)
+
+                    })
 
                     // Update the state with the new subscribers
                     this.setState({
@@ -120,14 +124,15 @@ class Streaming extends Component {
 
                 // Get a token from the OpenVidu deployment
 
-                this.getToken().then((token) => {
+                this.getToken()
+                .then((token) => {
+                    console.log('이것이 토근이다!!!!!!!!!!', token)
                     // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
                     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
                     mySession.connect(token, { clientData: this.state.myUserName })
                         .then(async () => {
 
                             // --- 5) Get your own camera stream ---
-
 
                             // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
                             // element: we will manage it on our own) and with the desired properties
@@ -140,26 +145,28 @@ class Streaming extends Component {
                                 frameRate: 30, // The frame rate of your video
                                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                                 mirror: false, // Whether to mirror your local video or not
-                              });
+                            });
 
-                            // --- 6) Publish your stream ---
-
+                            // --- 6) Publish your stream --
+                            console.log('WANT TO PUBLISH')
+                            
                             mySession.publish(publisher);
+                            console.log('MY STREAM', publisher.stream)
 
                             // Obtain the current video device in use
                             var devices = await this.OV.getDevices();
                             var videoDevices = devices.filter(device => device.kind === 'videoinput');
                             var currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
                             var currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
-
+                            console.log('GET CURRENT VIDEO DEVICE!!!!!')
                             // Set the main video in the page to display our webcam and store our Publisher
                             if (this.state.myUserName === this.state.host) {
-                              this.setState({
-                                  currentVideoDevice: currentVideoDevice,
-                                  mainStreamManager: publisher,
-                                  publisher: publisher,
+                                this.setState({
+                                    currentVideoDevice: currentVideoDevice,
+                                    mainStreamManager: publisher,
+                                    publisher: publisher,
 
-                              });
+                                });
                             } else {
                                 this.setState({
                                     currentVideoDevice: currentVideoDevice,
@@ -180,28 +187,27 @@ class Streaming extends Component {
     }
 
     updateSubscribers() {
-      var subscribers = this.remotes;
-      this.setState(
-          {
-              subscribers: subscribers,
-          },
-          () => {
-              if (this.state.localUser) {
-                  this.sendSignalUserChanged({
-                      isAudioActive: this.state.localUser.isAudioActive(),
-                      isVideoActive: this.state.localUser.isVideoActive(),
-                      nickname: this.state.localUser.getNickname(),
-                      isScreenShareActive: this.state.localUser.isScreenShareActive(),
-                  });
-              }
-              this.updateLayout();
-          },
-      );
-  }
+        var subscribers = this.remotes;
+        this.setState(
+            {
+                subscribers: subscribers,
+            },
+            () => {
+                if (this.state.localUser) {
+                    this.sendSignalUserChanged({
+                        isAudioActive: this.state.localUser.isAudioActive(),
+                        isVideoActive: this.state.localUser.isVideoActive(),
+                        nickname: this.state.localUser.getNickname(),
+                        isScreenShareActive: this.state.localUser.isScreenShareActive(),
+                });
+            }
+                this.updateLayout();
+            },
+        );
+    }
 
     leaveSession() {
-      window.location.replace('/streaming-list')
-      const sessionId = parseInt(this.state.mySessionId)
+    const sessionId = parseInt(this.state.mySessionId)
         console.log(sessionId, typeof(sessionId))
         axios.post(`http://localhost:8083/api/meetings/left/${sessionId}`)
             .then(() => {
@@ -222,7 +228,7 @@ class Streaming extends Component {
                     publisher: undefined
                 });
 
-                window.location.replace('/streaming-list')
+                // window.location.replace('/streaming-list')
             })
             .catch(error => {
                 console.error('Error leaving session:', error);
@@ -232,18 +238,18 @@ class Streaming extends Component {
     }
 
     camStatusChanged() {
-      localUser.setVideoActive(!localUser.isVideoActive());
-      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
-      this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
-      this.setState({ localUser: localUser });
-  }
+        localUser.setVideoActive(!localUser.isVideoActive());
+        localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+        this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
+        this.setState({ localUser: localUser });
+    }
 
-  micStatusChanged() {
-      localUser.setAudioActive(!localUser.isAudioActive());
-      localUser.getStreamManager().publishAudio(localUser.isAudioActive());
-      this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
-      this.setState({ localUser: localUser });
-  }
+    micStatusChanged() {
+        localUser.setAudioActive(!localUser.isAudioActive());
+        localUser.getStreamManager().publishAudio(localUser.isAudioActive());
+        this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
+        this.setState({ localUser: localUser });
+    }
     
     render() {
         const mySessionId = this.state.mySessionId;
@@ -251,90 +257,98 @@ class Streaming extends Component {
         const publisher = this.state.publisher;
         const host_nickname = this.state.host
         const streamingInfo = this.props.streamingInfo;
+        const streamManager = this.state.publisher
+        const streamManagerNickname = this.state.myUserName
 
         return (
             <div className='StreamingLiveContatiner'>
 
-              <div className="streamingContainer">
-                  <div className='streamingTop'>
-                      <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
-                      <p>시작 시간 : {streamingInfo.start_time}</p>
-                  </div>
-                  {console.log(myUserName, host_nickname)}
-                  {/* !!!!!!!!!!!!!!!호스트 화면!!!!!!!!!!!!!!!!! */}
-                  {myUserName === host_nickname ? (
-                    <>
-                        <div>이건 호스트 화면이고!!!!!!!!</div>
-                        <div className='mainVideo'>
-                            <div className="stream-container " >
-                                <UserVideoComponent
-                                    streamManager={this.state.publisher} />
-                                <p>{this.state.nickname}</p>
-                            </div>
-                        </div>
-                      </>
-                  )  : 
-                    //  호스트 찾기!!!!!!!!!!!
-                    this.state.subscribers.map((sub,i)=>{
-                      console.log( JSON.parse(sub.streamManager.stream.connection.data).clientData)
-                    })
-                    
-                  }
+            <div className="streamingContainer">
+                <div className='streamingTop'>
+                    <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
+                    <p>시작 시간 : {streamingInfo.start_time}</p>
+                </div>
+                {/* 내가 호스트 아닐 때 호스트 찾기 */}
+                {
+                    myUserName !== host_nickname && (
+                        this.state.subscribers.map((sub, i) => {
+                            console.log(JSON.parse(sub.stream.connection.data).clientData);
+                            const subName = JSON.parse(sub.stream.connection.data).clientData;
+                            if (subName === host_nickname) {
+                                streamManager = sub; // 이 부분을 원하는 동작으로 변경해야 합니다.
+                                streamManagerNickname=subName
+                            }
+                        })
+                    )
+                }
 
-                  <p>이건 그외 의 화면이야!!!!!!!!!!!</p>
-                  <div className='subVideos'>
-                  {this.state.subscribers.map((sub, i) => (
-                      <div key={sub.id} className="stream-container">
-                          <span>{sub.id}</span>
-                          <UserVideoComponent streamManager={sub} />
-                          <br />
-                      </div>
-                  ))}
-                  </div>
-                  
-                  <div className='streamingBottom'>
+            {/* !!!!!!!!!!!!!!!호스트 화면!!!!!!!!!!!!!!!!! */}
+            <>
+                <div>이건 호스트 화면이고!!!!!!!!</div>
+                <div className='mainVideo'>
+                    <div className="stream-container " >
+                        <UserVideoComponent
+                            streamManager={streamManager} />
+                        <p>{streamManagerNickname}</p>
+                    </div>
+                </div>
+            </>
+
+
+                <p>이건 그외 의 화면이야!!!!!!!!!!!</p>
+                <div className='subVideos'>
+                {this.state.subscribers.map((sub, i) => (
+                    <div key={sub.id} className="stream-container">
+                        <span>{sub.id}</span>
+                        <UserVideoComponent streamManager={sub} />
+                        <br />
+                    </div>
+                ))}
+                </div>
+                
+                <div className='streamingBottom'>
                       {/* 화면 on off */}
-                      {this.state.videostate  ? (
-                          <div className='onIcon'>
-                              <ion-icon 
-                              onClick={() => {
-                                  this.state.publisher.publishVideo(!this.state.videostate);
-                                  this.setState({ videostate: !this.state.videostate });
-                              }}
-                              name="videocam-outline"
-                              ></ion-icon>
+                    {this.state.videostate  ? (
+                        <div className='onIcon'>
+                            <ion-icon 
+                            onClick={() => {
+                                this.state.publisher.publishVideo(!this.state.videostate);
+                                this.setState({ videostate: !this.state.videostate });
+                            }}
+                            name="videocam-outline"
+                            ></ion-icon>
 
-                          </div>
-                      ) : (
-                          <ion-icon 
-                          onClick={() => {
-                              this.state.publisher.publishVideo(!this.state.videostate);
-                              this.setState({ videostate: !this.state.videostate });
-                          }}
-                          name="videocam-off-outline"></ion-icon>
-                      )}
+                        </div>
+                    ) : (
+                        <ion-icon 
+                        onClick={() => {
+                            this.state.publisher.publishVideo(!this.state.videostate);
+                            this.setState({ videostate: !this.state.videostate });
+                        }}
+                        name="videocam-off-outline"></ion-icon>
+                    )}
 
-                      <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
-                      
+                    <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                    
                       {/* 내 마이크 on off */}
-                      {this.state.audiostate ?
-                          <ion-icon name="volume-mute-outline" 
-                          onClick={() => {
-                              this.state.publisher.publishAudio(!this.state.audiostate);
-                              this.setState({ audiostate: !this.state.audiostate });
-                          }}
-                          ></ion-icon>
-                      :
-                          <ion-icon name="volume-high-outline" 
-                          onClick={() => {
-                              this.state.publisher.publishAudio(!this.state.audiostate);
-                              this.setState({ audiostate: !this.state.audiostate });
-                          }}
-                          ></ion-icon>
-                      }
-                  </div>
-              </div>
-              <ChatComponent user={localUser} className="ChatComponent"/>
+                    {this.state.audiostate ?
+                        <ion-icon name="volume-mute-outline" 
+                        onClick={() => {
+                            this.state.publisher.publishAudio(!this.state.audiostate);
+                            this.setState({ audiostate: !this.state.audiostate });
+                        }}
+                        ></ion-icon>
+                    :
+                        <ion-icon name="volume-high-outline" 
+                        onClick={() => {
+                            this.state.publisher.publishAudio(!this.state.audiostate);
+                            this.setState({ audiostate: !this.state.audiostate });
+                        }}
+                        ></ion-icon>
+                    }
+                </div>
+            </div>
+              {/* <ChatComponent user={localUser} className="ChatComponent"/> */}
             </div>
         );
     }
