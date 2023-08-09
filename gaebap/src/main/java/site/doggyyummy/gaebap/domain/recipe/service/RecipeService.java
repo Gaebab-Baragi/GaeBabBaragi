@@ -10,6 +10,10 @@ import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
+import site.doggyyummy.gaebap.domain.bookmark.repository.BookmarkRepository;
+import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkService;
+import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkServiceImpl;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
@@ -41,6 +45,7 @@ public class RecipeService {
     private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final PetRepository petRepository;
+    private final BookmarkRepository bookmarkRepository;
     //AWS S3
     private final AmazonS3 awsS3Client;
 
@@ -48,9 +53,7 @@ public class RecipeService {
     //레시피 등록
     //예외가 발생해도 DB에서 id는 계속 증가하는 문제 발생.. 어캐 해결하지 ㅅㅂ
     @Transactional(rollbackFor = IllegalArgumentException.class)
-//    public RecipeUploadResponseDto uploadRecipe(Member member,RecipeUploadRequestDto reqDto, MultipartFile recipeImage, MultipartFile recipeVideo, MultipartFile[] stepImages) throws IOException {
-    public RecipeUploadResponseDto uploadRecipe(Member member,RecipeUploadRequestDto reqDto, MultipartFile recipeImage, MultipartFile recipeVideo) throws IOException {
-
+    public RecipeUploadResponseDto uploadRecipe(Member member,RecipeUploadRequestDto reqDto, MultipartFile recipeImage, MultipartFile recipeVideo, List<MultipartFile> stepImages) throws IOException {
         Recipe recipe = new Recipe();
         if (reqDto.getTitle() == null || reqDto.getTitle().equals("")) {
             throw new IllegalArgumentException("제목을 입력하세요");
@@ -77,11 +80,13 @@ public class RecipeService {
             step.setOrderingNumber(s.getOrderingNumber());
             step.setDescription(s.getDescription());
             step.setRecipe(recipe);
-//            Map<String, String> stepMap = uploadFile(step, stepImages[s.getOrderingNumber().intValue() - 1]);
-//            if (stepMap != null) {
-//                step.setS3Url(stepMap.get("s3Url"));
-//                step.setS3Key(stepMap.get("s3Key"));
-//            }
+            System.out.println("(s.getOrderingNumber().intValue()-1) = " + (s.getOrderingNumber().intValue()-1));
+            System.out.println("stepImages.length = " + stepImages.size());
+            Map<String, String> stepMap = uploadFile(step, stepImages.get(s.getOrderingNumber().intValue() - 1));
+            if (stepMap != null) {
+                step.setS3Url(stepMap.get("s3Url"));
+                step.setS3Key(stepMap.get("s3Key"));
+            }
             steps.add(step);
         }
         stepRepository.saveAll(steps);
@@ -151,7 +156,12 @@ public class RecipeService {
             ingredients.add(ingredient);
         }
 
-        return new RecipeFindByIdResponseDto(recipe,member, steps, recipeIngredients, ingredients);
+        long bookmark=0;
+        List<Bookmark> bookmarks=bookmarkRepository.selectByRecipe(recipe.getId());
+        if(bookmarks!=null){
+            bookmark=bookmarks.size();
+        }
+        return new RecipeFindByIdResponseDto(recipe,member, steps, recipeIngredients, ingredients,bookmark);
     }
 
     //hit 증가

@@ -9,6 +9,8 @@ import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkResponseDTO;
 import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.bookmark.repository.BookmarkRepository;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
+import site.doggyyummy.gaebap.domain.recipe.repository.RecipeRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class BookmarkServiceImpl implements BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
+    private final RecipeRepository recipeRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -40,8 +43,11 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public void create(BookmarkRequestDTO bookmarkRequestDTO) {
-        Bookmark bookmark = bookmarkRequestDTO.toEntity();
+    public void create(Member loginMember,Long id) {
+        Bookmark bookmark=new Bookmark();
+        Recipe recipe=recipeRepository.findById(id).get();
+        bookmark.setRecipe(recipe);
+        bookmark.setMember(loginMember);
         bookmarkRepository.create(bookmark);
     }
 
