@@ -4,7 +4,7 @@ import React, { Component, useEffect } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 import UserModel from './user-model';
-// import ChatComponent from './Chat/ChatComponent';
+import ChatComponent from './Chat/ChatComponent';
 var localUser = new UserModel();
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
@@ -32,7 +32,7 @@ class Streaming extends Component {
         // this.toggleChat = this.toggleChat.bind(this);
     
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
-        // this.onbeforeunload = this.onbeforeunload.bind(this);
+        this.onbeforeunload = this.onbeforeunload.bind(this);
     }
 
     componentDidMount() {
@@ -48,9 +48,14 @@ class Streaming extends Component {
         this.leaveSession()
     }
 
-    // onbeforeunload(event) {
+    onbeforeunload(event) {
+        this.leaveSession();
+    }
+
+    // leaveSessionOnTabClose = (event) => {
+    //     event.preventDefault();
     //     this.leaveSession();
-    // }
+    // };
 
 
     handleMainVideoStream(stream) {
@@ -160,23 +165,17 @@ class Streaming extends Component {
                             var currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
                             console.log('GET CURRENT VIDEO DEVICE!!!!!')
                             // Set the main video in the page to display our webcam and store our Publisher
-                            if (this.state.myUserName === this.state.host) {
-                                this.setState({
-                                    currentVideoDevice: currentVideoDevice,
-                                    mainStreamManager: publisher,
-                                    publisher: publisher,
+                            this.setState({
+                                currentVideoDevice: currentVideoDevice,
+                                mainStreamManager: publisher,
+                                publisher: publisher,
+                                });
 
-                                });
-                            } else {
-                                this.setState({
-                                    currentVideoDevice: currentVideoDevice,
-                                    publisher: publisher,
-                                    mainStreamManager: publisher,
-                                });
-                            }
                             localUser.setNickname(this.state.myUserName);
                             localUser.setConnectionId(this.state.session.connection.connectionId);
                             localUser.setStreamManager(publisher);
+                            this.sendSignalUserChanged({ isScreenShareActive: localUser.isScreenShareActive() });
+
                         })
                         .catch((error) => {
                             console.log('There was an error connecting to the session:', error.code, error.message);
@@ -228,13 +227,21 @@ class Streaming extends Component {
                     publisher: undefined
                 });
 
-                // window.location.replace('/streaming-list')
+                window.location.replace('/streaming-list')
             })
             .catch(error => {
                 console.error('Error leaving session:', error);
             });
 
         
+    }
+
+    sendSignalUserChanged(data) {
+        const signalOptions = {
+            data: JSON.stringify(data),
+            type: 'userChanged',
+        };
+        this.state.session.signal(signalOptions);
     }
 
     camStatusChanged() {
@@ -259,6 +266,7 @@ class Streaming extends Component {
         const streamingInfo = this.props.streamingInfo;
         const streamManager = this.state.publisher
         const streamManagerNickname = this.state.myUserName
+        const recipeData = this.props.recipeData;
 
         return (
             <div className='StreamingLiveContatiner'>
@@ -268,46 +276,62 @@ class Streaming extends Component {
                     <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
                     <p>시작 시간 : {streamingInfo.start_time}</p>
                 </div>
-                {/* 내가 호스트 아닐 때 호스트 찾기 */}
-                {
-                    myUserName !== host_nickname && (
-                        this.state.subscribers.map((sub, i) => {
-                            console.log(JSON.parse(sub.stream.connection.data).clientData);
-                            const subName = JSON.parse(sub.stream.connection.data).clientData;
-                            if (subName === host_nickname) {
-                                streamManager = sub; // 이 부분을 원하는 동작으로 변경해야 합니다.
-                                streamManagerNickname=subName
-                            }
-                        })
-                    )
-                }
 
             {/* !!!!!!!!!!!!!!!호스트 화면!!!!!!!!!!!!!!!!! */}
-            <>
-                <div>이건 호스트 화면이고!!!!!!!!</div>
-                <div className='mainVideo'>
-                    <div className="stream-container " >
-                        <UserVideoComponent
-                            streamManager={streamManager} />
-                        <p>{streamManagerNickname}</p>
-                    </div>
-                </div>
-            </>
+            {
+                myUserName === host_nickname ? (
+                    <>
+                        <div className='mainVideo'>
+                            <div className="stream-container " >
+                                <UserVideoComponent
+                                    streamManager={this.state.publisher} />
+                                <p>{this.state.nickname}</p>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    this.state.subscribers.map((sub, i) => {
+                        console.log(JSON.parse(sub.stream.connection.data).clientData);
+                        const subName = JSON.parse(sub.stream.connection.data).clientData;
+                        if (subName === host_nickname) {
+                            return (
+                                <>
+                                    <div className='mainVideo'>
+                                        <div className="stream-container " >
+                                            <UserVideoComponent
+                                                streamManager={sub} />
+                                            <p>{subName}</p>
+                                        </div>
+                                    </div>
+                                </>
+                            );
+                        }
+                        return null; // 만약 호스트가 아니라면 아무것도 반환하지 않음
+                    })
+                )
+            }
 
-
-                <p>이건 그외 의 화면이야!!!!!!!!!!!</p>
                 <div className='subVideos'>
-                {this.state.subscribers.map((sub, i) => (
-                    <div key={sub.id} className="stream-container">
-                        <span>{sub.id}</span>
-                        <UserVideoComponent streamManager={sub} />
-                        <br />
-                    </div>
-                ))}
+                {myUserName !== host_nickname && (
+                    <UserVideoComponent streamManager={publisher}/>
+                )}
+                {this.state.subscribers.map((sub, i) => {
+                    const subName = JSON.parse(sub.stream.connection.data).clientData;
+                    if (subName!==host_nickname) {
+                        return (
+                            // <div key={sub.id} className="stream-container">
+                                // <span>{sub.id}</span>
+                                <UserVideoComponent streamManager={sub} />
+                            // </div>
+                        );
+                    }
+                })}
+
                 </div>
                 
                 <div className='streamingBottom'>
                       {/* 화면 on off */}
+                    <button onClick={this.camStatusChanged}>test</button>
                     {this.state.videostate  ? (
                         <div className='onIcon'>
                             <ion-icon 
@@ -348,7 +372,7 @@ class Streaming extends Component {
                     }
                 </div>
             </div>
-              {/* <ChatComponent user={localUser} className="ChatComponent"/> */}
+                <ChatComponent recipeData={recipeData} user={localUser} className="ChatComponent"/>
             </div>
         );
     }

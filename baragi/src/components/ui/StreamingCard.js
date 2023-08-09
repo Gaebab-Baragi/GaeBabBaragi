@@ -16,6 +16,7 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
     axios.get(`http://localhost:8083/api/meetings/join-request/${meeting_id}`)
     .then((res)=>{
       console.log('request success : ', res.data);
+
         const data = {
           meeting_id: meeting_id,
           title : title,
@@ -27,15 +28,16 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
         }
         dispatch(setStreamingInfo(data))
         axios.post(`http://localhost:8083/api/meetings/join/${meeting_id}`)
-        .then((res)=>{
-          console.log('미팅 참여 성공 ')
-          navigate('/streaming-live')
-        })
-        // window.open('http://localhost:3000/streaming-live','_blank')
-        .catch((err)=>{
-          
-          console.log('error after join accepted', err.message)
-        })
+          .then((res)=>{
+            console.log('미팅 참여 성공 ')
+            // window.open('/streaming-live', '_blank')
+            navigate('/streaming-live')
+          })
+          // window.open('http://localhost:3000/streaming-live','_blank')
+          .catch((err)=>{
+            
+            console.log('error after join accepted', err.message)
+          })
       })
     .catch((err)=>{
       alert(err.response.data.message)

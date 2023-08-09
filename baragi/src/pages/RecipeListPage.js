@@ -31,7 +31,7 @@ function RecipeListPage() {
         <button onClick={()=>navigate('/recipe-register')}>레시피 작성</button>
       </div>
     {
-     filtered
+    filtered
       // 검색 --> 레시피 목록 보이게
       ? 
       <div>

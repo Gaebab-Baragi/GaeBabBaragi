@@ -2,7 +2,7 @@
 import './App.css';
 import React, {useState} from 'react';
 import { configureStore } from '@reduxjs/toolkit'
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import { Routes, Route, useLocation} from 'react-router-dom'
 import NaviBar from './components/ui/navbar/NaviBar';
 
 // -------------------PAGES--------------------//
@@ -35,16 +35,19 @@ function App() {
       if (res.headers['authorization']) {
         axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
       }
-
+      
       return res;
     }
-  )
-
+    )
+    
+    const location = useLocation();
+    const noNavAndFooterRoutes = ['/streaming-live'];
+    const showNavAndFooter = !noNavAndFooterRoutes.includes(location.pathname);
 
   return (
     <>
     <div className="App">
-      <NaviBar></NaviBar>
+    {showNavAndFooter && <NaviBar />}
 
       {/* <FormComponent/> */}
 
@@ -79,7 +82,7 @@ function App() {
         <Route path='/object-detect' element={<ObjectDetectionPage></ObjectDetectionPage>}></Route>
       </Routes>
 
-      <Footer/>
+      {showNavAndFooter && <Footer />}
     </div>
     </>
   );

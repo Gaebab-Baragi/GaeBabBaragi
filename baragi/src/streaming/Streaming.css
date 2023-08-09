@@ -1,8 +1,14 @@
 .StreamingLiveContatiner {
 	display: flex;
 	flex-direction: row;
-	margin-left: 2%;
-	margin-right: 2%;
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top:1%
+}
+
+.stream-container {
+	width: 100%;
+	/* height: 200px; */
 }
 
 .streamingContainer {
@@ -16,12 +22,11 @@
 
 .ChatComponent {
 width: 30%;
-
 }
 
 .mainVideo {
 	width: 100%;
-
+	/* height: 200px; */
 }
 
 .subVideos {
@@ -29,7 +34,6 @@ width: 30%;
 	flex-direction: row;
 	margin-left: 10px;
 	margin-right: 10px;
-
 }
 
 .leaveButton {
