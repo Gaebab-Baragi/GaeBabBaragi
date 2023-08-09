@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
 import java.util.List;
 
@@ -53,5 +54,13 @@ public class BookmarkRepository {
                 .setParameter("memberId" ,member.getId())
                 .getResultList();
         return bookmark;
+    }
+
+    public Long isLike(Member member, Long recipeId){
+        long cnt = (long) em.createQuery("select count(b) from Bookmark b where b.member.id=:memberId and b.recipe.id=:recipeId")
+                .setParameter("memberId",member.getId())
+                .setParameter("recipeId",recipeId)
+                .getSingleResult();
+        return cnt;
     }
 }

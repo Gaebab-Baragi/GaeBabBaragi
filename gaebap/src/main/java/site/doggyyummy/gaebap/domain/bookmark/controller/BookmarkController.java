@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkIslikeResponseDto;
 import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkRequestDTO;
 import site.doggyyummy.gaebap.domain.bookmark.dto.BookmarkResponseDTO;
 import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkServiceImpl;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.util.List;
@@ -37,9 +39,10 @@ public class BookmarkController {
     }
 
     @Operation(description = "좋아요 등록")
-    @PostMapping("")
-    public void create(@RequestBody BookmarkRequestDTO bookmarkRequestDTO) {
-        bookmarkService.create(bookmarkRequestDTO);
+    @PostMapping("/{recipe_id}")
+    public void create(@PathVariable Long recipe_id) {
+        Member loginMember=SecurityUtil.getCurrentLoginMember();
+        bookmarkService.create(loginMember,recipe_id);
     }
 
     @Operation(description = "좋아요 해제")
@@ -47,4 +50,11 @@ public class BookmarkController {
     public void delete(@RequestBody BookmarkRequestDTO bookmarkRequestDTO){         //API 명세상으로는 Id를 params로 받지만 회의 때 petId,ingredientId를 받자 했던 거 같아서 일단 그렇게함
         bookmarkService.delete(bookmarkRequestDTO);
     }
+
+    @GetMapping("/islike/{recipe_id}")
+    public BookmarkIslikeResponseDto isLike(@PathVariable("recipe_id") Long recipe_id){
+        Member loginMember=SecurityUtil.getCurrentLoginMember();
+        return bookmarkService.isLike(recipe_id,loginMember);
+    }
+
 }

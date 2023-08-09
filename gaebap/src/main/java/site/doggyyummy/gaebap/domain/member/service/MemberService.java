@@ -1,6 +1,5 @@
 package site.doggyyummy.gaebap.domain.member.service;
 
-import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 
 import java.util.Optional;

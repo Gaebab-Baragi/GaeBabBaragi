@@ -52,7 +52,7 @@ public class RecipeFindByIdResponseDto {
         this.member=new MemberDto(member.getUsername(),member.getNickname(),member.getProfileUrl());
         // Convert List<Step> to List<StepDto>
         this.steps = steps.stream()
-                .map(step -> new StepDto(step.getOrderingNumber(), step.getDescription()))
+                .map(step -> new StepDto(step.getOrderingNumber(), step.getDescription(),step.getS3Url()))
                 .collect(Collectors.toList());
         this.recipeIngredients=recipeIngredients.stream()
                 .map(recipeIngredient->new RecipeIngredientDto(recipeIngredient.getAmount()))
@@ -77,9 +77,11 @@ public class RecipeFindByIdResponseDto {
     public static class StepDto{
         private Long orderingNumber;
         private String description;
-        public StepDto(Long orderingNumber,String description){
+        private String stepImage;
+        public StepDto(Long orderingNumber,String description,String stepImage){
             this.description=description;
             this.orderingNumber=orderingNumber;
+            this.stepImage=stepImage;
         }
     }
     @Getter

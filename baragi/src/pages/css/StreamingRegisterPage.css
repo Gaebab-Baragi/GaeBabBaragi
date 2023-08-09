@@ -69,13 +69,18 @@
   margin-right: 20vw;
 }
 
-
-span {
+<<<<<<< HEAD
+=======
+.recipeName {
   display: flex;
   align-items: center;
-
+}
+.maxParticipant {
+  display: flex;
+  align-items: center;
 }
 
+>>>>>>> 111074f3c328ee3847c5d06543d47da63bf12c0b
 .roomName {
   border-radius: 10px;
   border: 2px solid #000;
@@ -89,6 +94,8 @@ span {
 }
 
 .recipeName {
+  display: flex;
+  align-items: center;
   font-size: 1vw;
   font-weight: 700;
   height: 40px;
@@ -145,8 +152,8 @@ span {
 }
 
 .maxParticipant {
-
   display: flex;
+  align-items: center;
   justify-content: center;
   width: 34px;
 
@@ -204,15 +211,42 @@ span {
   border-radius: 10px;
 }
 
-input:hover{
+<<<<<<< HEAD
+/* input:hover{
   border-color:#FA0;
-}
-input:focus{
-  border-color:#FA0;
-} 
+} */
 
+
+=======
+>>>>>>> 111074f3c328ee3847c5d06543d47da63bf12c0b
 @media (max-width : 1000px){
   .inputContainer-left>label {
     font-size: 17px;
   }
+}
+
+
+.roomName:focus{
+  border-color:#FA0;
+}
+.startTime:focus{
+  border-color:#FA0;
+}
+.password:focus{
+  border-color:#FA0;
+}
+.description:focus{
+  border-color:#FA0;
+}
+.roomName:hover{
+  border-color:#FA0;
+}
+.startTime:hover{
+  border-color:#FA0;
+}
+.password:hover{
+  border-color:#FA0;
+}
+.description:hover{
+  border-color:#FA0;
 }
