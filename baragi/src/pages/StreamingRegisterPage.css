@@ -69,6 +69,8 @@
   margin-right: 20vw;
 }
 
+<<<<<<< HEAD
+=======
 .recipeName {
   display: flex;
   align-items: center;
@@ -78,6 +80,7 @@
   align-items: center;
 }
 
+>>>>>>> 111074f3c328ee3847c5d06543d47da63bf12c0b
 .roomName {
   border-radius: 10px;
   border: 2px solid #000;
@@ -91,6 +94,8 @@
 }
 
 .recipeName {
+  display: flex;
+  align-items: center;
   font-size: 1vw;
   font-weight: 700;
   height: 40px;
@@ -147,8 +152,8 @@
 }
 
 .maxParticipant {
-
   display: flex;
+  align-items: center;
   justify-content: center;
   width: 34px;
 
@@ -206,6 +211,14 @@
   border-radius: 10px;
 }
 
+<<<<<<< HEAD
+/* input:hover{
+  border-color:#FA0;
+} */
+
+
+=======
+>>>>>>> 111074f3c328ee3847c5d06543d47da63bf12c0b
 @media (max-width : 1000px){
   .inputContainer-left>label {
     font-size: 17px;
