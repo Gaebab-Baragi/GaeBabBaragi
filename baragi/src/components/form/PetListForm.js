@@ -1,16 +1,12 @@
 import { ReactTags } from "react-tag-autocomplete";
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import axios from "axios";
 import "./PetRegisterForm.css";
-import PetIngredientTagBar from "../ui/PetIngredientTagBar";
-import { compose } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router";
 
 function PetListForm({ pet }) {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [forbidden, setForbidden] = useState();
-  const defaultImageUrl = "./기본이미지.PNG";
 
   useEffect(()=>{
     console.log('pet is ', pet)
@@ -23,10 +19,6 @@ function PetListForm({ pet }) {
     console.log('tmp : ', tmp)
   },[])
 
-  const handleNavigate = ((e)=>{
-    e.preventDefault();
-    navigate(`/my-pet-register/${pet.id}`)
-  })
 
   return (
     <div className="petContainer">

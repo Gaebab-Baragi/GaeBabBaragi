@@ -27,9 +27,20 @@ import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
 import Footer from './components/ui/Footer'
 // -------------------PAGES-------------------//
-
+import axios from 'axios';
 
 function App() {  
+  axios.interceptors.response.use(
+    (res) => {
+      if (res.headers['authorization']) {
+        axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
+      }
+
+      return res;
+    }
+  )
+
+
   return (
     <>
     <div className="App">
@@ -46,19 +57,18 @@ function App() {
         <Route path='/find-id' element={<FindIdPage/>}></Route>
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
         {/* 레시피 */}
-        <Route path='/recipe-register' element={<RecipeRegisterPage/>}></Route>
+        <Route path='/recipe-register/' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
         {/* 스트리밍 */}
-        <Route path='/streaming-register' element={<StreamingRegisterPage/>}></Route>
+        <Route path='/streaming-register/:id' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
         <Route path='/streaming-live' element={<StreamingLivePage/>}></Route>
         {/* 내 정보 */}
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
         {/* 펫  */}
-        <Route path='/my-pet-register' exact element={<PetRegisterPage/>}></Route>
-        <Route path='/my-pet-register/:id' element={<PetRegisterPage/>}></Route>
+        <Route path='/my-pet-list/:idx' element={<PetListPage/>}></Route>
         <Route path='/my-pet-list' element={<PetListPage/>}></Route>
         
         {/*-----------------------로그인 관련-------------------------------*/}

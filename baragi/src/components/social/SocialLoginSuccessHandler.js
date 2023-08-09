@@ -19,7 +19,6 @@ const SocialLoginHandler= () => {
         .then((res) => {
             if (res.status === 200){
                 const accessToken = params.token;
-                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
                 dispatch(loginUser(res.data));
                 navigate("/");
             }

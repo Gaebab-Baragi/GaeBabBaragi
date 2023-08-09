@@ -15,7 +15,7 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
     if (forbiddens) {
       const tmp = []
       forbiddens.map((i)=>{
-        tmp.push(i.ingredientName)
+        tmp.push({value : i.ingredientId, label : i.ingredientName})
       })
       console.log(tmp)
       setSelected(tmp)
@@ -58,7 +58,6 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
     [selected]
   )
 
-
   return(
     <div className="petIngredientSelect">
       <ReactTags
@@ -69,7 +68,6 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
         onDelete={onDelete}
         noOptionsText="일치하는 재료가 없습니다."
         allowBackspace={true}
-        inline
       />
     </div>
   );

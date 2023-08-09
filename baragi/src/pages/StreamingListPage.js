@@ -32,7 +32,7 @@ function StreamingListPage() {
   const nickname = <user className="nickname"></user>;
 
   useEffect(() => {
-    axios.get('/api/meetings')
+    axios.get('http://localhost:8083/api/meetings')
       .then((res) => {
         console.log('get list is successful : ', res.data);
         setStreamingList(res.data);
