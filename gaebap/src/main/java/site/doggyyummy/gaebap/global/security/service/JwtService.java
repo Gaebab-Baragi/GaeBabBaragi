@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Getter
 @Slf4j
+@Transactional
 public class JwtService {
     @Value("${jwt.secretKey}")
     private String secretKey;
@@ -61,15 +63,14 @@ public class JwtService {
                 .withSubject(REFRESH_TOKEN_SUBJECT)
                 .withIssuedAt(now)
                 .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
-                .withClaim("Issued", System.currentTimeMillis())
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
 
-        setRefreshTokenHeader(response, refreshToken);
         setAccessTokenHeader(response, accessToken);
+        setRefreshTokenHeader(response, refreshToken);
         log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
 

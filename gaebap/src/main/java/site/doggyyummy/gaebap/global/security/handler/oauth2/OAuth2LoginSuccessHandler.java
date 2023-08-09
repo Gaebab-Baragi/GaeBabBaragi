@@ -40,10 +40,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         try {
             log.info("onAuthenticationSuccess");
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-            if (oAuth2User.getRole() == Role.GUEST){
-                guestLogin(request, response, oAuth2User);
-            }
-            else loginSuccess(request, response, oAuth2User);
+            loginSuccess(request, response, oAuth2User);
         } catch (Exception e){
            log.info("onAuthenticationSuccess: {}", e.getMessage());
         }
@@ -52,53 +49,25 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private void loginSuccess(HttpServletRequest request, HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException{
         if (response.isCommitted()) return;
 
-        String accessToken = jwtService.createAccessToken(oAuth2User.getName());
-        String refreshToken = jwtService.createRefreshToken();
-
-        jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-        log.info("새 로그인 유저 : {}, 리프레시 토큰 : {}", oAuth2User.getName(), refreshToken);
-        jwtService.updateRefreshToken(oAuth2User.getName(), refreshToken);
-
-        Member member = memberRepository.findByUsername(oAuth2User.getName()).orElseThrow(() -> new RuntimeException());
-
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-        MemberResponseDTO responseDTO = MemberResponseDTO.toDTO(member);
-        String result = objectMapper.writeValueAsString(responseDTO);
-        response.getWriter().println(result);
+
+        String accessToken = jwtService.createAccessToken(oAuth2User.getName());
+        String refreshToken = jwtService.createRefreshToken();
 
         String redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/redirect/" + accessToken)
                 .build().toUriString();
 
+        if (oAuth2User.getRole() == Role.GUEST) {
+            redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/signup/"+ accessToken)
+                    .build().toUriString();
+            refreshToken = null;
+        }
+
+        log.info("새 로그인 유저 : {}, 리프레시 토큰 : {}, with role {}", oAuth2User.getName(), refreshToken, oAuth2User.getRole());
+        jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
+        jwtService.updateRefreshToken(oAuth2User.getName(), refreshToken);
         redirectStrategy.sendRedirect(request, response, redirectUrl);
         log.info("token : {}", accessToken);
     }
-
-    private void guestLogin(HttpServletRequest request, HttpServletResponse response, CustomOAuth2User oAuth2User) throws Exception {
-        Member member = oAuth2User.getMember();
-        String accessToken = jwtService.createAccessToken(member.getUsername());
-        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-
-        jwtService.sendAccessAndRefreshToken(response, accessToken, null);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("utf-8");
-        MemberResponseDTO responseDTO = MemberResponseDTO.toDTO(member);
-        String result = objectMapper.writeValueAsString(responseDTO);
-        response.getWriter().println(result);
-
-        String redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/signup")
-                .build().toUriString();
-
-        redirectStrategy.sendRedirect(request, response, redirectUrl);
-    }
-
-
-
-
-
-
-
-
-
 }
