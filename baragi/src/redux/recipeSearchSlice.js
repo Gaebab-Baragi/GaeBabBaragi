@@ -10,13 +10,14 @@ let recipeSearch= createSlice({
     keyword:'',
     ingredients:[],
     dogs:[],
+    petIds: [],
     filteredList:[],
     requestHappen: false
   },
   reducers:{
     requestFilteredRecipeList: (state, action)=>{
       let tempIngredient = state.ingredients
-      if (state.ingredients.length == 0) {
+      if (state.ingredients.length === 0) {
         tempIngredient = null;
       } 
       const data = {
@@ -53,10 +54,14 @@ let recipeSearch= createSlice({
     updateDogs: (state, action) =>{
       state.dogs = action.payload
       // console.log(state.dogs)
+    },
+    updatePetIds: (state, action) =>{
+      state.petIds = action.payload
+      // console.log(state.dogs)
     }
   }
 })
 
-export const {updateKeyword, updateIngredients, updateDogs, requestFilteredRecipeList} = recipeSearch.actions;
+export const {updateKeyword, updateIngredients, updateDogs, requestFilteredRecipeList,updatePetIds} = recipeSearch.actions;
 
 export default recipeSearch;

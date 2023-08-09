@@ -25,6 +25,7 @@ public class PetResponseDTO {
         dto.setId(pet.getId());
         dto.setMemberId(pet.getMember().getId());
         dto.setName(pet.getName());
+        dto.setImgUrl(pet.getS3Url());
          List<ForbiddenResponseDTO> forbiddensDTO = pet.getForbiddens().stream()
              .map(ForbiddenResponseDTO::toDTO)
              .collect(Collectors.toList());
