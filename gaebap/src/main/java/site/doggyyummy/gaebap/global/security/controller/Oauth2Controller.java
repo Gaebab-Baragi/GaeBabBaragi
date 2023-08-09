@@ -28,8 +28,18 @@ public class Oauth2Controller {
         log.info("accessToken : {}", token);
         String name = jwtService.extractName(token).orElseThrow(() -> new Exception());
         Member member = memberService.findByName(name).orElseThrow(() -> new NoSuchUserException());
-        memberService.uploadImageByUrl(member);
+        try {
+            memberService.uploadImageByUrl(member);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(MemberResponseDTO.toDTO(member), HttpStatus.OK);
+        }
         log.info("send member_info : {}", member.toString());
         return new ResponseEntity<>(MemberResponseDTO.toDTO(member), HttpStatus.OK);
+    }
+
+    @GetMapping("/checkLogin")
+    public ResponseEntity<String> checkLogin() throws Exception{
+        return new ResponseEntity<>("checked", HttpStatus.OK);
     }
 }

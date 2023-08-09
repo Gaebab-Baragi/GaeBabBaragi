@@ -20,6 +20,7 @@ import FindPasswordPage from './pages/FindPasswordPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHandler'
 import LogoutHandler from './components/social/LogoutHandler';
+import DuplicateNickname from './components/social/DuplicateNickname';
 
 import PetRegisterPage from './pages/Pet/PetRegisterPage';
 import PetListPage from './pages/Pet/PetListPage';
@@ -28,18 +29,23 @@ import ObjectDetectionPage from './pages/ObjectDetectionPage';
 import Footer from './components/ui/Footer'
 // -------------------PAGES-------------------//
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginUser } from './redux/userSlice';
 
 function App() {  
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   axios.interceptors.response.use(
     (res) => {
       if (res.headers['authorization']) {
+        console.log(res.headers.authorization);
         axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
+        dispatch(loginUser({isLogin : true}))
       }
-
       return res;
     }
   )
-
 
   return (
     <>
@@ -74,6 +80,7 @@ function App() {
         {/*-----------------------로그인 관련-------------------------------*/}
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/logout' element={<LogoutHandler/>}></Route>
+        <Route path='/oauth2/signup' element={<DuplicateNickname></DuplicateNickname>}></Route>
         
         <Route path="*" element={ <div>없는페이지임</div> } />
         <Route path='/object-detect' element={<ObjectDetectionPage></ObjectDetectionPage>}></Route>

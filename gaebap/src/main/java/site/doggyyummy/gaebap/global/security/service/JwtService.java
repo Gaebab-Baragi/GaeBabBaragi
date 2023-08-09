@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
+import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -54,19 +56,20 @@ public class JwtService {
     }
 
     public String createRefreshToken(){
-        log.info("지금 refreshtoken을 만드는 중임");
         Date now = new Date();
         return JWT.create()
                 .withSubject(REFRESH_TOKEN_SUBJECT)
+                .withIssuedAt(now)
                 .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
+                .withClaim("Issued", System.currentTimeMillis())
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
 
-        setAccessTokenHeader(response, accessToken);
         setRefreshTokenHeader(response, refreshToken);
+        setAccessTokenHeader(response, accessToken);
         log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
 
@@ -108,7 +111,7 @@ public class JwtService {
 
     public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .maxAge(refreshTokenExpirationPeriod)
+                .maxAge(-1)
                 .path("/")
                 .secure(true)
                 .sameSite("None")
@@ -121,7 +124,7 @@ public class JwtService {
         memberRepository.findByUsername(username)
                 .ifPresentOrElse(
                         member-> {
-                            log.info("updateRefreshToken : refreshToken 재발급할 멤버 : {}", member);
+                            log.info("updateRefreshToken : refreshToken 재발급할 멤버 : {}, {}", username, refreshToken);
                             member.updateRefreshToken(refreshToken);
                             memberRepository.saveAndFlush(member);
                         },
@@ -139,9 +142,5 @@ public class JwtService {
             log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
             return false;
         }
-    }
-
-    public String getBearer(){
-        return this.BEARER;
     }
 }

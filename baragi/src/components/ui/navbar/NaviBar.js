@@ -19,7 +19,7 @@ function NaviBar() {
       <>
         <Navbar sticky="top" expand="lg" bg='white'>
           <Container>
-            <Navbar.Brand href="/">
+            <Navbar.Brand onClick={() => {navigate('/')}} style={{cursor:'pointer'}}>
               <img
                 alt="개밥바라기 로고"
                 src="/image/개밥바라기.png"

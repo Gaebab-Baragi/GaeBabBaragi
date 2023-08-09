@@ -3,6 +3,7 @@ package site.doggyyummy.gaebap.domain.member.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
@@ -31,7 +32,7 @@ public class Member {
     @Schema(description = "이메일")
     private String username;
 
-    @Column
+    @Column (nullable = true)
     @Schema(description = "비밀번호")
     private String password;
 
@@ -39,9 +40,9 @@ public class Member {
     @Schema(description = "닉네임")
     private String nickname;
 
-    @Column
-    @Schema(description = "권한")
-    private String authority;
+    @Column (columnDefinition = "varchar(32) default 'GUEST'")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column
     @Schema(description = "프로필 이미지의 주소")
@@ -71,7 +72,7 @@ public class Member {
     /**
      * 아래는 Security 및 OAuth2 관련한 필드
      */
-    @Column
+    @Column(unique = true)
     @Schema(description = "DB에 저장된 리프레시 토큰")
     private String refreshToken;
 

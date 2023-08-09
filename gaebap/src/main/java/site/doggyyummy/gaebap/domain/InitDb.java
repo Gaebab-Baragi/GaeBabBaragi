@@ -8,7 +8,10 @@ import jakarta.persistence.EntityManager;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.meeting.entity.Status;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+
+import site.doggyyummy.gaebap.domain.member.entity.Role;
 import site.doggyyummy.gaebap.domain.member.service.MemberServiceImpl;
+
 import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
@@ -44,6 +47,7 @@ public class InitDb {
 
         public void dbInit1() throws Exception {
             String url = "http://localhost:3000/image/%EA%B0%9C%EB%B0%A5%EB%B0%94%EB%9D%BC%EA%B8%B0.png";
+
             Member member1 = createMember("test1","test1","user1", url);
             Member member2 = createMember("test2","test2","user2", url);
             Member member3 = createMember("test3","test3","user3", url);
@@ -172,9 +176,11 @@ public class InitDb {
         private Member createMember(String username, String password, String nickname, String profileUrl) {
 
             Member member = new Member();
-            member.setUsername(username);
+
+            member.setNickname(nickName);
+            member.setUsername(name);
+            member.setRole(Role.USER);
             member.setPassword(password);
-            member.setNickname(nickname);
             member.setProfileUrl(profileUrl);
 
             return member;

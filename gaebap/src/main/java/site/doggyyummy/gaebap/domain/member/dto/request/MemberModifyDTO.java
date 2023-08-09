@@ -16,14 +16,14 @@ public class MemberModifyDTO {
 
     private String username;
     private String nickname;
-    private String file;
-    private String fileType;
+    private String profileUrl;
 
     public static Member toEntity(MemberModifyDTO modifyDTO){
         Member member = Member
                 .builder()
                 .username(modifyDTO.getUsername())
                 .nickname(modifyDTO.getNickname())
+                .profileUrl(modifyDTO.profileUrl.equals("null")? null : modifyDTO.getProfileUrl())
                 .build();
         return member;
     }
