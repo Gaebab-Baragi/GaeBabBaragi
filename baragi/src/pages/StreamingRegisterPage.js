@@ -20,6 +20,7 @@ function StreamingRegisterPage() {
   const [password, setPassword] = useState("");
   const user = useSelector(state=>state.user)
   const navigate = useNavigate();
+  const {id} = useParams();
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
     if (!user.id) {
@@ -44,11 +45,12 @@ function StreamingRegisterPage() {
   // =====================제출======================//
   const handleRegisterSubmit = ()=>{
     const startTime = selectedDate + ' ' + selectedTime
-    console.log(typeof(startTime))
+    console.log(typeof(startTime),typeof(roomTitle), typeof(roomDescription), typeof(maxParticipant))
+  
     const data = {
       title: roomTitle,
       description: roomDescription,
-      password: password,
+      password: password.toString(),
       max_participant: maxParticipant,
       start_time: startTime,
       // 추후 수정!!!!!!!!!!!!!!
@@ -60,17 +62,20 @@ function StreamingRegisterPage() {
       .post("/api/meetings", data)
       .then((response) => {
         // Handle the response if needed
+        alert('스트리밍 예약이 완료되었습니다.')
         console.log("Request successful:", response.data);
       })
       .catch((error) => {
         // Handle errors if necessary
-        console.error("Error sending request:", error);
+        alert('빈 칸을 채워주세요.')
+        console.error("Error sending request:", error.response);
       });
   };
   return (
 
     
     <div className="StreamingRegisterContainer">
+      <StreamingForm/>
       <div className="StreamingHeader">
       <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
       <h4 className="StreamingRegisterSemiTitle">스트리밍 기본 정보 입력</h4>
