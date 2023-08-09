@@ -84,7 +84,7 @@ export default class ChatComponent extends Component {
       <div className='totalChatContainer'>
           {/* 제목 */}
           <div className="titleContainer">
-            <p className='chatTitleDetail'> <span onClick={this.handleChatStatus}>레시피 보기</span> | <span onClick={this.handleChatStatus}>채팅</span> </p>
+            <p className='chatTitleDetail'> <span onClick={this.handleChatStatus}>레시피 보기</span> <span>|</span> <span onClick={this.handleChatStatus}>채팅</span> </p>
           </div>
       {this.state.chatStatus 
       ?

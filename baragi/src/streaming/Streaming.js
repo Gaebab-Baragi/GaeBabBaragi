@@ -25,6 +25,8 @@ class Streaming extends Component {
             publisher: undefined,
             subscribers: [],
             chatDisplay: true,
+            videostate:true,
+            audiostate:true,
         };
 
         this.joinSession = this.joinSession.bind(this);
@@ -32,7 +34,7 @@ class Streaming extends Component {
         // this.toggleChat = this.toggleChat.bind(this);
     
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
-        this.onbeforeunload = this.onbeforeunload.bind(this);
+        // this.onbeforeunload = this.onbeforeunload.bind(this);
     }
 
     componentDidMount() {
@@ -48,9 +50,9 @@ class Streaming extends Component {
         this.leaveSession()
     }
 
-    onbeforeunload(event) {
-        this.leaveSession();
-    }
+    // onbeforeunload(event) {
+    //     this.leaveSession();
+    // }
 
     // leaveSessionOnTabClose = (event) => {
     //     event.preventDefault();
@@ -146,11 +148,12 @@ class Streaming extends Component {
                                 videoSource: undefined, // The source of video. If undefined default webcam
                                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                                resolution: '640x480', // The resolution of your video
+                                resolution: '760x480', // The resolution of your video
                                 frameRate: 30, // The frame rate of your video
                                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                                 mirror: false, // Whether to mirror your local video or not
                             });
+                            // this.state.publisher.publishVideo(!this.state.videostate);
 
                             // --- 6) Publish your stream --
                             console.log('WANT TO PUBLISH')
@@ -268,6 +271,7 @@ class Streaming extends Component {
         const streamManagerNickname = this.state.myUserName
         const recipeData = this.props.recipeData;
 
+
         return (
             <div className='StreamingLiveContatiner'>
 
@@ -284,7 +288,8 @@ class Streaming extends Component {
                         <div className='mainVideo'>
                             <div className="stream-container " >
                                 <UserVideoComponent
-                                    streamManager={this.state.publisher} />
+                                    streamManager={this.state.publisher}
+                                    size='largeStream'/>
                                 <p>{this.state.nickname}</p>
                             </div>
                         </div>
@@ -299,8 +304,9 @@ class Streaming extends Component {
                                     <div className='mainVideo'>
                                         <div className="stream-container " >
                                             <UserVideoComponent
-                                                streamManager={sub} />
-                                            <p>{subName}</p>
+                                                streamManager={sub}
+                                                size='largeStream' />
+
                                         </div>
                                     </div>
                                 </>
@@ -313,7 +319,7 @@ class Streaming extends Component {
 
                 <div className='subVideos'>
                 {myUserName !== host_nickname && (
-                    <UserVideoComponent streamManager={publisher}/>
+                    <UserVideoComponent streamManager={publisher} size='smallStream'/>
                 )}
                 {this.state.subscribers.map((sub, i) => {
                     const subName = JSON.parse(sub.stream.connection.data).clientData;
@@ -321,7 +327,7 @@ class Streaming extends Component {
                         return (
                             // <div key={sub.id} className="stream-container">
                                 // <span>{sub.id}</span>
-                                <UserVideoComponent streamManager={sub} />
+                                <UserVideoComponent streamManager={sub} size='smallStream' />
                             // </div>
                         );
                     }

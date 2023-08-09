@@ -32,8 +32,13 @@ width: 30%;
 .subVideos {
 	display: flex;
 	flex-direction: row;
+	justify-content: space-around;
 	margin-left: 10px;
 	margin-right: 10px;
+	margin-top: 2%;
+	height: 200px;
+	margin-bottom: 1%;
+	/* background-color: rebeccapurple; */
 }
 
 .leaveButton {
