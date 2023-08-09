@@ -4,10 +4,10 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import site.doggyyummy.gaebap.domain.member.exception.custom.InvalidEmailException;
+
 import java.security.SecureRandom;
 
 @Service

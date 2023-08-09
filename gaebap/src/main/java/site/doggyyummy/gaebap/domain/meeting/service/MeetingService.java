@@ -30,4 +30,5 @@ public interface MeetingService {
 
     void left(Long id, Long memberId);
 
+    void close(Long id);
 }
