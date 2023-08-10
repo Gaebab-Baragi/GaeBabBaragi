@@ -18,6 +18,7 @@ function SignupForm() {
 
   // ======================빈 값 & validation 처리 state=======================//
   const [validPassword, setValidPassword] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
   const [samePassword, setSamePassword] = useState(false);
   const [validNickname, setValidNickname] = useState(false);
   
@@ -27,12 +28,21 @@ function SignupForm() {
     const isValidPassword = passwordPattern.test(password1);
     setValidPassword(isValidPassword);
   }, [password1]);
+
   useEffect(()=>{
     setSamePassword(password1===password2)
   },[password2])
+
   useEffect(()=>{
     setValidNickname(nickname.length<=30)
   },[nickname])
+
+  useEffect(() => {
+    const regex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+    const isValidEmail = regex.test(email);
+    setValidEmail(isValidEmail);
+  },[email])
+
   //=================================================================================//
 
   // ===========================확인(중복, 인증코드) state===========================//
@@ -83,6 +93,11 @@ function SignupForm() {
 
   const handleSendCode = useCallback((e) => {
     e.preventDefault()
+    
+    if (!validEmail) {
+      alert("이메일 형식이 맞지 않습니다.");
+      return;
+    }
 
     axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register/username', {username : email}, {
       headers: { "Content-Type": `application/json; charset= UTF-8`}
@@ -111,7 +126,7 @@ function SignupForm() {
 
   const handleSubmit = (e) => { 
     e.preventDefault();
-    if (!nicknameDuplicateCheck || !emailCodecheck) {
+    if (!nicknameDuplicateCheck || !emailCodecheck || !validEmail) {
       alert('중복 확인을 진행해주세요.')
     } else {
         console.log(password1);
@@ -132,7 +147,6 @@ function SignupForm() {
           }
         })
         .catch((res) => {
-          console.log(res);
           alert("잘못된 회원가입입니다.")
         }
         );
@@ -148,10 +162,11 @@ function SignupForm() {
         {/* 이메일 입력 & 인증번호 요청하기 */}
         <div className="formGroup" id='checkGroup'>
           <div className="formGroupComponent">
-            <input className='formInput' onChange={e=>{setEmail(e.target.value); setSendCode(false);}} type="email" id='formEmail' placeholder='이메일을 입력해주세요.' />
+            <input className='formInput' onChange={e=>{setEmail(e.target.value); setSendCode(false);}} type="email" id='formEmail' placeholder='이메일을 입력해주세요.' required value={email} />
             <button onClick={handleSendCode} className='emailVerificationButton'>인증코드 발송</button>
-          </div>
+          </div>            
         </div>
+
 
         {/* 인증코드 입력 */}
         { sendCode && (
