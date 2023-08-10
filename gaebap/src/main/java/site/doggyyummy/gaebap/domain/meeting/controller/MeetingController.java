@@ -255,4 +255,12 @@ public class MeetingController {
         }
     }
 
+    @Operation(summary = "close meeting room", description = "미팅 끝내기")
+    @PostMapping("/close/{id}")
+    public ResponseEntity<ResponseDTO> close(@PathVariable(name = "id") Long id) {
+
+        meetingService.close(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

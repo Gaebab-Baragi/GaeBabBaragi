@@ -15,7 +15,10 @@ public enum ExceptionCode {
     INVALID_NAME_FORMAT_EXCEPTION(459, "잘못된 아이디 형식입니다."),//안 씀
     INVALID_NICKNAME_FORMANT_EXCEPTION(460, "잘못된 닉네임 형식입니다.."),
     INVALID_PASSWORD_FORMAT_EXCEPTION(461, "잘못된 패스워드 형식입니다."),
-    NO_SUCH_USER_EXCEPTION(462,"존재하지 않는 회원입니다.");
+    NO_SUCH_USER_EXCEPTION(462,"존재하지 않는 회원입니다."),
+    FILE_SIZE_LIMIT_EXCEEDED_EXCEPTION(463, "파일의 크기가 너무 큽니다(최대 1megabyte)"),
+    ACCESS_TOKEN_INVALID_EXCEPTION(458, "액세스 토큰이 잘못 되었음");
+
 
     private final Integer errorCode;
     private final String errorMessage;

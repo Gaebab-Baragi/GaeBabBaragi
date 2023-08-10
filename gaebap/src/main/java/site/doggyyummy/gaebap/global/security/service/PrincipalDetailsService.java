@@ -2,10 +2,11 @@ package site.doggyyummy.gaebap.global.security.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import site.doggyyummy.gaebap.global.security.entity.PrincipalDetails;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 
@@ -19,13 +20,13 @@ public class PrincipalDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public PrincipalDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Supplier<UsernameNotFoundException> s = () -> new UsernameNotFoundException("username not found");
-
-        log.info("loadUserByUsername : {}", username);
         Member member = memberRepository.findByUsername(username).orElseThrow(s);
-
-        log.info("locked? : {}", new PrincipalDetails(member).isAccountNonLocked());
-        return new PrincipalDetails(member);
+        return User.builder()
+                .username(member.getUsername())
+                .password(member.getPassword())
+                .roles(member.getRole().name())
+                .build();
     }
 }

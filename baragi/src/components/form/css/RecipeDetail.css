@@ -1,38 +1,50 @@
+.recipe-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start; /* Adjust this value to change vertical alignment*/
+}
 .detail {
     flex: 1;
     margin-left: 10%;
-    margin-right: 10%;
     margin-bottom: 10%;
     text-align: left;
-  }
-  
+  } 
+.recipeTitle{
+  text-align: center;
+}
   .detailForm {
     margin-left: 10%;
     margin-right: 10%;
-    padding-top:10%;
+    padding-top:3%;
 }
 .imgForm{
     position: relative;
     width : 100%;
     height :350px;
 }
-.imgsize{
-    width: 100%;
-    height: 100%;
-    object-fit: scale-down;
+.imgsize {
+  border: 1px solid black;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지를 가득 채우면서 영역 내에 맞게 조정 */
 }
+/* Add these CSS rules to your existing styles */
+.icon-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the gap between icons */
+}
+
+.icon-container ion-icon {
+  cursor: pointer;
+}
+
 .hit {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-left:80%;
-}
-
-.hit ion-icon {
-  margin-right: 5px;
-}
-.hit span{
-    margin-right: 10px;
 }
 .imgForm button {
   width: 100px;
@@ -50,16 +62,131 @@
 .imgForm button .profileImg{
   width: 100%;
   height:100%;
-  object-fit: fill;
+  object-fit: cover;
   
 }
 .descriptionForm{
-
   margin-top: 15%;
 }
 .nickname{
   text-align: center;
   margin-top:5%;
 }
-.stepForm{
+
+/* Add these CSS rules to your existing styles */
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Add this line */
+  margin-top:3%;
+}
+
+.ingredient-item {
+  width: calc(50% - 10%); /* Adjust width with a small gap subtracted */
+  margin-bottom: 10px;
+}
+
+.even {
+  order: 1; /* Placed on the left */
+}
+
+.odd {
+  order: 2; /* Placed on the right */
+}
+
+.ingredient-info {
+  display: flex;
+  justify-content: center;
+}
+
+.ingredient-details {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ingredient-name {
+  flex: 1;
+  font-weight: bold;
+}
+
+.ingredient-amount {
+  flex: 1;
+  text-align: right;
+  color: #777;
+}
+
+
+.step-list {
+  list-style: none;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: space-between; 
+  margin-top:3%;
+}
+.step-item {
+  margin-bottom: 5%;
+}
+
+.step-ordering{
+  flex:1;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.step-info {
+  display: flex;
+}
+
+.step-img {
+  border: 1px solid black;
+  object-fit: cover;
+  width: 200px; /* 원하는 너비로 설정 */
+  height: 150px; /* 원하는 높이로 설정 */
+  margin-right: 30px;
+}
+
+.floatingDiv{
+  background-color: #ffffff;
+  width: 200px;
+  height: 100%;
+  /* max-height: 500px; */
+  position:sticky;
+  top: 110px;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-right:5%;
+  /* overflow: auto; */
+}
+
+.floatingDiv hr{
+  margin-left:10%;
+  margin-right:10%;
+}
+
+.floatingDiv-Text{
+  font-weight:bold;
+  cursor: pointer;
+}
+.floatingDiv ion-icon{
+  margin-top:5%;
+  font-size:60px;
+}
+
+.floatingDiv-image{
+  margin-left:10%;
+  margin-right:10%; 
+  /*max-width: 100%;  부모 요소(floatingDiv)의 가로 크기에 맞게 이미지 크기 조절 
+  
+  object-fit: cover; */
+  width: 80%; /* 부모 요소(floatingDiv)의 가로 크기와 동일한 크기로 이미지 크기 조절 */
+  object-fit: contain;
+  height:100px; 
+  border: 1px solid red;
+  margin-left:10%;
+  margin-right:10%;
+  margin-top:5%;
+  margin-bottom:5%;
 }

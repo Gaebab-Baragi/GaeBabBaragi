@@ -31,6 +31,7 @@ let streamingRegister= createSlice({
     setStartTime: (state, action) =>{
       state.start_time = action.payload;
       console.log('start time : ' + state.start_time)
+      console.log('start time : ' + typeof(state.start_time))
     },
     setRecipeId : (state, action) => {
       // 추후 수정
@@ -47,8 +48,9 @@ let streamingRegister= createSlice({
         recipe_id: state.recipe_id,
       };
       console.log(data)
+      console.log(typeof(state.start_time), state.start_time)
 
-      axios.post("http://localhost:8083/api/meetings", data)
+      axios.post(process.env.REACT_APP_BASE_URL +"/api/meetings", data)
         .then((response) => {
           // Handle the response if needed
           console.log("Request successful:", response.data);

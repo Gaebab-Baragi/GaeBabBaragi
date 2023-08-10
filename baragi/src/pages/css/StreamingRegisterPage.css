@@ -69,12 +69,32 @@
   margin-right: 20vw;
 }
 
+.recipeName {
+  display: flex;
+  align-items: center;
+}
+.maxParticipant {
+  display: flex;
+  align-items: center;
+}
+
+
 .roomName {
   border-radius: 10px;
   border: 2px solid #000;
   background: #FFF;
   width: 32vw;
   height: 40px;
+  flex-shrink: 0;
+  font-size: 1vw;
+  font-weight: 700;
+  text-indent: 10px;
+}
+.roomName2 {
+  border-radius: 10px;
+  border: 2px solid #000;
+  background: #FFF;
+  width: 32vw;
   flex-shrink: 0;
   font-size: 1vw;
   font-weight: 700;
@@ -199,6 +219,8 @@
   border-radius: 10px;
 }
 
+
+
 /* input:hover{
   border-color:#FA0;
 } */
@@ -208,4 +230,30 @@
   .inputContainer-left>label {
     font-size: 17px;
   }
+}
+
+
+.roomName:focus{
+  border-color:#FA0;
+}
+.startTime:focus{
+  border-color:#FA0;
+}
+.password:focus{
+  border-color:#FA0;
+}
+.description:focus{
+  border-color:#FA0;
+}
+.roomName:hover{
+  border-color:#FA0;
+}
+.startTime:hover{
+  border-color:#FA0;
+}
+.password:hover{
+  border-color:#FA0;
+}
+.description:hover{
+  border-color:#FA0;
 }

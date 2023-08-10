@@ -4,12 +4,29 @@ import InputInfor from '../components/ui/InputInfor';
 import MaterialRegist from '../components/ui/MaterialRegist';
 import CookStep from '../components/ui/CookStep';
 import { useDispatch } from 'react-redux';
-import { requestFilteredRecipeList,updateImage} from '../redux/recipeRegisterSlice';
+import { requestFilteredRecipeList,updateVideo} from '../redux/recipeRegisterSlice';
+import  { useState } from 'react';
 
 
 function RecipeRegisterPage() {
   const dispatch = useDispatch();
+  const [video, setVideo] = useState('./기본이미지.PNG');
+  const [file, setFile] = useState("");
+
   
+  const handleVideoChange = (e)=>{
+    const selectedVideo = e.target.files[0];
+    dispatch(updateVideo(selectedVideo));
+    setFile(selectedVideo);
+    if (selectedVideo) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setVideo(reader.result);
+      };
+      reader.readAsDataURL(selectedVideo);
+
+    }
+  }
   // const handleImageUpload = (imageData) => {
   //   console.log('리덕스에 저장되냐?',imageData)
   //   dispatch(updateImage(imageData));
@@ -17,19 +34,25 @@ function RecipeRegisterPage() {
 
   return (
     <>
-    <div style={{ marginLeft:'10%' , marginRight : '10%' , marginTop : '0.5%' , marginBottom : '10%'}}>
-        <h1 style={{ textAlign : 'left' }}>레시피 등록</h1>
-        <h4 style={{textAlign:'left', marginLeft:'2%'}}>1. 대표사진 등록</h4>
-        <div style={{ marginTop : '1%', marginBottom : '1%' , backgroundColor : '#0001', justifyContent:'center', alignItems:'center'}}>
+    <div style={{ marginLeft:'15%' , marginRight : '15%' , marginTop : '0.5%' , marginBottom : '10%'}}>
+        <h1 style={{ textAlign : 'left',marginBottom :'1%' }}>레시피 등록</h1>
+        <h4 style={{textAlign:'left', marginLeft:'5%'}}>1. 대표사진 등록</h4>
+        <div style={{ marginTop : '1%', marginBottom : '1%' ,  justifyContent:'center', alignItems:'center'}}> 
+        {/* backgroundColor : '#0001', */}
           <InputImage></InputImage>
         </div>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>2. 기본 정보 입력</h4>
+        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>2. 기본 정보 입력</h4>
         <InputInfor></InputInfor>
-        <h4 style={{textAlign:'left', marginLeft:'2%'}}>3. 재료 등록</h4>
+        <h4 style={{textAlign:'left', marginLeft:'2%', marginLeft:'5%'}}>3. 재료 등록</h4>
         <MaterialRegist></MaterialRegist>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%' }}>4. 요리 순서</h4>
+        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>4. 요리 순서</h4>
         <CookStep></CookStep>
+        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>5. 동영상 제출</h4>
+        <input type="file" accept="" onChange={handleVideoChange}/>
+
+        <div style={{ marginTop : '1%', marginBottom : '1%' , justifyContent:'center', alignItems:'center'}}>
         <button onClick={()=>{dispatch(requestFilteredRecipeList())}}>제출</button>
+        </div>
     </div>
     </>
   );

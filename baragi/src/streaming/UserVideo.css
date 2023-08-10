@@ -1,17 +1,47 @@
 /* Update the CSS for the video container */
-.streamcomponent {
+.streamcomponent-largeStream {
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
-  width: 90%;
+  width: 50%;
+  /* height: 100%; */
+  /* background-color: aqua; */
+  margin-left: 25%;
 }
 
+/* Update the CSS for the video container */
+.streamcomponent-smallStream {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  /* width: 50%; */
+  height: 100%;
+  /* background-color: aqua; */
+}
+
+.nameTag {
+  position: absolute;
+  bottom: 1%;
+  left: 1%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: inline-block;
+  width: fit-content;
+  border-radius: 20px;
+  padding: 1%;
+
+}
 /* Update the CSS for the video element */
 .streamcomponent video {
+  /* position: absolute; */
+  /* height: 100%; */
   width: 100%;
-  height: auto;
-  cursor: pointer;
-  border-radius: 10px;
+  /* border-radius: 10px;
+  object-fit: cover; */
+  background-color: red;
 }
 
 /* Update the CSS for the text div */
@@ -24,4 +54,9 @@
   display: inline-block;
   width: fit-content;
   border-radius: 30%;
+}
+
+.OpenViduVideoComponent {
+  width: 100%;
+  height: 100%;
 }
