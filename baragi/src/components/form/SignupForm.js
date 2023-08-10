@@ -4,6 +4,7 @@ import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios';
 import SocialLogin from '../social/SocialLogin';
+import { Toast } from 'react-bootstrap';
 
 function SignupForm() {
   const navigate = useNavigate();
@@ -48,15 +49,9 @@ function SignupForm() {
   // ===========================확인(중복, 인증코드) state===========================//
   let [nicknameDuplicateCheck, setNicknameDuplicateCheck] = useState(false);
   let [emailCodecheck, setEmailCodeCheck] = useState(false);
-  
-  // handleIdDuplicateCheck, handleNicknameDuplicateCheck, handleEmailCodeCheck, handleSendCode callbacks
 
   const handleNicknameDuplicateCheck = useCallback((e) => {
     e.preventDefault();
-    // console.log(nickname)
-    console.log('Nickname-Duplication-Check')
-    console.log(nickname)
-
     axios.post(process.env.REACT_APP_BASE_URL +"/api/member/register/nickname", {nickname}, {
       headers: { 
         "Content-Type": `application/json; charset= UTF-8`
@@ -65,15 +60,15 @@ function SignupForm() {
     .then((res)=>{
       if (res.status === 200) {
         console.log('duplication checked')
-        alert("사용 가능한 닉네임입니다.")
+        Toast.fire("사용 가능한 닉네임입니다.", "", "success");
         setNicknameDuplicateCheck(true);
       }
     })
     .catch((res) => {
       res = res.response;
-      if (res.status === 460) alert("잘못된 닉네임 형식입니다.")
-      else if (res.status === 457) alert("이미 사용중인 닉네임입니다.")
-      else alert("이유를 알 수 없는 오류");
+      if (res.status === 460) Toast.fire("잘못된 닉네임 형식입니다.", "", "warning")
+      else if (res.status === 457) Toast.fire("이미 사용중인 닉네임입니다.", "", "warning")
+      else Toast.fire("이유를 알 수 없는 오류", "", "error");
     })
 
   }, [nickname]);
@@ -83,11 +78,11 @@ function SignupForm() {
     console.log('Email-Code-Check')
     if (code === verificationCode) {
       setEmailCodeCheck(true)
-      alert("확인되었습니다.")
+      Toast.fire("확인되었습니다.", "", "success")
     }
     else {
       setEmailCodeCheck(false)
-      alert("인증번호가 맞지 않습니다.")
+      Toast.fire("인증번호가 맞지 않습니다.", "", "warning")
     }
   }, [code]);
 
@@ -95,7 +90,7 @@ function SignupForm() {
     e.preventDefault()
     
     if (!validEmail) {
-      alert("이메일 형식이 맞지 않습니다.");
+      Toast.fire("이메일 형식이 맞지 않습니다.", "", "warning");
       return;
     }
 
@@ -104,8 +99,7 @@ function SignupForm() {
       })
     .then((res)=>{
       if (res.status === 200) {
-        console.log('code sent')
-        alert("인증 코드가 발송되었습니다. 이메일을 확인해주세요.")
+        Toast.fire("인증 코드가 발송되었습니다. 이메일을 확인해주세요.", "", "success")
         setVerificationCode(res.data);
         setEmailCodeCheck(false);
         setSendCode(true);
@@ -114,9 +108,9 @@ function SignupForm() {
     .catch((res) => {
       console.log(res)
       res = res.response;
-      if (res.status === 454) alert("잘못된 이메일입니다.")
-      else if (res.status === 455) alert("이미 사용중인 이메일입니다.")
-      else alert("이유를 알 수 없는 오류");
+      if (res.status === 454) Toast.fire("잘못된 이메일입니다.", "", "warning")
+      else if (res.status === 455) Toast.fire("이미 사용중인 이메일입니다.", "", "warning")
+      else Toast.fire("이유를 알 수 없는 오류", "", "error");
     })
   }, [email]);
 
@@ -127,7 +121,7 @@ function SignupForm() {
   const handleSubmit = (e) => { 
     e.preventDefault();
     if (!nicknameDuplicateCheck || !emailCodecheck || !validEmail) {
-      alert('중복 확인을 진행해주세요.')
+      Toast.fire('중복 확인을 진행해주세요.', "", "error")
     } else {
         console.log(password1);
         console.log(nickname);
@@ -143,11 +137,11 @@ function SignupForm() {
           if (res.status ===201) {
             console.log('signup success')
             navigate('/login')
-            alert("회원 가입에 성공했습니다.")
+            Toast.fire("회원 가입에 성공했습니다.", "", "success")
           }
         })
         .catch((res) => {
-          alert("잘못된 회원가입입니다.")
+          Toast.fire("잘못된 회원가입입니다.", "", "error")
         }
         );
       }
