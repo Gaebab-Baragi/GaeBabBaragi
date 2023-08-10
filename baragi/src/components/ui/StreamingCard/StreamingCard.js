@@ -7,7 +7,7 @@ import Card from 'react-bootstrap/Card';
 import './StreamingCard.css'
 
 
-function StreamingCardComponent({meeting_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, description, host_nickname, start_time}) {
+function StreamingCardComponent({meeting_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -23,7 +23,6 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
                 status,
                 host_profile_url,
                 title,
-                description,
                 host_nickname,
                 start_time
             }
@@ -44,7 +43,7 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
     },[])
     
     return (
-        <>
+        <div className='streaming-card-wrapper'>
             <Card className="streaming-card" onClick={()=>checkMeeting()}>
                 <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg'/>
                 <Card.Img src={recipe_image_url} alt="레시피 대표 이미지" />
@@ -56,7 +55,8 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
                             <Card.ImgOverlay className='overlay-participants'>
                                 <div className='participants'>
                                     <ion-icon name="person-sharp"></ion-icon>
-                                    <p> {current_participants} / {max_participant}</p>
+                                    <pre> </pre>
+                                    <p>{current_participants} / {max_participant}</p>
                                 </div>
                             </Card.ImgOverlay>
                         )
@@ -78,7 +78,16 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
                         )
                     }
             </Card>
-        </>
+            <div className='streaming-info row'>
+                <div className='streaming-host-profile col-2'>
+                    <img src={host_profile_url}></img>
+                </div>
+                <div className='streaming-info-detail col-10'>
+                    <p className='streaming-title'>{title}</p>
+                    <p className='streaming-host-nickname-and-start-time'>{host_nickname} • 예약 시간:{start_time}</p>
+                </div>
+            </div>
+        </div>
     );
 }
 
