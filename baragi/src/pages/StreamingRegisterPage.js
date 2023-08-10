@@ -20,11 +20,10 @@ function StreamingRegisterPage() {
   const [password, setPassword] = useState("");
   const user = useSelector(state=>state.user)
   const navigate = useNavigate();
-  const {id} = useParams();
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
-    if (!user.id) {
-      alert('로그인 후 이용해주세요.')
+    if (!user) {
+      alert('로그인 후 이용해주세요!!!!')
       navigate('/login')
     }
   },[])
