@@ -9,6 +9,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'; // 로�
 import { CopyToClipboard } from 'react-copy-to-clipboard'; // Import CopyToClipboard
 import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 //링크 복사 함수
 const copyUrlToClipboard = () => {
@@ -66,12 +67,12 @@ const RecipeDetailPage=()=>{
             try{
                 const response =await fetch(process.env.REACT_APP_BASE_URL+`/api/recipes/${id}`);
 
-                const responseComment=await fetch(process.env.REACT_APP_BASE_URL+`/api/comment?recipe_id=${id}`)
+                const responseComment=await fetch(process.env.REACT_APP_BASE_URL+`/api/comment?recipe_id=${id}`,{'Content-Type': 'application/json'})
                 fetch(`/api/bookmark/islike/${id}`)
                 if(isLoggedIn==true){
-                    const responseIsbookmark=await fetch(process.env.REACT_APP_BASE_URL+`/api/bookmark/islike/${id}`);
-                    const bookmarkdata=await responseIsbookmark.json();
-                    if(bookmarkdata.flag==1){
+                    const responseIsbookmark=await axios.get(process.env.REACT_APP_BASE_URL+`/api/bookmark/islike/${id}`);
+                    const bookmarkdata = responseIsbookmark.data; // 변경된 부분
+                    if (bookmarkdata.flag === 1) {
                         setIsLiked(true);
                     }
                 }
@@ -135,16 +136,21 @@ const RecipeDetailPage=()=>{
             navigate('/login'); // Replace with your actual login page path
         } else {
             try {
-                const response = await fetch(process.env.REACT_APP_BASE_URL +`/api/bookmark/${id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
+                const response = await axios.post(
+                    `${process.env.REACT_APP_BASE_URL}/api/bookmark/${id}`,
+                    null,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
                     }
-                });
-
-                if (response.ok) {
+                );
+    
+                if (response.status === 200) {
                     setIsLiked((prevIsLiked) => !prevIsLiked);
-                setBookmarkCnt(prevBookmarkCnt => isLiked ? prevBookmarkCnt - 1 : prevBookmarkCnt + 1);
+                    setBookmarkCnt(prevBookmarkCnt =>
+                        isLiked ? prevBookmarkCnt - 1 : prevBookmarkCnt + 1
+                    );
                 } else {
                     console.error('좋아요 요청 실패');
                 }
@@ -156,11 +162,13 @@ const RecipeDetailPage=()=>{
     // 댓글 쓰기 이벤트
     const [newCommentContent, setNewCommentContent] = useState('');
 
+
+
     const handleSubmitComment = async (event) => {
         event.preventDefault();
-        
+    
         if (!isLoggedIn) {
-            alert('로그인이 필요한 서비스입니다.')
+            alert('로그인이 필요한 서비스입니다.');
             navigate('/login'); // Replace with your actual login page path
             return;
         }
@@ -169,21 +177,25 @@ const RecipeDetailPage=()=>{
             return;
         }
         try {
-            const response = await fetch(`/api/comment`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+            const response = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/comment`,
+                {
                     recipe_id: id,
                     content: newCommentContent
-                })
-            });
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
     
-            if (response.ok) {
+            if (response.status === 200) {
                 // 댓글 작성 후 댓글 목록을 다시 가져온다.
-                const responseComment = await fetch(`/api/comment?recipe_id=${id}`);
-                const comment = await responseComment.json();
+                const responseComment = await axios.get(
+                    `${process.env.REACT_APP_BASE_URL}/api/comment?recipe_id=${id}`
+                );
+                const comment = responseComment.data; // Use response.data to access the returned data
                 setComments(comment);
     
                 // 댓글 작성 내용 초기화
@@ -199,6 +211,31 @@ const RecipeDetailPage=()=>{
     const handleCommentChange = (event) => {
         setNewCommentContent(event.target.value);
     };
+
+    const handleDeleteComment = async (commentId) => {
+        try {
+            const response = await axios.delete(
+                `${process.env.REACT_APP_BASE_URL}/api/comment/${commentId}`
+            );
+    
+            if (response.status === 200) {
+                // 댓글 삭제 후 댓글 목록을 다시 가져온다.
+                const responseComment = await axios.get(
+                    `${process.env.REACT_APP_BASE_URL}/api/comment?recipe_id=${id}`
+                );
+                const updatedComments = responseComment.data;
+                setComments(updatedComments);
+            } else {
+                console.error('댓글 삭제 실패');
+            }
+        } catch (error) {
+            console.error('에러 발생', error);
+        }
+    };
+
+
+
+
 
     //댓글 쓰기 이벤트 끝
     
@@ -303,7 +340,7 @@ const RecipeDetailPage=()=>{
                                             <div className='comment-content'>{comment.content}</div>
                                         </div>
                                         {isLoggedIn && comment.writerId === userId&& (
-                                            <div className='comment-delete'>삭제하기</div>
+                                            <div className='comment-delete' onClick={() => handleDeleteComment(comment.id)}>삭제하기</div>
                                         )}
                                 </div>
                             </div>
