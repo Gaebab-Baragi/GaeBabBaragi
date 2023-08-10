@@ -19,10 +19,10 @@ function RecipeListPage() {
   const requestHappen = useSelector((state) => state.recipeSearch.requestHappen);
   const dogs = useSelector((state)=>state.recipeSearch.dogs)
   const ingredients = useSelector((state)=>state.recipeSearch.ingredients)
-  const title = useSelector((state)=>state.recipeSearch.title)
+  const title = useSelector((state)=>state.recipeSearch.keyword)
   const [filtered, setFiltered] = useState(false);
 
-  useEffect(()=>{
+  useDidMountEffect(()=>{
     console.log('리덕스에서 변화 일어남 감지')
     let tempIngredient = ingredients;
     if (ingredients.length === 0) {
@@ -33,7 +33,7 @@ function RecipeListPage() {
       tempDog = null;
     } 
     const data = {
-      title : null,
+      title : '',
       ingredients: tempIngredient,
       pets: tempDog
     }
