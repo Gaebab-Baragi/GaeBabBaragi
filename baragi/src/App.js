@@ -42,12 +42,19 @@ function App() {
       }
       
       return res;
+    },
+    (err) => {
+      console.log("err", err);
+      return err;
     }
-    )
+  )
+  axios.defaults.withCredentials=true;
     
-    const location = useLocation();
-    const noNavAndFooterRoutes = ['/streaming-live'];
-    const showNavAndFooter = !noNavAndFooterRoutes.includes(location.pathname);
+
+
+  const location = useLocation();
+  const noNavAndFooterRoutes = ['/streaming-live'];
+  const showNavAndFooter = !noNavAndFooterRoutes.includes(location.pathname);
 
   return (
     <>

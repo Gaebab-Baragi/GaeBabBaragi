@@ -110,7 +110,7 @@ public class SecurityConfig {
                 .logout((logout) ->
                         logout
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-                                .logoutSuccessUrl(frontUrl)
+                                .logoutSuccessUrl(frontUrl + "/")
                                 .invalidateHttpSession(true)
                                 .deleteCookies("refreshToken")
                 );
