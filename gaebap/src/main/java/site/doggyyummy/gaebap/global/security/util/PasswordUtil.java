@@ -4,9 +4,9 @@ import java.security.SecureRandom;
 
 public class PasswordUtil {
 
-    public static final Integer PASSWORD_LENGTH = 8;
+    public static final Integer PASSWORD_LENGTH = 12;
     public static String generateRandomPassword() {
-        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-=_+";
 
         SecureRandom random = new SecureRandom();
         StringBuilder sb = new StringBuilder();
