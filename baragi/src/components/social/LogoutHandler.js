@@ -13,10 +13,9 @@ const LogoutHandler= () => {
         axios.post(process.env.REACT_APP_BASE_URL +"/api/logout",
             {
                 headers : {
-                    "Access-Control-Allow-Origin": "*"
+                    "Access-Control-Allow-Origin": process.env.REACT_APP_BASE_URL 
                 },
                 withCredentials : true
-
             }
         )
         .then((res) => {

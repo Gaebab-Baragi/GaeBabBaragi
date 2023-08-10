@@ -33,23 +33,18 @@ import { loginUser } from './redux/userSlice';
 
 function App() {  
   const dispatch = useDispatch();
+
   axios.interceptors.response.use(
     (res) => {
-      console.log("intercept", res);
-      if (res.headers['authorization']) {
-        axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
+      if (res.headers.get('Authorization')) {
+        axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
         dispatch(loginUser({isLogin : true}))
       }
-      
       return res;
     },
-    (err) => {
-      console.log("err", err);
-      return err;
-    }
   )
-  axios.defaults.withCredentials=true;
-    
+  axios.defaults.withCredentials = true;
+  axios.defaults.headers['Access-Control-Allow-Origin'] = "http://localhost:3000";
 
 
   const location = useLocation();
@@ -68,6 +63,7 @@ function App() {
         <Route path='/' element={<MainPage/>}></Route>
         {/* 회원  */}
         <Route path='/login' element={<LoginPage/>}></Route>
+        <Route path='/login:logout' element={<MainPage/>}></Route>
         <Route path='/signup' element={<SignupPage/>}></Route>
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
         {/* 레시피 */}
