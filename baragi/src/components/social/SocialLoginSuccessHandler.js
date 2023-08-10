@@ -11,15 +11,14 @@ const SocialLoginHandler= () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get( "/api/oauth2/success", {
-            params : {token : params.token},
-            headers: {'content-type': 'application/json'}
+        axios.get( process.env.REACT_APP_BASE_URL +"/api/oauth2/success", {
+            headers: {'content-type': 'application/json', 'Authorization' : `Bearer ${params.token}`}
         }
         )
         .then((res) => {
             if (res.status === 200){
-                const accessToken = params.token;
-                dispatch(loginUser(res.data));
+                const data = {...res.data}
+                dispatch(loginUser(data));
                 navigate("/");
             }
         })

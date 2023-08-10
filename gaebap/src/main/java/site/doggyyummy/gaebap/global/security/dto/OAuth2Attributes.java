@@ -3,6 +3,7 @@ package site.doggyyummy.gaebap.global.security.dto;
 import lombok.Builder;
 import lombok.Getter;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.entity.Role;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.GoogleUserInfo;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.KakaoUserInfo;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.NaverUserInfo;
@@ -55,6 +56,7 @@ public class OAuth2Attributes {
                 .username(oAuth2UserInfo.getEmail())
                 .nickname(oAuth2UserInfo.getNickname())
                 .profileUrl(oAuth2UserInfo.getProfileUrl())
+                .role(Role.GUEST)
                 .build();
     }
 }
