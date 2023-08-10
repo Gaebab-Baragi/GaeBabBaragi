@@ -28,7 +28,7 @@ function PetListPage() {
   },[idx])
 
   return(
-    <div className='swiper-container'>
+    <div className='myswiper'>
       <Swiper
         effect={'coverflow'}
         grabCursor={true}
@@ -41,13 +41,14 @@ function PetListPage() {
           modifier: 1,
           slideShadows: false,
         }}
-        style={{width:"100%"}}
+        style={{width:"100%", paddingTop:"3%", paddingBottom:"3%"}}
         pagination={true}
         mousewheel={true}
         modules={[EffectCoverflow, Pagination, Navigation]}
         slideToClickedSlide={true}
         noSwipingClass='react-tags__listbox-option'
         initialSlide={idx}
+        autoHeight={true}
       >
       
       
