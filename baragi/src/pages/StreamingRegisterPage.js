@@ -1,7 +1,8 @@
 /* eslint-disable */
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./css/StreamingRegisterPage.css";
+import "./css/StreamingRegisterPage.css"
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';

@@ -3,6 +3,8 @@ import InputMat from './InputMat'
 import { useDispatch } from 'react-redux';
 import {updateRecipeMaterial} from '../../redux/recipeRegisterSlice'
 import useDidMountEffect from '../../useDidMountEffect'
+
+
 function MaterialRegist() {
   const dispatch = useDispatch();
   const [inputMats, setInputMats] = useState([{ingredientName:'', amount:''}]);
@@ -41,13 +43,13 @@ function MaterialRegist() {
   // }, [inputMats]); // inputMats 변경될 때마다 실행됩니다.
 
   return (
-    <div style = {{  marginTop : '1%', marginBottom:'1%', background : '#0001'}}> 
+    <div style = {{  marginTop : '1%', marginBottom:'1%'}}> 
 
       <div style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '10px' }}>
       {inputMats.map((inputMat, index) => (
         <div key={index}>
           <InputMat step={index} matName={inputMat.ingredientName} matAmount={inputMat.amount} ingredientsChange={handleIngredientsChange} />
-          <button onClick={() => handleDeleteInputMat(index)}>-</button>
+          <button style ={{  }}onClick={() => handleDeleteInputMat(index)}>-</button>
         </div>
         ))}
       </div>
