@@ -25,6 +25,7 @@ function SignupForm() {
     // 정규표현식 패턴: 8자 이상 20자 이하, 영문 대소문자, 숫자, 특수문자를 하나 이상 포함
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
     const isValidPassword = passwordPattern.test(password1);
+    
     setValidPassword(isValidPassword);
   }, [password1]);
   useEffect(()=>{
@@ -47,11 +48,7 @@ function SignupForm() {
     console.log('Nickname-Duplication-Check')
     console.log(nickname)
 
-<<<<<<< HEAD
-    axios.post("/api/member/register/nickname", nickname, {
-=======
     axios.post(process.env.REACT_APP_BASE_URL +"/api/member/register/nickname", body, {
->>>>>>> 5d1ba751f791adf53d6a4c008fff182462435f17
       headers: { 
         "Content-Type": `application/json; charset= UTF-8`
       }
@@ -88,11 +85,7 @@ function SignupForm() {
   const handleSendCode = useCallback((e) => {
     e.preventDefault()
 
-<<<<<<< HEAD
-    axios.post('/api/member/register/username', { username : email }, {
-=======
     axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register/username', body, {
->>>>>>> 5d1ba751f791adf53d6a4c008fff182462435f17
       headers: { "Content-Type": `application/json; charset= UTF-8`}
       })
     .then((res)=>{
