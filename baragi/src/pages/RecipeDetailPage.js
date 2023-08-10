@@ -6,7 +6,6 @@ import tempImg from '../pages/apple.jpg';
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // 로그인 됏는지 확인해서 리다이렉트 하려고 필요.
-// import { useParams } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard'; // Import CopyToClipboard
 import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
@@ -38,7 +37,7 @@ const RecipeDetailPage=()=>{
 
 
 //현재 로그인한 user ID 받아야됨
-
+    // const userId=useSelector(state=>state.user.id);
     const [userId,setUserId]=useState(4);
 //꼬꼬꼬꼮꼬꼬꼬꼬꼬ㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗ
 
@@ -65,28 +64,33 @@ const RecipeDetailPage=()=>{
     useEffect(()=>{
         const fetchData=async()=>{
             try{
-                const response =await fetch(`/api/recipes/${id}`);
-                const responseComment=await fetch(`/api/comment?recipe_id=${id}`)
-                if(isLoggedIn){
-                    console.log("isLoggedIn##############",isLoggedIn);
-                    const responseIsbookmark=await fetch(`/api/bookmark/islike/${id}`)
+                const response =await fetch(process.env.REACT_APP_BASE_URL+`/api/recipes/${id}`);
+
+                const responseComment=await fetch(process.env.REACT_APP_BASE_URL+`/api/comment?recipe_id=${id}`)
+                fetch(`/api/bookmark/islike/${id}`)
+                if(isLoggedIn==true){
+                    const responseIsbookmark=await fetch(process.env.REACT_APP_BASE_URL+`/api/bookmark/islike/${id}`);
                     const bookmarkdata=await responseIsbookmark.json();
                     if(bookmarkdata.flag==1){
                         setIsLiked(true);
                     }
                 }
-                const responseBookmark=await fetch(`/api/bookmark/${id}`)
-    
+                const responseBookmark=await fetch(process.env.REACT_APP_BASE_URL+`/api/bookmark/${id}`)
+
                 setBookmarkCnt()
 
                 if(!response.ok){
                     console.log('에러에러 error: ');
                 }
                 const data=await response.json();
+
                 const comment=await responseComment.json(); 
+
                 setComments(comment);
+
                 console.log(comment);
                 const bookmarkCnt=await responseBookmark.json();
+
                 setBookmarkCnt(bookmarkCnt);
                 if(data.statusCode==400){
                     alert(data.errorMessage);
