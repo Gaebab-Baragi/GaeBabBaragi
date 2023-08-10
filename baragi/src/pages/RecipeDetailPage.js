@@ -14,21 +14,20 @@ import { useSelector } from 'react-redux';
 //링크 복사 함수
 const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
-  
     // Perform the copy to clipboard
     if (currentUrl) {
-      navigator.clipboard.writeText(currentUrl).then(
+        navigator.clipboard.writeText(currentUrl).then(
         () => {
           // You can show a success message here if needed
-          alert('링크가 복사 되었습니다!')
+        alert('링크가 복사 되었습니다!')
         },
         () => {
           // Handle error if copying fails
-          console.error('Copying URL to clipboard failed');
+        console.error('Copying URL to clipboard failed');
         }
-      );
+    );
     }
-  };
+    };
 
 
 const RecipeDetailPage=()=>{
@@ -37,39 +36,33 @@ const RecipeDetailPage=()=>{
     const [bookmarkCnt, setBookmarkCnt] = useState(0);
     const isLoggedIn = useSelector(state => state.user.isLogin);
     const [isLiked, setIsLiked] = useState(false);
-    const [reservedRecipe, setReservedRecipe] = useState(null); // State to hold the reserved recipe info
+    // const [reservedRecipe, setReservedRecipe] = useState(null); // State to hold the reserved recipe info
     const navigate = useNavigate(); // Move the navigate hook to the top
-    const location = useLocation(); // useLocation 훅을 이용해 location 변수 가져오기
+    // const location = useLocation(); // useLocation 훅을 이용해 location 변수 가져오기
 
-    const handleStreamingReservation = () => {
-        if (!isLoggedIn) {
-            // Save the recipe info in localStorage before redirecting to the login page
-            alert("로그인이 필요한 서비스입니다.");
-            setReservedRecipe(data);
-            navigate('/login');
-        } else {
-            navigate(`/streaming-register/${id}`, { state: { recipeTitle: data.title } });
-        }
-    };
+    
 
-    useEffect(() => {
-        if (isLoggedIn && reservedRecipe && location.pathname === '/login') {
-            navigate(`/recipe/${reservedRecipe.id}`); // Navigate back to the reserved recipe page
-            setReservedRecipe(null); // Clear the reserved recipe info
-        }
-    }, [isLoggedIn, reservedRecipe, location]);
+    // useEffect(() => {
+    //     if (isLoggedIn && reservedRecipe && location.pathname === '/login') {
+    //         navigate(`/recipe/${reservedRecipe.id}`);
+    //         setReservedRecipe(null);
+    //     }
+    // }, [isLoggedIn, reservedRecipe, location]);
+
+
     useEffect(()=>{
         const fetchData=async()=>{
             try{
-                const response =await fetch(`/api/recipes/${id}`);
+                const response =await fetch(process.env.REACT_APP_BASE_URL +`/api/recipes/${id}`);
                 if(isLoggedIn){
+                    console.log("isLoggedIn##############",isLoggedIn);
                     const responseIsbookmark=await fetch(`/api/bookmark/islike/${id}`)
                     const bookmarkdata=await responseIsbookmark.json();
                     if(bookmarkdata.flag==1){
                         setIsLiked(true);
                     }
                 }
-                const responseBookmark=await fetch(`/api/bookmark/${id}`)
+                const responseBookmark=await fetch(process.env.REACT_APP_BASE_URL +`/api/bookmark/${id}`)
                 setBookmarkCnt()
 
                 if(!response.ok){
@@ -93,6 +86,17 @@ const RecipeDetailPage=()=>{
         fetchData();
     },[id]);
 
+    const handleStreamingReservation = () => {
+        console.log("isLoggedIn???????????",isLoggedIn);
+        if (!isLoggedIn) {
+            console.log("isLoggedIn???????????!!!!!!!!!!!!",isLoggedIn);
+            alert("로그인이 필요한 서비스입니다.");
+            navigate('/login');
+        } else {
+            navigate(`/streaming-register/${id}`, { state: { recipeTitle: data.title } });
+        }
+    };
+
     //하트 눌렀을 때, 로그인 안되어있으면 로그인 페이지로 리다이렉트
     const handleLikeClick = async () => {
         console.log('handleLikeClick function called');
@@ -101,7 +105,7 @@ const RecipeDetailPage=()=>{
             navigate('/login'); // Replace with your actual login page path
         } else {
             try {
-                const response = await fetch(`/api/bookmark/${id}`, {
+                const response = await fetch(process.env.REACT_APP_BASE_URL +`/api/bookmark/${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

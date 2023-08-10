@@ -25,7 +25,7 @@ function MyBookmarks({rowNum, list}) {
 
   // 레시피 목록 가져오기!!
   useEffect(() => {
-    axios.get("/api/bookmark/my")
+    axios.get(process.env.REACT_APP_BASE_URL +"/api/bookmark/my")
       .then((res) => {
           if (res.status === 200){
             setItems(res.data.recipes)

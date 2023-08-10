@@ -4,7 +4,7 @@ import "./socialLogin.css"
 const KakaoLogin = () =>{
     return (
         <div>
-            <a href = "/api/oauth2/authorization/kakao">
+            <a href = {process.env.REACT_APP_BASE_URL + "/api/oauth2/authorization/kakao"}>
                 <img className = "loginButton" src={kakaoLoginImg} alt="naver"></img>
             </a>
         </div>
