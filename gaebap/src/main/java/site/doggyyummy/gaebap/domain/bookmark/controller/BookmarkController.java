@@ -53,6 +53,7 @@ public class BookmarkController {
 
     @GetMapping("/islike/{recipe_id}")
     public BookmarkIslikeResponseDto isLike(@PathVariable("recipe_id") Long recipe_id){
+        System.out.println("islike 호출됨!!!!!!!!!!!!!!");
         Member loginMember=SecurityUtil.getCurrentLoginMember();
         return bookmarkService.isLike(recipe_id,loginMember);
     }

@@ -110,7 +110,6 @@ public class RecipeController {
     public RecipeModifyResponseDto modifyRecipe(@PathVariable("id") Long id,@RequestPart RecipeModifyRequestDto reqDto,@RequestPart MultipartFile newRecipeImage,@RequestPart MultipartFile newRecipeVideo,@RequestPart MultipartFile[] newStepImages) throws IOException{
         Member member = SecurityUtil.getCurrentLoginMember();
         try {
-            System.out.println("^^^^^^^^"+newStepImages.length);
             recipeService.modifyRecipe(member,id, reqDto,newRecipeImage,newRecipeVideo,newStepImages);
             return new RecipeModifyResponseDto(HttpStatus.SC_OK, "modify Success");
         }catch(UnauthorizedException e){
