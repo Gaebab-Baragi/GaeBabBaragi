@@ -73,6 +73,15 @@ public class MemberController {
         return new ResponseEntity<>("modified successfully", HttpStatus.OK);
     }
 
+
+    @PutMapping(value = "/modify/role", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(description = "아이디 재설정 후 재로그인")
+    public ResponseEntity<String> oauth2Signup(@RequestPart(value="dto") MemberModifyDTO modifyDTO, @RequestPart(value="file", required = false) MultipartFile file) throws Exception{
+        memberService.modify(MemberModifyDTO.toEntity(modifyDTO), file);
+        memberService.setRole();
+        return new ResponseEntity<>("modified successfully", HttpStatus.OK);
+    }
+
     @PostMapping("/modify/nickname")
     @Operation(description = "회원 정보 수정 시 닉네임을 검사")
     public ResponseEntity<String> validateModifyNickname(@RequestBody MemberModifyDTO modifyDTO) throws Exception{

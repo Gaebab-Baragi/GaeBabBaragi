@@ -43,6 +43,11 @@ public class ExceptionController {
         return getResponseEntity(ExceptionCode.INVALID_NAME_FORMAT_EXCEPTION);
     }
 
+    @ExceptionHandler(InvalidNicknameFormatException.class)
+    public ResponseEntity<String> handleInvalidNicknameFormatException(InvalidNicknameFormatException err){
+        return getResponseEntity(ExceptionCode.INVALID_NICKNAME_FORMANT_EXCEPTION);
+    }
+
     @ExceptionHandler(InvalidPasswordFormatException.class)
     public ResponseEntity<String> handleInvalidPasswordFormatException (InvalidPasswordFormatException err){
         return getResponseEntity(ExceptionCode.INVALID_PASSWORD_FORMAT_EXCEPTION);

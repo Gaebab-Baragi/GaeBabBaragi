@@ -6,7 +6,9 @@ import axios from 'axios';
 
 function MainPage(){
     useEffect(() => {
-        axios.get("/api/checkLogin");
+        axios.get("/api/checkLogin")
+        .then(console.log("hi"))
+        .catch((res) => console.log(res));
     }, [])
     return(
         <div className='mainPage'>

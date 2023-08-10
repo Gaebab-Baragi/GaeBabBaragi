@@ -32,11 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("requestURI : {}", request.getRequestURI());
         if (request.getRequestURI().equals(LOGIN_URL)) {//일반
-            filterChain.doFilter(request, response);
-            return;
-        }
-        if (request.getRequestURI().equals("")) {//OAUTH2
             filterChain.doFilter(request, response);
             return;
         }
@@ -70,12 +67,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.info("checkAccessTokenAndAuthentication() 호출");
 
         Optional<String> accessToken = jwtService.extractAccessToken(request);
+        log.info("accessToken : {}" , accessToken.orElseGet(() -> "no access token"));
         if (accessToken.isPresent() && jwtService.isTokenValid(accessToken.get())){
             Optional<String> name = jwtService.extractName(accessToken.get());
             if (name.isPresent()){
                 Optional<Member> member = memberRepository.findByUsername(name.get());
                 if (member.isPresent()) {
                     saveAuthentication(member.get());
+
+                    String refreshToken = jwtService.extractRefreshToken(request)
+                            .filter(jwtService::isTokenValid)
+                            .orElse(null);
+
+                    if (refreshToken == null) {
+                        String reissuedRefreshToken = jwtService.createRefreshToken();
+                        jwtService.updateRefreshToken(member.get().getUsername(), reissuedRefreshToken);
+                        jwtService.sendAccessAndRefreshToken(response, accessToken.get(), reissuedRefreshToken);
+                    }
                     filterChain.doFilter(request, response);
                     return;
                 }
