@@ -70,7 +70,7 @@ function App() {
         <Route path='/object-detect' element={<ObjectDetectionPage></ObjectDetectionPage>}></Route>
       </Routes>
 
-      <Footer/>
+      {/* <Footer/> */}
     </div>
     </>
   );
