@@ -1,7 +1,13 @@
 /* eslint-disable */
+<<<<<<< HEAD
+import StreamingForm from "../components/form/StreamingForm";
+
+=======
+>>>>>>> 5bb3a4fe0acdafde41773e1da518d27604dbe11a
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./css/StreamingRegisterPage.css";
+import "./css/StreamingRegisterPage.css"
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
@@ -18,7 +24,11 @@ function StreamingRegisterPage() {
   const [password, setPassword] = useState("");
   const user = useSelector(state=>state.user)
   const navigate = useNavigate();
+<<<<<<< HEAD
+ 
+=======
 
+>>>>>>> 5bb3a4fe0acdafde41773e1da518d27604dbe11a
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
     if (!user) {
