@@ -15,4 +15,6 @@ public interface MemberService {
     void validateRegistrationNickname(String email) throws Exception;
     void uploadImageByUrl(Member member) throws Exception;
     void setRole() throws Exception;
+    String resetPassword(String username) throws Exception;
+
 }

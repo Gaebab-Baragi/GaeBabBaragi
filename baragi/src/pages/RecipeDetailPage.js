@@ -36,33 +36,26 @@ const RecipeDetailPage=()=>{
     const [bookmarkCnt, setBookmarkCnt] = useState(0);
     const isLoggedIn = useSelector(state => state.user.isLogin);
     const [isLiked, setIsLiked] = useState(false);
-    const [reservedRecipe, setReservedRecipe] = useState(null); // State to hold the reserved recipe info
+    // const [reservedRecipe, setReservedRecipe] = useState(null); // State to hold the reserved recipe info
     const navigate = useNavigate(); // Move the navigate hook to the top
-    const location = useLocation(); // useLocation 훅을 이용해 location 변수 가져오기
+    // const location = useLocation(); // useLocation 훅을 이용해 location 변수 가져오기
 
-    const handleStreamingReservation = () => {
-        if (!isLoggedIn) {
-            // Save the recipe info in localStorage before redirecting to the login page
-            alert("로그인이 필요한 서비스입니다.");
-            setReservedRecipe(data);
-            navigate('/login');
-        } else {
-            navigate(`/streaming-register/${id}`, { state: { recipeTitle: data.title } });
-        }
-    };
+    
 
-    useEffect(() => {
-        if (isLoggedIn && reservedRecipe && location.pathname === '/login') {
-            navigate(`/recipe/${reservedRecipe.id}`); // Navigate back to the reserved recipe page
-            setReservedRecipe(null); // Clear the reserved recipe info
-        }
-        }, [isLoggedIn, reservedRecipe, location]);
-        
+    // useEffect(() => {
+    //     if (isLoggedIn && reservedRecipe && location.pathname === '/login') {
+    //         navigate(`/recipe/${reservedRecipe.id}`);
+    //         setReservedRecipe(null);
+    //     }
+    // }, [isLoggedIn, reservedRecipe, location]);
+
+
     useEffect(()=>{
         const fetchData=async()=>{
             try{
                 const response =await fetch(process.env.REACT_APP_BASE_URL +`/api/recipes/${id}`);
                 if(isLoggedIn){
+                    console.log("isLoggedIn##############",isLoggedIn);
                     const responseIsbookmark=await fetch(`/api/bookmark/islike/${id}`)
                     const bookmarkdata=await responseIsbookmark.json();
                     if(bookmarkdata.flag==1){
@@ -92,6 +85,17 @@ const RecipeDetailPage=()=>{
         };
         fetchData();
     },[id]);
+
+    const handleStreamingReservation = () => {
+        console.log("isLoggedIn???????????",isLoggedIn);
+        if (!isLoggedIn) {
+            console.log("isLoggedIn???????????!!!!!!!!!!!!",isLoggedIn);
+            alert("로그인이 필요한 서비스입니다.");
+            navigate('/login');
+        } else {
+            navigate(`/streaming-register/${id}`, { state: { recipeTitle: data.title } });
+        }
+    };
 
     //하트 눌렀을 때, 로그인 안되어있으면 로그인 페이지로 리다이렉트
     const handleLikeClick = async () => {

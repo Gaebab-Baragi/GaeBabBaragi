@@ -22,7 +22,6 @@ import LogoutHandler from './components/social/LogoutHandler';
 import DuplicateNicknameHandler from './components/social/DuplicateNicknameHandler';
 import DuplicateNicknameCheckPage from './pages/DuplicateNicknameCheckPage';
 
-import PetRegisterPage from './pages/Pet/PetRegisterPage';
 import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
@@ -34,22 +33,22 @@ import { loginUser } from './redux/userSlice';
 
 function App() {  
   const dispatch = useDispatch();
+
   axios.interceptors.response.use(
     (res) => {
-      console.log("intercept", res);
-      if (res.headers['authorization']) {
-        console.log("intercept", res.headers.authorization);
-        axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
+      if (res.headers.get('Authorization')) {
+        axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
         dispatch(loginUser({isLogin : true}))
       }
-      
       return res;
-    }
-    )
-    
-    const location = useLocation();
-    const noNavAndFooterRoutes = ['/streaming-live'];
-    const showNavAndFooter = !noNavAndFooterRoutes.includes(location.pathname);
+    },
+  )
+  axios.defaults.withCredentials = true;
+
+
+  const location = useLocation();
+  const noNavAndFooterRoutes = ['/streaming-live'];
+  const showNavAndFooter = !noNavAndFooterRoutes.includes(location.pathname);
 
   return (
     <>
@@ -63,6 +62,7 @@ function App() {
         <Route path='/' element={<MainPage/>}></Route>
         {/* 회원  */}
         <Route path='/login' element={<LoginPage/>}></Route>
+        <Route path='/login:logout' element={<MainPage/>}></Route>
         <Route path='/signup' element={<SignupPage/>}></Route>
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
         {/* 레시피 */}

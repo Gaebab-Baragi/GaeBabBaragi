@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -70,6 +71,7 @@ public class SecurityConfig {
         config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT", "OPTION"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowCredentials(true);
+        config.addExposedHeader("Authorization");
         log.info("here");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
@@ -99,7 +101,7 @@ public class SecurityConfig {
                     oauth2login
                             .loginPage("/api/login")
                             .successHandler(oAuth2LoginSuccessHandler)
-                            .failureUrl(frontUrl+"/")
+                            .failureUrl(frontUrl)
                             .authorizationEndpoint((endpoint) -> endpoint
                                     .baseUri("/api/oauth2/authorization"))
                             .redirectionEndpoint((endpoint) ->
@@ -110,12 +112,12 @@ public class SecurityConfig {
                 .logout((logout) ->
                         logout
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-                                .logoutSuccessUrl(frontUrl)
+                                .logoutSuccessHandler((request, response, authentication) -> {
+                                    return;
+                                })
                                 .invalidateHttpSession(true)
                                 .deleteCookies("refreshToken")
-                                .invalidateHttpSession(true)
                 );
-
 
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
@@ -166,7 +168,5 @@ public class SecurityConfig {
                 = new JwtAuthenticationFilter(jwtService, memberRepository);
         return jwtAuthenticationFilter;
     }
-
-
 
 }

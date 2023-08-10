@@ -30,8 +30,6 @@ public class BookmarkRepository {
 
     public List<Bookmark> selectByRecipe (long recipeId){
         List<Bookmark> bookmarks = em.createQuery("select b from Bookmark b " +
-                        "left join fetch b.recipe r " +
-                        "left join fetch b.member m " +
                         "where b.recipe.id = :recipeId")
                 .setParameter("recipeId" ,recipeId)
                 .getResultList();
