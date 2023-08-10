@@ -88,10 +88,10 @@ let recipeRegister = createSlice({
       state.recipeImage = action.payload
       console.log('레시피이미지',state.recipeImage)
     },
-    // updateStepImage : (state,action) =>{
-    //   state.stepImages.append(action.payload)
-    //   console.log('스텝이미지 변경', state.temp)
-    // },
+    updateStepImage : (state,action) =>{
+      state.stepImages.append(action.payload)
+      console.log('스텝이미지 변경', state.temp)
+    },
 
     
   },

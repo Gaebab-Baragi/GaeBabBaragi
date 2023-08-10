@@ -8,18 +8,45 @@ import { useNavigate } from 'react-router-dom'
 import CardCarousel from "../components/list/CardCarousel";
 import './css/RecipeListPage.css'
 import DogSelectBar from "../components/ui/DogSelectBar";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import useDidMountEffect from "../useDidMountEffect";
 
 function RecipeListPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   // 언제가져오는 거지? 자동 렌더링이 되나??
   const requestHappen = useSelector((state) => state.recipeSearch.requestHappen);
+  const dogs = useSelector((state)=>state.recipeSearch.dogs)
+  const ingredients = useSelector((state)=>state.recipeSearch.ingredients)
+  const title = useSelector((state)=>state.recipeSearch.title)
   const [filtered, setFiltered] = useState(false);
 
   useEffect(()=>{
-    if (requestHappen) {
-      setFiltered(true);
+    console.log('리덕스에서 변화 일어남 감지')
+    let tempIngredient = ingredients;
+    if (ingredients.length === 0) {
+      tempIngredient = null;
+    } 
+    let tempDog = dogs;
+    if (dogs.length === 0) {
+      tempDog = null;
+    } 
+    const data = {
+      title : null,
+      ingredients: tempIngredient,
+      pets: tempDog
     }
-  },[requestHappen])
+    console.log('보내는 데이터임',data)
+    // axios 요청 보내서 레시피 저장하기
+    axios.post(process.env.REACT_APP_BASE_URL +'/api/recipes/searchlike', data)
+      .then((res)=>{
+        console.log('필터링 된 목록 가져오기 성공 : ' , res.data)
+      })
+      .catch((err)=>{
+        console.log('필터링 데이터 가져오기 실패')
+      })
+    },[dogs,ingredients])
 
   return (
     <div>
