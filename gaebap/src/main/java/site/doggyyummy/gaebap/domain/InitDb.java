@@ -48,9 +48,9 @@ public class InitDb {
         public void dbInit1() throws Exception {
             String url = "http://localhost:3000/image/%EA%B0%9C%EB%B0%A5%EB%B0%94%EB%9D%BC%EA%B8%B0.png";
 
-            Member member1 = createMember("test1","test1","박영서", url);
-            Member member2 = createMember("test2","test2","user2", url);
-            Member member3 = createMember("test3","test3","user3", url);
+            Member member1 = createMember("test1@gmail.com","test1","박영서", url);
+            Member member2 = createMember("test2@gmail.com","test2","user2", url);
+            Member member3 = createMember("test3@gmail.com","test3","user3", url);
 
             memberService.signUp(member1);
             memberService.signUp(member2);
