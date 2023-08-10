@@ -8,18 +8,18 @@ import SocialLogin from '../social/SocialLogin';
 function SignupForm() {
   const navigate = useNavigate();
   // 기본 input stated
-  let [password1, setPassword1] = useState('');
-  let [password2, setPassword2] = useState('');
-  let [nickname, setNickname] = useState('');
-  let [email, setEmail] = useState('');
-  let [verificationCode, setVerificationCode] = useState('')
-  let [code, setCode] = useState();
-  let [sendCode, setSendCode] = useState(false);
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [verificationCode, setVerificationCode] = useState('')
+  const [code, setCode] = useState();
+  const [sendCode, setSendCode] = useState(false);
 
   // ======================빈 값 & validation 처리 state=======================//
-  let [validPassword, setValidPassword] = useState(false);
-  let [samePassword, setSamePassword] = useState(false);
-  let [validNickname, setValidNickname] = useState(false);
+  const [validPassword, setValidPassword] = useState(false);
+  const [samePassword, setSamePassword] = useState(false);
+  const [validNickname, setValidNickname] = useState(false);
   
   useEffect(() => {
     // 정규표현식 패턴: 8자 이상 20자 이하, 영문 대소문자, 숫자, 특수문자를 하나 이상 포함
@@ -46,13 +46,12 @@ function SignupForm() {
     // console.log(nickname)
     console.log('Nickname-Duplication-Check')
     console.log(nickname)
-    let body = JSON.stringify({
-      register_name : email,
-      password : password1,
-      nickname : nickname,
-    })
 
+<<<<<<< HEAD
+    axios.post("/api/member/register/nickname", nickname, {
+=======
     axios.post(process.env.REACT_APP_BASE_URL +"/api/member/register/nickname", body, {
+>>>>>>> 5d1ba751f791adf53d6a4c008fff182462435f17
       headers: { 
         "Content-Type": `application/json; charset= UTF-8`
       }
@@ -88,13 +87,12 @@ function SignupForm() {
 
   const handleSendCode = useCallback((e) => {
     e.preventDefault()
-    let body = JSON.stringify({
-      register_name : email,
-      password : password1,
-      nickname : nickname,
-    })
 
+<<<<<<< HEAD
+    axios.post('/api/member/register/username', { username : email }, {
+=======
     axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register/username', body, {
+>>>>>>> 5d1ba751f791adf53d6a4c008fff182462435f17
       headers: { "Content-Type": `application/json; charset= UTF-8`}
       })
     .then((res)=>{
