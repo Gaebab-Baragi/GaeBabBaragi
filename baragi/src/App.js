@@ -30,15 +30,17 @@ import Footer from './components/ui/Footer'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from './redux/userSlice';
+import { useSelector } from 'react-redux';
 
 function App() {  
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
 
   axios.interceptors.response.use(
     (res) => {
       if (res.headers.get('Authorization')) {
         axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
-        dispatch(loginUser({isLogin : true}))
+        dispatch(loginUser({...user, isLogin : true}))
       }
       return res;
     },
