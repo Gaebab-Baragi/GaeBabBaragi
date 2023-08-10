@@ -13,6 +13,7 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.entity.Role;
 import site.doggyyummy.gaebap.domain.member.exception.custom.*;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
+import site.doggyyummy.gaebap.global.security.util.PasswordUtil;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.io.ByteArrayInputStream;
@@ -159,5 +160,13 @@ public class MemberServiceImpl implements MemberService{
        memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new RuntimeException()).setRole(Role.USER);
     }
 
-    //TODO : 비밀번호 검증하는 부분이 있어야 함
+    @Override
+    public String resetPassword(String username) throws Exception{
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NoSuchUserException("잘못된 이메일입니다."));
+        String password = PasswordUtil.generateRandomPassword();
+        member.setPassword(passwordEncoder.encode(password));
+        memberRepository.save(member);
+        return password;
+    }
+
 }

@@ -22,6 +22,8 @@ import site.doggyyummy.gaebap.domain.member.service.MemberMailService;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
@@ -53,15 +55,15 @@ public class MemberController {
 
     @PostMapping("/register/username")
     @Operation(description = "회원 가입 시 이메일의 유효성을 검사")
-    public ResponseEntity<String> validateRegisterUsername(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
-        memberService.validateRegistrationUsername(registerDTO.getRegisterName());
-        return new ResponseEntity<>(memberMailService.sendEmail(registerDTO.getRegisterName()), HttpStatus.OK);
+    public ResponseEntity<String> validateRegisterUsername(@RequestBody Map<String, String> registerUsername) throws Exception {
+        memberService.validateRegistrationUsername(registerUsername.get("username"));
+        return new ResponseEntity<>(memberMailService.sendEmail(registerUsername.get("username")), HttpStatus.OK);
     }
 
     @PostMapping("/register/nickname")
     @Operation(description = "회원 가입 시 닉네임 유효성을 검사")
-    public ResponseEntity<String> validateRegisterNickname(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
-        memberService.validateRegistrationNickname(registerDTO.getNickname());
+    public ResponseEntity<String> validateRegisterNickname(@RequestBody Map<String, String> registerNickname) throws Exception {
+        memberService.validateRegistrationNickname(registerNickname.get("nickname"));
         return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
 
@@ -88,6 +90,24 @@ public class MemberController {
         memberService.validateNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
         return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
+
+    //====================================================================================
+
+    @GetMapping("/find")
+    @Operation(description = "이메일로 회원이 있는지 확인 후 인증 메일 발송")
+    public ResponseEntity<String> findByEmail(@RequestParam String email) throws Exception {
+        memberService.findByName(email).orElseThrow(() -> new NoSuchUserException());
+        return new ResponseEntity<>(memberMailService.sendEmail(email), HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    @Operation(description = "해당 이메일의 회원의 패스워드를 리셋")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> email) throws Exception {
+        String newPassword = memberService.resetPassword(email.get("email"));
+        memberMailService.sendEmail(email.get("email"), newPassword);
+        return new ResponseEntity<>("sent", HttpStatus.OK);
+    }
+
 
     //====================================================================================
 
