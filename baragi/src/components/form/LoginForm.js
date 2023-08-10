@@ -38,13 +38,12 @@ function LoginForm() {
       password : password
     };
 
-    axios.post('/api/login', body) 
+    axios.post(process.env.REACT_APP_BASE_URL +'/api/login', body) 
     .then((res)=>{
       if (res.status === 200){
         const accessToken = res.headers['authorization'];
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; 
-        const data = res.data;
-        console.log(data);
+        const data = {...res.data, accessToken};
         dispatch(loginUser(data))
         navigate('/');
       }

@@ -13,7 +13,7 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
 
     function checkMeeting() {
         console.log(meeting_id)
-        axios.get(`http://localhost:8083/api/meetings/join-request/${meeting_id}`)
+        axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}`)
         .then((res)=>{
             console.log('request success : ', res.data);
             const data = {
@@ -27,7 +27,7 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
                 start_time
             }
             dispatch(setStreamingInfo(data))
-            axios.post(`http://localhost:8083/api/meetings/join/${meeting_id}`)
+            axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
             .then((res)=>{
                 console.log('미팅 참여 성공 ')
             })

@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
 import './ChatComponent.css'
-
+import { useState } from 'react';
 export default class ChatComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
         messageList: [],
         message: '',
-    };
+        chatStatus: true,
+        };
     this.chatScroll = React.createRef();
 
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.close = this.close.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.handleChatStatus = this.handleChatStatus.bind(this);
     }
 
     componentDidMount() {
         // Delay the execution of the component initialization
         setTimeout(() => {
             this.initializeChat();
-        }, 2000); // Adjust the delay time as needed
+        },2000); // Adjust the delay time as needed
     }
 
     initializeChat() {
+      console.log('채팅의 getStreamManager()임!!!!!',this.props.user.getStreamManager())
         this.props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
             const data = JSON.parse(event.data);
             let messageList = this.state.messageList;
@@ -42,6 +45,10 @@ export default class ChatComponent extends Component {
         if (event.key === 'Enter') {
             this.sendMessage();
         }
+    }
+
+    handleChatStatus() {
+      this.setState({chatStatus: !this.state.chatStatus})
     }
 
     sendMessage() {
@@ -77,8 +84,10 @@ export default class ChatComponent extends Component {
       <div className='totalChatContainer'>
           {/* 제목 */}
           <div className="titleContainer">
-            <p className='chatTitleDetail'> 레시피 보기 | 채팅</p>
+            <p className='chatTitleDetail'> <span onClick={this.handleChatStatus}>레시피 보기</span> <span>|</span> <span onClick={this.handleChatStatus}>채팅</span> </p>
           </div>
+      {this.state.chatStatus 
+      ?
 
         <div id="chatContainer">
           {/* 채팅 목록 */}
@@ -113,6 +122,25 @@ export default class ChatComponent extends Component {
             <ion-icon class="messageSendButton" name="arrow-forward-circle-outline" onClick={this.sendMessage}></ion-icon>
           </div>
         </div>
+      :
+      <div className='recipeContainer'>
+        <div className='recipe-info'>
+          <div className='recipe-title'>재료</div>
+          {this.props.recipeData.recipeIngredients.map((ing)=>{
+            return <div>{ing.ingredientsName} {ing.amount}</div>
+          })}
+        </div>
+
+        <div className='recipe-info'>
+          <div className='recipe-title'>레시피</div>
+          {this.props.recipeData.steps.map((step)=>{
+            return(
+              <div>{step.orderingNumber} {step.descriptions}</div>
+            )
+          })}
+        </div>
+      </div>
+      }
       </div>
     );
   }

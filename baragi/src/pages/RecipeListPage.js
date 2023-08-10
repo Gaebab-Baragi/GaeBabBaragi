@@ -6,7 +6,7 @@ import IngredientTagBar from "../components/ui/IngredientTagBar";
 import BookData from './Data.json'
 import { useNavigate } from 'react-router-dom'
 import CardCarousel from "../components/list/CardCarousel";
-import './RecipeListPage.css'
+import './css/RecipeListPage.css'
 import DogSelectBar from "../components/ui/DogSelectBar";
 
 function RecipeListPage() {
@@ -31,7 +31,7 @@ function RecipeListPage() {
         <button onClick={()=>navigate('/recipe-register')}>레시피 작성</button>
       </div>
     {
-     filtered
+    filtered
       // 검색 --> 레시피 목록 보이게
       ? 
       <div>

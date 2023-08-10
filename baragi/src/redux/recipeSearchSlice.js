@@ -10,13 +10,14 @@ let recipeSearch= createSlice({
     keyword:'',
     ingredients:[],
     dogs:[],
+    petIds: [],
     filteredList:[],
     requestHappen: false
   },
   reducers:{
     requestFilteredRecipeList: (state, action)=>{
       let tempIngredient = state.ingredients
-      if (state.ingredients.length == 0) {
+      if (state.ingredients.length === 0) {
         tempIngredient = null;
       } 
       const data = {
@@ -25,7 +26,7 @@ let recipeSearch= createSlice({
       }
 
       // axios 요청 보내서 레시피 저장하기
-      axios.post('/api/recipes/searchlike', data)
+      axios.post(process.env.REACT_APP_BASE_URL +'/api/recipes/searchlike', data)
         .then((res)=>{
           console.log('request success : ' , res.data)
         })
@@ -53,10 +54,14 @@ let recipeSearch= createSlice({
     updateDogs: (state, action) =>{
       state.dogs = action.payload
       // console.log(state.dogs)
+    },
+    updatePetIds: (state, action) =>{
+      state.petIds = action.payload
+      // console.log(state.dogs)
     }
   }
 })
 
-export const {updateKeyword, updateIngredients, updateDogs, requestFilteredRecipeList} = recipeSearch.actions;
+export const {updateKeyword, updateIngredients, updateDogs, requestFilteredRecipeList,updatePetIds} = recipeSearch.actions;
 
 export default recipeSearch;

@@ -15,7 +15,7 @@ function PetListPage() {
   const { idx } = useParams();
 
   useEffect(()=>{
-    axios.get(`/api/pet`)
+    axios.get(process.env.REACT_APP_BASE_URL +`/api/pet`)
     .then((res)=>{
       if (res.status === 200){
         console.log('pet list : ' , res.data)
@@ -41,15 +41,18 @@ function PetListPage() {
           modifier: 1,
           slideShadows: false,
         }}
-        style={{width:"80%"}}
+        style={{width:"70%"}}
         pagination={true}
         mousewheel={true}
         modules={[EffectCoverflow, Pagination, Navigation]}
-        className="mySwiper"
         slideToClickedSlide={true}
         noSwipingClass='react-tags__listbox-option'
         initialSlide={idx}
+        autoHeight={true}
+
       >
+      
+      
       {petList.map((petInfo, index)=>{
         return(
           <SwiperSlide style={{width:"400px" }} key= {index +1}>

@@ -1,12 +1,15 @@
 /* eslint-disable */
-import StreamingForm from "../components/form/StreamingForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./StreamingRegisterPage.css";
+import "./css/StreamingRegisterPage.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 function StreamingRegisterPage() {
+  const location = useLocation();
+  const { id } = useParams();
+  const { recipeTitle } = location.state;
   const [roomTitle, setRoomTitle] = useState("");
   const [roomDescription, setRoomDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -15,9 +18,10 @@ function StreamingRegisterPage() {
   const [password, setPassword] = useState("");
   const user = useSelector(state=>state.user)
   const navigate = useNavigate();
+
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
-    if (!user.id) {
+    if (!user) {
       alert('로그인 후 이용해주세요.')
       navigate('/login')
     }
@@ -39,11 +43,12 @@ function StreamingRegisterPage() {
   // =====================제출======================//
   const handleRegisterSubmit = ()=>{
     const startTime = selectedDate + ' ' + selectedTime
-    console.log(typeof(startTime))
+    console.log(typeof(startTime),typeof(roomTitle), typeof(roomDescription), typeof(maxParticipant))
+  
     const data = {
       title: roomTitle,
       description: roomDescription,
-      password: password,
+      password: password.toString(),
       max_participant: maxParticipant,
       start_time: startTime,
       // 추후 수정!!!!!!!!!!!!!!
@@ -52,24 +57,26 @@ function StreamingRegisterPage() {
     console.log(data);
 
     axios
-      .post("http://localhost:8083/api/meetings", data)
+      .post(process.env.REACT_APP_BASE_URL +"/api/meetings", data)
       .then((response) => {
         // Handle the response if needed
+        alert('스트리밍 예약이 완료되었습니다.')
         console.log("Request successful:", response.data);
       })
       .catch((error) => {
         // Handle errors if necessary
-        console.error("Error sending request:", error);
+        alert('빈 칸을 채워주세요.')
+        console.error("Error sending request:", error.response);
       });
-  }; 
-
+  };
   return (
 
     
     <div className="StreamingRegisterContainer">
-      <StreamingForm/>
+      <div className="StreamingHeader">
       <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
       <h4 className="StreamingRegisterSemiTitle">스트리밍 기본 정보 입력</h4>
+      </div>
       <div className="inputContainer">
         <div className="inputContainer-left">
           <label>방 제목 </label>
@@ -91,7 +98,7 @@ function StreamingRegisterPage() {
           </div>
           {/* 레시피 */}
           <div className="inputComponent">
-            <span className="recipeName">{id}</span>
+            <span className="recipeName">{recipeTitle}</span>
           </div>
           {/* 스트리밍 시작 시간 */}
           <div className="inputComponent">

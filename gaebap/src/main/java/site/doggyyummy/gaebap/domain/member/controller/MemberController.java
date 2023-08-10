@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberModifyDTO;
 import site.doggyyummy.gaebap.domain.member.dto.request.MemberRegisterDTO;
 import site.doggyyummy.gaebap.domain.member.dto.response.MemberResponseDTO;
@@ -19,6 +21,8 @@ import site.doggyyummy.gaebap.domain.member.exception.custom.NoSuchUsernameExcep
 import site.doggyyummy.gaebap.domain.member.service.MemberMailService;
 import site.doggyyummy.gaebap.domain.member.service.MemberService;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,23 +55,33 @@ public class MemberController {
 
     @PostMapping("/register/username")
     @Operation(description = "회원 가입 시 이메일의 유효성을 검사")
-    public ResponseEntity<String> validateRegisterUsername(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
-        memberService.validateRegistrationUsername(registerDTO.getRegisterName());
-        return new ResponseEntity<>(memberMailService.sendEmail(registerDTO.getRegisterName()), HttpStatus.OK);
+    public ResponseEntity<String> validateRegisterUsername(@RequestBody Map<String, String> registerUsername) throws Exception {
+        memberService.validateRegistrationUsername(registerUsername.get("username"));
+        return new ResponseEntity<>(memberMailService.sendEmail(registerUsername.get("username")), HttpStatus.OK);
     }
 
     @PostMapping("/register/nickname")
     @Operation(description = "회원 가입 시 닉네임 유효성을 검사")
-    public ResponseEntity<String> validateRegisterNickname(@RequestBody MemberRegisterDTO registerDTO) throws Exception {
-        memberService.validateRegistrationNickname(registerDTO.getNickname());
+    public ResponseEntity<String> validateRegisterNickname(@RequestBody Map<String, String> registerNickname) throws Exception {
+        memberService.validateRegistrationNickname(registerNickname.get("nickname"));
         return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
 
     //=================================================================================
-    @PutMapping("/modify")
+    @PutMapping(value = "/modify", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(description = "회원 정보 수정")
-    public ResponseEntity<MemberResponseDTO> modify(@RequestBody MemberModifyDTO modifyDTO) throws Exception{
-        return new ResponseEntity<>(MemberResponseDTO.toDTO(memberService.modify(MemberModifyDTO.toEntity(modifyDTO), modifyDTO.getFile(), modifyDTO.getFileType())), HttpStatus.OK);
+    public ResponseEntity<String> modify(@RequestPart(value="dto") MemberModifyDTO modifyDTO, @RequestPart(value="file", required = false) MultipartFile file) throws Exception{
+        memberService.modify(MemberModifyDTO.toEntity(modifyDTO), file);
+        return new ResponseEntity<>("modified successfully", HttpStatus.OK);
+    }
+
+
+    @PutMapping(value = "/modify/role", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(description = "아이디 재설정 후 재로그인")
+    public ResponseEntity<String> oauth2Signup(@RequestPart(value="dto") MemberModifyDTO modifyDTO, @RequestPart(value="file", required = false) MultipartFile file) throws Exception{
+        memberService.modify(MemberModifyDTO.toEntity(modifyDTO), file);
+        memberService.setRole();
+        return new ResponseEntity<>("modified successfully", HttpStatus.OK);
     }
 
     @PostMapping("/modify/nickname")
@@ -76,6 +90,25 @@ public class MemberController {
         memberService.validateNicknameModification(MemberModifyDTO.toEntity(modifyDTO));
         return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
+
+    //====================================================================================
+
+    @GetMapping("/find")
+    @Operation(description = "이메일로 회원이 있는지 확인 후 인증 메일 발송")
+    public ResponseEntity<String> findByEmail(@RequestParam String email) throws Exception {
+        log.info("email : {}", email);
+        memberService.findByName(email).orElseThrow(() -> new NoSuchUserException());
+        return new ResponseEntity<>(memberMailService.sendEmail(email), HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    @Operation(description = "해당 이메일의 회원의 패스워드를 리셋")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> email) throws Exception {
+        String newPassword = memberService.resetPassword(email.get("email"));
+        memberMailService.sendEmail(email.get("email"), newPassword);
+        return new ResponseEntity<>("sent", HttpStatus.OK);
+    }
+
 
     //====================================================================================
 
