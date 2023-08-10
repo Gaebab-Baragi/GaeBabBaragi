@@ -15,7 +15,7 @@ function PetListPage() {
   const { idx } = useParams();
 
   useEffect(()=>{
-    axios.get(`/api/pet`)
+    axios.get(process.env.REACT_APP_BASE_URL +`/api/pet`)
     .then((res)=>{
       if (res.status === 200){
         console.log('pet list : ' , res.data)

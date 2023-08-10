@@ -32,7 +32,7 @@ const navigate = useNavigate();
     const nickname = <user className="nickname"></user>;
     
     useEffect(() => {
-        axios.get("/api/meetings/my-meetings")
+        axios.get(process.env.REACT_APP_BASE_URL +"/api/meetings/my-meetings")
         .then((res) => {
             if (res.status === 200){
                 setStreamingList(res.data);

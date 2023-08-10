@@ -50,7 +50,7 @@ let streamingRegister= createSlice({
       console.log(data)
       console.log(typeof(state.start_time), state.start_time)
 
-      axios.post("http://localhost:8083/api/meetings", data)
+      axios.post(process.env.REACT_APP_BASE_URL +"/api/meetings", data)
         .then((response) => {
           // Handle the response if needed
           console.log("Request successful:", response.data);

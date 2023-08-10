@@ -10,14 +10,15 @@ const LogoutHandler= () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.post("/api/logout")
+        axios.post(process.env.REACT_APP_BASE_URL +"/api/logout")
         .then((res) => {
             console.log(res);
             if (res.status === 200){
                 window.sessionStorage.clear();
                 dispatch(clearUser());
-                alert("로그아웃되었습니다.");
                 navigate("/", {replace : true});
+                delete axios.defaults.headers.common['Authorization'];
+                alert("로그아웃되었습니다.");
             }
         })
         .catch((res) => {

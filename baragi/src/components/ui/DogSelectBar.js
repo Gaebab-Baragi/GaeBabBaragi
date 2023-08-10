@@ -28,7 +28,7 @@ function DogSelectBar() {
     }
   };
   useEffect(() => {
-    axios.get("http://localhost:8083/api/pet").then((res) => {
+    axios.get(process.env.REACT_APP_BASE_URL +"/api/pet").then((res) => {
       setPets(res.data);
       console.log(res.data)
     });

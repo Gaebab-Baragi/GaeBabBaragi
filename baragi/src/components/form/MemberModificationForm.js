@@ -14,7 +14,7 @@ function MemberModificationForm(){
     const [uploadFile, setUploadFile] = useState('');
 
     useEffect(()=> {
-        axios.get("/api/member")
+        axios.get(process.env.REACT_APP_BASE_URL +"/api/member")
         .then((res) => {
             if (res.status === 200){
                 setOriginNickname(res.data.nickname);
@@ -55,7 +55,7 @@ function MemberModificationForm(){
         };
  
 
-        axios.post('/api/member/modify/nickname', body, {
+        axios.post(process.env.REACT_APP_BASE_URL +'/api/member/modify/nickname', body, {
             headers: { 
                 "Content-Type": `application/json; charset= UTF-8`
             }
@@ -99,7 +99,7 @@ function MemberModificationForm(){
                 new Blob([JSON.stringify(body)], { type: "application/json" })
             );
 
-            axios.put('/api/member/modify', formData)
+            axios.put(process.env.REACT_APP_BASE_URL +'/api/member/modify', formData)
             .then((res)=>{
                 if (res.status === 200) {
                     alert("회원 정보를 수정했습니다.");

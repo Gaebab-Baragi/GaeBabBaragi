@@ -38,7 +38,7 @@ function LoginForm() {
       password : password
     };
 
-    axios.post('/api/login', body) 
+    axios.post(process.env.REACT_APP_BASE_URL +'/api/login', body) 
     .then((res)=>{
       if (res.status === 200){
         const accessToken = res.headers['authorization'];

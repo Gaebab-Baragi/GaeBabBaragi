@@ -22,7 +22,6 @@ import LogoutHandler from './components/social/LogoutHandler';
 import DuplicateNicknameHandler from './components/social/DuplicateNicknameHandler';
 import DuplicateNicknameCheckPage from './pages/DuplicateNicknameCheckPage';
 
-import PetRegisterPage from './pages/Pet/PetRegisterPage';
 import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
@@ -38,7 +37,6 @@ function App() {
     (res) => {
       console.log("intercept", res);
       if (res.headers['authorization']) {
-        console.log("intercept", res.headers.authorization);
         axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
         dispatch(loginUser({isLogin : true}))
       }
