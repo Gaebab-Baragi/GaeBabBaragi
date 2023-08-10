@@ -25,6 +25,7 @@ function SignupForm() {
     // 정규표현식 패턴: 8자 이상 20자 이하, 영문 대소문자, 숫자, 특수문자를 하나 이상 포함
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
     const isValidPassword = passwordPattern.test(password1);
+    
     setValidPassword(isValidPassword);
   }, [password1]);
   useEffect(()=>{

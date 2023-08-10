@@ -62,7 +62,6 @@ function App() {
         <Route path='/' element={<MainPage/>}></Route>
         {/* 회원  */}
         <Route path='/login' element={<LoginPage/>}></Route>
-        <Route path='/login:logout' element={<MainPage/>}></Route>
         <Route path='/signup' element={<SignupPage/>}></Route>
         <Route path='/find-password' element={<FindPasswordPage/>}></Route>
         {/* 레시피 */}

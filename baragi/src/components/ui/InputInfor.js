@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import {requestFilteredRecipeList, updateRecipeInfor } from './../../redux/recipeRegisterSlice.js'
 import useDidMountEffect from '../../useDidMountEffect.js'
+import '../../pages/css/StreamingRegisterPage.css'
+
 
 function InputInfor() {
   const dispatch = useDispatch();
@@ -26,9 +27,10 @@ function InputInfor() {
 
   return (
     <>
-      <div style={{ marginTop:'1%', marginBottom :'1%', background: '#0001' }}>
-        
-        <form style={{  marginLeft: '2%', marginRight: '2%', padding: '1%'}}>
+      <div style={{ marginTop:'1%', marginBottom :'1%' }}>
+      {/* , background: '#0001' */}
+        <form style={{  marginLeft: '2%', marginRight: '2%', padding: '2%'}}>
+          
           <div style={{ display: 'flex',  marginBottom: '1%' }}>
             <label htmlFor="recipeName" style={{ width: '15%' }}>레시피 제목:</label>
             <input
@@ -38,9 +40,13 @@ function InputInfor() {
               value={recipeName}
               onChange={handleRecipeNameChange}
               placeholder="레시피 제목을 입력하세요."
-              style = {{ flex:1 }}
-            />    
+              style = {{ flex : 1, 
+                borderRadius: '10px',
+                textIndent:'10px',
+                border :'2px solid #000',
+              }}            />    
           </div>
+          
           <div style={{ display: 'flex' , marginBottom: '1%' }}>
             <label htmlFor="recipeIntro" style={{ width: '15%' }}>레시피 소개:</label>
             <textarea
@@ -51,7 +57,11 @@ function InputInfor() {
               value={recipeIntro}
               onChange={handleRecipeIntroChange}
               placeholder="레시피를 소개하세요."
-              style = {{ flex:1 }}
+              style = {{ flex : 1, 
+                borderRadius: '10px',
+                textIndent:'10px',
+                border :'2px solid #000',
+              }}
             />
           </div>
         </form>
