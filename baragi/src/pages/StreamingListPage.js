@@ -30,9 +30,9 @@ function StreamingListPage() {
   const [streamingList, setStreamingList] = useState([]);
   const user = useSelector((state) => (state.user));
   const nickname = <user className="nickname"></user>;
-
+  
   useEffect(() => {
-    axios.get('/api/meetings')
+    axios.get('http://localhost:8083/api/meetings')
       .then((res) => {
         console.log('get list is successful : ', res.data);
         setStreamingList(res.data);
@@ -79,12 +79,14 @@ function StreamingListPage() {
               title={streamingItem.title}
               description={streamingItem.description}
               host_nickname={streamingItem.host_nickname}
+              host_profile_url={streamingItem.host_profile_url}
               max_participant={streamingItem.max_participant}
               start_time={streamingItem.start_time}
               status={streamingItem.status}
               current_participants={streamingItem.current_participants}
               meeting_id={streamingItem.id}
               recipe_id={streamingItem.recipe_id}
+              recipe_image_url={streamingItem.recipe_image_url}
             />
           </div>
         ))}

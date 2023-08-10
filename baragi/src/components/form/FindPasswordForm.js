@@ -1,7 +1,7 @@
 import React from 'react';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
-import './BasicForm.css'
+import './css/BasicForm.css'
 
 function FindPasswordForm() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ function FindPasswordForm() {
     <div className="formContainer">
       <form className="form">
         <div className="findFormTitle">
-          <span className='pointerShow' onClick={()=>navigate('/find-id')}>아이디 찾기</span> | <span className='currentPage'>비밀번호 찾기</span>
+          <span className='currentPage'>비밀번호 찾기</span>
         </div>
 
         {/* 아이디 입력 */}

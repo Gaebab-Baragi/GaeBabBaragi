@@ -1,5 +1,5 @@
 /* eslint-disable */
-import './css/NaviBar.css';
+import './NaviBar.css';
 import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -19,7 +19,7 @@ function NaviBar() {
       <>
         <Navbar sticky="top" expand="lg" bg='white'>
           <Container>
-            <Navbar.Brand href="/">
+            <Navbar.Brand onClick={() => {navigate('/')}} style={{cursor:'pointer'}}>
               <img
                 alt="개밥바라기 로고"
                 src="/image/개밥바라기.png"
@@ -47,8 +47,7 @@ function NaviBar() {
               <Nav> {/* 로그인 O */}
                 <NavDropdown title="내 프로필" id="basic-nav-dropdown">
                   <NavDropdown.Item onClick={()=>{navigate('/myinformation')}} eventKey={5} className='navbar-nav2-dropdown'>내 정보변경</NavDropdown.Item>
-                  <NavDropdown.Item onClick={()=>{navigate('/my-pet-register')}} eventKey={6} className='navbar-nav2-dropdown'>반려견 등록</NavDropdown.Item>
-                  <NavDropdown.Item onClick={()=>{navigate('/my-pet-list')}} eventKey={6} className='navbar-nav2-dropdown'>반려견 목록</NavDropdown.Item>
+                  <NavDropdown.Item onClick={()=>{navigate('/my-pet-list/0')}} eventKey={6} className='navbar-nav2-dropdown'>반려견 관리</NavDropdown.Item>
                   <NavDropdown.Item onClick={()=>{navigate('/myrecipe')}} eventKey={7} className='navbar-nav2-dropdown'>찜한 레시피</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={()=>{navigate('/logout')}} className='navbar-nav2-dropdown'> 로그아웃 </NavDropdown.Item>

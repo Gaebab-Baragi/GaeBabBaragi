@@ -1,12 +1,19 @@
-import BackGround from "../components/ui/BackGround";
-import CardCarousel from "../components/list/CardCarousel";
+import './css/MainPage.css';
+import HeroSection from "../components/ui/mainPage/HeroSection";
+import ServiceInfo from '../components/ui/mainPage/ServiceInfo';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function MainPage(){
+    useEffect(() => {
+        axios.get("/api/checkLogin")
+        .then(console.log("hi"))
+        .catch((res) => console.log(res));
+    }, [])
     return(
-        <div>
-            <BackGround></BackGround>
-            <h2>추천레시피</h2>
-            <CardCarousel/>
+        <div className='mainPage'>
+            <HeroSection></HeroSection>
+            <ServiceInfo></ServiceInfo>
         </div>
     )
 }

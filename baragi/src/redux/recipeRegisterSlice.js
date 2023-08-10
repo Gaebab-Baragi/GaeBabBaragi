@@ -139,7 +139,7 @@ let recipeRegister = createSlice({
       console.log('-버튼',state.stepImages)
     },
 
-  
+    
   },
 });
 

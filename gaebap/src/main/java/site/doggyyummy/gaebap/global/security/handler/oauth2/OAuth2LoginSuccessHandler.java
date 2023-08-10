@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import site.doggyyummy.gaebap.domain.member.dto.response.MemberResponseDTO;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.entity.Role;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.global.security.entity.oauth2.CustomOAuth2User;
 import site.doggyyummy.gaebap.global.security.service.JwtService;
@@ -41,35 +42,32 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
             loginSuccess(request, response, oAuth2User);
         } catch (Exception e){
-           throw e;
+           log.info("onAuthenticationSuccess: {}", e.getMessage());
         }
     }
 
     private void loginSuccess(HttpServletRequest request, HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException{
         if (response.isCommitted()) return;
 
-        //새 accessToken & refreshToken을 만들어서 배정함
-        String accessToken = jwtService.createAccessToken(oAuth2User.getName());
-        String refreshToken = jwtService.createRefreshToken();
-
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
 
+        String accessToken = jwtService.createAccessToken(oAuth2User.getName());
+        String refreshToken = jwtService.createRefreshToken();
+
+        String redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/redirect/" + accessToken)
+                .build().toUriString();
+
+        if (oAuth2User.getRole() == Role.GUEST) {
+            redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/signup/"+ accessToken)
+                    .build().toUriString();
+            refreshToken = null;
+        }
+
+        log.info("새 로그인 유저 : {}, 리프레시 토큰 : {}, with role {}", oAuth2User.getName(), refreshToken, oAuth2User.getRole());
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getName(), refreshToken);
-
-        Member member = memberRepository.findByUsername(oAuth2User.getName()).orElseThrow(() -> new RuntimeException());
-
-        log.info("member : {}", member.toString());
-        MemberResponseDTO responseDTO = MemberResponseDTO.toDTO(member);
-        String result = objectMapper.writeValueAsString(responseDTO);
-        response.getWriter().println(result);
-        redirectStrategy.sendRedirect(request, response, makeRedirectUrl(accessToken) );
+        redirectStrategy.sendRedirect(request, response, redirectUrl);
         log.info("token : {}", accessToken);
-    }
-
-    private String makeRedirectUrl(String accessToken){
-       return UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/redirect/" + accessToken)
-               .build().toUriString();
     }
 }

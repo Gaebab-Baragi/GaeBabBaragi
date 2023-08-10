@@ -14,7 +14,6 @@ function SearchBar({  data }) {
   const [needSearch, setNeedSearch] = useState(true);
   const dataResultRef = useRef(null);
   const dispatch = useDispatch();
-  
 
   useEffect(()=>{
     dispatch(updateKeyword(wordEntered))

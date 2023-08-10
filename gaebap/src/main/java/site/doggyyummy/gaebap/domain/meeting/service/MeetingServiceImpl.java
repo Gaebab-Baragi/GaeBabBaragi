@@ -12,13 +12,14 @@ import site.doggyyummy.gaebap.domain.meeting.exception.MeetingEntryConditionNotM
 import site.doggyyummy.gaebap.domain.meeting.exception.MeetingForbiddenException;
 import site.doggyyummy.gaebap.domain.meeting.exception.NotFoundMeetingException;
 import site.doggyyummy.gaebap.domain.meeting.repository.MeetingRepository;
+import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@PropertySource("classpath:openvidu.properties")
 @RequiredArgsConstructor
 public class MeetingServiceImpl implements MeetingService{
 
@@ -207,10 +208,10 @@ public class MeetingServiceImpl implements MeetingService{
         if(findMeeting.getHost().getId() == memberId) { // 호스트 입장일 경우
             // 미팅 상태 변경
             findMeeting.setStatus(Status.ATTENDEE_WAIT);
-        } else { // 일반 멤버 입장일 경우
-            // 미팅 현재 참여 인원 변경
-            findMeeting.setCurrentParticipants(findMeeting.getCurrentParticipants() + 1);
         }
+
+        // 미팅 현재 참여 인원 변경
+        findMeeting.setCurrentParticipants(findMeeting.getCurrentParticipants() + 1);
     }
 
     @Override
@@ -220,14 +221,15 @@ public class MeetingServiceImpl implements MeetingService{
         // Meeting Entity 가져오기
         Meeting findMeeting = meetingRepository.findByIdJoinMember(id).orElseThrow(() -> new NotFoundMeetingException());
 
-        if(findMeeting.getHost().getId() == memberId) { // 호스트 퇴장일 경우
-            // 미팅 삭제
-            meetingRepository.delete(findMeeting);
-        } else { // 일반 멤버 퇴장일 경우
-            // meeting status가 ATTENDEE_WAIT일 경우 미팅 현재 참여 인원 변경
-            if(findMeeting.getStatus() == Status.ATTENDEE_WAIT) {
-                findMeeting.setCurrentParticipants(findMeeting.getCurrentParticipants() - 1);
-            }
+        if(findMeeting.getStatus() == Status.ATTENDEE_WAIT) {
+            findMeeting.setCurrentParticipants(findMeeting.getCurrentParticipants() - 1);
         }
+    }
+
+    @Override
+    public void close(Long id) {
+
+        // 미팅 지우기
+        meetingRepository.deleteById(id);
     }
 }

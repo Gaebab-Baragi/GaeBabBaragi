@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.entity.Role;
 
 import java.sql.Timestamp;
 
@@ -22,7 +23,7 @@ public class MemberRegisterDTO {
                 .username(registerDTO.getRegisterName())
                 .nickname(registerDTO.getNickname())
                 .password(registerDTO.getPassword())
-                .authority("ROLE_USER")
+                .role(Role.USER)
                 .registerDate(new Timestamp(System.currentTimeMillis()))
                 .build();
 

@@ -10,6 +10,10 @@ import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import site.doggyyummy.gaebap.domain.bookmark.entity.Bookmark;
+import site.doggyyummy.gaebap.domain.bookmark.repository.BookmarkRepository;
+import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkService;
+import site.doggyyummy.gaebap.domain.bookmark.service.BookmarkServiceImpl;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
@@ -41,6 +45,7 @@ public class RecipeService {
     private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final PetRepository petRepository;
+    private final BookmarkRepository bookmarkRepository;
     //AWS S3
     private final AmazonS3 awsS3Client;
 
@@ -150,7 +155,6 @@ public class RecipeService {
             ingredient = r.getIngredient();
             ingredients.add(ingredient);
         }
-
         return new RecipeFindByIdResponseDto(recipe,member, steps, recipeIngredients, ingredients);
     }
 
