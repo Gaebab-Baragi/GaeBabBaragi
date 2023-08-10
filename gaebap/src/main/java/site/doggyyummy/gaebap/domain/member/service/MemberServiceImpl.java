@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.member.entity.Role;
 import site.doggyyummy.gaebap.domain.member.exception.custom.*;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
@@ -43,9 +45,10 @@ public class MemberServiceImpl implements MemberService{
     public void modify(Member member, MultipartFile file) throws Exception{
         validateMemberModification(member);
 
-        Member origin = SecurityUtil.getCurrentLoginMember();
-        log.info("nickname: {}", member.getNickname());
+        Member origin = memberRepository.findByUsername(SecurityUtil.getCurrentLoginMember().getUsername()).orElseThrow(() -> new NoSuchUserException());
+        log.info("nickname: {}", origin.getNickname());
         origin.setNickname(member.getNickname());
+        log.info("->nickname: {}", origin.getNickname());
         if (member.getProfileUrl() != null) {//이전과 다를 거 없는 경우
             return;
         }
@@ -150,6 +153,11 @@ public class MemberServiceImpl implements MemberService{
         inputStream.close();
     }
 
+    @Override
+    public void setRole() throws Exception{
+       Member member = SecurityUtil.getCurrentLoginMember();
+       memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new RuntimeException()).setRole(Role.USER);
+    }
 
     //TODO : 비밀번호 검증하는 부분이 있어야 함
 }
