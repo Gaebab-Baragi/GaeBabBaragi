@@ -67,13 +67,20 @@ public class RecipeController {
         }
     }
 
-    //멤버 id가 등록한 레시피 조회
+    //내가 등록한 레시피 조회
     @Operation(summary = "search recipes by writer",description = "특정 작성자가 작성한 레시피 조회")
     @GetMapping("/recipes/writer")
-    public RecipeFindByMemberIdResponseDto findRecipeByMemberId(){
+    public RecipeFindByMemberIdResponseDto findRecipeByMe(){
         Long memberId = SecurityUtil.getCurrentLoginMember().getId();
         log.info("memberId = {}", memberId);
         return recipeService.findRecipeByMemberId(memberId);
+    }
+
+    //멤버 id가 등록한 레시피 조회
+    @Operation(summary = "search recipes by writer",description = "특정 작성자가 작성한 레시피 조회")
+    @GetMapping("/recipes/writer/{id}")
+    public RecipeFindByMemberIdResponseDto findRecipeByMemberId(@PathVariable Long id){
+        return recipeService.findRecipeByMemberId(id);
     }
 
     //레시피 전체 조회 (레시피 제목, 작성자)

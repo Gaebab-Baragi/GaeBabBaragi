@@ -34,11 +34,23 @@ const RecipeDetailPage=()=>{
     const { id } = useParams();
     const [data, setData] = useState(null);
     const [bookmarkCnt, setBookmarkCnt] = useState(0);
+
+
+
+//현재 로그인한 user ID 받아야됨
+
+    const [userId,setUserId]=useState(4);
+//꼬꼬꼬꼮꼬꼬꼬꼬꼬ㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗ
+
+
+
+
     const isLoggedIn = useSelector(state => state.user.isLogin);
     const [isLiked, setIsLiked] = useState(false);
     // const [reservedRecipe, setReservedRecipe] = useState(null); // State to hold the reserved recipe info
     const navigate = useNavigate(); // Move the navigate hook to the top
     // const location = useLocation(); // useLocation 훅을 이용해 location 변수 가져오기
+    const [comments, setComments] = useState([]);
 
     
 
@@ -53,7 +65,8 @@ const RecipeDetailPage=()=>{
     useEffect(()=>{
         const fetchData=async()=>{
             try{
-                const response =await fetch(process.env.REACT_APP_BASE_URL +`/api/recipes/${id}`);
+                const response =await fetch(`/api/recipes/${id}`);
+                const responseComment=await fetch(`/api/comment?recipe_id=${id}`)
                 if(isLoggedIn){
                     console.log("isLoggedIn##############",isLoggedIn);
                     const responseIsbookmark=await fetch(`/api/bookmark/islike/${id}`)
@@ -62,15 +75,18 @@ const RecipeDetailPage=()=>{
                         setIsLiked(true);
                     }
                 }
-                const responseBookmark=await fetch(process.env.REACT_APP_BASE_URL +`/api/bookmark/${id}`)
+                const responseBookmark=await fetch(`/api/bookmark/${id}`)
+    
                 setBookmarkCnt()
 
                 if(!response.ok){
                     console.log('에러에러 error: ');
                 }
                 const data=await response.json();
+                const comment=await responseComment.json(); 
+                setComments(comment);
+                console.log(comment);
                 const bookmarkCnt=await responseBookmark.json();
-            
                 setBookmarkCnt(bookmarkCnt);
                 if(data.statusCode==400){
                     alert(data.errorMessage);
@@ -85,6 +101,16 @@ const RecipeDetailPage=()=>{
         };
         fetchData();
     },[id]);
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    };
 
     const handleStreamingReservation = () => {
         console.log("isLoggedIn???????????",isLoggedIn);
@@ -113,8 +139,6 @@ const RecipeDetailPage=()=>{
                 });
 
                 if (response.ok) {
-                    console.log('크를일말더라ㅣㅓㅁㄷ리');
-                    
                     setIsLiked((prevIsLiked) => !prevIsLiked);
                 setBookmarkCnt(prevBookmarkCnt => isLiked ? prevBookmarkCnt - 1 : prevBookmarkCnt + 1);
                 } else {
@@ -125,6 +149,54 @@ const RecipeDetailPage=()=>{
             }
         }
     };
+    // 댓글 쓰기 이벤트
+    const [newCommentContent, setNewCommentContent] = useState('');
+
+    const handleSubmitComment = async (event) => {
+        event.preventDefault();
+        
+        if (!isLoggedIn) {
+            alert('로그인이 필요한 서비스입니다.')
+            navigate('/login'); // Replace with your actual login page path
+            return;
+        }
+        if (!newCommentContent.trim()) {
+            alert('댓글 내용을 작성해주세요');
+            return;
+        }
+        try {
+            const response = await fetch(`/api/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    recipe_id: id,
+                    content: newCommentContent
+                })
+            });
+    
+            if (response.ok) {
+                // 댓글 작성 후 댓글 목록을 다시 가져온다.
+                const responseComment = await fetch(`/api/comment?recipe_id=${id}`);
+                const comment = await responseComment.json();
+                setComments(comment);
+    
+                // 댓글 작성 내용 초기화
+                setNewCommentContent('');
+            } else {
+                console.error('댓글 작성 실패');
+            }
+        } catch (error) {
+            console.error('에러 발생', error);
+        }
+    };
+    
+    const handleCommentChange = (event) => {
+        setNewCommentContent(event.target.value);
+    };
+
+    //댓글 쓰기 이벤트 끝
     
     if(!data){
         return <div> Loading ...</div>;
@@ -203,8 +275,57 @@ const RecipeDetailPage=()=>{
                         ))}
                     </ul>
                 </div>
+                <hr></hr>
+                <div className='commentForm'>
+                    <h2>댓글</h2>
+                    <ul className='comment-list'>
+                        {comments.map((comment, index) => (
+                        <li key={index}>
+                            <div className='comment-container'>
+                                <div className='comment-profile-img'>
+                                    <img src={comment.profileUrl}></img>
+                                </div>
+                                <div className='comment-form-content'>
+                                    <div className='comment-info'>
+                                        <div className='comment-writer-info'>
+                                            {comment.writer}
+                                            
+                                        </div>
+                                        <div className='comment-writtenTime'>
+                                            {formatDate(comment.writeTime)}
+                                        </div>
+                                    </div>
+                                        <div className='comment-content-delete'>
+                                            <div className='comment-content'>{comment.content}</div>
+                                        </div>
+                                        {isLoggedIn && comment.writerId === userId&& (
+                                            <div className='comment-delete'>삭제하기</div>
+                                        )}
+                                </div>
+                            </div>
+                            <hr></hr>
+                        </li>
+                        ))}
+                    </ul>
+                                            
+                        <div className='comment-form'>
+                            <form onSubmit={handleSubmitComment} className="comment-input-container">
+                                <div className="comment-input">
+                                    <textarea
+                                        placeholder='댓글을 입력하세요...'
+                                        value={newCommentContent}
+                                        onChange={handleCommentChange}
+                                    />
+                                    <button type='submit'>댓글 작성</button>
+                                </div>
+                            </form>
+                        </div>
+
+
+                </div>
+
             </div>
-            
+        
     </div>
     <div className='floatingDiv'>
         <div><ion-icon name="radio-outline"></ion-icon></div>

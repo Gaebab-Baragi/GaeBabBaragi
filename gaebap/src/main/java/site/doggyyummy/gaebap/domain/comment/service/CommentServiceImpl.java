@@ -2,12 +2,16 @@ package site.doggyyummy.gaebap.domain.comment.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentRequestDTO;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentResponseDTO;
 import site.doggyyummy.gaebap.domain.comment.entity.Comment;
 import site.doggyyummy.gaebap.domain.comment.repository.CommentRepository;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.domain.recipe.exception.UnauthorizedException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +23,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void create(CommentRequestDTO dto) {
+    public void create(CommentRequestDTO dto, Member loginMember) {
+        dto.setMemberId(loginMember.getId());
         Comment comment = dto.toEntity();
         commentRepository.create(comment);
     }
@@ -48,7 +53,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id,Member loginMember) {
+        Comment comment=commentRepository.selectComment(id);
+        if(comment.getWriter().getId()!= loginMember.getId()){
+            throw new UnauthorizedException(HttpStatus.SC_UNAUTHORIZED, "권한이 없습니다.");
+        }
         commentRepository.delete(id);
     }
 }
