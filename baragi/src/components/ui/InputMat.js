@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../pages/StreamingRegisterPage.css'
+import '../../pages/css/StreamingRegisterPage.css'
 
 
 function InputMat({ step, matName, matAmount, ingredientsChange }) {

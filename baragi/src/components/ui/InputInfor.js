@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {requestFilteredRecipeList, updateRecipeInfor } from './../../redux/recipeRegisterSlice.js'
 import useDidMountEffect from '../../useDidMountEffect.js'
-import "../../pages/StreamingRegisterPage.css"
+import '../../pages/css/StreamingRegisterPage.css'
 
 
 function InputInfor() {

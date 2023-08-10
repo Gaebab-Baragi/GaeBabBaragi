@@ -1,5 +1,5 @@
 import axios from "axios";
-import './ObjectDetectionPage.css'
+
 import React, {useState, useEffect, useRef } from 'react';
 // import "./styles.css";
 

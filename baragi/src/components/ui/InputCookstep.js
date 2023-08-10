@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 // import InputImage from './InputImage';
-import '../../pages/StreamingRegisterPage.css'
+import '../../pages/css/StreamingRegisterPage.css'
 import {updateStepImage} from '../../redux/recipeRegisterSlice'
 import { useDispatch } from 'react-redux';
 
