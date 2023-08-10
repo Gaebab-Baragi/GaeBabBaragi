@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { clearUser } from "../../redux/userSlice";
 import axios from "axios";
+import Toast from "../ui/Toast";
 
 
 const LogoutHandler= () => {
@@ -25,7 +26,7 @@ const LogoutHandler= () => {
                 window.sessionStorage.clear();
                 dispatch(clearUser());
                 navigate("/", {replace : true});
-                alert("로그아웃되었습니다.");
+                Toast.fire("로그아웃되었습니다.", "", "success");
             }
         })
         .catch((res) => {

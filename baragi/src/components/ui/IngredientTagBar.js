@@ -54,7 +54,7 @@ function IngredientTagBar() {
     <div className="ingredientSelect">
       <ReactTags
         suggestions={suggestions}
-        placeholderText="재료 선택"
+        placeholderText={selected.length? "" : "재료 선택"}
         selected={selected}
         onAdd={onAdd}
         onDelete={onDelete}

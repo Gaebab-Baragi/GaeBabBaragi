@@ -20,7 +20,6 @@ public class MemberResponseDTO {
     private String nickname;
     private String profileUrl;
 
-
     public static MemberResponseDTO toDTO(Member member){
         return MemberResponseDTO.builder()
                         .id(member.getId())
