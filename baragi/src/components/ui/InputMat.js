@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import '../../pages/css/StreamingRegisterPage.css'
+
 
 function InputMat({ step, matName, matAmount, ingredientsChange }) {
   const handleMatnameChange = (e) => {
@@ -16,6 +18,7 @@ function InputMat({ step, matName, matAmount, ingredientsChange }) {
       <div style={{ marginLeft : '10%', marginRight:'10%', borderRadius: '5px', backgroundColor: '#FFEACB', display:'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* <div style={{ margin : '5% 5% 5% 5%'}}> */}
           <input 
+            className='roomName'
             type="text"
             id={`Matname${step}`}
             name={`Matname${step}`}
@@ -27,6 +30,7 @@ function InputMat({ step, matName, matAmount, ingredientsChange }) {
         {/* </div>
         <div style={{ width : '150%' , margin: '5% -5% 5% 5%' }}> */}
           <input
+            className='roomName'
             type="text"
             id={`matAmount${step}`}
             name={`matAmount${step}`}
@@ -37,6 +41,7 @@ function InputMat({ step, matName, matAmount, ingredientsChange }) {
           />
         {/* </div> */}
       </div>
+
   );
 }
 
