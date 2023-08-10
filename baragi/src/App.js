@@ -33,21 +33,22 @@ import { loginUser } from './redux/userSlice';
 
 function App() {  
   const dispatch = useDispatch();
+
   axios.interceptors.response.use(
     (res) => {
-      console.log("intercept", res);
-      if (res.headers['authorization']) {
-        axios.defaults.headers.common['Authorization'] = "Bearer " + res.headers['authorization']
+      if (res.headers.get('Authorization')) {
+        axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
         dispatch(loginUser({isLogin : true}))
       }
-      
       return res;
-    }
-    )
-    
-    const location = useLocation();
-    const noNavAndFooterRoutes = ['/streaming-live'];
-    const showNavAndFooter = !noNavAndFooterRoutes.includes(location.pathname);
+    },
+  )
+  axios.defaults.withCredentials = true;
+
+
+  const location = useLocation();
+  const noNavAndFooterRoutes = ['/streaming-live'];
+  const showNavAndFooter = !noNavAndFooterRoutes.includes(location.pathname);
 
   return (
     <>

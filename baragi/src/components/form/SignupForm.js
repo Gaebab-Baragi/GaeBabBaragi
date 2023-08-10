@@ -48,7 +48,7 @@ function SignupForm() {
     console.log('Nickname-Duplication-Check')
     console.log(nickname)
 
-    axios.post(process.env.REACT_APP_BASE_URL +"/api/member/register/nickname", body, {
+    axios.post(process.env.REACT_APP_BASE_URL +"/api/member/register/nickname", {nickname}, {
       headers: { 
         "Content-Type": `application/json; charset= UTF-8`
       }
@@ -85,7 +85,7 @@ function SignupForm() {
   const handleSendCode = useCallback((e) => {
     e.preventDefault()
 
-    axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register/username', body, {
+    axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register/username', {username : email}, {
       headers: { "Content-Type": `application/json; charset= UTF-8`}
       })
     .then((res)=>{
