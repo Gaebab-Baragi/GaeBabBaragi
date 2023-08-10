@@ -1,7 +1,8 @@
 /* eslint-disable */
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./css/StreamingRegisterPage.css";
+import "./css/StreamingRegisterPage.css"
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
@@ -18,7 +19,6 @@ function StreamingRegisterPage() {
   const [password, setPassword] = useState("");
   const user = useSelector(state=>state.user)
   const navigate = useNavigate();
-
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
     if (!user) {
