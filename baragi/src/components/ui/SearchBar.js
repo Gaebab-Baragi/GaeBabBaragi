@@ -15,9 +15,9 @@ function SearchBar({  data }) {
   const dataResultRef = useRef(null);
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(updateKeyword(wordEntered))
-  }, [wordEntered])
+  // useDidMountEffect(()=>{
+  //   dispatch(updateKeyword(wordEntered))
+  // }, [wordEntered])
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -71,7 +71,7 @@ function SearchBar({  data }) {
   //===================== axios 요청 보내기=====================//
   const handleRequestFilteredList  = (e)=>{
     e.preventDefault();
-    dispatch(requestFilteredRecipeList())
+    dispatch(updateKeyword(wordEntered))
   }
 
 

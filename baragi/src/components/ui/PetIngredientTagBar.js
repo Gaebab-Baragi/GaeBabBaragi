@@ -4,7 +4,7 @@ import './PetIngredientTagBar.css'
 import { useDispatch } from "react-redux";
 import { setForbiddenIngredients } from "../../redux/petRegisterSlice";
 import axios from "axios";
-
+import useDidMountEffect from "../../useDidMountEffect";
 function PetIngredientTagBar({forbiddens, selectIngredients}) {
   const [selected, setSelected] = useState([]);
   const [suggestions, setSuggestions] = useState('');
@@ -38,7 +38,7 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
     })
   },[])
 
-  useEffect(()=>{
+  useDidMountEffect(()=>{
     console.log(selected)
     dispatch(setForbiddenIngredients(selected))
     selectIngredients(selected);
