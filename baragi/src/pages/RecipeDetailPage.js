@@ -66,24 +66,33 @@ const RecipeDetailPage=()=>{
         const fetchData=async()=>{
             try{
                 const response =await fetch(`/api/recipes/${id}`);
+                console.log("1");
                 const responseComment=await fetch(`/api/comment?recipe_id=${id}`)
+                console.log("2");
+                console.log("로그인?",isLoggedIn);
                 if(isLoggedIn){
-                    console.log("isLoggedIn##############",isLoggedIn);
                     const responseIsbookmark=await fetch(`/api/bookmark/islike/${id}`)
+                    console.log("3");
                     const bookmarkdata=await responseIsbookmark.json();
+                    console.log("4");
                     if(bookmarkdata.flag==1){
                         setIsLiked(true);
                     }
                 }
+                console.log("5");
                 const responseBookmark=await fetch(`/api/bookmark/${id}`)
-    
+                console.log("6");
                 setBookmarkCnt()
-
+                console.log("10");
                 if(!response.ok){
                     console.log('에러에러 error: ');
                 }
+                console.log("!!");
                 const data=await response.json();
+                
+                console.log("7");
                 const comment=await responseComment.json(); 
+                console.log("8");
                 setComments(comment);
                 console.log(comment);
                 const bookmarkCnt=await responseBookmark.json();
@@ -96,7 +105,7 @@ const RecipeDetailPage=()=>{
                 console.log(data);
                 setData(data);
             }catch(error){
-                console.error('Error occured ',error);
+                console.error('Error occured ',"문제야 문제");
             }
         };
         fetchData();
