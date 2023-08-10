@@ -108,7 +108,7 @@ public class JwtService {
     }
 
     public void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
-        response.setHeader(accessHeader, accessToken);
+        response.setHeader(accessHeader, "Bearer " + accessToken);
     }
 
     public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {

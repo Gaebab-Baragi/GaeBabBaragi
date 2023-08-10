@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.member.entity.Role;
 import site.doggyyummy.gaebap.domain.member.exception.custom.*;
 import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
+import site.doggyyummy.gaebap.global.security.util.PasswordUtil;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 import java.io.ByteArrayInputStream;
@@ -72,6 +74,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void validateRegistrationUsername(String registerName) throws InvalidNameFormatException, DuplicateUsernameException{
         if (isDuplicateName(registerName)) throw new DuplicateEmailException();
+        if (!isValidUsernameFormat(registerName)) throw new InvalidNameFormatException();
     }
 
     @Override
@@ -95,6 +98,13 @@ public class MemberServiceImpl implements MemberService{
         if (length == 0 || length > 30) return false;
         return true;
     }
+
+    private boolean isValidUsernameFormat(String username){
+        return EmailValidator.getInstance().isValid(username);
+    }
+
+
+
 
     private void validateMemberRegistration(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
         validateRegistrationUsername(member.getUsername());
@@ -159,5 +169,13 @@ public class MemberServiceImpl implements MemberService{
        memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new RuntimeException()).setRole(Role.USER);
     }
 
-    //TODO : 비밀번호 검증하는 부분이 있어야 함
+    @Override
+    public String resetPassword(String username) throws Exception{
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NoSuchUserException("잘못된 이메일입니다."));
+        String password = PasswordUtil.generateRandomPassword();
+        member.setPassword(passwordEncoder.encode(password));
+        memberRepository.save(member);
+        return password;
+    }
+
 }

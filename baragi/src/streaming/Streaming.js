@@ -7,8 +7,7 @@ import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
 var localUser = new UserModel();
 
-const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8083/api/';
-// const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/';
+
 
 class Streaming extends Component {
     constructor(props) {
@@ -212,7 +211,7 @@ class Streaming extends Component {
     leaveSession() {
     const sessionId = parseInt(this.state.mySessionId)
         console.log(sessionId, typeof(sessionId))
-        axios.post(`http://localhost:8083/api/meetings/left/${sessionId}`)
+        axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/left/${sessionId}`)
             .then(() => {
                 // Leave the session and perform navigation after the axios call
                 const mySession = this.state.session;
@@ -243,7 +242,7 @@ class Streaming extends Component {
     endSession() {
         const sessionId = parseInt(this.state.mySessionId)
         console.log(sessionId, typeof(sessionId))
-        axios.post(`http://localhost:8083/api/meetings/close/${sessionId}`)
+        axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/close/${sessionId}`)
         .then((res)=>{
             console.log('succesfully close meeting')
             window.location.replace('/streaming-list')
@@ -426,7 +425,7 @@ class Streaming extends Component {
     }
 
     async createSession(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'meetings/sessions',{ customSessionId: sessionId }, {
+        const response = await axios.post(process.env.REACT_APP_BASE_URL + 'meetings/sessions',{ customSessionId: sessionId }, {
             headers: { 
             'Content-Type': 'application/json', 
         },
@@ -435,7 +434,7 @@ class Streaming extends Component {
     }
 
     async createToken(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'meetings/sessions/' + sessionId + '/connections', {}, {
+        const response = await axios.post(process.env.REACT_APP_BASE_URL +'meetings/sessions/' + sessionId + '/connections', {}, {
             headers: { 
             'Content-Type': 'application/json', 
             },

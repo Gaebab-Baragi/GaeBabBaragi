@@ -1,11 +1,10 @@
 /* eslint-disable */
-import StreamingForm from "../components/form/StreamingForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./css/StreamingRegisterPage.css";
+import "./css/StreamingRegisterPage.css"
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 function StreamingRegisterPage() {
@@ -23,7 +22,7 @@ function StreamingRegisterPage() {
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
     if (!user) {
-      alert('로그인 후 이용해주세요!!!!')
+      alert('로그인 후 이용해주세요.')
       navigate('/login')
     }
   },[])
@@ -58,7 +57,7 @@ function StreamingRegisterPage() {
     console.log(data);
 
     axios
-      .post("/api/meetings", data)
+      .post(process.env.REACT_APP_BASE_URL +"/api/meetings", data)
       .then((response) => {
         // Handle the response if needed
         alert('스트리밍 예약이 완료되었습니다.')
@@ -74,7 +73,6 @@ function StreamingRegisterPage() {
 
     
     <div className="StreamingRegisterContainer">
-      <StreamingForm/>
       <div className="StreamingHeader">
       <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
       <h4 className="StreamingRegisterSemiTitle">스트리밍 기본 정보 입력</h4>

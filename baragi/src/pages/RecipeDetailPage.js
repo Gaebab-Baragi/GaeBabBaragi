@@ -14,21 +14,20 @@ import { useSelector } from 'react-redux';
 //링크 복사 함수
 const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
-  
     // Perform the copy to clipboard
     if (currentUrl) {
-      navigator.clipboard.writeText(currentUrl).then(
+        navigator.clipboard.writeText(currentUrl).then(
         () => {
           // You can show a success message here if needed
-          alert('링크가 복사 되었습니다!')
+        alert('링크가 복사 되었습니다!')
         },
         () => {
           // Handle error if copying fails
-          console.error('Copying URL to clipboard failed');
+        console.error('Copying URL to clipboard failed');
         }
-      );
+    );
     }
-  };
+    };
 
 
 const RecipeDetailPage=()=>{
@@ -132,7 +131,7 @@ const RecipeDetailPage=()=>{
             navigate('/login'); // Replace with your actual login page path
         } else {
             try {
-                const response = await fetch(`/api/bookmark/${id}`, {
+                const response = await fetch(process.env.REACT_APP_BASE_URL +`/api/bookmark/${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

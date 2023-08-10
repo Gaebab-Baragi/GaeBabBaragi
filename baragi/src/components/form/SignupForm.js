@@ -8,31 +8,42 @@ import SocialLogin from '../social/SocialLogin';
 function SignupForm() {
   const navigate = useNavigate();
   // 기본 input stated
-  let [password1, setPassword1] = useState('');
-  let [password2, setPassword2] = useState('');
-  let [nickname, setNickname] = useState('');
-  let [email, setEmail] = useState('');
-  let [verificationCode, setVerificationCode] = useState('')
-  let [code, setCode] = useState();
-  let [sendCode, setSendCode] = useState(false);
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [verificationCode, setVerificationCode] = useState('')
+  const [code, setCode] = useState();
+  const [sendCode, setSendCode] = useState(false);
 
   // ======================빈 값 & validation 처리 state=======================//
-  let [validPassword, setValidPassword] = useState(false);
-  let [samePassword, setSamePassword] = useState(false);
-  let [validNickname, setValidNickname] = useState(false);
+  const [validPassword, setValidPassword] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
+  const [samePassword, setSamePassword] = useState(false);
+  const [validNickname, setValidNickname] = useState(false);
   
   useEffect(() => {
     // 정규표현식 패턴: 8자 이상 20자 이하, 영문 대소문자, 숫자, 특수문자를 하나 이상 포함
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
     const isValidPassword = passwordPattern.test(password1);
+    
     setValidPassword(isValidPassword);
   }, [password1]);
+
   useEffect(()=>{
     setSamePassword(password1===password2)
   },[password2])
+
   useEffect(()=>{
     setValidNickname(nickname.length<=30)
   },[nickname])
+
+  useEffect(() => {
+    const regex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+    const isValidEmail = regex.test(email);
+    setValidEmail(isValidEmail);
+  },[email])
+
   //=================================================================================//
 
   // ===========================확인(중복, 인증코드) state===========================//
@@ -46,13 +57,8 @@ function SignupForm() {
     // console.log(nickname)
     console.log('Nickname-Duplication-Check')
     console.log(nickname)
-    let body = JSON.stringify({
-      register_name : email,
-      password : password1,
-      nickname : nickname,
-    })
 
-    axios.post("/api/member/register/nickname", body, {
+    axios.post(process.env.REACT_APP_BASE_URL +"/api/member/register/nickname", {nickname}, {
       headers: { 
         "Content-Type": `application/json; charset= UTF-8`
       }
@@ -88,13 +94,13 @@ function SignupForm() {
 
   const handleSendCode = useCallback((e) => {
     e.preventDefault()
-    let body = JSON.stringify({
-      register_name : email,
-      password : password1,
-      nickname : nickname,
-    })
+    
+    if (!validEmail) {
+      alert("이메일 형식이 맞지 않습니다.");
+      return;
+    }
 
-    axios.post('/api/member/register/username', body, {
+    axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register/username', {username : email}, {
       headers: { "Content-Type": `application/json; charset= UTF-8`}
       })
     .then((res)=>{
@@ -121,7 +127,7 @@ function SignupForm() {
 
   const handleSubmit = (e) => { 
     e.preventDefault();
-    if (!nicknameDuplicateCheck || !emailCodecheck) {
+    if (!nicknameDuplicateCheck || !emailCodecheck || !validEmail) {
       alert('중복 확인을 진행해주세요.')
     } else {
         console.log(password1);
@@ -133,7 +139,7 @@ function SignupForm() {
           password : password1,
           nickname : nickname,
         };
-        axios.post('/api/member/register', body)
+        axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register', body)
         .then((res)=>{
           if (res.status ===201) {
             console.log('signup success')
@@ -142,7 +148,6 @@ function SignupForm() {
           }
         })
         .catch((res) => {
-          console.log(res);
           alert("잘못된 회원가입입니다.")
         }
         );
@@ -158,10 +163,11 @@ function SignupForm() {
         {/* 이메일 입력 & 인증번호 요청하기 */}
         <div className="formGroup" id='checkGroup'>
           <div className="formGroupComponent">
-            <input className='formInput' onChange={e=>{setEmail(e.target.value); setSendCode(false);}} type="email" id='formEmail' placeholder='이메일을 입력해주세요.' />
+            <input className='formInput' onChange={e=>{setEmail(e.target.value); setSendCode(false);}} type="email" id='formEmail' placeholder='이메일을 입력해주세요.' required value={email} />
             <button onClick={handleSendCode} className='emailVerificationButton'>인증코드 발송</button>
-          </div>
+          </div>            
         </div>
+
 
         {/* 인증코드 입력 */}
         { sendCode && (

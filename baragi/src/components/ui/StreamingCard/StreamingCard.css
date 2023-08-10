@@ -1,29 +1,151 @@
-.streaming-card {
-    width: 350px;
-    height: 200px;
+.streaming-card-wrapper {
+    width: 100%;
+}
+
+/* 스트리밍 카드 */
+.streaming-card{
     position: relative;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    cursor: pointer; /* 원하는 커서 스타일로 변경 */
 }
 
 .streaming-card .card-img-bg {
     position: absolute; /* 절대 포지션으로 설정하여 겹치게 함 */
+    opacity: 0.8;
+}
+
+.streaming-card:hover .card-img-bg {
+    position: absolute; /* 절대 포지션으로 설정하여 겹치게 함 */
+    opacity: 1;
 }
 
 .streaming-card .card-img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
-.streaming-card .card-img-overlay {
+.streaming-card .overlay-icon {
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.streaming-card .card-img-overlay ion-icon {
+.streaming-card .overlay-icon ion-icon{
     opacity: 0;
 }
 
-.streaming-card:hover .card-img-overlay ion-icon {
-    font-size: 50px;
-    margin-top: 75px;
-    color: #B0B0B0;
+.streaming-card:hover .overlay-icon ion-icon {
+    color: #FFAA00;
+    font-size: clamp(35px, 4vw, 40px);
     opacity: 1;
+}
+
+.streaming-card .overlay-scheduled {
+    padding: 0;
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+.streaming-card .overlay-scheduled .status-scheduled {
+    background-color: #493100;
+    color: #FFAA00;
+
+    margin-right: 1vw;
+    margin-bottom: 1vw;
+
+    border-radius: 6px; /* 반지름으로 둥글게 모서리 설정 */
+}
+
+.streaming-card .overlay-scheduled .status-scheduled p {
+    margin-top: 0.2vw;
+    margin-bottom: 0.2vw;
+    margin-left: 0.4vw;
+    margin-right: 0.4vw;
+
+    font-size: clamp(15px, 1.3vw, 30px);
+    font-weight: 500;
+}
+
+.streaming-card .overlay-participants {
+    padding: 0;
+    display: flex;
+    justify-content: left;
+    align-items: flex-end;
+}
+
+.streaming-card .overlay-participants .participants {
+    margin-left: 1vw;
+    margin-bottom: 1vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* 수직 중앙 정렬 */
+}
+
+.streaming-card .overlay-participants .participants ion-icon {
+    font-size: clamp(15px, 1.7vw, 22px);
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.streaming-card .overlay-participants .participants p {
+    margin: 0;
+    font-size: clamp(15px, 1.3vw, 30px);
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.streaming-card .overlay-wait {
+    padding: 0;
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+.streaming-card .overlay-wait .status-attendee-wait {
+    background-color: #FFAA00;
+    color: #493100;
+
+    margin-right: 1vw;
+    margin-bottom: 1vw;
+
+    border-radius: 6px; /* 반지름으로 둥글게 모서리 설정 */
+}
+
+.streaming-card .overlay-wait .status-attendee-wait p {
+    margin-top: 0.2vw;
+    margin-bottom: 0.2vw;
+    margin-left: 0.4vw;
+    margin-right: 0.4vw;
+
+    font-size: clamp(15px, 1.3vw, 30px);
+    font-weight: 500;
+}
+
+/* 스트리밍 정보 */
+.streaming-info {
+    margin-top: 5px;
+    padding-bottom: 30px;
+}
+
+.streaming-info .streaming-host-profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 50%로 설정하여 원 모양으로 만듦 */
+}
+
+.streaming-info .streaming-info-detail p {
+    text-align: left;
+    margin: 0;
+}
+
+.streaming-info .streaming-info-detail .streaming-title {
+    font-weight: 500;
+}
+
+.streaming-info .streaming-info-detail .streaming-host-nickname-and-start-time {
+    color: #8B95A2;
 }
