@@ -63,6 +63,7 @@ public class JwtService {
                 .withSubject(REFRESH_TOKEN_SUBJECT)
                 .withIssuedAt(now)
                 .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
+                .withClaim("salt", System.currentTimeMillis())
                 .sign(Algorithm.HMAC512(secretKey));
     }
 

@@ -9,7 +9,6 @@ function MainPage(){
         axios.get("/api/checkLogin")
         .then(console.log("hi"))
         .catch((res) => console.log(res));
-
     }, [])
     return(
         <div className='mainPage'>
