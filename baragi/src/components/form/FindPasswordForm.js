@@ -26,9 +26,8 @@ function FindPasswordForm() {
 
   const handleSendCode = useCallback((e) => {
     e.preventDefault()
-    console.log("?");
 
-    axios.get(`/api/member/find?email=${email}`)
+    axios.get(process.env.REACT_APP_BASE_URL +`/api/member/find?email=${email}`)
     .then((res) => {
       if (res.status === 200){
         console.log('code sent')
@@ -50,7 +49,7 @@ function FindPasswordForm() {
     if (!emailCodecheck) {
       alert('이메일 인증을 완료해주세요')
     } else {
-      axios.post("/api/member/reset-password", { email },
+      axios.post(process.env.REACT_APP_BASE_URL +"/api/member/reset-password", { email },
         {
           headers: {"Content-Type": `application/json; charset= UTF-8`}
         })
