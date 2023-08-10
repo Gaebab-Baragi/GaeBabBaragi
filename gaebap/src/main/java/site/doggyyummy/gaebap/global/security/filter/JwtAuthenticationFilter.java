@@ -25,6 +25,7 @@ import java.util.Optional;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String LOGIN_URL = "/api/login";
+    private static final String LOGOUT_URL= "/api/logout";
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
@@ -37,6 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        if (request.getRequestURI().equals(LOGOUT_URL)){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 

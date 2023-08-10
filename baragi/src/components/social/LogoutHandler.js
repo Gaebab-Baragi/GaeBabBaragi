@@ -16,8 +16,9 @@ const LogoutHandler= () => {
             if (res.status === 200){
                 window.sessionStorage.clear();
                 dispatch(clearUser());
-                alert("로그아웃되었습니다.");
                 navigate("/", {replace : true});
+                delete axios.defaults.headers.common['Authorization'];
+                alert("로그아웃되었습니다.");
             }
         })
         .catch((res) => {
