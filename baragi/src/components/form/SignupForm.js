@@ -52,7 +52,7 @@ function SignupForm() {
       nickname : nickname,
     })
 
-    axios.post("/api/member/register/nickname", body, {
+    axios.post(process.env.REACT_APP_BASE_URL +"/api/member/register/nickname", body, {
       headers: { 
         "Content-Type": `application/json; charset= UTF-8`
       }
@@ -94,7 +94,7 @@ function SignupForm() {
       nickname : nickname,
     })
 
-    axios.post('/api/member/register/username', body, {
+    axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register/username', body, {
       headers: { "Content-Type": `application/json; charset= UTF-8`}
       })
     .then((res)=>{
@@ -133,7 +133,7 @@ function SignupForm() {
           password : password1,
           nickname : nickname,
         };
-        axios.post('/api/member/register', body)
+        axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register', body)
         .then((res)=>{
           if (res.status ===201) {
             console.log('signup success')

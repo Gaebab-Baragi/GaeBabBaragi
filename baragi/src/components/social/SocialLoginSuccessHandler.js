@@ -11,7 +11,7 @@ const SocialLoginHandler= () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get( "/api/oauth2/success", {
+        axios.get( process.env.REACT_APP_BASE_URL +"/api/oauth2/success", {
             headers: {'content-type': 'application/json', 'Authorization' : `Bearer ${params.token}`}
         }
         )
