@@ -75,7 +75,7 @@ function PetRegisterForm({petInfo, idx}) {
 
 
     axios
-      .post("/api/pet", formData, {
+      .post(process.env.REACT_APP_BASE_URL +"/api/pet", formData, {
         headers : { 'Content-Type' : 'multipart/form-data'}
       })
       .then((res) => {
@@ -107,7 +107,7 @@ function PetRegisterForm({petInfo, idx}) {
       );
 
     axios
-      .post("/api/pet/modify", formData, {
+      .post(process.env.REACT_APP_BASE_URL +"/api/pet/modify", formData, {
         headers : { 'Content-Type' : 'multipart/form-data'}
       })
       .then((res) => {

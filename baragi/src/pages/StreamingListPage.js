@@ -13,15 +13,22 @@ const CenteredContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+  // background-color:red;
 `;
 
 const ItemsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   max-width: 1200px;
   margin-left: 10%;
   margin-right: 10%;
+  // background-color:aqua;
+`;
+
+const StreamingCardWrapper = styled.div`
+  flex: 0 0 calc(25% - 20px); /* Equivalent to col-md-3 */
 `;
 
 function StreamingListPage() {
@@ -32,7 +39,7 @@ function StreamingListPage() {
   const nickname = <user className="nickname"></user>;
   
   useEffect(() => {
-    axios.get('http://localhost:8083/api/meetings')
+    axios.get(process.env.REACT_APP_BASE_URL +'/api/meetings')
       .then((res) => {
         console.log('get list is successful : ', res.data);
         setStreamingList(res.data);
@@ -42,39 +49,12 @@ function StreamingListPage() {
       });
   }, []);
 
-  const [itemsPerRow, setItemsPerRow] = useState(getItemsPerRow());
-
-  useEffect(() => {
-    const handleResize = () => {
-      setItemsPerRow(getItemsPerRow());
-    };
-    
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  function getItemsPerRow() {
-    const screenWidth = window.innerWidth;
-    if (screenWidth >= 1200) {
-      return 4;
-    } else if (screenWidth >= 992) {
-      return 3;
-    } else if (screenWidth >= 768) {
-      return 2;
-    } else {
-      return 1;
-    }
-  }
-
   return (
     <CenteredContainer>
       <h1>방송 목록</h1>
       <ItemsContainer>
         {streamingList.map((streamingItem) => (
-          <div key={streamingItem.id} style={{ flexBasis: `${100 / itemsPerRow}%` }}>
+          <StreamingCardWrapper key={streamingItem.id}>
             <StreamingCardComponent
               title={streamingItem.title}
               description={streamingItem.description}
@@ -88,7 +68,7 @@ function StreamingListPage() {
               recipe_id={streamingItem.recipe_id}
               recipe_image_url={streamingItem.recipe_image_url}
             />
-          </div>
+          </StreamingCardWrapper>
         ))}
       </ItemsContainer>
     </CenteredContainer>

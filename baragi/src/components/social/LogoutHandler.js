@@ -10,7 +10,7 @@ const LogoutHandler= () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.post("/api/logout")
+        axios.post(process.env.REACT_APP_BASE_URL +"/api/logout")
         .then((res) => {
             console.log(res);
             if (res.status === 200){

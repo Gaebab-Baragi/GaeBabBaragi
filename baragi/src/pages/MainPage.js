@@ -6,7 +6,7 @@ import axios from 'axios';
 
 function MainPage(){
     useEffect(() => {
-        axios.get("/api/checkLogin")
+        axios.get(process.env.REACT_APP_BASE_URL +"/api/checkLogin")
         .then(console.log("hi"))
         .catch((res) => console.log(res));
     }, [])
