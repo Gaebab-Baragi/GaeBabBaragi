@@ -71,7 +71,7 @@ let recipeRegister = createSlice({
       
 
       axios
-        .post("http://localhost:8083/api/recipes/new", formData
+        .post(process.env.REACT_APP_BASE_URL +"/api/recipes/new", formData
         ,  {headers: { "Content-Type": "multipart/form-data" },
       })
       

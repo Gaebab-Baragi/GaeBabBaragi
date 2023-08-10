@@ -25,7 +25,7 @@ function RecipeCardPagination({rowNum}) {
 
   // 레시피 목록 가져오기!!
   useEffect(() => {
-    axios.get("/api/recipes/writer")
+    axios.get(process.env.REACT_APP_BASE_URL +"/api/recipes/writer")
       .then((res) => {
           if (res.status === 200){
             console.log(res.data.recipes);

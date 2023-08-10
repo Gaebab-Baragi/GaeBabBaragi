@@ -24,7 +24,7 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
 
   // 재료 리스트 받아와주기
   useEffect(()=>{
-    axios.get('/api/ingredients')
+    axios.get(process.env.REACT_APP_BASE_URL +'/api/ingredients')
     .then((res)=>{
       console.log('res data : ' ,res.data)
       const tmp = []

@@ -14,7 +14,7 @@ const DuplicateNickname = () => {
     const navigate = useNavigate();
 
     useEffect(()=> {
-        axios.get("/api/member")
+        axios.get(process.env.REACT_APP_BASE_URL +"/api/member")
         .then((res) => {
             if (res.status === 200){
                 setOriginProfileUrl(res.data.profile_url);
@@ -51,7 +51,7 @@ const DuplicateNickname = () => {
             profileUrl : profileUrl === originProfileUrl ? profileUrl : "null"
         };
  
-        axios.post('/api/member/modify/nickname', body, {
+        axios.post(process.env.REACT_APP_BASE_URL +'/api/member/modify/nickname', body, {
             headers: { 
                 "Content-Type": `application/json; charset= UTF-8`
             }
@@ -94,7 +94,7 @@ const DuplicateNickname = () => {
                 new Blob([JSON.stringify(body)], { type: "application/json" })
             );
 
-            axios.put('/api/member/modify/role', formData)
+            axios.put(process.env.REACT_APP_BASE_URL +'/api/member/modify/role', formData)
             .then((res)=>{
                 if (res.status === 200) {
                     alert("회원 정보를 수정했습니다.");
