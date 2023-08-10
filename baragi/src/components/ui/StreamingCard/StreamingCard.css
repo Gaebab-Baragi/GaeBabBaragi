@@ -7,6 +7,7 @@
     position: relative;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+    cursor: pointer; /* 원하는 커서 스타일로 변경 */
 }
 
 .streaming-card .card-img-bg {

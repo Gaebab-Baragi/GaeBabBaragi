@@ -65,7 +65,7 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
                         status == 'ATTENDEE_WAIT' ? (
                             <Card.ImgOverlay className='overlay-wait'>
                                 <div className='status-attendee-wait'>
-                                    <p>시작 대기 중</p>
+                                    <p>입장 가능</p>
                                 </div>
                             </Card.ImgOverlay>
                         )
