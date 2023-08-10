@@ -1,18 +1,16 @@
-.pageContainer {
+.swiper-container{
   display: flex;
   justify-content: center;
   margin-top: 2%;
   position: relative;
-  margin-bottom: 2%;
-  height: 80%;
-  min-height: 80%;
+  margin-bottom: 4%;
 }
 
 .swiper {
   width: 100%;
   height: 100%;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   z-index: -1;
   padding-top: 50px;
   padding-bottom: 50px;
@@ -24,4 +22,8 @@
   width: 100%;
   height: 100%;
   align-self : center;
+}
+.swiper-slide {opacity:0.4; transition:opacity 0.3s;}
+.swiper-slide-active {
+  opacity:1;
 }

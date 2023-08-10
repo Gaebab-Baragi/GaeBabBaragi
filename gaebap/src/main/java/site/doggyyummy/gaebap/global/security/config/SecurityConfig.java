@@ -72,7 +72,6 @@ public class SecurityConfig {
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowCredentials(true);
         config.addExposedHeader("Authorization");
-        log.info("here");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;

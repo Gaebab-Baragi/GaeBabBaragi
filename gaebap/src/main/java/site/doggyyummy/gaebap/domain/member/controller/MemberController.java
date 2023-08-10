@@ -96,7 +96,6 @@ public class MemberController {
     @GetMapping("/find")
     @Operation(description = "이메일로 회원이 있는지 확인 후 인증 메일 발송")
     public ResponseEntity<String> findByEmail(@RequestParam String email) throws Exception {
-        log.info("email : {}", email);
         memberService.findByName(email).orElseThrow(() -> new NoSuchUserException());
         return new ResponseEntity<>(memberMailService.sendEmail(email), HttpStatus.OK);
     }
