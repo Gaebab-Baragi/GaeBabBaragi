@@ -40,4 +40,9 @@ public class CommentRepository {
         }
     }
 
+    public Comment selectComment(Long id){
+        Comment comment=em.find(Comment.class,id);
+        return comment;
+    }
+
 }
