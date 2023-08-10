@@ -44,7 +44,6 @@ function App() {
     },
   )
   axios.defaults.withCredentials = true;
-  axios.defaults.headers['Access-Control-Allow-Origin'] = "http://localhost:3000";
 
 
   const location = useLocation();
