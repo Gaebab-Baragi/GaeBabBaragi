@@ -10,7 +10,7 @@ function StreamingLivePage() {
   // recipe 정보 가져오기?
 
   useEffect(()=>{
-    axios.get(`http://localhost:8083/api/recipes/${streamingInfo.recipe_id}`)
+    axios.get(process.env.REACT_APP_BASE_URL +`/api/recipes/${streamingInfo.recipe_id}`)
     .then((res)=>{
       console.log(res.data)
       setRecipeData(res.data)

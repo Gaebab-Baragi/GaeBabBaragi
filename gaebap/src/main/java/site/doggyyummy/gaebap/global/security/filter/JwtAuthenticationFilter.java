@@ -38,10 +38,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (request.getRequestURI().equals(LOGOUT_URL)){
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         checkAccessTokenAndAuthentication(request, response, filterChain);
     }

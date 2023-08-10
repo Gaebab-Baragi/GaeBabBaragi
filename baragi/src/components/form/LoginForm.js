@@ -38,7 +38,7 @@ function LoginForm() {
       password : password
     };
 
-    axios.post('/api/login', body) 
+    axios.post(process.env.REACT_APP_BASE_URL +'/api/login', body) 
     .then((res)=>{
       if (res.status === 200){
         const accessToken = res.headers['authorization'];
@@ -56,11 +56,6 @@ function LoginForm() {
         else setMsg("알 수 없는 오류")
       }
     )
-  }
-
-  const letsTest = (e) => {
-    e.preventDefault();
-    console.log(user);
   }
 
   // ---------------------------------------------//
@@ -96,7 +91,6 @@ function LoginForm() {
         {/* 구글 로그인 */}
         <div className="formGroup">
           <SocialLogin/>
-          <button type="button" onClick={letsTest}>테스트입니다</button>
         </div>
       </form>
     </div>
