@@ -36,7 +36,7 @@ public class CommentRequestDTO {
 
         comment.setRecipe(recipe);
         comment.setWriter(member);
-        comment.setWriteTime(this.writeTime);
+        comment.setWriteTime(LocalDateTime.now());
         comment.setContent(content);
 
         return comment;
