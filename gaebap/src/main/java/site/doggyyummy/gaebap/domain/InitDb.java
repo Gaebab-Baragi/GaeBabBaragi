@@ -28,12 +28,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Component
 @RequiredArgsConstructor
 public class InitDb {
 
-   private final InitService initService;
+    private final InitService initService;
 
     @PostConstruct
     public void init() throws Exception {
@@ -213,4 +212,3 @@ public class InitDb {
         }
     }
 }
-
