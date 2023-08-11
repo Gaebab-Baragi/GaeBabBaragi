@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./css/StreamingRegisterPage.css"
-
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+
 function StreamingRegisterPage() {
   const location = useLocation();
   const { id } = useParams();
@@ -66,7 +66,7 @@ function StreamingRegisterPage() {
       })
       .catch((error) => {
         // Handle errors if necessary
-        alert('빈 칸을 채워주세요.')
+        alert(error.response.data)
         console.error("Error sending request:", error.response);
       });
   };
