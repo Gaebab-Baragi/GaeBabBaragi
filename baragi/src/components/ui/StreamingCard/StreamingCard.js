@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import './StreamingCard.css'
+import Toast from '../Toast';
 
 
 function StreamingCardComponent({meeting_id, recipe_id,recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
@@ -36,8 +37,8 @@ function StreamingCardComponent({meeting_id, recipe_id,recipe_image_url, current
             })
         })
         .catch((err)=>{
-            alert(err.response.data)
-            console.log('error occured' , err)
+            return Toast.fire(err.response.data.message, "", "warning")
+            console.log('error occured' , err.response.data.message)
         })
     }
     
