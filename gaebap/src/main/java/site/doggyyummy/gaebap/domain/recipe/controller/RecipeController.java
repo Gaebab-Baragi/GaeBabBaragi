@@ -92,7 +92,7 @@ public class RecipeController {
 
     //레시피 제목 전체 조회
     @Operation(summary = "search all recipes title", description = "레시피 전체 제목 조회")
-    @GetMapping("/recipestitle")
+    @GetMapping("/recipes/recipestitle")
     public RecipeTitleAllResponseDto allRecipesTitle(){
         return recipeService.allRecipeTitle();
     }
