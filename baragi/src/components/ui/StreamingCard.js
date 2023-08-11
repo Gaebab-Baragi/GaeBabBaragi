@@ -15,7 +15,7 @@ function StreamingCardComponent({title,description,host_nickname,max_participant
     console.log(meeting_id)
     axios.get(`http://localhost:8083/api/meetings/join-request/${meeting_id}`)
     .then((res)=>{
-      console.log('request success : ', res.data);
+      console.log('request success : ', res.data);  
 
         const data = {
           meeting_id: meeting_id,
