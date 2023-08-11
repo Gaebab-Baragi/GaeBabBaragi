@@ -51,7 +51,7 @@ function StreamingRegisterPage() {
       password: password.toString(),
       max_participant: maxParticipant,
       start_time: startTime,
-      recipe_id: id,
+      recipe_id: parseInt(id),
     };
     console.log(data);
 
