@@ -13,7 +13,7 @@ public class RecipeSearchLikeResponseDto {
     private List<RecipeDto> recipes;
     public RecipeSearchLikeResponseDto(List<Recipe> recipes){
         this.recipes=recipes.stream()
-                .map(recipe->new RecipeDto(recipe.getTitle(),recipe.getWrittenTime(),recipe.getHit(),recipe.getDescription(),recipe.getMember(),recipe.getId()))
+                .map(recipe->new RecipeDto(recipe.getTitle(),recipe.getWrittenTime(),recipe.getHit(),recipe.getImageUrl(),recipe.getDescription(),recipe.getMember(),recipe.getId()))
                 .collect(Collectors.toList());
     }
     @Getter
@@ -24,20 +24,23 @@ public class RecipeSearchLikeResponseDto {
         private LocalDateTime writtenTime;
         private Long hit;
         private String description;
+        private String imgUrl;
 
-        public RecipeDto(String title,LocalDateTime writtenTime,Long hit,String description,MemberDto member,Long id){
+        public RecipeDto(String title,LocalDateTime writtenTime,String imgUrl,Long hit,String description,MemberDto member,Long id){
             this.title=title;
             this.writtenTime=writtenTime;
             this.hit=hit;
             this.description=description;
             this.member=member;
             this.id=id;
+            this.imgUrl=imgUrl;
         }
-        public RecipeDto(String title,LocalDateTime writtenTime,Long hit,String description, Member member,Long id){
+        public RecipeDto(String title,LocalDateTime writtenTime,Long hit,String imgUrl,String description, Member member,Long id){
             this.title=title;
             this.writtenTime=writtenTime;
             this.hit=hit;
             this.description=description;
+            this.imgUrl=imgUrl;
             this.member=new MemberDto(member.getUsername());
             this.id=id;
         }

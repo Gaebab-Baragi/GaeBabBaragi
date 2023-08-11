@@ -90,6 +90,13 @@ public class RecipeController {
         return recipeService.allRecipe();
     }
 
+    //레시피 제목 전체 조회
+    @Operation(summary = "search all recipes title", description = "레시피 전체 제목 조회")
+    @GetMapping("/recipestitle")
+    public RecipeTitleAllResponseDto allRecipesTitle(){
+        return recipeService.allRecipeTitle();
+    }
+
     //레시피 삭제
     @Operation(summary = "delete recipe", description = "레시피 삭제")
     @DeleteMapping("/recipes/{id}")
@@ -110,7 +117,6 @@ public class RecipeController {
     public RecipeModifyResponseDto modifyRecipe(@PathVariable("id") Long id,@RequestPart RecipeModifyRequestDto reqDto,@RequestPart MultipartFile newRecipeImage,@RequestPart MultipartFile newRecipeVideo,@RequestPart MultipartFile[] newStepImages) throws IOException{
         Member member = SecurityUtil.getCurrentLoginMember();
         try {
-            System.out.println("^^^^^^^^"+newStepImages.length);
             recipeService.modifyRecipe(member,id, reqDto,newRecipeImage,newRecipeVideo,newStepImages);
             return new RecipeModifyResponseDto(HttpStatus.SC_OK, "modify Success");
         }catch(UnauthorizedException e){

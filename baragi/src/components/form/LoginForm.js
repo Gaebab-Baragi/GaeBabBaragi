@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 import SocialLogin from '../social/SocialLogin';
 import axios from 'axios';
+import Toast from '../ui/Toast';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -14,23 +15,15 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
 
-  const user = useSelector((state) => state.user);
-  // 오류 메세지 alert
-  useEffect(()=>{
-    if (msg) {
-      alert(msg)
-    }
-  },[msg])
-
   // ----------- 로그인 기능 구현-------------------//
   const handleLogin = (e) => {
     // Reload 막기
     e.preventDefault();
     // 빈 값 처리
     if (!id) {
-      return alert('아이디를 입력하세요.')
+      return Toast.fire("아이디를 입력해주세요", "", "warning")
     } else if (!password) {
-      return alert('비밀번호를 입력하세요')
+      return Toast.fire("비밀번호를 입력해주세요", "", "warning")
     }
     // axios 요청 보내기
     let body = {
@@ -43,17 +36,14 @@ function LoginForm() {
       if (res.status === 200){
         const accessToken = res.headers['authorization'];
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; 
-        const data = {...res.data, accessToken};
+        const data = res.data;
         dispatch(loginUser(data))
         navigate('/');
       }
     })
     .catch ((res) => {
         res = res.response;
-        console.log(res);
-        if (res.status === 452) setMsg("존재하지 않는 아이디입니다.")
-        else if (res.status === 453) setMsg("잘못된 비밀번호입니다.")
-        else setMsg("알 수 없는 오류")
+        Toast.fire("아이디나 비밀번호를 확인해주세요", "", "error");
       }
     )
   }

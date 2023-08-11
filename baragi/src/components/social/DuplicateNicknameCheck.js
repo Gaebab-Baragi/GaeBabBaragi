@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../form/css/MemberModification.css' 
 import axios from "axios";
+import Toast from "../ui/Toast";
 
 const DuplicateNickname = () => {
     const [username, setUsername] = useState('');
@@ -22,11 +23,11 @@ const DuplicateNickname = () => {
                 setProfileUrl(res.data.profile_url);
             }
             else {
-                alert("회원 정보를 불러 올 수 없습니다.");
+                Toast.fire("회원 정보를 불러 올 수 없습니다.", "", "error");
             }
         })
         .catch((res) => {
-            alert("회원 정보를 불러 올 수 없습니다.");
+            Toast.fire("회원 정보를 불러 올 수 없습니다.", "", "error");
         })
     }, [])
 
@@ -41,7 +42,7 @@ const DuplicateNickname = () => {
 
 
         if (!validNickname) {
-            alert("닉네임은 1자 이상 30자 이하여야 합니다.");
+            Toast.fire("닉네임은 1자 이상 30자 이하여야 합니다.", "", "warning");
             return;
         }
 
@@ -59,15 +60,15 @@ const DuplicateNickname = () => {
         .then((res)=>{
         if (res.status === 200) {
             console.log('duplication checked')
-            alert("사용 가능한 닉네임입니다.")
+            Toast.fire("사용 가능한 닉네임입니다.", "", "success")
             setNicknameDuplicateCheck(true);
         }
         })
         .catch((res) => {
         res = res.response;
-        if (res.status === 460) alert("잘못된 닉네임 형식입니다.")
-        else if (res.status === 457) alert("이미 사용중인 닉네임입니다.")
-        else alert("이유를 알 수 없는 오류");
+        if (res.status === 460) Toast.fire("잘못된 닉네임 형식입니다.", "", "warning")
+        else if (res.status === 457) Toast.fire("이미 사용중인 닉네임입니다.", "", "warning")
+        else Toast.fire("이유를 알 수 없는 오류", "", "error");
         })
 
     }, [nickname]);

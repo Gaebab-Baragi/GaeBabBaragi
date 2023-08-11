@@ -103,9 +103,6 @@ public class MemberServiceImpl implements MemberService{
         return EmailValidator.getInstance().isValid(username);
     }
 
-
-
-
     private void validateMemberRegistration(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
         validateRegistrationUsername(member.getUsername());
         validateRegistrationNickname(member.getNickname());

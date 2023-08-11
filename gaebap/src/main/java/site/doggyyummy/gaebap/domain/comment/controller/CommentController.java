@@ -34,6 +34,7 @@ public class CommentController {
     public void modify(@RequestBody CommentRequestDTO dto){
         commentService.modify(dto);
     }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") Long id){
         Member loginMember=SecurityUtil.getCurrentLoginMember();
