@@ -24,7 +24,7 @@ public interface MeetingService {
 
     List<FindMeetingResponseDTO> findByMember(Long memberId);
 
-    MessageResponseDTO joinRequest(Long id, Long member_id);
+    MessageResponseDTO joinRequest(Long id, Long member_id, String password);
 
     void join(Long id, Long memberId);
 
