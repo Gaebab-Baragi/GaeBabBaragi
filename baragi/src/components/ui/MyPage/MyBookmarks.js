@@ -28,7 +28,7 @@ function MyBookmarks({rowNum, list}) {
     axios.get(process.env.REACT_APP_BASE_URL +"/api/bookmark/my")
       .then((res) => {
           if (res.status === 200){
-            setItems(res.data.recipes)
+            setItems(res.data)
           }
       }) 
       .catch((res) => {
@@ -71,6 +71,7 @@ function MyBookmarks({rowNum, list}) {
 
   const indexOfLastPost = currentpage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
+  
   const currentPosts = items.slice(
     indexOfFirstPost,
     Math.min(indexOfLastPost, count)

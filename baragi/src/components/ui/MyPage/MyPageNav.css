@@ -1,0 +1,23 @@
+.my-selected{
+    color: #ffbb33;
+}
+
+.my-page-big{
+    font-size: 22px;
+    margin-top: 100px;
+    margin: 25px;
+    font-weight: 500;
+}
+
+.my-page-info{
+    font-size: 20px;
+    margin : 25px;
+    font-weight: 500;
+}
+
+.my-page-nav-container{
+    margin-top : 2%;
+    position : relative;
+    width: 50%;
+    justify-self: center;
+}

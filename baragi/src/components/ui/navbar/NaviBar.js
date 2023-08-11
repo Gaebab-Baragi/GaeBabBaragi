@@ -24,7 +24,7 @@ function NaviBar() {
                 alt="개밥바라기 로고"
                 src="/image/개밥바라기.png"
                 className='d-inline-block align-middle navbar-logo'
-              />{' '}
+              />
               <span className='d-inline-block align-middle navbar-title'>개밥바라기</span>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav">

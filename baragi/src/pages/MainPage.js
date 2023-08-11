@@ -7,7 +7,9 @@ import axios from 'axios';
 function MainPage(){
     useEffect(() => {
         axios.get(process.env.REACT_APP_BASE_URL +"/api/checkLogin")
-        .then(console.log("hi"))
+        .then((res) => {
+            console.log("")
+        })
         .catch((res) => console.log(res));
     }, [])
     return(
