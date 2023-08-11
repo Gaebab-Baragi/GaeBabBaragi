@@ -77,9 +77,9 @@ const DuplicateNickname = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         if (!nicknameDuplicateCheck) {
-            alert('중복 확인을 진행해주세요.')
+            Toast.fire('중복 확인을 진행해주세요.', "", "warning")
         } 
-        else if (uploadFile && uploadFile.size.toString().length >= 7) alert("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요.")
+        else if (uploadFile && uploadFile.size.toString().length >= 7) Toast.fire("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요.", "", "warning")
         else {
             const formData = new FormData();
             formData.append("file", uploadFile);
@@ -98,16 +98,16 @@ const DuplicateNickname = () => {
             axios.put(process.env.REACT_APP_BASE_URL +'/api/member/modify/role', formData)
             .then((res)=>{
                 if (res.status === 200) {
-                    alert("회원 정보를 수정했습니다.");
+                    Toast.fire("회원 정보를 수정했습니다.", "", "success");
                     navigate("/");
                 }
             })
             .catch((res) => {
                 if (res.status === 463){
-                    alert("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요")
+                    Toast.fire("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요", "", "warning")
                 }
                 else {
-                    alert("회원정보를 수정할 수 없습니다.")
+                    Toast.fire("회원정보를 수정할 수 없습니다.", "", "error")
                 }
             });
         }

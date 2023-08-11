@@ -6,6 +6,7 @@ import PetIngredientTagBar from "../ui/PetIngredientTagBar";
 import { useDispatch } from "react-redux";
 import defaultImg from "./default.png"
 import { useNavigate } from "react-router-dom";
+import Toast from "../ui/Toast";
 
 function PetRegisterForm({petInfo, idx}) {
   const [pet, setPet] = useState({})
@@ -34,7 +35,6 @@ function PetRegisterForm({petInfo, idx}) {
   }, [petImage, file]);
 
   const selectIngredients = (sel) => {
-    console.log("sel:", sel);
     setSelected(sel);
   }
 
@@ -80,11 +80,11 @@ function PetRegisterForm({petInfo, idx}) {
       })
       .then((res) => {
         console.log("axios success :", res.data);
-        alert("추가되었습니다.")
+        Toast.fire("추가되었습니다.", "", "success");
         navigate("/my-pet-list/"+ idx);
       })
       .catch((err) => {
-        console.log("error : ", err);
+        Toast.fire("오류 발생", "", "error");
       });
   }
 
@@ -111,14 +111,11 @@ function PetRegisterForm({petInfo, idx}) {
         headers : { 'Content-Type' : 'multipart/form-data'}
       })
       .then((res) => {
-        console.log("axios success :", res.data);
-        alert("수정되었습니다.")
+        Toast.fire("수정되었습니다.", "", "success");
       })
       .catch((err) => {
-        console.log("error : ", err);
+        Toast.fire("오류 발생", "", "error");
       });
-
-
   }
 
 

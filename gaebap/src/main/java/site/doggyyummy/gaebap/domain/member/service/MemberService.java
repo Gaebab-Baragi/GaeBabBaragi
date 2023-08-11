@@ -16,5 +16,7 @@ public interface MemberService {
     void uploadImageByUrl(Member member) throws Exception;
     void setRole() throws Exception;
     String resetPassword(String username) throws Exception;
+    void checkCurrentPassword(String password) throws Exception;
+    void modifyPassword(String password, String originPassword) throws Exception;
 
 }
