@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./css/StreamingRegisterPage.css"
-
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+
 function StreamingRegisterPage() {
   const location = useLocation();
   const { id } = useParams();
@@ -43,16 +43,18 @@ function StreamingRegisterPage() {
   // =====================제출======================//
   const handleRegisterSubmit = ()=>{
     const startTime = selectedDate + ' ' + selectedTime
-    console.log(typeof(startTime),typeof(roomTitle), typeof(roomDescription), typeof(maxParticipant))
+    let tmpPw = password.toString()
+    if (tmpPw.length===0) {
+      tmpPw=null
+    }
   
     const data = {
       title: roomTitle,
       description: roomDescription,
-      password: password.toString(),
+      password: tmpPw,
       max_participant: maxParticipant,
       start_time: startTime,
-      // 추후 수정!!!!!!!!!!!!!!
-      recipe_id: 1,
+      recipe_id: parseInt(id),
     };
     console.log(data);
 
@@ -65,7 +67,7 @@ function StreamingRegisterPage() {
       })
       .catch((error) => {
         // Handle errors if necessary
-        alert('빈 칸을 채워주세요.')
+        alert(error.response.data)
         console.error("Error sending request:", error.response);
       });
   };

@@ -23,15 +23,16 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Step;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Component
 @RequiredArgsConstructor
 public class InitDb {
 
-   private final InitService initService;
+    private final InitService initService;
 
     @PostConstruct
     public void init() throws Exception {
@@ -234,8 +235,8 @@ public class InitDb {
             em.persist(pet3);
 
 
-            em.persist(createMeeting(null, 2, "1", "1", 1L, LocalDateTime.of(2023, 7, 27, 15, 10), 1L, Status.ATTENDEE_WAIT, 0));
-            em.persist(createMeeting(null, 2, "2", "2", 1L, LocalDateTime.of(2023, 7, 26, 18, 0), 1L, Status.SCHEDULED,  0));
+            em.persist(createMeeting(null, 2, "1", "1", 1L, ZonedDateTime.now(ZoneId.of("Asia/Seoul")), 1L, Status.ATTENDEE_WAIT, 0));
+            em.persist(createMeeting(null, 2, "2", "2", 1L, ZonedDateTime.now(ZoneId.of("Asia/Seoul")), 1L, Status.SCHEDULED,  0));
 
             Forbidden forbidden = createForbidden(1L,1L);
             em.persist(forbidden);
@@ -321,7 +322,7 @@ public class InitDb {
             return ingredient;
         }
 
-        private Meeting createMeeting(String password, int max_participant, String title, String description, Long member_id, LocalDateTime start_time, Long recipe_id, Status status, int currentParticipants) {
+        private Meeting createMeeting(String password, int max_participant, String title, String description, Long member_id, ZonedDateTime start_time, Long recipe_id, Status status, int currentParticipants) {
             Member member = new Member();
             member.setId(member_id);
 
@@ -344,4 +345,3 @@ public class InitDb {
         }
     }
 }
-
