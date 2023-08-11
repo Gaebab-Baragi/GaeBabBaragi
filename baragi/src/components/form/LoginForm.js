@@ -42,7 +42,6 @@ function LoginForm() {
       }
     })
     .catch ((res) => {
-        res = res.response;
         Toast.fire("아이디나 비밀번호를 확인해주세요", "", "error");
       }
     )
