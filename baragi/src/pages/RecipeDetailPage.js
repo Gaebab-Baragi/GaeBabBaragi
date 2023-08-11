@@ -326,7 +326,10 @@ const RecipeDetailPage=()=>{
                                         <div className='comment-content-delete'>
                                             <div className='comment-content'>{comment.content}</div>
                                         </div>
-                                        {isLoggedIn && comment.writerId === userId&& (
+                                    <div className='comment-img'>
+                                        <img className='comment-content-img' src={data.imgUrl}></img>
+                                    </div>
+                                    {isLoggedIn && comment.writerId === userId&& (
                                             <div className='comment-delete' onClick={() => handleDeleteComment(comment.id)}>삭제하기</div>
                                         )}
                                 </div>
@@ -344,6 +347,12 @@ const RecipeDetailPage=()=>{
                                         value={newCommentContent}
                                         onChange={handleCommentChange}
                                     />
+                                   <label className="file-input-label">
+                                        <div className='file-input'>
+                                            이미지/동영상<br></br>첨부하기
+                                            <input type='file' style={{ display: 'none' }} />
+                                        </div>
+                                    </label>                              
                                     <button type='submit'>댓글 작성</button>
                                 </div>
                             </form>
