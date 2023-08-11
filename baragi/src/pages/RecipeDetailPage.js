@@ -35,15 +35,7 @@ const RecipeDetailPage=()=>{
     const [data, setData] = useState(null);
     const [bookmarkCnt, setBookmarkCnt] = useState(0);
 
-
-
-//현재 로그인한 user ID 받아야됨
     const userId=useSelector(state=>state.user.id);
-    // const [userId,setUserId]=useState(4);
-//꼬꼬꼬꼮꼬꼬꼬꼬꼬ㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗ
-
-
-
 
     const isLoggedIn = useSelector(state => state.user.isLogin);
     const [isLiked, setIsLiked] = useState(false);
@@ -51,7 +43,7 @@ const RecipeDetailPage=()=>{
     const navigate = useNavigate(); // Move the navigate hook to the top
     // const location = useLocation(); // useLocation 훅을 이용해 location 변수 가져오기
     const [comments, setComments] = useState([]);
-
+    const [meetings,setMeetings]=useState([]);
     
 
     // useEffect(() => {
@@ -66,9 +58,10 @@ const RecipeDetailPage=()=>{
         const fetchData=async()=>{
             try{
                 const response =await fetch(process.env.REACT_APP_BASE_URL+`/api/recipes/${id}`);
-
                 const responseComment=await fetch(process.env.REACT_APP_BASE_URL+`/api/comment?recipe_id=${id}`,{'Content-Type': 'application/json'})
-                fetch(`/api/bookmark/islike/${id}`)
+                const responseMeetings=await fetch(process.env.REACT_APP_BASE_URL+`/api/meetings?${id}`);
+                const meetingRooms=await responseMeetings.json();
+                setMeetings(meetingRooms);
                 if(isLoggedIn==true){
                     const responseIsbookmark=await axios.get(process.env.REACT_APP_BASE_URL+`/api/bookmark/islike/${id}`);
                     const bookmarkdata = responseIsbookmark.data; // 변경된 부분
@@ -77,20 +70,15 @@ const RecipeDetailPage=()=>{
                     }
                 }
                 const responseBookmark=await fetch(process.env.REACT_APP_BASE_URL+`/api/bookmark/${id}`)
-
                 setBookmarkCnt()
-                console.log("10");
                 if(!response.ok){
                     console.log('에러에러 error: ');
                 }
-                console.log("!!");
                 const data=await response.json();
 
                 const comment=await responseComment.json(); 
-
                 setComments(comment);
 
-                console.log(comment);
                 const bookmarkCnt=await responseBookmark.json();
 
                 setBookmarkCnt(bookmarkCnt);
@@ -119,9 +107,7 @@ const RecipeDetailPage=()=>{
     };
 
     const handleStreamingReservation = () => {
-        console.log("isLoggedIn???????????",isLoggedIn);
         if (!isLoggedIn) {
-            console.log("isLoggedIn???????????!!!!!!!!!!!!",isLoggedIn);
             alert("로그인이 필요한 서비스입니다.");
             navigate('/login');
         } else {
@@ -378,6 +364,20 @@ const RecipeDetailPage=()=>{
         </div>
         <hr></hr>
         <div>
+
+            <ul className='meeting-list'>
+                {meetings.map((meeting, index) => (
+                    <li key={index}>
+                        <div>
+                            <img className='floatingDiv-image' src={meeting.host_profile_url}></img>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+
+
+        </div>
+        {/* <div>
             <img className='floatingDiv-image' src={tempImg}></img>
         </div>
         <div>
@@ -385,7 +385,7 @@ const RecipeDetailPage=()=>{
         </div>
         <div>
             <img className='floatingDiv-image' src={tempImg}></img>
-        </div>
+        </div> */}
         
         
     </div>

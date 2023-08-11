@@ -35,8 +35,7 @@
   align-items: center;
   gap: 10px; /* Adjust the gap between icons */
 }
-
-.icon-container ion-icon {
+.icon-container ion-icon{
   cursor: pointer;
 }
 

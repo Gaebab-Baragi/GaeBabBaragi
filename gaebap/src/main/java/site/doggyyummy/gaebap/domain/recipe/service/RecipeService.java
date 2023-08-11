@@ -186,9 +186,9 @@ public class RecipeService {
     //레시피 all 조회 (레시피 제목, 작성자 이름)
     @Transactional(readOnly = true)
     public RecipeTitleAllResponseDto allRecipeTitle() {
-        List<Recipe> allRecipes = recipeRepository.findAll();
+        List<String> allRecipesTitle = recipeRepository.findAllTitle();
 
-        return new RecipeTitleAllResponseDto(allRecipes);
+        return new RecipeTitleAllResponseDto(allRecipesTitle);
     }
     //레시피 삭제
     @Transactional
