@@ -148,12 +148,24 @@ const RecipeDetailPage=()=>{
     };
     // 댓글 쓰기 이벤트
     const [newCommentContent, setNewCommentContent] = useState('');
+    const [commentImage, setCommentImage] = useState(null);
+    const handleCommentChange = (event) => {
+        setNewCommentContent(event.target.value);
+    };
 
-
+    const handleImageChange = (event) => {
+        setCommentImage(event.target.files[0]);
+    };
 
     const handleSubmitComment = async (event) => {
+        console.log("첨부");
         event.preventDefault();
-    
+        const formData = new FormData();
+        formData.append('recipe_id',{id}.id);
+        console.log(formData.recipe_id);
+        formData.append('content', newCommentContent);
+        formData.append('commentImg', commentImage);
+        console.log("!!!!!");
         if (!isLoggedIn) {
             alert('로그인이 필요한 서비스입니다.');
             navigate('/login'); // Replace with your actual login page path
@@ -164,19 +176,16 @@ const RecipeDetailPage=()=>{
             return;
         }
         try {
+            console.log("????????");
             const response = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/comment`,
-                {
-                    recipe_id: id,
-                    content: newCommentContent
-                },
+                formData,
                 {
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'multipart/form-data', // Important: Set content type to multipart/form-data
+                      }
                 }
             );
-    
             if (response.status === 200) {
                 // 댓글 작성 후 댓글 목록을 다시 가져온다.
                 const responseComment = await axios.get(
@@ -195,10 +204,20 @@ const RecipeDetailPage=()=>{
         }
     };
     
-    const handleCommentChange = (event) => {
-        setNewCommentContent(event.target.value);
-    };
 
+
+
+
+
+
+
+
+
+    //댓글 등록 끝
+
+
+
+    //댓글 삭제 시작
     const handleDeleteComment = async (commentId) => {
         try {
             const response = await axios.delete(
@@ -327,7 +346,7 @@ const RecipeDetailPage=()=>{
                                             <div className='comment-content'>{comment.content}</div>
                                         </div>
                                     <div className='comment-img'>
-                                        <img className='comment-content-img' src={data.imgUrl}></img>
+                                        <img className='comment-content-img' src={comment.commentImgUrl}></img>
                                     </div>
                                     {isLoggedIn && comment.writerId === userId&& (
                                             <div className='comment-delete' onClick={() => handleDeleteComment(comment.id)}>삭제하기</div>
@@ -347,12 +366,12 @@ const RecipeDetailPage=()=>{
                                         value={newCommentContent}
                                         onChange={handleCommentChange}
                                     />
-                                   <label className="file-input-label">
-                                        <div className='file-input'>
+                                    <div className='file-input'>
+                                        <label>
                                             이미지/동영상<br></br>첨부하기
-                                            <input type='file' style={{ display: 'none' }} />
-                                        </div>
-                                    </label>                              
+                                            <input type='file' onChange={handleImageChange} style={{ display: 'none'} } />
+                                        </label>
+                                    </div>                  
                                     <button type='submit'>댓글 작성</button>
                                 </div>
                             </form>
@@ -365,9 +384,9 @@ const RecipeDetailPage=()=>{
         
     </div>
     <div className='floatingDiv'>
-        <div><ion-icon name="radio-outline"></ion-icon></div>
-        <div onClick={handleStreamingReservation}>
-            <div className='floatingDiv-Text'>
+        <div><ion-icon name="radio-outline" onClick={handleStreamingReservation}></ion-icon></div>
+        <div>
+            <div className='floatingDiv-Text' onClick={handleStreamingReservation}>
                 스트리밍<br></br>예약하기
             </div>
         </div>

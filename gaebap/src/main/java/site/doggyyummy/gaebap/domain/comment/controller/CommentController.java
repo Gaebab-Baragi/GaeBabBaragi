@@ -3,6 +3,7 @@ package site.doggyyummy.gaebap.domain.comment.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentRequestDTO;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentResponseDTO;
 import site.doggyyummy.gaebap.domain.comment.service.CommentService;
@@ -10,6 +11,7 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,9 +28,9 @@ public class CommentController {
     }
 
     @PostMapping("")
-    public void create(@RequestBody CommentRequestDTO dto) {
+    public void create(@RequestPart CommentRequestDTO dto, @RequestPart MultipartFile commentImg) throws IOException {
         Member loginMember= SecurityUtil.getCurrentLoginMember();
-        commentService.create(dto,loginMember);
+        commentService.create(dto,loginMember,commentImg);
     }
     @PutMapping("")
     public void modify(@RequestBody CommentRequestDTO dto){
