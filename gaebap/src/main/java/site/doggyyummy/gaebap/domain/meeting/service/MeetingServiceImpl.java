@@ -185,15 +185,23 @@ public class MeetingServiceImpl implements MeetingService{
             if(findMeeting.getStatus() == Status.SCHEDULED) { // 2-1. SCHEDULED일 경우 -> 호스트만 입장 가능
 
                 // 로그인된 사용자로 변경 필요
-                if(member_id == findMeeting.getHost().getId()) { // 호스트라면 미팅 방 입장
-                    return MessageResponseDTO.toDTO("호스트 입장 가능");
+                if(member_id == findMeeting.getHost().getId()) { // 호스트라면 미팅 방 입장 가능
+                    if(password == null || findMeeting.getPassword().equals(password)) { // public 방이거나 비밀번호가 일치하다면
+                        return MessageResponseDTO.toDTO("호스트 입장 가능");
+                    } else { // private 룸인데 비밀번호가 일치하지 않다면
+                        throw new MeetingEntryConditionNotMetException("비밀번호가 일치하지 않습니다.");
+                    }
                 } else { // 호스트가 아니라면 아직 입장 불가
                     throw new MeetingEntryConditionNotMetException("호스트가 아직 미팅에 입장하지 않았습니다.");
                 }
             } else if(findMeeting.getStatus() == Status.ATTENDEE_WAIT){ // 2-2. ATTENDEE_WAIT일 경우 -> 입장 가능 인원 확인
                 // 입장 가능 인원 확인
                 if(findMeeting.getCurrentParticipants() < findMeeting.getMaxParticipant()) { // 2-2-1. 아직 입장 가능 인원이 남았다면 입장 가능
-                    return MessageResponseDTO.toDTO("일반 멤버 입장 가능");
+                    if(password == null || findMeeting.getPassword().equals(password)) { // public 방이거나 비밀번호가 일치하다면
+                        return MessageResponseDTO.toDTO("일반 멤버 입장 가능");
+                    } else { // private 룸인데 비밀번호가 일치하지 않다면
+                        throw new MeetingEntryConditionNotMetException("비밀번호가 일치하지 않습니다.");
+                    }
                 } else { // 2-2-2. 입장 가능 인원이 남지 않았다면 입장 불가능
                     throw new MeetingEntryConditionNotMetException("인원수 초과. 더 이상 미팅에 입장할 수 없습니다.");
                 }

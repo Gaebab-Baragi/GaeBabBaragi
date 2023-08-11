@@ -16,6 +16,9 @@ public class FindMeetingResponseDTO {
 
     private Long id;
 
+    @JsonProperty("is_private_room")
+    private boolean isPrivateRoom;
+
     @JsonProperty("max_participant")
     private int maxParticipant;
 
@@ -50,6 +53,7 @@ public class FindMeetingResponseDTO {
     public static FindMeetingResponseDTO toDTO(Meeting meeting) {
         FindMeetingResponseDTO findMeetingResponseDTO = FindMeetingResponseDTO.builder()
                 .id(meeting.getId())
+                .isPrivateRoom(meeting.getPassword() == null ? false : true)
                 .maxParticipant(meeting.getMaxParticipant())
                 .title(meeting.getTitle())
                 .description(meeting.getDescription())
