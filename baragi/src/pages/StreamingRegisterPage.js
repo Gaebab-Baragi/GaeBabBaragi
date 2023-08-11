@@ -70,10 +70,9 @@ function StreamingRegisterPage() {
         alert(error.response.data)
         console.error("Error sending request:", error.response);
       });
-  };
-  return (
+    };
 
-    
+    return (
     <div className="StreamingRegisterContainer">
       <div className="StreamingHeader">
       <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>

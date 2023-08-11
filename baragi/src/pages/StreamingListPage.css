@@ -1,3 +1,9 @@
 .streaming-card-component {
     height: auto;
 }
+
+.searchRecipeRegister {
+    display: flex;
+    flex-direction: row;
+
+}

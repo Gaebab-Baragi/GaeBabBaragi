@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  margin-left: 30%;
+
 }
 
 .tempContainer {
@@ -22,4 +24,16 @@
 }
 .dogImageContainer{
   height: 80px;
+}
+
+.recipeRegisterBtn {
+  width: 100px;
+  height: 40px;
+  margin-top: 30px;
+  margin-left: 1%;
+  border-radius: 10px;
+  background-color: #ffaa00;
+  color: white;
+  border: none;
+  font-weight: 500;
 }

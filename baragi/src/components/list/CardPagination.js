@@ -6,9 +6,10 @@ import CardComponent from "../ui/Card";
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   margin-left: 10%;
   margin-right: 10%;
+  justify-content:space-between;
+  // gap: 2%;
 `;
 
 const StyledCardWrapper = styled.div`
