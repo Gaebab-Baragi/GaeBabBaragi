@@ -1,18 +1,24 @@
 import axios from "axios";
 import './css/ObjectDetectionPage.css'
-
+import {setIngredients, AddIngredients} from '../redux/objectDetectSlice'
 import React, {useState, useEffect, useRef } from 'react';
+import { useDispatch,useSelector  } from 'react-redux';
+
+
 // import "./styles.css";
 
 function ObjectDetectionPage() {
+  const dispatch = useDispatch();
+  const classname = useSelector(state => state.objectDetect.Ingredients);
   const videoRef = useRef(null);
-  // const [filterO, setfilter] = useState('');
+  const [filterO, setfilter] = useState('');
   const video = document.getElementById('videoCam');
   const canvas = document.getElementById("canvas");
   const [CanvasState, setCanvasState] = useState('none'); //사
   const [CameraState, setCameraState] = useState(''); //사
-  const [answerClass, setanswerClass] = useState('')
-
+  const [answerClass, setanswerClass] = useState('');
+  const [newIngredient, setNewIngredient] = useState('');
+  const uniqueClassname = [...new Set(classname)]
   useEffect(() => {
     getWebcam((stream => {
       videoRef.current.srcObject = stream;
@@ -34,12 +40,15 @@ function ObjectDetectionPage() {
   };
 
   function GoToCamera(target) { // 다시 촬영
-    const context = canvas.getContext('2d');
-    context.scale(-1, 1); // 좌우 반전
-    context.translate(-1024, 0); // 좌우 반전
-    context.drawImage(video, 0, 0,1024,768);
-    setCanvasState('none');
-    setCameraState('');
+    const canvas = document.getElementById("canvas");
+    if (canvas) {
+      const context = canvas.getContext('2d');
+      context.scale(-1, 1); // 좌우 반전
+      context.translate(-1024, 0); // 좌우 반전
+      context.drawImage(video, 0, 0,1024,512);
+    }
+      setCanvasState('none');
+      setCameraState('');
  
     getWebcam((stream => {
       videoRef.current.srcObject = stream;
@@ -54,10 +63,14 @@ function ObjectDetectionPage() {
     const video = document.getElementById('videoCam');
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext('2d');
-    
+    const webcamWidth = video.videoWidth;
+    const webcamHeight = video.videoHeight;
+    canvas.width = webcamWidth;
+    canvas.height = webcamHeight;
+
       context.scale(-1, 1); // 좌우 반전
-      context.translate(-1024, 0); // 좌우 반전
-      context.drawImage(video, 0, 0, 1024, 768);
+      context.translate(-webcamWidth, 0); // 좌우 반전
+      context.drawImage(video, 0, 0, webcamWidth, webcamHeight);
 
       canvas.toBlob((blob) => { //캔버스의 이미지를 파일 객체로 만드는 과정
         //캔버스 크기 조정하자
@@ -100,6 +113,7 @@ function ObjectDetectionPage() {
 
  
         // Send FormData using Axios
+        // 'https://doggy-yummy.site/v1/object-detection/yolov5' master 입력시  
           axios.post('http://localhost:5000/v1/object-detection/yolov5', formData,{
             withCredentials: true,
             headers: {
@@ -107,16 +121,19 @@ function ObjectDetectionPage() {
           },
         })
           .then(response => {
+
             console.log('Image uploaded successfully:', response.data);
             setanswerClass(response.data['image_url'])
-            console.log(answerClass)
+            dispatch(setIngredients(response.data['name']))
+           
+
           })
           .catch(error => {
             console.error('Error uploading image:', error);
           });
     // ... rest of the code
-  }, 'image/jpeg',0.5);
-};
+  }, 'image/jpeg',1);
+
 
 // }, 'image/jpeg');
 // }
@@ -141,33 +158,62 @@ function ObjectDetectionPage() {
       //   track.stop();
       // });
      
-  
+  const s = videoRef.current.srcObject;
+  s.getTracks().forEach((track) => {
+    track.stop();
+  })
+};
 
   return (
- 
   <div className = 'grid-container'>
     <div className = 'item-8'>
+      <h2>객체탐지</h2>
       {CanvasState === 'none' ?
-      <div onClick={sreenShot} style={{display:"flex", justifyContent:"center",alignItems: "center",width:"70px",height:"70px",margin:"10px", borderRadius:"100px",position:"", zIndex :"", bottom:'5%', left:"", cursor:"pointer", backgroundColor:"red"}}>
-        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState,width:"768px", height:"576px", transform:"rotateY(180deg)"}}  />
-        <canvas id="canvas" width="768px" height="576px" style={{display: CanvasState}}></canvas>
-        <div style={{textAlign:"center",width:"60px",height:"60px",border:"2px solid", borderRadius:"100px"}}>찰캌</div>
+      <div style={{display:"", justifyContent:"center",alignItems: "center" , width : '682px', borderRadius:"100px",position:"", zIndex :"", bottom:'5%', cursor:"pointer", backgroundColor:""}}>
+        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, width:'640px', hegiht :'640px' ,transform:"rotateY(180deg)"}}  />
+        <canvas id="canvas" style={{display: CanvasState, width:'640px', hegiht :'640px' }}></canvas>
+        <div onClick={sreenShot} style={{textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", display:'flex', margin:'auto',bottom:'5%'}}>찰캌</div>
         </div>:
-        <div onClick={GoToCamera} style={{display:"flex", justifyContent:"center",alignItems: "center",width:"70px",height:"70px",margin:"10px", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:"red"}}>
-          <img src= {answerClass}  alt="" style={{display:CanvasState}}></img>
-          <p>다시1 촬영</p>
+        <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"682px",margin:"10px", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
+          <img src= {answerClass}  alt="" style={{display:CanvasState , width:'682px'}}></img>
           {/* <img src="./기본이미지.png" alt=""style={{display:"flex", marginTop:'400px', justifyContent:"center"}} ></img> */}
-        </div>    
+        <div style ={{textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", margin:'auto'}}>재촬영</div> 
+        </div>   
     }
+
     </div>
-   
-    <div className = 'item-4'> 재료 들어가라 </div>
-    
+    <div className = 'item-4'>
+    <div>
+      <h2>재료 목록:</h2>
+      {uniqueClassname.length > 0 ? (
+          <ul>
+            {uniqueClassname.map((value, index) => (
+              <li key={index}>{value}</li>
+            ))}
+          </ul>
+        ) 
 
+        
+        : (
+          <p>데이터가 없습니다.</p>
+        )}
+        <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/>
+    </div>
+      <button onClick={() => {
+        if (newIngredient.trim() !== '') {
+        dispatch(AddIngredients(newIngredient));
+        setNewIngredient(''); // 입력 내용 초기화
+    }
+  }}
+>
+  재료추가
+</button>
 
+    </div>
   
 
   </div>
+
   )};
 
 export default ObjectDetectionPage;
