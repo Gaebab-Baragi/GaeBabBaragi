@@ -43,15 +43,16 @@ function StreamingRegisterPage() {
   // =====================제출======================//
   const handleRegisterSubmit = ()=>{
     const startTime = selectedDate + ' ' + selectedTime
-    console.log('비밀번호 확인용', password, typeof(password))
-  
+    const tmpPw = password.toString()
+    if (tmpPw.length===0) {
+      tmpPw=null
+    }
     const data = {
       title: roomTitle,
       description: roomDescription,
-      password: password.toString(),
+      password: tmpPw,
       max_participant: maxParticipant,
       start_time: startTime,
-      // 추후 수정!!!!!!!!!!!!!!
       recipe_id: parseInt(id),
     };
     console.log(data);
