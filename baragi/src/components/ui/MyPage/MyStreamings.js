@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setStreamingInfo } from "../../../redux/streamingInfoSlice";
-import StreamingCardComponent from "../StreamingCard";
+import StreamingCardComponent from "../StreamingCard/StreamingCard";
 import styled from 'styled-components';
 
 const CenteredContainer = styled.div`

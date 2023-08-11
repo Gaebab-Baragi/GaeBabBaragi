@@ -1,17 +1,15 @@
 package site.doggyyummy.gaebap.domain;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.persistence.EntityManager;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.meeting.entity.Status;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
-
 import site.doggyyummy.gaebap.domain.member.entity.Role;
 import site.doggyyummy.gaebap.domain.member.service.MemberServiceImpl;
-
 import site.doggyyummy.gaebap.domain.pet.entity.Forbidden;
 import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
@@ -19,13 +17,9 @@ import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 import site.doggyyummy.gaebap.domain.recipe.entity.RecipeIngredient;
 import site.doggyyummy.gaebap.domain.recipe.entity.Step;
 
-
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

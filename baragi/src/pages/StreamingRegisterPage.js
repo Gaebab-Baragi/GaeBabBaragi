@@ -43,15 +43,15 @@ function StreamingRegisterPage() {
   // =====================제출======================//
   const handleRegisterSubmit = ()=>{
     const startTime = selectedDate + ' ' + selectedTime
-    let tmpPw = password.toString()
-    if (tmpPw.length===0) {
-      tmpPw=null
-    }
+    // let tmpPw = password
+    // if (!password) {
+    //   tmpPw=password.toString()
+    // }
   
     const data = {
       title: roomTitle,
       description: roomDescription,
-      password: tmpPw,
+      password: null,
       max_participant: maxParticipant,
       start_time: startTime,
       recipe_id: parseInt(id),
