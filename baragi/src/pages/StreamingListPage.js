@@ -16,7 +16,7 @@ function StreamingListPage() {
   const [streamingList, setStreamingList] = useState([]);
   const user = useSelector((state) => (state.user));
   const nickname = <user className="nickname"></user>;
-  
+  // streaming 전체 list 가져오기
   useEffect(() => {
     axios.get(process.env.REACT_APP_BASE_URL +'/api/meetings')
       .then((res) => {
