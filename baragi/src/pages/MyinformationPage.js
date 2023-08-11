@@ -1,3 +1,4 @@
+import CurrentPasswordCheckForm from "../components/form/CurrentPasswordCheckForm";
 import MemberModificationForm from "../components/form/MemberModificationForm";
 
 function MyinformationPage() {

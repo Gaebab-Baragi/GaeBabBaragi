@@ -18,4 +18,6 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long> {
     int addHits(Long id);
 
     List<Recipe> findByTitleContaining(String title);
+    @Query("select r.title from Recipe r")
+    List<String> findAllTitle();
 }

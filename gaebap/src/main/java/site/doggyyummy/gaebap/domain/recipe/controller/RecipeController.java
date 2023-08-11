@@ -67,13 +67,20 @@ public class RecipeController {
         }
     }
 
-    //멤버 id가 등록한 레시피 조회
+    //내가 등록한 레시피 조회
     @Operation(summary = "search recipes by writer",description = "특정 작성자가 작성한 레시피 조회")
     @GetMapping("/recipes/writer")
-    public RecipeFindByMemberIdResponseDto findRecipeByMemberId(){
+    public RecipeFindByMemberIdResponseDto findRecipeByMe(){
         Long memberId = SecurityUtil.getCurrentLoginMember().getId();
         log.info("memberId = {}", memberId);
         return recipeService.findRecipeByMemberId(memberId);
+    }
+
+    //멤버 id가 등록한 레시피 조회
+    @Operation(summary = "search recipes by writer",description = "특정 작성자가 작성한 레시피 조회")
+    @GetMapping("/recipes/writer/{id}")
+    public RecipeFindByMemberIdResponseDto findRecipeByMemberId(@PathVariable Long id){
+        return recipeService.findRecipeByMemberId(id);
     }
 
     //레시피 전체 조회 (레시피 제목, 작성자)
@@ -81,6 +88,13 @@ public class RecipeController {
     @GetMapping("/recipes")
     public RecipeAllResponseDto allRecipes(){
         return recipeService.allRecipe();
+    }
+
+    //레시피 제목 전체 조회
+    @Operation(summary = "search all recipes title", description = "레시피 전체 제목 조회")
+    @GetMapping("/recipes/recipestitle")
+    public RecipeTitleAllResponseDto allRecipesTitle(){
+        return recipeService.allRecipeTitle();
     }
 
     //레시피 삭제
@@ -103,7 +117,6 @@ public class RecipeController {
     public RecipeModifyResponseDto modifyRecipe(@PathVariable("id") Long id,@RequestPart RecipeModifyRequestDto reqDto,@RequestPart MultipartFile newRecipeImage,@RequestPart MultipartFile newRecipeVideo,@RequestPart MultipartFile[] newStepImages) throws IOException{
         Member member = SecurityUtil.getCurrentLoginMember();
         try {
-            System.out.println("^^^^^^^^"+newStepImages.length);
             recipeService.modifyRecipe(member,id, reqDto,newRecipeImage,newRecipeVideo,newStepImages);
             return new RecipeModifyResponseDto(HttpStatus.SC_OK, "modify Success");
         }catch(UnauthorizedException e){

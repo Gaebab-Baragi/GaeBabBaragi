@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class RecipeFindByMemberIdResponseDto {
-    private Long id;
     private String name;
     private List<RecipeDto> recipes;
     public RecipeFindByMemberIdResponseDto(String name, List<RecipeDto> recipes){
@@ -20,7 +19,7 @@ public class RecipeFindByMemberIdResponseDto {
         this.recipes=recipes;
     }
     public RecipeFindByMemberIdResponseDto(Member member, List<Recipe> recipes){
-        this.name=member.getUsername();
+        this.name=member.getNickname();
         this.recipes=recipes.stream()
                 .map(recipe -> new RecipeFindByMemberIdResponseDto.RecipeDto(recipe.getId(),recipe.getTitle(),recipe.getDescription(),recipe.getWrittenTime(),recipe.getHit(),recipe.getImageUrl()))
                 .collect(Collectors.toList());

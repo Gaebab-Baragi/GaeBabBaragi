@@ -2,14 +2,16 @@ package site.doggyyummy.gaebap.domain.comment.service;
 
 import site.doggyyummy.gaebap.domain.comment.dto.CommentRequestDTO;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentResponseDTO;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
+
 import java.util.List;
 
 public interface CommentService {
-    void create(CommentRequestDTO dto);
+    void create(CommentRequestDTO dto, Member loginMember);
     List<CommentResponseDTO> selectByRecipe (Long recipeId);
 
     void modify(CommentRequestDTO dto);
 
-    void delete(Long id);
+    void delete(Long id,Member loginMember);
 
 }

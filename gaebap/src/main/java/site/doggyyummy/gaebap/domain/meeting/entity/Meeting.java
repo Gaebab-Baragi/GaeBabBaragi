@@ -6,7 +6,7 @@ import lombok.*;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter @Setter
 @Builder
@@ -35,7 +35,7 @@ public class Meeting {
     private Member host;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime startTime;
+    private ZonedDateTime startTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RECIPE_ID")

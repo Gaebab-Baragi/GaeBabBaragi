@@ -10,7 +10,7 @@ import site.doggyyummy.gaebap.domain.meeting.entity.Status;
 import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter @Setter
 @Builder
@@ -27,7 +27,7 @@ public class CreateMeetingRequestDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     @JsonProperty("start_time")
-    private LocalDateTime startTime;
+    private ZonedDateTime startTime;
 
     @JsonProperty("recipe_id")
     private Long recipeId;
