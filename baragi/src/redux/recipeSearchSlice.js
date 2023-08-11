@@ -16,28 +16,6 @@ let recipeSearch= createSlice({
     requestHappen: false,
   },
   reducers:{
-    requestFilteredRecipeList: (state)=>{
-      let tempIngredient = state.ingredients
-      if (state.ingredients.length === 0) {
-        tempIngredient = null;
-      } 
-      console.log(JSON.parse(JSON.stringify(state.dogs)))
-      const data = {
-        title : state.keyword,
-        ingredients: tempIngredient,
-        pets: state.dogs
-      }
-      console.log('보내는 데이터임',data)
-      // axios 요청 보내서 레시피 저장하기
-      axios.post(process.env.REACT_APP_BASE_URL +'/api/recipes/searchlike', data)
-        .then((res)=>{
-          console.log('필터링 된 목록 가져오기 성공 : ' , res.data)
-          state.filteredList = res.data
-        })
-        .catch((err)=>{
-          console.log('필터링 데이터 가져오지 못함 :' + err )
-        })    
-    },
     updateKeyword: (state, action) =>{
       // 레시피 제목 검색 키워드 저장
       state.keyword = action.payload;
@@ -65,6 +43,6 @@ let recipeSearch= createSlice({
   }
 })
 
-export const {updateKeyword, updateIngredients, updateDogs, requestFilteredRecipeList,updatePetIds} = recipeSearch.actions;
+export const {updateKeyword, updateIngredients, updateDogs} = recipeSearch.actions;
 
 export default recipeSearch;

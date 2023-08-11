@@ -1,20 +1,26 @@
 import Card from 'react-bootstrap/Card';
 import recipeImg from './recipeImg.png'
-// 받은 정보로 채워주기
+import { useNavigate } from 'react-router-dom';
+
 function CardComponent({recipe}) {
-  console.log('card component 반복 ')
+  const navigate = useNavigate();
+  const handleNavigateDetail = ()=> {
+    navigate(`/recipe-detail/${recipe.id}`)
+  }
+  
   return (
-    <Card style={{ width: '16rem'}}>
-      <Card.Img variant="top" src={recipeImg} />
+    <Card onClick={handleNavigateDetail} style={{ width: '16rem'}}>
+      <Card.Img style={{height:'200px'}} variant="top" src={recipe.imgUrl} />
       <Card.Body>
-        <Card.Title>레시피 제목</Card.Title>
+        <Card.Title>{recipe.title}</Card.Title>
         <Card.Text>
-          {/* {recipe.description}  */}
-          설명
+          {recipe.description} 
         </Card.Text>
-        <Card.Text>
-          {/* <span> ❤ 좋아요 수 {recipe.hit} | 등록 날짜 : {recipe.writtenTime} </span> */}
-          <span> ❤ 좋아요 수 | 등록 날짜 :  </span>
+        <Card.Text style={{display:'flex', justifyContent:'space-around'}}>
+          <span> ❤  {recipe.hit}  </span>
+          <span> | </span>
+          <span > 작성자 : {recipe.username} </span>
+          {/* <span> ❤ 좋아요 수 | 등록 날짜 :  </span> */}
         </Card.Text>
       </Card.Body>
     </Card>

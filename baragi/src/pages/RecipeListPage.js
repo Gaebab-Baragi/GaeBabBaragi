@@ -7,14 +7,11 @@ import { useNavigate } from 'react-router-dom'
 import CardCarousel from "../components/list/CardCarousel";
 import './css/RecipeListPage.css'
 import DogSelectBar from "../components/ui/DogSelectBar";
-import { useDispatch } from "react-redux";
 import axios from "axios";
 import useDidMountEffect from "../useDidMountEffect";
 
 function RecipeListPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  // 언제가져오는 거지? 자동 렌더링이 되나??
   const dogs = useSelector((state)=>state.recipeSearch.dogs)
   const ingredients = useSelector((state)=>state.recipeSearch.ingredients)
   const title = useSelector((state)=>state.recipeSearch.keyword)
@@ -22,21 +19,21 @@ function RecipeListPage() {
   const [filteredList, setFilteredList] = useState([])
   const [recipeTitleList, setRecipeTitleList] = useState([])
   
+  // 레시피 제목 가져오기
   useEffect(()=>{
-    axios.get(process.env.REACT_APP_BASE_URL + 'api/recipestitle')
+    axios.get(process.env.REACT_APP_BASE_URL + '/api/recipes/recipestitle')
     .then((res)=>{
       console.log('레시피 제목 가져오기', res.data)
       setRecipeTitleList(res.data)
     })
+    .catch((err)=>{
+      console.log('레시피 제목 못 가져옴', err)
+    })
   },[])
   
-  
-  
-  useEffect(()=>{
-    console.log('filtered',filtered)
-  },[])
+  // 필터링된 레시피 가져오기
   useDidMountEffect(()=>{
-    console.log('리덕스 변화 페이지에서 감지')
+    console.log('redux에서 변화가 일어남', title, ingredients, dogs)
     let tempIngredient = ingredients;
     if (ingredients.length === 0) {
       tempIngredient = null;
@@ -54,15 +51,15 @@ function RecipeListPage() {
     // axios 요청 보내서 레시피 저장하기
     axios.post(process.env.REACT_APP_BASE_URL +'/api/recipes/searchlike', data)
       .then((res)=>{
-        console.log('필터링 된 목록 가져오기 성공 : ' , res.data)
-        setFilteredList(res.data)
+        console.log('필터링 된 목록 가져오기 성공 : ' , res.data.recipes)
+        setFilteredList(res.data.recipes)
       })
       .catch((err)=>{
         console.log('필터링 데이터 가져오기 실패')
       })
 
     setFiltered(true)
-    },[dogs,ingredients])
+    },[dogs,ingredients,title])
 
   return (
     <div>

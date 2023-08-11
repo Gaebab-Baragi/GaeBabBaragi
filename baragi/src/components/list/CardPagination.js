@@ -26,7 +26,7 @@ function CardPaginationList({rowNum,filteredList}) {
   // 레시피 목록 가져오기!!
   useEffect(() => {
     setItems(filteredList)
-  }, []);
+  }, [filteredList]);
 
   useEffect(() => {
     setCount(items.length);
