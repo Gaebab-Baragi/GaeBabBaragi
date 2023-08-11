@@ -119,7 +119,7 @@ function SignupForm() {
 
   const handleSubmit = (e) => { 
     e.preventDefault();
-    if (!nicknameDuplicateCheck || !emailCodecheck || !validEmail) {
+    if (!nicknameDuplicateCheck || !emailCodecheck || !validEmail || !validPassword || !samePassword) {
       Toast.fire('중복 확인을 진행해주세요.', "", "error")
     } else {
         console.log(password1);
