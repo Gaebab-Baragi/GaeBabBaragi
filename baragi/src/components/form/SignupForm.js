@@ -107,7 +107,6 @@ function SignupForm() {
       }
     })
     .catch((res) => {
-      console.log(res)
       res = res.response;
       if (res.status === 454) Toast.fire("잘못된 이메일입니다.", "", "warning")
       else if (res.status === 455) Toast.fire("이미 사용중인 이메일입니다.", "", "warning")
@@ -121,7 +120,7 @@ function SignupForm() {
 
   const handleSubmit = (e) => { 
     e.preventDefault();
-    if (!nicknameDuplicateCheck || !emailCodecheck || !validEmail) {
+    if (!nicknameDuplicateCheck || !emailCodecheck || !validEmail || !validPassword || !samePassword) {
       Toast.fire('중복 확인을 진행해주세요.', "", "error")
     } else {
         console.log(password1);

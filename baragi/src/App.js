@@ -21,7 +21,7 @@ import SocialLoginSuccessHandler from './components/social/SocialLoginSuccessHan
 import LogoutHandler from './components/social/LogoutHandler';
 import DuplicateNicknameHandler from './components/social/DuplicateNicknameHandler';
 import DuplicateNicknameCheckPage from './pages/DuplicateNicknameCheckPage';
-
+import PasswordModificationPage from './pages/PasswordModificationPage';
 import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
@@ -77,11 +77,12 @@ function App() {
         {/* 내 정보 */}
         <Route path='/myinformation' element={<MyinformationPage/>}></Route>
         <Route path='/myrecipe' element={<MyRecipePage/>}></Route>
+        <Route path='/password-modification' element={<PasswordModificationPage/>}></Route>
         {/* 펫  */}
         <Route path='/my-pet-list/:idx' element={<PetListPage/>}></Route>
         <Route path='/my-pet-list' element={<PetListPage/>}></Route>
         
-        {/*-----------------------로그인 관련-------------------------------*/}
+        {/* 로그인 관련 */}
         <Route path='/oauth2/redirect/:token' element={<SocialLoginSuccessHandler/>}></Route>
         <Route path='/logout' element={<LogoutHandler/>}></Route>
         <Route path='/oauth2/signup/:token' element={<DuplicateNicknameHandler></DuplicateNicknameHandler>}></Route>
