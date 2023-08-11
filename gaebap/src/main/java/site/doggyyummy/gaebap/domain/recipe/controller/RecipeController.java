@@ -145,4 +145,9 @@ public class RecipeController {
     public IngredientAllResponseDto searchAllIngredients(){
         return recipeService.searchAllIngredients();
     }
+    @Operation(summary = "search top 12 bookmarked recipe",description = "좋아요 순으로 상위 12개 조회")
+    @GetMapping("/recipes/popular")
+    public RecipePopularResponseDto searchPopularReciepsWithRecipe(){
+        return recipeService.searchPopularReciepsWithRecipe();
+    }
 }
