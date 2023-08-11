@@ -4,7 +4,7 @@ import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios';
 import SocialLogin from '../social/SocialLogin';
-import Toast from '../ui/Toast';
+import Toast from '../ui/Toast'
 
 function SignupForm() {
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ function SignupForm() {
     // 정규표현식 패턴: 8자 이상 20자 이하, 영문 대소문자, 숫자, 특수문자를 하나 이상 포함
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
     const isValidPassword = passwordPattern.test(password1);
+    
     setValidPassword(isValidPassword);
   }, [password1]);
 
