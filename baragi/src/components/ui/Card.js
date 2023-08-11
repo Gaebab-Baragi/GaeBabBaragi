@@ -1,18 +1,20 @@
 import Card from 'react-bootstrap/Card';
-import pracImg from './pracImage.jpg'
-
-function CardComponent({count}) {
+import recipeImg from './recipeImg.png'
+// 받은 정보로 채워주기
+function CardComponent({recipe}) {
+  console.log('card component 반복 ')
   return (
     <Card style={{ width: '16rem'}}>
-      <Card.Img variant="top" src={pracImg} />
+      <Card.Img variant="top" src={recipeImg} />
       <Card.Body>
-        <Card.Title>Recipe Title</Card.Title>
+        <Card.Title>레시피 제목</Card.Title>
         <Card.Text>
-          Recipe Explanation
-          블라블라  
+          {/* {recipe.description}  */}
+          설명
         </Card.Text>
         <Card.Text>
-          <span>조회수 : 16 | ❤ : {count} | 날짜 </span>
+          {/* <span> ❤ 좋아요 수 {recipe.hit} | 등록 날짜 : {recipe.writtenTime} </span> */}
+          <span> ❤ 좋아요 수 | 등록 날짜 :  </span>
         </Card.Text>
       </Card.Body>
     </Card>

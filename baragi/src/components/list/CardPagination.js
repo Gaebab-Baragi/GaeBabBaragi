@@ -15,7 +15,7 @@ const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-function CardPaginationList({rowNum}) {
+function CardPaginationList({rowNum,filteredList}) {
   const [items, setItems] = useState([]); // 리스트에 나타낼 아이템
   const [count, setCount] = useState(0); // 아이템 총 개수
   const [currentpage, setCurrentpage] = useState(1); // 현재페이지
@@ -25,13 +25,8 @@ function CardPaginationList({rowNum}) {
 
   // 레시피 목록 가져오기!!
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => res.json())
-      .then((data) =>{
-        setItems(data);
-      })
+    setItems(filteredList)
   }, []);
-
 
   useEffect(() => {
     setCount(items.length);
@@ -59,9 +54,9 @@ function CardPaginationList({rowNum}) {
       setPostPerPage(cardsPerRow * rowsPerPage);
     }
 
-    window.addEventListener("resize", updateCardsPerPage);
+    window.addEventListener("resize", updateCardsPerPage, handleResize);
     return () => {
-      window.removeEventListener("resize", updateCardsPerPage);
+      window.removeEventListener("resize", updateCardsPerPage, handleResize);
     };
   }, [window]);
 
@@ -75,13 +70,13 @@ function CardPaginationList({rowNum}) {
   const setPage = (e) => {
     setCurrentpage(e);
   };
-
+  console.log('currentPost', currentPosts)
   return (
     <div>
       <CardContainer>
         {currentPosts.map((item) => (
           <StyledCardWrapper key={item.id}>
-            <CardComponent count={item.id} />
+            <CardComponent recipe={item} />
           </StyledCardWrapper>
         ))}
       </CardContainer>

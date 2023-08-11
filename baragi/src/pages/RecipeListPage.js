@@ -21,7 +21,16 @@ function RecipeListPage() {
   const title = useSelector((state)=>state.recipeSearch.keyword)
   const [filtered, setFiltered] = useState(false);
   const [filteredList, setFilteredList] = useState([])
-
+  
+  useEffect(()=>{
+    
+  },[])
+  
+  
+  
+  useEffect(()=>{
+    console.log('filtered',filtered)
+  },[])
   useDidMountEffect(()=>{
     console.log('리덕스 변화 페이지에서 감지')
     let tempIngredient = ingredients;
@@ -66,7 +75,7 @@ function RecipeListPage() {
       ? 
       <div>
         <h2>총 {filteredList.length} 건의 레시피가 있습니다.</h2>
-        <CardPaginationList rowNum={3} />
+        <CardPaginationList rowNum={3} filteredList={filteredList}/>
       </div>
       // 첫 화면 --> 인기 레시피 캐로셀로 보여주기
       :
