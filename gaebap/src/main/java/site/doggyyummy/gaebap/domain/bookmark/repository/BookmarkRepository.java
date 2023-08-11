@@ -8,6 +8,7 @@ import site.doggyyummy.gaebap.domain.member.entity.Member;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -61,4 +62,5 @@ public class BookmarkRepository {
                 .getSingleResult();
         return cnt;
     }
+
 }

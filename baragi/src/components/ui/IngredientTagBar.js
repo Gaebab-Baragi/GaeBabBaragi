@@ -4,26 +4,36 @@ import './IngredientTagBar.css'
 import { useDispatch } from "react-redux";
 import { updateIngredients, requestFilteredRecipeList } from "../../redux/recipeSearchSlice";
 import useDidMountEffect from "../../useDidMountEffect";
+import axios from "axios";
 
 function IngredientTagBar() {
+  const [suggestions, setSuggestions] = useState('');
   const [selected, setSelected] = useState([]);
   const dispatch = useDispatch();
 
-  useEffect(()=>{
+  useDidMountEffect(()=>{
     dispatch(updateIngredients(selected))
   }, [selected])
 
-  useDidMountEffect(()=>{
-    dispatch(requestFilteredRecipeList())
-  }, [selected])
+  // useDidMountEffect(()=>{
+  //   dispatch(requestFilteredRecipeList())
+  // }, [selected])
 
   // 재료 리스트 받아와주기
-  const suggestions = [
-    {value:1, label:'고구마'},
-    {value:2, label:'감자'},
-    {value:3, label:'소고기'},
-    {value:4, label:'돼지고기'}
-  ]
+  useEffect(()=>{
+    axios.get(process.env.REACT_APP_BASE_URL +'/api/ingredients')
+    .then((res)=>{
+      console.log('res data : ' ,res.data)
+      const tmp = []
+      res.data.ingredients.map((i)=>{
+        tmp.push({value:i.id, label:i.name})
+      })
+      setSuggestions(tmp)
+    })
+    .catch((err)=>{
+      console.log('error is : ', err)
+    })
+  },[])
 
   const onAdd = useCallback(
     (newTag) => {
@@ -44,7 +54,7 @@ function IngredientTagBar() {
     <div className="ingredientSelect">
       <ReactTags
         suggestions={suggestions}
-        placeholderText="재료 선택"
+        placeholderText={selected.length? "" : "재료 선택"}
         selected={selected}
         onAdd={onAdd}
         onDelete={onDelete}

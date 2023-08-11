@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 
+export const updateFilteredList = () =>({
+  type:"recipeSearch/updateFilteredList"
+});
 
 // 레시피 검색  
 let recipeSearch= createSlice({
@@ -10,32 +12,10 @@ let recipeSearch= createSlice({
     keyword:'',
     ingredients:[],
     dogs:[],
-    petIds: [],
     filteredList:[],
-    requestHappen: false
+    requestHappen: false,
   },
   reducers:{
-    requestFilteredRecipeList: (state, action)=>{
-      let tempIngredient = state.ingredients
-      if (state.ingredients.length === 0) {
-        tempIngredient = null;
-      } 
-      const data = {
-        title : state.keyword,
-        ingredients: tempIngredient
-      }
-
-      // axios 요청 보내서 레시피 저장하기
-      axios.post(process.env.REACT_APP_BASE_URL +'/api/recipes/searchlike', data)
-        .then((res)=>{
-          console.log('request success : ' , res.data)
-        })
-        .catch((err)=>{
-          console.log('error :' + err )
-        })
-      state.requestHappen=true;
-      
-    },
     updateKeyword: (state, action) =>{
       // 레시피 제목 검색 키워드 저장
       state.keyword = action.payload;
@@ -49,19 +29,20 @@ let recipeSearch= createSlice({
       });
       console.log(temp)
       state.ingredients = temp
+      console.log('redux 재료 업데이트 됨', state.ingredients)
       // console.log(state.ingredients)
     },
     updateDogs: (state, action) =>{
-      state.dogs = action.payload
-      // console.log(state.dogs)
+      const tmp = []
+      action.payload.forEach((dog) => {
+        tmp.push({'id':dog})
+      });
+      state.dogs = tmp
+      console.log('redux 강아지 업데이트 됨', state.dogs)
     },
-    updatePetIds: (state, action) =>{
-      state.petIds = action.payload
-      // console.log(state.dogs)
-    }
   }
 })
 
-export const {updateKeyword, updateIngredients, updateDogs, requestFilteredRecipeList,updatePetIds} = recipeSearch.actions;
+export const {updateKeyword, updateIngredients, updateDogs} = recipeSearch.actions;
 
 export default recipeSearch;

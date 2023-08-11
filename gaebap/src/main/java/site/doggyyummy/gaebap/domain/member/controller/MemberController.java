@@ -91,12 +91,27 @@ public class MemberController {
         return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
 
+    @PostMapping("/modify/check-password")
+    @Operation(description = "현재 비밃 번호를 검사")
+    public ResponseEntity<String> checkCurrentPassword(@RequestBody Map<String, String> password) throws Exception{
+        log.info("map: {}", password);
+       memberService.checkCurrentPassword(password.get("password"));
+       return new ResponseEntity<>("일치", HttpStatus.OK) ;
+    }
+
+
+    @PostMapping("/modify/password")
+    @Operation(description = "새 비밀번호로 수정")
+    public ResponseEntity<String> setNewPassword(@RequestBody Map<String, String> password) throws Exception{
+        memberService.modifyPassword(password.get("password"), password.get("originPassword"));
+        return new ResponseEntity<>("일치", HttpStatus.OK) ;
+    }
+
     //====================================================================================
 
     @GetMapping("/find")
     @Operation(description = "이메일로 회원이 있는지 확인 후 인증 메일 발송")
     public ResponseEntity<String> findByEmail(@RequestParam String email) throws Exception {
-        log.info("email : {}", email);
         memberService.findByName(email).orElseThrow(() -> new NoSuchUserException());
         return new ResponseEntity<>(memberMailService.sendEmail(email), HttpStatus.OK);
     }

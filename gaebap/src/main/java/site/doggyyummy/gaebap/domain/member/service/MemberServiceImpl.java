@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,7 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Transactional
@@ -73,12 +75,46 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void validateRegistrationUsername(String registerName) throws InvalidNameFormatException, DuplicateUsernameException{
         if (isDuplicateName(registerName)) throw new DuplicateEmailException();
+        if (!isValidUsernameFormat(registerName)) throw new InvalidNameFormatException();
     }
 
     @Override
     public void validateRegistrationNickname(String nickname) throws InvalidNameFormatException, DuplicateNicknameException {
         if (!isValidNicknameFormat(nickname)) throw new InvalidNicknameFormatException();
         if (isDuplicateNickname(nickname)) throw new DuplicateNicknameException();
+    }
+
+
+
+    @Override
+    public void setRole() throws Exception{
+        Member member = SecurityUtil.getCurrentLoginMember();
+        memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new RuntimeException()).setRole(Role.USER);
+    }
+
+    @Override
+    public String resetPassword(String username) throws Exception{
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NoSuchUserException("잘못된 이메일입니다."));
+        String password = PasswordUtil.generateRandomPassword();
+        member.setPassword(passwordEncoder.encode(password));
+        memberRepository.save(member);
+        return password;
+    }
+
+    @Override
+    public void checkCurrentPassword(String password) throws IncorrectPasswordException {
+        Member member = SecurityUtil.getCurrentLoginMember();
+        if (passwordEncoder.matches(password, member.getPassword())) return;
+        throw new IncorrectPasswordException();
+    }
+
+    @Override
+    public void modifyPassword(String password, String originPassword) throws Exception{
+        checkCurrentPassword(originPassword);
+        validatePasswordFormat(password);
+        Member member = SecurityUtil.getCurrentLoginMember();
+        memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new NoSuchUserException())
+                .setPassword(passwordEncoder.encode(password));
     }
 
     //=============================================================================================
@@ -97,12 +133,16 @@ public class MemberServiceImpl implements MemberService{
         return true;
     }
 
-    private void validateMemberRegistration(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
+    private boolean isValidUsernameFormat(String username){
+        return EmailValidator.getInstance().isValid(username);
+    }
+
+    private void validateMemberRegistration(Member member) throws Exception{
         validateRegistrationUsername(member.getUsername());
         validateRegistrationNickname(member.getNickname());
     }
 
-    private void validateMemberModification(Member member) throws Exception{ //TODO Exception마다 다른 걸로 상속하게 바꿀 것
+    private void validateMemberModification(Member member) throws Exception{
         validateNicknameModification(member);
     }
 
@@ -131,6 +171,7 @@ public class MemberServiceImpl implements MemberService{
 
     }
 
+    @Override
     public void uploadImageByUrl(Member member) throws Exception{//소셜 로그인으로 처음 가입한 경우
         if (member.getProfileUrl() == null) return;
         URL url = new URL(member.getProfileUrl());
@@ -154,19 +195,8 @@ public class MemberServiceImpl implements MemberService{
         inputStream.close();
     }
 
-    @Override
-    public void setRole() throws Exception{
-       Member member = SecurityUtil.getCurrentLoginMember();
-       memberRepository.findByUsername(member.getUsername()).orElseThrow(() -> new RuntimeException()).setRole(Role.USER);
+    private void validatePasswordFormat(String password) throws InvalidPasswordFormatException{
+        String regex =  "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$";
+        if (!password.matches(regex)) throw new InvalidPasswordFormatException();
     }
-
-    @Override
-    public String resetPassword(String username) throws Exception{
-        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NoSuchUserException("잘못된 이메일입니다."));
-        String password = PasswordUtil.generateRandomPassword();
-        member.setPassword(passwordEncoder.encode(password));
-        memberRepository.save(member);
-        return password;
-    }
-
 }

@@ -1,7 +1,3 @@
-// 수정 필요한 사항
-// 검색 icon 눌렀을 경우, axios 요청 보내는 함수
-// wordEntered Redux 와 연결하기!
-
 import React, { useEffect, useState, useRef } from "react";
 import "./SearchBar.css";
 import { useDispatch } from "react-redux";
@@ -15,9 +11,9 @@ function SearchBar({  data }) {
   const dataResultRef = useRef(null);
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(updateKeyword(wordEntered))
-  }, [wordEntered])
+  // useDidMountEffect(()=>{
+  //   dispatch(updateKeyword(wordEntered))
+  // }, [wordEntered])
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -52,8 +48,8 @@ function SearchBar({  data }) {
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
-      return value.title.toLowerCase().includes(searchWord.toLowerCase());
+    const newFilter = data.titles.filter((title) => {
+      return title.toLowerCase().includes(searchWord.toLowerCase());
     });
 
     if (searchWord === "") {
@@ -63,15 +59,10 @@ function SearchBar({  data }) {
     }
   };
 
-  const clearInput = () => {
-    setFilteredData([]);
-    setWordEntered("");
-  };
 
-  //===================== axios 요청 보내기=====================//
   const handleRequestFilteredList  = (e)=>{
     e.preventDefault();
-    dispatch(requestFilteredRecipeList())
+    dispatch(updateKeyword(wordEntered))
   }
 
 
@@ -94,12 +85,12 @@ function SearchBar({  data }) {
       {filteredData.length != 0 && needSearch && (
         // <div className="dataResultWrapper">
           <div className="dataResult" ref={dataResultRef}>
-            {filteredData.slice(0, 15).map((value, key) => {
+            {filteredData.slice(0, 15).map((title, key) => {
               return (
-                <p className="titleClick" onClick={()=>{
-                  setWordEntered(value.title);
+                <p key={key} className="titleClick" onClick={()=>{
+                  setWordEntered(title);
                   setNeedSearch(false);
-                }}>{value.title} </p>
+                }}>{title} </p>
               );
             })}
           </div>

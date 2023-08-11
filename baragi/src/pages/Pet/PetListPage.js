@@ -1,6 +1,6 @@
 import './PetListPage.css'
 import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide} from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -28,7 +28,7 @@ function PetListPage() {
   },[idx])
 
   return(
-    <div className='pageContainer'>
+    <div className='myswiper'>
       <Swiper
         effect={'coverflow'}
         grabCursor={true}
@@ -41,7 +41,7 @@ function PetListPage() {
           modifier: 1,
           slideShadows: false,
         }}
-        style={{width:"70%"}}
+        style={{width:"100%", paddingTop:"3%", paddingBottom:"3%"}}
         pagination={true}
         mousewheel={true}
         modules={[EffectCoverflow, Pagination, Navigation]}
@@ -49,7 +49,6 @@ function PetListPage() {
         noSwipingClass='react-tags__listbox-option'
         initialSlide={idx}
         autoHeight={true}
-
       >
       
       
