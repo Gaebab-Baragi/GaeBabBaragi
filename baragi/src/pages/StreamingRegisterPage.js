@@ -43,10 +43,11 @@ function StreamingRegisterPage() {
   // =====================제출======================//
   const handleRegisterSubmit = ()=>{
     const startTime = selectedDate + ' ' + selectedTime
-    const tmpPw = password.toString()
+    let tmpPw = password.toString()
     if (tmpPw.length===0) {
       tmpPw=null
     }
+  
     const data = {
       title: roomTitle,
       description: roomDescription,
