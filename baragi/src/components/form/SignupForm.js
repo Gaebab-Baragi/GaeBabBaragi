@@ -4,7 +4,7 @@ import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios';
 import SocialLogin from '../social/SocialLogin';
-import { Toast } from 'react-bootstrap';
+import Toast from '../ui/Toast';
 
 function SignupForm() {
   const navigate = useNavigate();
@@ -106,7 +106,6 @@ function SignupForm() {
       }
     })
     .catch((res) => {
-      console.log(res)
       res = res.response;
       if (res.status === 454) Toast.fire("잘못된 이메일입니다.", "", "warning")
       else if (res.status === 455) Toast.fire("이미 사용중인 이메일입니다.", "", "warning")
