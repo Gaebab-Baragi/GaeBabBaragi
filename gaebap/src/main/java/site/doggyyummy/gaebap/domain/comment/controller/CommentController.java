@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentRequestDTO;
 import site.doggyyummy.gaebap.domain.comment.dto.CommentResponseDTO;
 import site.doggyyummy.gaebap.domain.comment.service.CommentService;
+import site.doggyyummy.gaebap.domain.member.entity.Member;
+import site.doggyyummy.gaebap.global.security.util.SecurityUtil;
 
 
 import java.util.List;
@@ -25,14 +27,17 @@ public class CommentController {
 
     @PostMapping("")
     public void create(@RequestBody CommentRequestDTO dto) {
-        commentService.create(dto);
+        Member loginMember= SecurityUtil.getCurrentLoginMember();
+        commentService.create(dto,loginMember);
     }
     @PutMapping("")
     public void modify(@RequestBody CommentRequestDTO dto){
         commentService.modify(dto);
     }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") Long id){
-        commentService.delete(id);
+        Member loginMember=SecurityUtil.getCurrentLoginMember();
+        commentService.delete(id,loginMember);
     }
 }

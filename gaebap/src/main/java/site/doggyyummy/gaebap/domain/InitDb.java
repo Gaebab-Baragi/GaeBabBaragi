@@ -17,11 +17,14 @@ import site.doggyyummy.gaebap.domain.pet.entity.Pet;
 import site.doggyyummy.gaebap.domain.recipe.entity.Ingredient;
 import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 import site.doggyyummy.gaebap.domain.recipe.entity.RecipeIngredient;
+import site.doggyyummy.gaebap.domain.recipe.entity.Step;
 
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +51,9 @@ public class InitDb {
         public void dbInit1() throws Exception {
             String url = "http://localhost:3000/image/%EA%B0%9C%EB%B0%A5%EB%B0%94%EB%9D%BC%EA%B8%B0.png";
 
-            Member member1 = createMember("test1","test1","박영서", url);
-            Member member2 = createMember("test2","test2","user2", url);
-            Member member3 = createMember("test3","test3","user3", url);
+            Member member1 = createMember("test1@gmail.com","test1","박영서", url);
+            Member member2 = createMember("test2@gmail.com","test2","user2", url);
+            Member member3 = createMember("test3@gmail.com","test3","user3", url);
 
             memberService.signUp(member1);
             memberService.signUp(member2);
@@ -59,93 +62,37 @@ public class InitDb {
             Ingredient ingredient1 = createIngredient("양파");
             Ingredient ingredient2=createIngredient("당근");
             Ingredient ingredient3=createIngredient("소고기");
+            Ingredient ingredient4=createIngredient("가지");
+            Ingredient ingredient5=createIngredient("닭고기");
             em.persist(ingredient1);
             em.persist(ingredient2);
             em.persist(ingredient3);
+            em.persist(ingredient4);
+            em.persist(ingredient5);
 
-//            RecipeIngredient recipeIngredient1=createRecipeIngredient(ingredient1,"1개");
-//            RecipeIngredient recipeIngredient2=createRecipeIngredient(ingredient2,"2개");
-//            RecipeIngredient recipeIngredient3=createRecipeIngredient(ingredient3,"100g");
-//
-//
-//            List<RecipeIngredient> recipeIngredientList1=new ArrayList<>();
-//            recipeIngredientList1.add(recipeIngredient1);
-//            List<RecipeIngredient> recipeIngredientList2=new ArrayList<>();
-//            recipeIngredientList2.add(recipeIngredient1);
-//            recipeIngredientList2.add(recipeIngredient2);
-//
-//            List<RecipeIngredient> recipeIngredientList3=new ArrayList<>();
-//            recipeIngredientList3.add(recipeIngredient1);
-//            recipeIngredientList3.add(recipeIngredient2);
-//            recipeIngredientList3.add(recipeIngredient3);
-//            for(RecipeIngredient ri:recipeIngredientList1){
-//                em.persist(ri);
-//            }
-//            for(RecipeIngredient ri:recipeIngredientList2){
-//                em.persist(ri);
-//            }
-//            for(RecipeIngredient ri:recipeIngredientList3){
-//                em.persist(ri);
-//            }
-
-//            Recipe recipe1 = createRecipe("제목1",member1,"레시피입니다1",
-//                    url,
-//                    LocalDateTime.now(),recipeIngredientList1);
-//            em.persist(recipe1);
-//            Recipe recipe2 = createRecipe("제목2",member1,"레시피입니다2",
-//                    url,
-//                    LocalDateTime.now(),recipeIngredientList2);
-//            em.persist(recipe2);
-//            Recipe recipe3 = createRecipe("제목3",member1,"레시피입니다3",
-//                    url,
-//                    LocalDateTime.now(),recipeIngredientList3);
-//            em.persist(recipe3);
-            Recipe recipe1 = createRecipe("제목1", member1,"레시피입니다1",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe2 = createRecipe("제목2",member1,"레시피입니다2",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe3 = createRecipe("제목3",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
-
-            Recipe recipe4 = createRecipe("제목4",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe5 = createRecipe("제목5",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe6 = createRecipe("제목6",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe7 = createRecipe("제목7",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe8 = createRecipe("제목8",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe9 = createRecipe("제목9",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe10 = createRecipe("제목10",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
-            Recipe recipe11 = createRecipe("제목11",member1,"레시피입니다3",
-                    url,
-                    LocalDateTime.now());
+            Recipe recipe1=createRecipe("멍김밥",member1,"맛있는 멍김밥을 만들어보아요. 우리 지산이도 좋아하는 음식을 여러분과 함께 만들고 싶어 레시피 공유합니다. 모두들 맛있게 만들고, 즐겨봅시다.",
+                    url,LocalDateTime.now());
             em.persist(recipe1);
-            em.persist(recipe2);
-            em.persist(recipe3);
-            em.persist(recipe4);
-            em.persist(recipe5);
-            em.persist(recipe6);
-            em.persist(recipe7);
-            em.persist(recipe8);
-            em.persist(recipe9);
-            em.persist(recipe10);
-            em.persist(recipe11);
 
+
+            RecipeIngredient recipeIngredient1=createRecipeIngredient(ingredient1,recipe1,"1개");
+            RecipeIngredient recipeIngredient2=createRecipeIngredient(ingredient2,recipe1,"0.5개");
+            RecipeIngredient recipeIngredient3=createRecipeIngredient(ingredient3,recipe1,"100g");
+            RecipeIngredient recipeIngredient4=createRecipeIngredient(ingredient4,recipe1,"2개");
+            RecipeIngredient recipeIngredient5=createRecipeIngredient(ingredient5,recipe1,"150g");
+            em.persist(recipeIngredient1);
+            em.persist(recipeIngredient2);
+            em.persist(recipeIngredient3);
+            em.persist(recipeIngredient4);
+            em.persist(recipeIngredient5);
+
+
+            Step step1=createStep(recipe1,1L,"재료를 잘라주세요");
+            Step step2=createStep(recipe1,2L,"모든 재료를 볶아주세요");
+            Step step3=createStep(recipe1,3L,"플레이팅");
+            em.persist(step1);
+            em.persist(step2);
+            em.persist(step3);
 
 
             Pet pet1 = createPet(1L,"지산",20.1D,LocalDateTime.now());
@@ -156,20 +103,21 @@ public class InitDb {
             em.persist(pet3);
 
 
-            em.persist(createMeeting(null, 2, "1", "1", 1L, LocalDateTime.of(2023, 7, 27, 15, 10), 1L, Status.ATTENDEE_WAIT, 0));
-            em.persist(createMeeting(null, 2, "2", "2", 1L, LocalDateTime.of(2023, 7, 26, 18, 0), 1L, Status.SCHEDULED,  0));
-            em.persist(createMeeting(null, 2, "3", "3", 2L, LocalDateTime.of(2023, 7, 26, 15, 0), 2L, Status.SCHEDULED, 0));
-            em.persist(createMeeting(null, 2, "4", "4", 2L, LocalDateTime.of(2023, 7, 26, 15, 0), 2L, Status.SCHEDULED, 0));
-            em.persist(createMeeting(null, 2, "5", "5", 3L, LocalDateTime.of(2023, 7, 29, 15, 0), 2L, Status.SCHEDULED, 0));
+            em.persist(createMeeting(null, 2, "1", "1", 1L, ZonedDateTime.now(ZoneId.of("Asia/Seoul")), 1L, Status.ATTENDEE_WAIT, 0));
+            em.persist(createMeeting(null, 2, "2", "2", 1L, ZonedDateTime.now(ZoneId.of("Asia/Seoul")), 1L, Status.SCHEDULED,  0));
 
             Forbidden forbidden = createForbidden(1L,1L);
             em.persist(forbidden);
         }
 
-        private RecipeIngredient createRecipeIngredient(Ingredient ingredient,String amount) {
+        private RecipeIngredient createRecipeIngredient(Ingredient ingredient,Recipe recipe,String amount) {
             RecipeIngredient recipeIngredient=new RecipeIngredient();
             recipeIngredient.setAmount(amount);
             recipeIngredient.setIngredient(ingredient);
+            recipeIngredient.setRecipe(recipe);
+            List<RecipeIngredient> recipeIngredients=recipe.getRecipeIngredients();
+            recipeIngredients.add(recipeIngredient);
+            recipe.setRecipeIngredients(recipeIngredients);
             return recipeIngredient;
         }
 
@@ -193,6 +141,18 @@ public class InitDb {
             recipe.setImageUrl(imgageUrl);
             recipe.setWrittenTime(nowTime);
             return recipe;
+        }
+        private Step createStep(Recipe recipe,Long orderingNumber,String description){
+            Step step=new Step();
+            step.setRecipe(recipe);
+            step.setOrderingNumber(orderingNumber);
+            step.setDescription(description);
+            List<Step> steps=recipe.getSteps();
+            steps.add(step);
+            recipe.setSteps(steps);
+            step.setS3Url("http://localhost:3000/image/%EA%B0%9C%EB%B0%A5%EB%B0%94%EB%9D%BC%EA%B8%B0.png");
+            return step;
+
         }
         private Recipe createRecipe(String title, Member member, String description, String imgageUrl, LocalDateTime nowTime, List<RecipeIngredient> recipeIngredients) {
             Recipe recipe = new Recipe();
@@ -230,7 +190,7 @@ public class InitDb {
             return ingredient;
         }
 
-        private Meeting createMeeting(String password, int max_participant, String title, String description, Long member_id, LocalDateTime start_time, Long recipe_id, Status status, int currentParticipants) {
+        private Meeting createMeeting(String password, int max_participant, String title, String description, Long member_id, ZonedDateTime start_time, Long recipe_id, Status status, int currentParticipants) {
             Member member = new Member();
             member.setId(member_id);
 
