@@ -183,7 +183,13 @@ public class RecipeService {
 
         return new RecipeAllResponseDto(allRecipes);
     }
+    //레시피 all 조회 (레시피 제목, 작성자 이름)
+    @Transactional(readOnly = true)
+    public RecipeTitleAllResponseDto allRecipeTitle() {
+        List<Recipe> allRecipes = recipeRepository.findAll();
 
+        return new RecipeTitleAllResponseDto(allRecipes);
+    }
     //레시피 삭제
     @Transactional
     public RecipeDeleteResponseDto deleteRecipe(Long id,Member member) {

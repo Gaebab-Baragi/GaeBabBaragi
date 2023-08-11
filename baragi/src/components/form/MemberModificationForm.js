@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
 import "./css/MemberModification.css"
+import Toast from "../ui/Toast"; 
 import axios from "axios";
 
 function MemberModificationForm(){
@@ -23,11 +23,11 @@ function MemberModificationForm(){
                 setProfileUrl(res.data.profile_url);
             }
             else {
-                alert("회원 정보를 불러 올 수 없습니다.");
+                Toast.fire("회원 정보를 불러올 수 없습니다.", "", "error");
             }
         })
         .catch((res) => {
-            alert("회원 정보를 불러 올 수 없습니다.");
+            Toast.fire("회원 정보를 불러올 수 없습니다.", "", "error");
         })
     }, [])
 
@@ -44,7 +44,7 @@ function MemberModificationForm(){
         console.log('Nickname-Duplication-Check')
 
         if (!validNickname) {
-            alert("닉네임은 1자 이상 30자 이하여야 합니다.");
+            Toast.fire("닉네임은 1자 이상 30자 이하여야 합니다.", "", "warning");
             return;
         }
 
@@ -63,16 +63,16 @@ function MemberModificationForm(){
         .then((res)=>{
         if (res.status === 200) {
             console.log('duplication checked')
-            alert("사용 가능한 닉네임입니다.")
+            Toast.fire("사용 가능한 닉네임입니다.", "", "success");
             setNicknameDuplicateCheck(true);
         }
         })
         .catch((res) => {
             console.log(res);
         res = res.response;
-        if (res.status === 460) alert("잘못된 닉네임 형식입니다.")
-        else if (res.status === 457) alert("이미 사용중인 닉네임입니다.")
-        else alert("이유를 알 수 없는 오류");
+        if (res.status === 460) Toast.fire("잘못된 닉네임 형식입니다.", "", "warning");
+        else if (res.status === 457) Toast.fire("이미 사용 중인 이메일입니다.", "", "warning")
+        else Toast.fire("이유를 알 수 없는 오류", "", "error")
         })
 
     }, [nickname, originNickname]);
@@ -81,9 +81,11 @@ function MemberModificationForm(){
     const onSubmit = (e) => {
         e.preventDefault();
         if (!nicknameDuplicateCheck) {
-            alert('중복 확인을 진행해주세요.')
+            Toast.fire("중복 확인을 진행해주세요", "", "warning")
         } 
-        else if (uploadFile && uploadFile.size.toString().length >= 7) alert("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요.")
+        else if (uploadFile && uploadFile.size.toString().length >= 7) {
+            Toast.fire("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요.", "", "warning")
+        }
         else {
             const formData = new FormData();
             formData.append("file", uploadFile);
@@ -102,15 +104,15 @@ function MemberModificationForm(){
             axios.put(process.env.REACT_APP_BASE_URL +'/api/member/modify', formData)
             .then((res)=>{
                 if (res.status === 200) {
-                    alert("회원 정보를 수정했습니다.");
+                    Toast.fire("회원 정보를 수정했습니다.", "", "success")
                 }
             })
             .catch((res) => {
                 if (res.status === 463){
-                    alert("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요")
+                    Toast.fire("파일의 크기가 너무 큽니다. 1MB 이하의 프로필 사진을 올려주세요.", "", "warning")
                 }
                 else {
-                    alert("회원정보를 수정할 수 없습니다.")
+                    Toast.fire("회원정보를 수정할 수 없습니다.", "", "error")
                 }
             });
         }

@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import CardPaginationList from "../components/list/CardPagination";
 import SearchBar from "../components/ui/SearchBar";
 import IngredientTagBar from "../components/ui/IngredientTagBar";
-import BookData from './Data.json'
 import { useNavigate } from 'react-router-dom'
 import CardCarousel from "../components/list/CardCarousel";
 import './css/RecipeListPage.css'
@@ -21,9 +20,14 @@ function RecipeListPage() {
   const title = useSelector((state)=>state.recipeSearch.keyword)
   const [filtered, setFiltered] = useState(false);
   const [filteredList, setFilteredList] = useState([])
+  const [recipeTitleList, setRecipeTitleList] = useState([])
   
   useEffect(()=>{
-    
+    axios.get(process.env.REACT_APP_BASE_URL + 'api/recipestitle')
+    .then((res)=>{
+      console.log('레시피 제목 가져오기', res.data)
+      setRecipeTitleList(res.data)
+    })
   },[])
   
   
@@ -64,7 +68,7 @@ function RecipeListPage() {
     <div>
       {/* 검색창 */}
       <div className="searchContainer">
-        <SearchBar data={BookData}/>
+        <SearchBar data={recipeTitleList}/>
         <IngredientTagBar/> 
         <DogSelectBar/>
         <button onClick={()=>navigate('/recipe-register')}>레시피 작성</button>
@@ -81,7 +85,7 @@ function RecipeListPage() {
       :
       <div className="tempContainer">
         <h1 className="tempContainerTitle">인기 레시피</h1>
-        <CardCarousel/>
+        {/* <CardCarousel/> */}
       </div>
     }
     </div>

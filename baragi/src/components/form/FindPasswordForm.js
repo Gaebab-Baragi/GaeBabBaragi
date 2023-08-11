@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useCallback } from 'react';
 import './css/BasicForm.css'
 import axios from 'axios';
+import Toast from '../ui/Toast';
 
 function FindPasswordForm() {
   const navigate = useNavigate();
@@ -16,11 +17,11 @@ function FindPasswordForm() {
     e.preventDefault();
     if (code === verificationCode) {
       setEmailCodeCheck(true)
-      alert("확인되었습니다.")
+      Toast.fire("이메일 인증에 성공했습니다.", "", "success")
     }
     else {
       setEmailCodeCheck(false)
-      alert("인증번호가 맞지 않습니다.")
+      Toast.fire("이메일 인증에 실패했습니다.", "", "error");
     }
   }, [code]);
 
@@ -31,7 +32,7 @@ function FindPasswordForm() {
     .then((res) => {
       if (res.status === 200){
         console.log('code sent')
-        alert("인증 코드가 발송되었습니다. 이메일을 확인해주세요.")
+        Toast.fire("인증 코드가 발송되었습니다. 이메일을 확인해주세요.", "", "info");
         setVerificationCode(res.data);
         setEmailCodeCheck(false);
         setSendCode(true);
@@ -39,15 +40,16 @@ function FindPasswordForm() {
       console.log(res);
     })
     .catch((res) => {
-      if (res.status === 454) alert("잘못된 이메일입니다.")
-      if (res.status === 463) alert("가입되지 않은 이메일입니다.")
+      res = res.response;
+      if (res.status === 454) Toast.fire("잘못된 이메일입니다.", "", "error");
+      if (res.status === 462)  Toast.fire("가입되지 않은 이메일입니다.", "", "warning");
     })
   }, [email]);
     
   const handleSubmit = (e) => { 
     e.preventDefault();
     if (!emailCodecheck) {
-      alert('이메일 인증을 완료해주세요')
+      Toast.fire("이메일 인증을 완료해주세요", "", "error");
     } else {
       axios.post(process.env.REACT_APP_BASE_URL +"/api/member/reset-password", { email },
         {
@@ -55,12 +57,12 @@ function FindPasswordForm() {
         })
         .then((res)=>{
         if (res.status === 200) {
-          alert("이메일로 새 비밀번호를 발송했습니다.");
+          Toast.fire("이메일로 새 비밀번호를 발송했습니다.", "", "success");
           navigate("/login");
         }
         })
         .catch((res) => {
-          alert("비밀번호 재발급에 실패했습니다.")
+          Toast.fire("비밀번호 재발급에 실패했습니다.", "", "error");
         })
     }
   } 
