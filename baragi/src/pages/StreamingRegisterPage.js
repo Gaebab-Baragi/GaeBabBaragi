@@ -43,16 +43,18 @@ function StreamingRegisterPage() {
   // =====================제출======================//
   const handleRegisterSubmit = ()=>{
     const startTime = selectedDate + ' ' + selectedTime
-    console.log(typeof(startTime),typeof(roomTitle), typeof(roomDescription), typeof(maxParticipant))
+    let tmpPw = password.toString()
+    if (tmpPw.length===0) {
+      tmpPw=null
+    }
   
     const data = {
       title: roomTitle,
       description: roomDescription,
-      password: password.toString(),
+      password: tmpPw,
       max_participant: maxParticipant,
       start_time: startTime,
-      // 추후 수정!!!!!!!!!!!!!!
-      recipe_id: 1,
+      recipe_id: parseInt(id),
     };
     console.log(data);
 

@@ -34,7 +34,7 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
             navigate('/streaming-live')
         })
         .catch((err)=>{
-            console.log('error occured' + err)
+            console.log('error occured' , err)
         })
     }
     
