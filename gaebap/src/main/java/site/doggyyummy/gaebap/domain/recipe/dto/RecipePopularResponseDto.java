@@ -9,24 +9,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class RecipeSearchLikeResponseDto {
-    private List<RecipeDto> recipes;
-    public RecipeSearchLikeResponseDto(List<Recipe> recipes){
-        this.recipes=recipes.stream()
-                .map(recipe->new RecipeDto(recipe.getTitle(),recipe.getWrittenTime(),recipe.getHit(),recipe.getImageUrl(),recipe.getDescription(),recipe.getMember(),recipe.getId()))
+public class RecipePopularResponseDto {
+    List<RecipeDto> popularRecipes;
+
+    public RecipePopularResponseDto(List<Recipe> popularRecipes){
+        this.popularRecipes=popularRecipes.stream()
+                .map(recipe->new RecipePopularResponseDto.RecipeDto(recipe.getTitle(),recipe.getWrittenTime(),recipe.getHit(),recipe.getImageUrl(),recipe.getDescription(),recipe.getMember(),recipe.getId()))
                 .collect(Collectors.toList());
     }
+
     @Getter
-    public static class RecipeDto {
+    public static class RecipeDto{
         private String title;
         private Long id;
-        private MemberDto member;
+        private RecipeSearchLikeResponseDto.MemberDto member;
         private LocalDateTime writtenTime;
         private Long hit;
         private String description;
         private String imgUrl;
-
-        public RecipeDto(String title,LocalDateTime writtenTime,String imgUrl,Long hit,String description,MemberDto member,Long id){
+        public RecipeDto(String title, LocalDateTime writtenTime, String imgUrl, Long hit, String description, RecipeSearchLikeResponseDto.MemberDto member, Long id){
             this.title=title;
             this.writtenTime=writtenTime;
             this.hit=hit;
@@ -35,15 +36,16 @@ public class RecipeSearchLikeResponseDto {
             this.id=id;
             this.imgUrl=imgUrl;
         }
-        public RecipeDto(String title,LocalDateTime writtenTime,Long hit,String imgUrl,String description, Member member,Long id){
+        public RecipeDto(String title, LocalDateTime writtenTime, Long hit, String imgUrl, String description, Member member, Long id){
             this.title=title;
             this.writtenTime=writtenTime;
             this.hit=hit;
             this.description=description;
             this.imgUrl=imgUrl;
-            this.member=new MemberDto(member.getNickname());
+            this.member=new RecipeSearchLikeResponseDto.MemberDto(member.getNickname());
             this.id=id;
         }
+
     }
 
     @Getter

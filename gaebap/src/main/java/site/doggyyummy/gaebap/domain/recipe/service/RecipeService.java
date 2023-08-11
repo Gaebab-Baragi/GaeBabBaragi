@@ -506,4 +506,9 @@ public class RecipeService {
         return new IngredientAllResponseDto(ingedients);
     }
 
+    @Transactional(readOnly = true)
+    public RecipePopularResponseDto searchPopularReciepsWithRecipe(){
+        List<Recipe> recipes=recipeRepository.findTop12RecipesOrderByBookmarksSizeDesc();
+        return new RecipePopularResponseDto(recipes);
+    }
 }

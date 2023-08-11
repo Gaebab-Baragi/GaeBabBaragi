@@ -9,6 +9,6 @@ public class MeetingEntryConditionNotMetException extends RuntimeException{
     private final HttpStatus httpStatus = HttpStatus.FORBIDDEN;
 
     public MeetingEntryConditionNotMetException(String errorMessage) {
-        super("미팅 입장 불가: " + errorMessage);
+        super(errorMessage);
     }
 }

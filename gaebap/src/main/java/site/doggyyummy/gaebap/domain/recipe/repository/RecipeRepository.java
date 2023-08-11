@@ -20,4 +20,7 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long> {
     List<Recipe> findByTitleContaining(String title);
     @Query("select r.title from Recipe r")
     List<String> findAllTitle();
+
+    @Query("SELECT r FROM Recipe r ORDER BY SIZE(r.bookmarks) DESC LIMIT 12")
+    List<Recipe> findTop12RecipesOrderByBookmarksSizeDesc();
 }
