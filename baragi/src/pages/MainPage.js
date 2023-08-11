@@ -9,6 +9,7 @@ function MainPage(){
         axios.get(process.env.REACT_APP_BASE_URL +"/api/checkLogin")
         .then(console.log("hi"))
         .catch((res) => console.log(res));
+
     }, [])
     return(
         <div className='mainPage'>
