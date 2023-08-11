@@ -30,7 +30,7 @@ function StreamingListPage() {
 
   return (
       <div className="streaming-list container position-relative">
-        <h1>방송 목록</h1>
+        <h1>방송 예정인 스트리밍 목록</h1>
         <div className="row gy-4 mt-5">
           {streamingList.map((streamingItem) => (
             <div className="streaming-card-component col-xl-4 col-md-6">

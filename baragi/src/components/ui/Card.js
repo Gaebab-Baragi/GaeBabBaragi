@@ -19,8 +19,7 @@ function CardComponent({recipe}) {
         <Card.Text style={{display:'flex', justifyContent:'space-around'}}>
           <span> ❤  {recipe.hit}  </span>
           <span> | </span>
-          <span > 작성자 : {recipe.username} </span>
-          {/* <span> ❤ 좋아요 수 | 등록 날짜 :  </span> */}
+          <span > 작성자 : {recipe.member.nickname} </span>
         </Card.Text>
       </Card.Body>
     </Card>

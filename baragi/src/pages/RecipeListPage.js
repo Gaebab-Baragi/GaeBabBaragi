@@ -9,6 +9,7 @@ import './css/RecipeListPage.css'
 import DogSelectBar from "../components/ui/DogSelectBar";
 import axios from "axios";
 import useDidMountEffect from "../useDidMountEffect";
+import { compose } from "@reduxjs/toolkit";
 
 function RecipeListPage() {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ function RecipeListPage() {
   const [filtered, setFiltered] = useState(false);
   const [filteredList, setFilteredList] = useState([])
   const [recipeTitleList, setRecipeTitleList] = useState([])
+  const [popularRecipes, setPopularRecipes] = useState([])
+  const [showCarousel, setShowCarousel] = useState(false);
   
   // 레시피 제목 가져오기
   useEffect(()=>{
@@ -28,6 +31,20 @@ function RecipeListPage() {
     })
     .catch((err)=>{
       console.log('레시피 제목 못 가져옴', err)
+    })
+  },[])
+
+  // 추천 레시피 가져오기
+  useEffect(()=>{
+    axios.get(process.env.REACT_APP_BASE_URL + '/api/recipes/popular')
+    .then((res)=>{
+      console.log('인기 레시피 가져옴', res.data.popularRecipes)
+      setPopularRecipes(res.data.popularRecipes)
+      setShowCarousel(true)
+
+    })
+    .catch((err)=>{
+      console.log('인기 레시피 못 가져옴', err)
     })
   },[])
   
@@ -62,13 +79,15 @@ function RecipeListPage() {
     },[dogs,ingredients,title])
 
   return (
-    <div>
+    <div >
       {/* 검색창 */}
       <div className="searchContainer">
-        <SearchBar data={recipeTitleList}/>
+        <div className="searchRecipeRegister">
+          <SearchBar data={recipeTitleList}/>
+          <button className="recipeRegisterBtn" onClick={()=>navigate('/recipe-register')}>레시피 작성</button>
+        </div>
         <IngredientTagBar/> 
         <DogSelectBar/>
-        <button onClick={()=>navigate('/recipe-register')}>레시피 작성</button>
       </div>
     {
     filtered
@@ -79,10 +98,10 @@ function RecipeListPage() {
         <CardPaginationList rowNum={3} filteredList={filteredList}/>
       </div>
       // 첫 화면 --> 인기 레시피 캐로셀로 보여주기
-      :
+      : showCarousel &&
       <div className="tempContainer">
         <h1 className="tempContainerTitle">인기 레시피</h1>
-        {/* <CardCarousel/> */}
+        <CardCarousel popularRecipes={popularRecipes}/>
       </div>
     }
     </div>
