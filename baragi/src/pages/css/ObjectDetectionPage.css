@@ -1,13 +1,13 @@
 /* grid.css */
 .grid-container {
     display: flex;
-    flex-wrap: wrap;
-    margin: -15px; /* 그리드 아이템 간격 보정 */
+    /* flex-wrap: wrap; */
+    /* margin: -15px; 그리드 아이템 간격 보정 */
   }
   
   .grid-item {
     padding: 15px; /* 그리드 아이템 간격 설정 */
-    box-sizing: border-box; /* 패딩을 그리드 아이템 크기에 포함시킴 */
+    /* box-sizing: border-box; 패딩을 그리드 아이템 크기에 포함시킴 */
   }
   
   .item-8 {
