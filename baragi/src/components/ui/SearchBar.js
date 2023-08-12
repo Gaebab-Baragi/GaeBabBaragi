@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./SearchBar.css";
 import { useDispatch } from "react-redux";
-import {updateKeyword, requestFilteredRecipeList} from "../../redux/recipeSearchSlice";
-import useDidMountEffect from "../../useDidMountEffect";
+import {updateKeyword} from "../../redux/recipeSearchSlice";
 
 function SearchBar({  data }) {
   const [filteredData, setFilteredData] = useState([]);
@@ -60,11 +59,16 @@ function SearchBar({  data }) {
   };
 
 
-  const handleRequestFilteredList  = (e)=>{
-    e.preventDefault();
+  const handleSendKeyword  = (e)=>{
+    // e.preventDefault();
     dispatch(updateKeyword(wordEntered))
   }
 
+  const activeEnter = (e) =>{
+    if (e.key==='Enter') {
+      handleSendKeyword()      
+    }
+  }
 
   return (
 
@@ -76,8 +80,9 @@ function SearchBar({  data }) {
           placeholder='레시피를 검색해보세요'
           value={wordEntered}
           onChange={handleFilter}
+          onKeyDown={(e)=>activeEnter(e)}
         />
-        <div onClick={handleRequestFilteredList} className="searchIcon">
+        <div onClick={handleSendKeyword} className="searchIcon">
           {/* <SearchIcon/> */}
           <ion-icon name="search-outline"></ion-icon>
         </div>

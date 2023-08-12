@@ -1,12 +1,20 @@
+.searchWrapContainer {
+  display: flex;
+  justify-content: center;
+}
+
 .searchContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  margin-left: 30%;
-
+  margin-left: 4%;
 }
-
+.recipeLengthTitle{
+  text-align: start;
+  margin-left: 10%;
+  margin-top: 2%;
+  margin-bottom: 1%;
+}
 .tempContainer {
   margin-top: 10px;
   padding: 3%;

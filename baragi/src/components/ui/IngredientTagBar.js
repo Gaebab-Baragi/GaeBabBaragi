@@ -60,6 +60,7 @@ function IngredientTagBar() {
         onDelete={onDelete}
         noOptionsText="일치하는 재료가 없습니다."
         allowBackspace={true}
+        
 
       />
     </div>
