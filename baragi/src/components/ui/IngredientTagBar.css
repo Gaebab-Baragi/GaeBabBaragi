@@ -120,7 +120,8 @@
   /* Negate the border width on the container */
   left: -2px;
   right: -2px;
-  max-height: 12.5rem;
+  height: 170px;
+  /* max-height: 12.5rem; */
   overflow-y: auto;
   background: #ffffff;
   border: 1px solid #afb8c1;
@@ -136,7 +137,6 @@
   cursor: pointer;
   background: #eaeef2;
 }
-
 
 .react-tags__listbox-option[aria-disabled='true'] {
   color: #7c7d86;

@@ -7,15 +7,17 @@ import lombok.Getter;
 import lombok.Setter;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.meeting.entity.Status;
-import site.doggyyummy.gaebap.domain.recipe.entity.Recipe;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter @Setter
 @Builder
 public class FindMeetingResponseDTO {
 
     private Long id;
+
+    @JsonProperty("is_private_room")
+    private boolean isPrivateRoom;
 
     @JsonProperty("max_participant")
     private int maxParticipant;
@@ -32,7 +34,7 @@ public class FindMeetingResponseDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     @JsonProperty("start_time")
-    private LocalDateTime startTime;
+    private ZonedDateTime startTime;
 
     @JsonProperty("recipe_id")
     private Long recipeId;
@@ -51,6 +53,7 @@ public class FindMeetingResponseDTO {
     public static FindMeetingResponseDTO toDTO(Meeting meeting) {
         FindMeetingResponseDTO findMeetingResponseDTO = FindMeetingResponseDTO.builder()
                 .id(meeting.getId())
+                .isPrivateRoom(meeting.getPassword() == null ? false : true)
                 .maxParticipant(meeting.getMaxParticipant())
                 .title(meeting.getTitle())
                 .description(meeting.getDescription())

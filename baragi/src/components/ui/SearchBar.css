@@ -37,16 +37,18 @@
 }
 
 .dataResult {
+  margin-top: 1%;
+  border-radius: 10px;
   position: absolute;
   width: 450px;
   height: 200px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  overflow: hidden;
-  overflow-y: auto;
+  overflow-y:scroll;
   z-index: 1;
 }
 
+/* 스크롤 안 보이기 */
 .dataResult::-webkit-scrollbar {
   display: none;
 }

@@ -1,7 +1,6 @@
 package site.doggyyummy.gaebap.domain.meeting.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.doggyyummy.gaebap.domain.meeting.dto.*;
@@ -12,10 +11,9 @@ import site.doggyyummy.gaebap.domain.meeting.exception.MeetingEntryConditionNotM
 import site.doggyyummy.gaebap.domain.meeting.exception.MeetingForbiddenException;
 import site.doggyyummy.gaebap.domain.meeting.exception.NotFoundMeetingException;
 import site.doggyyummy.gaebap.domain.meeting.repository.MeetingRepository;
-import site.doggyyummy.gaebap.domain.member.repository.MemberRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +37,7 @@ public class MeetingServiceImpl implements MeetingService{
                 throw new InvalidArgumentMeetingCreateException("비밀번호는 6자리 숫자로 이루어진 문자열만 가능합니다.");
         }
 
-        if (createMeetingRequestDTO.getStartTime().isBefore(LocalDateTime.now())) { // 미팅 시작 시간이 현재 시간보다 전이라면
+        if (createMeetingRequestDTO.getStartTime().isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))) { // 미팅 시작 시간이 현재 시간보다 전이라면
                 throw new InvalidArgumentMeetingCreateException("이미 지난 시간으로는 예약이 불가능합니다.");
         }
 
@@ -69,7 +67,7 @@ public class MeetingServiceImpl implements MeetingService{
             throw new InvalidArgumentMeetingCreateException("비밀번호는 6자리 숫자로 이루어진 문자열만 가능합니다.");
         }
 
-        if (modifyMeetingRequestDTO.getStartTime().isBefore(LocalDateTime.now())) { // 미팅 시작 시간이 현재 시간보다 전이라면
+        if (modifyMeetingRequestDTO.getStartTime().isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))) { // 미팅 시작 시간이 현재 시간보다 전이라면
             throw new InvalidArgumentMeetingCreateException("이미 지난 시간으로는 예약이 불가능합니다.");
         }
 
@@ -154,39 +152,56 @@ public class MeetingServiceImpl implements MeetingService{
      미팅 방 참여 요청
      1. 시간 확인
       1-1. 시작 시간 10분 전부터 입장 가능 o
-      1-2. 시작 시간보다 10분 전보다 이른 시간이라면 입장 불가 메세지 -> return .
-            2. Meeting status 확인
+      1-2. 시작 시간보다 10분 전보다 이른 시간이라면 입장 불가 메세지 -> return
+     2. Meeting status 확인
       2-1. SCHEDULED일 경우 -> 호스트만 입장 가능
           2-1-1. 호스트라면 미팅 방 입장 -> return o
-          2-1-2. 호스트가 아니라면 아직 입장 불가 메세지 -> return o
+          2-1-2. 호스트가 아니라면 아직 입장 불가 메세지 -> return
       2-2. ATTENDEE_WAIT일 경우 -> 입장 가능 인원 확인
-          2-2-1. 아직 입장 가능 인원이 남았다면 -> 입장 가능 메세지 전달 -> return o
-          2-2-2. 입장 가능 인원이 남지 않았다면 -> 입장 불가능 메세지 전달 -> return o
+          2-2-1. 아직 입장 가능 인원이 남았다면 -> 입장 가능
+          2-2-2. 입장 가능 인원이 남지 않았다면 -> 입장 불가능 메세지 전달 -> return
       2-3. IN_PROGRESS일 경우 -> 이미 시작된 미팅, 입장 불가능 -> return
+     3. 비밀번호 확인
+      3-1. 비밀번호가 null일 경우 -> 입장 가능 return
+      3-2. 비밀번호가 있을 경우 -> 비밀번호 양식 확인
+       3-2-1. 비밀번호 양식 확인
+        3-2-1-1. 비밀번호 양식이 맞을 경우 -> 비밀번호 확인
+        3-2-1-2. 비밀번호 양식이 틀릴 경우 -> 비밀번호 양식 메시지 전달 -> return
+       3-2-2. 비밀번호 확인
+        3-2-2-1. 비밀번호 맞을 경우 -> 입장 가능 -> return
+        3-2-2-2. 비밀번호 틀릴 경우 -> 비밀번호 미일치 메시지 전달 -> return
 */
 
     @Override
-    public MessageResponseDTO joinRequest(Long id, Long member_id) {
+    public MessageResponseDTO joinRequest(Long id, Long member_id, String password) {
 
         // Meeting Entity 가져오기
         Meeting findMeeting = meetingRepository.findByIdJoinMember(id).orElseThrow(() -> new NotFoundMeetingException());
 
         // 1. 시간 확인
-        if(findMeeting.getStartTime().minusMinutes(10).isBefore(LocalDateTime.now())) { // 1-1. 시작 시간 10분 전부터 입장 가능
+        if(findMeeting.getStartTime().minusMinutes(10).isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))) { // 1-1. 시작 시간 10분 전부터 입장 가능
 
             // 2. Meeting status 확인
             if(findMeeting.getStatus() == Status.SCHEDULED) { // 2-1. SCHEDULED일 경우 -> 호스트만 입장 가능
 
                 // 로그인된 사용자로 변경 필요
-                if(member_id == findMeeting.getHost().getId()) { // 호스트라면 미팅 방 입장
-                    return MessageResponseDTO.toDTO("호스트 입장 가능");
+                if(member_id == findMeeting.getHost().getId()) { // 호스트라면 미팅 방 입장 가능
+                    if(password == null || findMeeting.getPassword().equals(password)) { // public 방이거나 비밀번호가 일치하다면
+                        return MessageResponseDTO.toDTO("호스트 입장 가능");
+                    } else { // private 룸인데 비밀번호가 일치하지 않다면
+                        throw new MeetingEntryConditionNotMetException("비밀번호가 일치하지 않습니다.");
+                    }
                 } else { // 호스트가 아니라면 아직 입장 불가
                     throw new MeetingEntryConditionNotMetException("호스트가 아직 미팅에 입장하지 않았습니다.");
                 }
             } else if(findMeeting.getStatus() == Status.ATTENDEE_WAIT){ // 2-2. ATTENDEE_WAIT일 경우 -> 입장 가능 인원 확인
                 // 입장 가능 인원 확인
                 if(findMeeting.getCurrentParticipants() < findMeeting.getMaxParticipant()) { // 2-2-1. 아직 입장 가능 인원이 남았다면 입장 가능
-                    return MessageResponseDTO.toDTO("일반 멤버 입장 가능");
+                    if(password == null || findMeeting.getPassword().equals(password)) { // public 방이거나 비밀번호가 일치하다면
+                        return MessageResponseDTO.toDTO("일반 멤버 입장 가능");
+                    } else { // private 룸인데 비밀번호가 일치하지 않다면
+                        throw new MeetingEntryConditionNotMetException("비밀번호가 일치하지 않습니다.");
+                    }
                 } else { // 2-2-2. 입장 가능 인원이 남지 않았다면 입장 불가능
                     throw new MeetingEntryConditionNotMetException("인원수 초과. 더 이상 미팅에 입장할 수 없습니다.");
                 }

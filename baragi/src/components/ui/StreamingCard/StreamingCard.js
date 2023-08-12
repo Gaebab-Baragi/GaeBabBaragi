@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import './StreamingCard.css'
+import Toast from '../Toast';
 
 
-function StreamingCardComponent({meeting_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
+function StreamingCardComponent({meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -17,24 +18,27 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
         .then((res)=>{
             console.log('request success : ', res.data);
             const data = {
-                recipe_image_url,
-                current_participants,
-                max_participant,
-                status,
-                host_profile_url,
+                meeting_id,
                 title,
+                recipe_id,
                 host_nickname,
-                start_time
+                max_participant,
+                start_time,
+                recipe_image_url
             }
             dispatch(setStreamingInfo(data))
             axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
             .then((res)=>{
                 console.log('미팅 참여 성공 ')
+                navigate('/streaming-live')
             })
-            navigate('/streaming-live')
+            .catch((err)=>{
+                console.log('error after join accepted', err.message)
+            })
         })
         .catch((err)=>{
-            console.log('error occured' + err)
+            return Toast.fire(err.response.data.message, "", "warning")
+            console.log('error occured' , err.response.data.message)
         })
     }
     
@@ -45,11 +49,25 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
     return (
         <div className='streaming-card-wrapper'>
             <Card className="streaming-card" onClick={()=>checkMeeting()}>
-                <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg'/>
+                {
+                    status === "ATTENDEE_WAIT" ? (
+                        <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg-wait'/>
+                    ) : (
+                        <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg-scheduled'/>
+                    )
+                }
                 <Card.Img src={recipe_image_url} alt="레시피 대표 이미지" />
-                <Card.ImgOverlay className='overlay-icon'>
-                    <ion-icon name="play-circle-outline"></ion-icon>
-                </Card.ImgOverlay>
+                {
+                    status === "ATTENDEE_WAIT" ? (
+                        <Card.ImgOverlay className='overlay-icon-play'>
+                            <ion-icon name="play-circle-outline"></ion-icon>
+                        </Card.ImgOverlay>
+                    ) : (
+                        <Card.ImgOverlay className='overlay-icon-alarm'>
+                            <ion-icon name="alarm-outline"></ion-icon>
+                        </Card.ImgOverlay>
+                    )
+                }
                     {
                         status === "ATTENDEE_WAIT" && (
                             <Card.ImgOverlay className='overlay-participants'>

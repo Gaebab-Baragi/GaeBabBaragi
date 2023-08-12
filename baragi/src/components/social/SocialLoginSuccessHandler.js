@@ -17,8 +17,8 @@ const SocialLoginHandler= () => {
         )
         .then((res) => {
             if (res.status === 200){
-                const data = {...res.data}
-                dispatch(loginUser(data));
+                dispatch(loginUser(res.data));
+                console.log("handler", res.data);
                 navigate("/");
             }
         })

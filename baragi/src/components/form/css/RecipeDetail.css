@@ -35,8 +35,7 @@
   align-items: center;
   gap: 10px; /* Adjust the gap between icons */
 }
-
-.icon-container ion-icon {
+.icon-container ion-icon{
   cursor: pointer;
 }
 
@@ -235,6 +234,7 @@
   background-color: #ffffff;
   border: 1px solid black;
   border-radius: 10px;
+  font-weight: bold;
 }
 .comment-info {
   display: flex;
@@ -262,6 +262,19 @@
   width:100%;
   max-width: 80px;
 }
+
+.comment-img{
+
+}
+.comment-content-img{
+  background-color: blue;
+  width:100%;
+  max-width:80px;
+  margin-right:1%;
+  border-radius: 5px;
+}
+
+
 .comment-list{
   margin-top:3%;
 }
@@ -298,4 +311,19 @@
   text-align: right;
   color: #777;
   font-size:13px;
+  cursor:pointer;
+}
+
+
+.file-input {
+  min-width: 100px;
+  height:80px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  border-radius: 10px;
+  align-items: center;
+}
+.file-input{
+  font-size: 20px;
+  font-weight: bold;
 }
