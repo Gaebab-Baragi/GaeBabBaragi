@@ -8,12 +8,12 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
   margin-left: 10%;
   margin-right: 10%;
-  justify-content:space-between;
-  // gap: 2%;
+  justify-content:flex-start;
 `;
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
+  margin-right:2.5%
 `;
 
 function CardPaginationList({rowNum,filteredList}) {

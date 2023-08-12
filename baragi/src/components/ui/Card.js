@@ -13,11 +13,9 @@ function CardComponent({recipe}) {
       <Card.Img style={{height:'200px'}} variant="top" src={recipe.imgUrl} />
       <Card.Body>
         <Card.Title>{recipe.title}</Card.Title>
-        <Card.Text>
-          {recipe.description} 
-        </Card.Text>
+        <Card.Text>{recipe.description} </Card.Text>
         <Card.Text style={{display:'flex', justifyContent:'space-around'}}>
-          <span> ❤  {recipe.hit}  </span>
+          <span> 좋아요 수:  {recipe.hit}  </span>
           <span> | </span>
           <span > 작성자 : {recipe.member.nickname} </span>
         </Card.Text>

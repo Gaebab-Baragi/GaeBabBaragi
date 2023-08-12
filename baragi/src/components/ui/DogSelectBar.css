@@ -42,6 +42,5 @@
 }
 
 .dogImage.selected {
-  /* Styles for the selected image */
-  border-color:cadetblue; /* Change the border color for selected images */
+  border-color: #ffaa00; 
 }

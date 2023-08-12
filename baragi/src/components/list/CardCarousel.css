@@ -11,6 +11,6 @@
   filter: invert(100%);
 }
 
-.carousel-indicators  {
-  bottom: -10 !important;
+.carousel-indicators {
+  bottom: -50px; 
 }

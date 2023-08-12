@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import './css/RecipeListPage.css'
 import CardPaginationList from "../components/list/CardPagination";
 import SearchBar from "../components/ui/SearchBar";
 import IngredientTagBar from "../components/ui/IngredientTagBar";
-import { useNavigate } from 'react-router-dom'
 import CardCarousel from "../components/list/CardCarousel";
-import './css/RecipeListPage.css'
 import DogSelectBar from "../components/ui/DogSelectBar";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom'
 import useDidMountEffect from "../useDidMountEffect";
-import { compose } from "@reduxjs/toolkit";
+import Toast from "../components/ui/Toast";
 
 function RecipeListPage() {
   const navigate = useNavigate();
+  const user = useSelector((state)=>state.user)
   const dogs = useSelector((state)=>state.recipeSearch.dogs)
   const ingredients = useSelector((state)=>state.recipeSearch.ingredients)
   const title = useSelector((state)=>state.recipeSearch.keyword)
@@ -48,7 +49,7 @@ function RecipeListPage() {
     })
   },[])
   
-  // 필터링된 레시피 가져오기
+  // 검색에 변화 있을 떄 필터링된 레시피 가져오기
   useDidMountEffect(()=>{
     console.log('redux에서 변화가 일어남', title, ingredients, dogs)
     let tempIngredient = ingredients;
@@ -78,23 +79,38 @@ function RecipeListPage() {
     setFiltered(true)
     },[dogs,ingredients,title])
 
+    // 레시피 작성하기 버튼 클릭 시
+    const handleRequestRecipeRegister = ()=> {
+      if (user.id) {
+        navigate('/recipe-register')
+      } else {
+        Toast.fire("로그인 후 작성할 수 있습니다.", "", "info");
+        navigate('/login')
+      }
+    }
+
   return (
     <div >
       {/* 검색창 */}
-      <div className="searchContainer">
-        <div className="searchRecipeRegister">
-          <SearchBar data={recipeTitleList}/>
-          <button className="recipeRegisterBtn" onClick={()=>navigate('/recipe-register')}>레시피 작성</button>
+      <div className="searchWrapContainer">
+        <div className="searchContainer">
+          <div className="searchRecipeRegister">
+            <SearchBar data={recipeTitleList}/>
+            <button className="recipeRegisterBtn" onClick={handleRequestRecipeRegister}>레시피 작성</button>
+          </div>
+          <IngredientTagBar/> 
+          {/* 로그인 된 회원 만 보이게 하기 */}
+          {user.id &&
+            <DogSelectBar/>
+          }
         </div>
-        <IngredientTagBar/> 
-        <DogSelectBar/>
       </div>
     {
     filtered
       // 검색 --> 레시피 목록 보이게
       ? 
       <div>
-        <h2>총 {filteredList.length} 건의 레시피가 있습니다.</h2>
+        <h2 className="recipeLengthTitle">총 {filteredList.length} 건의 레시피가 있습니다.</h2>
         <CardPaginationList rowNum={3} filteredList={filteredList}/>
       </div>
       // 첫 화면 --> 인기 레시피 캐로셀로 보여주기
