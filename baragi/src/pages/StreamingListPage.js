@@ -40,6 +40,7 @@ function StreamingListPage() {
                 meeting_id={streamingItem.id}
                 recipe_id={streamingItem.recipe_id}
                 recipe_image_url={streamingItem.recipe_image_url}
+                is_private_room={streamingItem.is_private_room}
               />
             </div>
           ))}
