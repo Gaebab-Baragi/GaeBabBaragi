@@ -16,7 +16,7 @@ function RecipeListPage() {
   const user = useSelector((state)=>state.user)
   const dogs = useSelector((state)=>state.recipeSearch.dogs)
   const ingredients = useSelector((state)=>state.recipeSearch.ingredients)
-  const title = useSelector((state)=>state.recipeSearch.keyword)
+  const title = useSelector((state)=>state.recipeSearch.title)
   const [filtered, setFiltered] = useState(false);
   const [filteredList, setFilteredList] = useState([])
   const [recipeTitleList, setRecipeTitleList] = useState([])
@@ -61,7 +61,7 @@ function RecipeListPage() {
       tempDog = null;
     } 
     const data = {
-      title : '',
+      title : title,
       ingredients: tempIngredient,
       pets: tempDog
     }
