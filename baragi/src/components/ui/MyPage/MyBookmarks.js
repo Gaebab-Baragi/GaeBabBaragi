@@ -7,15 +7,16 @@ import axios from "axios";
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  
+  justify-content:flex-start;
   max-width : 1200px;
 `;
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
+  margin-right:2.5%
 `;
 
-function MyBookmarks({rowNum, list}) {
+function MyBookmarks({rowNum}) {
   const [items, setItems] = useState([]); // 리스트에 나타낼 아이템
   const [count, setCount] = useState(0); // 아이템 총 개수
   const [currentpage, setCurrentpage] = useState(1); // 현재페이지
@@ -28,16 +29,20 @@ function MyBookmarks({rowNum, list}) {
     axios.get(process.env.REACT_APP_BASE_URL +"/api/bookmark/my")
       .then((res) => {
           if (res.status === 200){
-            setItems(res.data.recipes)
+            setItems(res.data)
+            console.log(res.data);
           }
       }) 
       .catch((res) => {
         console.log(res) 
+        setItems([])
       }) 
   }, []);
 
   useEffect(() => {
-    setCount(items.length);
+    if (items) {
+      setCount(items.length);
+    }
   }, [items]);
   
   useEffect(() => {
