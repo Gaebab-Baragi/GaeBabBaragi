@@ -8,7 +8,8 @@ function ObjectDetectionPage() {
   const dispatch = useDispatch();
   const classname = useSelector(state => state.objectDetect.Ingredients);
   const videoRef = useRef(null);
-  const forbidden = ['포도','사과']
+  const forbidden = ['포도','마늘', '우유', '양파']
+  const caution = ['사과','쳥경채','브로콜리','시금치','두부']
   const [filterO, setfilter] = useState('');
   const video = document.getElementById('videoCam');
   const canvas = document.getElementById("canvas");
@@ -203,7 +204,9 @@ function ObjectDetectionPage() {
           <ul>
             {uniqueClassname.map((value, index) => (
               <li 
-              style={{color: forbidden.includes(value) ? 'red' : 'black'}}
+              style={{
+                color: forbidden.includes(value) ? 'red' :
+                       caution.includes(value) ? 'orange': 'black'}}
               key={index}>{value}</li>
             ))}
           </ul>
