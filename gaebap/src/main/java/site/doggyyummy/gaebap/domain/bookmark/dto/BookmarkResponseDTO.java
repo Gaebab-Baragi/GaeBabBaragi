@@ -28,7 +28,7 @@ public class BookmarkResponseDTO {      //순환 참조 방지용으로 DTO 필�
                         .description(recipe.getDescription())
                         .writtenTime(recipe.getWrittenTime())
                         .hit(recipe.getHit())
-                        .recipeImageUrl(builder().recipeImageUrl)
+                        .recipeImageUrl(recipe.getImageUrl())
                         .build();
         return bookmarkResponseDTO;
     }

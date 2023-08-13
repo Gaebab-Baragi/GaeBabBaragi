@@ -5,13 +5,16 @@ import MyRecipes from "../components/ui/MyPage/MyRecipes"
 import Nav from 'react-bootstrap/Nav';
 import { useState } from "react";
 import './css/MyRecipePage.css'
+import MyPageNavbar from "../components/ui/MyPage/MyPageNavbar.js"
 
 function MyRecipePage() {
   const [currentShow, setCurrentShow] = useState('mystreamings')
 
     return (
+      <>
+        <MyPageNavbar sel={3}> </MyPageNavbar>
+
         <div className="myRecipePageContainer" >
-        
           <Nav justify variant="tabs" defaultActiveKey="/home">
             <Nav.Item>
               <Nav.Link 
@@ -38,6 +41,7 @@ function MyRecipePage() {
           }
 
         </div>
+      </>
       );
     }
 export default MyRecipePage;
