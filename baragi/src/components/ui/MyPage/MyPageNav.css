@@ -1,0 +1,36 @@
+.my-selected{
+    color: #ffbb33;
+}
+
+.my-page-big{
+    font-size: 22px;
+    margin-left : 2%;
+    margin-right: 2%;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.my-page-big:hover{
+    color: #796d00;
+}
+
+.my-page-info{
+    font-size: 20px;
+    margin : 25px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.my-page-info:hover{
+    color: #796d00;
+}
+
+.my-page-nav-container{
+    margin-top: 2%;
+}
+
+.my-page-nav-sub-container{
+    margin-top : 1%;
+    padding-top: 1%;
+    width:100%;
+}

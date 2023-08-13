@@ -130,16 +130,22 @@ export default class ChatComponent extends Component {
       <div className='recipeContainer'>
         <div className='recipe-info'>
           <div className='recipe-title'>재료</div>
-          {this.props.recipeData.recipeIngredients.map((ing)=>{
-            return <div>{ing.ingredientsName} {ing.amount}</div>
-          })}
+          {this.props.recipeData.recipeIngredients.map((ingredient, index) => (
+              <div key={index}>
+                  {this.props.recipeData.ingredients[index].name} : {ingredient.amount}
+              </div>
+          ))}
+
+          {/* {this.props.recipeData.recipeIngredients.map((ing)=>{
+            return <div>{ing.ingredientName} {ing.amount}</div>
+          })} */}
         </div>
 
         <div className='recipe-info'>
           <div className='recipe-title'>레시피</div>
           {this.props.recipeData.steps.map((step)=>{
             return(
-              <div>{step.orderingNumber} {step.descriptions}</div>
+              <div>Step{step.orderingNumber} : {step.description}</div>
             )
           })}
         </div>
