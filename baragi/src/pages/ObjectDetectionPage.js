@@ -10,6 +10,7 @@ function ObjectDetectionPage() {
   const videoRef = useRef(null);
   const forbidden = ['포도','마늘', '우유', '양파']
   const caution = ['사과','쳥경채','브로콜리','시금치','두부']
+  const safe = ['바나나','양배추','당근','닭 가슴살','계란','감자','호박','고구마']
   const [filterO, setfilter] = useState('');
   const video = document.getElementById('videoCam');
   const canvas = document.getElementById("canvas");
@@ -167,7 +168,7 @@ function ObjectDetectionPage() {
 
   return (
   <div className = 'grid-container'>
-    <div className = 'item-8'>
+    <div className = 'item-7'>
       <h2>객체탐지</h2>
       {CanvasState === 'none' ?
       <div style={{display:"", justifyContent:"center",alignItems: "center" , width : '60%',hegiht:'auto', marginLeft:'20%', borderRadius:"100px", bottom:'5%', cursor:"pointer" }}>
@@ -197,6 +198,19 @@ function ObjectDetectionPage() {
 
 
     </div>
+    <div className ='item-1'>
+
+        <div style = {{marginTop:'40px',border : '2px solid black', width :'100%', hegiht:'auto'}}>
+          <li>빨간색은 금지</li>
+          <li>주황색은 주의</li>
+          <li>녹색은 가능</li>
+          <li>검은색은 사용자 지정</li>
+        </div>
+
+    </div>
+
+
+
     <div className = 'item-4'>
     <div>
       <h2>재료 목록:</h2>
@@ -206,7 +220,8 @@ function ObjectDetectionPage() {
               <li 
               style={{
                 color: forbidden.includes(value) ? 'red' :
-                       caution.includes(value) ? 'orange': 'black'}}
+                       caution.includes(value) ? 'orange':
+                       safe.includes(value)?  '#00FF09': 'black'}}
               key={index}>{value}</li>
             ))}
           </ul>
