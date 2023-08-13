@@ -1,25 +1,20 @@
-import { useSelector } from "react-redux";
 import "./DogSelectBar.css";
-import dogImg from "./dogExample.jpg";
 import { useDispatch } from "react-redux";
-import {
-  updateDogs,
-  requestFilteredRecipeList,
-} from "../../redux/recipeSearchSlice.js";
+import {updateDogs} from "../../redux/recipeSearchSlice.js";
 import { useEffect, useState } from "react";
 import useDidMountEffect from "../../useDidMountEffect";
 import axios from "axios";
-import recipeSearch from './../../redux/recipeSearchSlice';
+import { useNavigate } from "react-router-dom";
 
 
 // button 누르면 반려견 등록 페이지로 navigate 해주는 기능 추가해주기
 
 function DogSelectBar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [dogsSelected, setDogsSelected] = useState([]);
   const [pets, setPets] = useState({});
-  const [shouldDispatchRequest, setShouldDispatchRequest] = useState('false');
-
+ 
   // 강아지 선택 할 때 
   const handleSelectDog = (dogId) => {
     if (dogsSelected.includes(dogId)) {
@@ -56,11 +51,11 @@ function DogSelectBar() {
     <div className="dogContainer">
       <div className="dogContainerHeader">
         <span className="dogContainerTitle">내 반려동물</span>
-        <button className="addDogButton">+</button>
+        <button onClick={()=>navigate('/my-pet-list/0')} className="addDogButton">+</button>
       </div>
-      <hr className="dogContainerSeperator" />
+      <hr className="dogContainerSeperator"/>
       <div className="dogImageContainer">
-        {/* 가지고 있는 강아지 정보를 map하면서  */}
+        {/* 가지고 있는 강아지 정보를 map하면서 */}
         { Object.values(pets).map((pet,index) => {
           const isSelected = dogsSelected.includes(pet.id);
           return (

@@ -1,3 +1,18 @@
 .streaming-card-component {
     height: auto;
 }
+
+.searchRecipeRegister {
+    display: flex;
+    flex-direction: row;
+}
+
+.streamingTitle{
+    text-align: left;
+    margin-top: 3%;
+}
+
+.streaming-list {
+    /* margin-left: 10%;
+    margin-right: 10%; */
+}

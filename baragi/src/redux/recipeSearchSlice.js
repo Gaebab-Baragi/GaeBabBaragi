@@ -9,7 +9,7 @@ export const updateFilteredList = () =>({
 let recipeSearch= createSlice({
   name:'recipeSearch',
   initialState:{
-    keyword:'',
+    title:'',
     ingredients:[],
     dogs:[],
     filteredList:[],
@@ -18,7 +18,7 @@ let recipeSearch= createSlice({
   reducers:{
     updateKeyword: (state, action) =>{
       // 레시피 제목 검색 키워드 저장
-      state.keyword = action.payload;
+      state.title = action.payload;
       console.log('keyword updated: ' + state.keyword)
     },
     updateIngredients: (state, action) =>{

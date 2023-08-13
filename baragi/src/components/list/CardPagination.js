@@ -6,13 +6,14 @@ import CardComponent from "../ui/Card";
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   margin-left: 10%;
   margin-right: 10%;
+  justify-content:flex-start;
 `;
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
+  margin-right:2.5%
 `;
 
 function CardPaginationList({rowNum,filteredList}) {
