@@ -8,8 +8,6 @@ import ChatComponent from './Chat/ChatComponent';
 import Toast from '../components/ui/Toast';
 var localUser = new UserModel();
 
-
-
 class Streaming extends Component {
     constructor(props) {
         super(props);
@@ -291,6 +289,7 @@ class Streaming extends Component {
         const streamManagerNickname = this.state.myUserName
         const recipeData = this.props.recipeData;
         const isStartBtnDisabled = this.state.isStartBtnDisabled
+        const userProfileUrl = this.props.userProfileUrl
 
         return (
             <div className='StreamingLiveContatiner'>
@@ -417,7 +416,7 @@ class Streaming extends Component {
                 </div>
             </div>
 
-                <ChatComponent recipeData={recipeData} user={localUser} className="ChatComponent"/>
+                <ChatComponent userProfileUrl={userProfileUrl} recipeData={recipeData} user={localUser} className="ChatComponent"/>
                 
 
 
