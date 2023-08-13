@@ -11,6 +11,7 @@ function MainPage(){
             console.log("")
         })
         .catch((res) => console.log(res));
+
     }, [])
     return(
         <div className='mainPage'>

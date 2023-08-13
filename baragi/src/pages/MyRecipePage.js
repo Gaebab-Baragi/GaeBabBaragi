@@ -7,7 +7,7 @@ import MyPageNavBar from "../components/ui/MyPage/MyPageNavbar";
 function MyRecipePage() {
     return (
         <>
-            <MyPageNavBar></MyPageNavBar>
+            <MyPageNavBar sel={3}></MyPageNavBar>
             <div className="myInfoSection">
                 <h2 className="myInfoHeader">내 방송</h2> 
                 <MyStreamings></MyStreamings>

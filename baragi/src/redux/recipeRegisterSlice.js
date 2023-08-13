@@ -22,7 +22,7 @@ let recipeRegister = createSlice({
     ],
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     recipeImage: '',
-    recipeVideo: './기본이미지.png',
+    recipeVideo: '0',
     // videoUrl : './기본이미지.png'
     stepImages : ['0'],
 
@@ -56,6 +56,7 @@ let recipeRegister = createSlice({
       console.log('file',state.recipeImage)
 
       formData.append("recipeImage", state.recipeImage)
+      console.log(state.recipeVideo)
       formData.append('recipeVideo',state.recipeVideo) // 이거 이름수정
       console.log('stepImages redux : ', state.stepImages)
       // state.stepImages.map((step)=>{

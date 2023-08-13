@@ -7,14 +7,12 @@ import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
 var localUser = new UserModel();
 
-
-
 class Streaming extends Component {
     constructor(props) {
         super(props);
 
         this.hasJoinedSession = false;
-
+        console.log('스트리밍 들어옴, 아이디 확인', props.sessionId)
         this.state = {
             mySessionId: props.sessionId.toString(),
             myUserName: props.nickname,
@@ -425,7 +423,7 @@ class Streaming extends Component {
     }
 
     async createSession(sessionId) {
-        const response = await axios.post(process.env.REACT_APP_BASE_URL + 'meetings/sessions',{ customSessionId: sessionId }, {
+        const response = await axios.post(process.env.REACT_APP_BASE_URL + '/api/meetings/sessions',{ customSessionId: sessionId }, {
             headers: { 
             'Content-Type': 'application/json', 
         },
@@ -434,7 +432,7 @@ class Streaming extends Component {
     }
 
     async createToken(sessionId) {
-        const response = await axios.post(process.env.REACT_APP_BASE_URL +'meetings/sessions/' + sessionId + '/connections', {}, {
+        const response = await axios.post(process.env.REACT_APP_BASE_URL +'/api/meetings/sessions/' + sessionId + '/connections', {}, {
             headers: { 
             'Content-Type': 'application/json', 
             },

@@ -30,7 +30,7 @@ function PetListPage() {
 
   return(
     <>
-    <MyPageNavBar></MyPageNavBar>
+    <MyPageNavBar sel={2}></MyPageNavBar>
     <div className='myswiper'>
       <Swiper
         effect={'coverflow'}

@@ -4,7 +4,6 @@ import MyPageNavBar from "../components/ui/MyPage/MyPageNavbar";
 function FindPasswordPage() {
   return(
     <>
-      <MyPageNavBar></MyPageNavBar>
       <FindPasswordForm/>
     </>
   )

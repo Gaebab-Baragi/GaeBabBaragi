@@ -63,7 +63,7 @@ function MemberModificationForm(){
         .then((res)=>{
         if (res.status === 200) {
             console.log('duplication checked')
-            Toast.fire("사용 가능한 닉네임입니다.", "", "success");
+            Toast.fire("사용 가능한 닉네임입니다.", "", "");
             setNicknameDuplicateCheck(true);
         }
         })
@@ -75,7 +75,7 @@ function MemberModificationForm(){
         else Toast.fire("이유를 알 수 없는 오류", "", "error")
         })
 
-    }, [nickname, originNickname]);
+    }, [nickname, originNickname]); 
 
 
     const onSubmit = (e) => {

@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import './StreamingCard.css'
+import Toast from '../Toast';
 
 
-function StreamingCardComponent({meeting_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
+function StreamingCardComponent({meeting_id, recipe_id,recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -17,24 +18,27 @@ function StreamingCardComponent({meeting_id, recipe_image_url, current_participa
         .then((res)=>{
             console.log('request success : ', res.data);
             const data = {
-                recipe_image_url,
-                current_participants,
-                max_participant,
-                status,
-                host_profile_url,
-                title,
-                host_nickname,
-                start_time
+                meeting_id: meeting_id,
+                title : title,
+                recipe_id: recipe_id,
+                host_nickname: host_nickname,
+                max_participant: max_participant,
+                start_time:start_time,
+                recipe_image_url
             }
             dispatch(setStreamingInfo(data))
             axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
             .then((res)=>{
                 console.log('미팅 참여 성공 ')
+                navigate('/streaming-live')
             })
-            navigate('/streaming-live')
+            .catch((err)=>{
+                console.log('error after join accepted', err.message)
+            })
         })
         .catch((err)=>{
-            console.log('error occured' + err)
+            return Toast.fire(err.response.data.message, "", "warning")
+            console.log('error occured' , err.response.data.message)
         })
     }
     

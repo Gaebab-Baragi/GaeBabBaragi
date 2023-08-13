@@ -17,9 +17,9 @@ function NaviBar() {
 
     return (
       <>
-        <Navbar sticky="top" expand="lg" bg='white'>
+        <Navbar collapseOnSelect sticky="top" expand="lg" bg='white'>
           <Container>
-            <Navbar.Brand onClick={() => {navigate('/')}} style={{cursor:'pointer'}}>
+            <Navbar.Brand href='/' style={{cursor:'pointer'}}>
               <img
                 alt="개밥바라기 로고"
                 src="/image/개밥바라기.png"
@@ -32,25 +32,25 @@ function NaviBar() {
             </Navbar.Toggle>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className='me-auto my-2 my-lg-0'>
-                <Nav.Link onClick={()=>{navigate('/recipe-list')}}>레시피</Nav.Link>
-                <Nav.Link onClick={()=>{navigate('/streaming-list')}}>스트리밍</Nav.Link>
-                <Nav.Link onClick={()=>{navigate('/')}}>커뮤니티</Nav.Link>
+                <Nav.Link as={Link} to='/recipe-list' href='/recipe-list'>레시피</Nav.Link>
+                <Nav.Link as={Link} to='/streaming-list' href='/streaming-list'>스트리밍</Nav.Link>
+                <Nav.Link as={Link} to='/' href='/'>커뮤니티</Nav.Link>
               </Nav>
               {
               !user.isLogin ? ( 
                 <Nav> {/* 로그인 X */}
-                  <Nav.Link onClick={()=>{navigate('/login')}} eventKey={3} className='navbar-nav2-link-list' >로그인</Nav.Link>
-                  <Nav.Link onClick={()=>{navigate('/signup')}} eventKey={4} className='navbar-nav2-link-list' >회원가입</Nav.Link>
+                  <Nav.Link as={Link} to='/login' href='/login' eventKey={3} className='navbar-nav2-link-list' >로그인</Nav.Link>
+                  <Nav.Link as={Link} to='/signup' href='/signup' eventKey={4} className='navbar-nav2-link-list' >회원가입</Nav.Link>
                 </Nav>
               )
               : (
               <Nav> {/* 로그인 O */}
                 <NavDropdown title="내 프로필" id="basic-nav-dropdown">
-                  <NavDropdown.Item onClick={()=>{navigate('/myinformation')}} eventKey={5} className='navbar-nav2-dropdown'>내 정보변경</NavDropdown.Item>
-                  <NavDropdown.Item onClick={()=>{navigate('/my-pet-list/0')}} eventKey={6} className='navbar-nav2-dropdown'>반려견 관리</NavDropdown.Item>
-                  <NavDropdown.Item onClick={()=>{navigate('/myrecipe')}} eventKey={7} className='navbar-nav2-dropdown'>찜한 레시피</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/myinformation' href='/myinformation' eventKey={5} className='navbar-nav2-dropdown'>내 정보변경</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/my-pet-list/0' href='/my-pet-list/0' eventKey={6} className='navbar-nav2-dropdown'>반려견 관리</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/myrecipe' href='/myrecipe' eventKey={7} className='navbar-nav2-dropdown'>찜한 레시피</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={()=>{navigate('/logout')}} className='navbar-nav2-dropdown'> 로그아웃 </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/logout' href='/logout' className='navbar-nav2-dropdown'> 로그아웃 </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
               )
