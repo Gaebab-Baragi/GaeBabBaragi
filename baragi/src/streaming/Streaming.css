@@ -42,7 +42,20 @@ width: 30%;
 	margin-bottom: 1%;
 	/* background-color: rebeccapurple; */
 }
-
+.buttonContainer{
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+.startButton{
+	background-color: cadetblue;
+	color: white;
+	width: 120px;
+	border: 0;
+	border-radius: 30px;
+	height: 40px;
+	/* margin-left: 2%; */
+}
 .leaveButton {
 	background-color: red;
 	color: white;
