@@ -44,12 +44,11 @@ function MaterialRegist() {
 
   return (
     <div style = {{  marginTop : '1%', marginBottom:'1%'}}> 
-
       <div style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '10px' }}>
       {inputMats.map((inputMat, index) => (
-        <div key={index}>
+        <div key={index} style={{display:'flex', marginLeft:'3%', marginBottom : '1%'}}>
           <InputMat step={index} matName={inputMat.ingredientName} matAmount={inputMat.amount} ingredientsChange={handleIngredientsChange} />
-          <button style ={{  }}onClick={() => handleDeleteInputMat(index)}>-</button>
+          <button style ={{ margin:'auto'}} onClick={() => handleDeleteInputMat(index)}>-</button>
         </div>
         ))}
       </div>
