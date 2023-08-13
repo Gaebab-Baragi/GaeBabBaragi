@@ -5,14 +5,16 @@ import RecipeCard from "../RecipeCard";
 import axios from "axios";
 
 const CardContainer = styled.div`
+  margin-top:2%;
   display: flex;
   flex-wrap: wrap;
-  
-  max-width : 1200px;
+  justify-content:flex-start;
+  // background-color:red;
 `;
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
+  margin-right:2.5%
 `;
 
 function RecipeCardPagination({rowNum}) {
