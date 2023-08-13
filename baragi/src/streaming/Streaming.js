@@ -5,6 +5,7 @@ import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
+import Toast from '../components/ui/Toast';
 var localUser = new UserModel();
 
 
@@ -242,6 +243,9 @@ class Streaming extends Component {
     }
 
     startSession() {
+        if (this.isStartBtnDisabled) {
+            Toast.fire('이미 미팅을 시작하였습니다.', '','info')
+        }
         const sessionId = parseInt(this.state.mySessionId)
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/start/${sessionId}`)
         .then((res)=>{
@@ -294,7 +298,14 @@ class Streaming extends Component {
             <div className="streamingContainer">
                 <div className='streamingTop'>
                     <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
-                    <p>시작 시간 : {streamingInfo.start_time}</p>
+                    <div className='streamingInfoContainer'>
+                        <p>시작 시간 : {streamingInfo.start_time}</p>
+                        {!isStartBtnDisabled ? (
+                            <p style={{marginLeft:'1%', fontWeight:'bold', marginRight:'2%'}}>
+                                <ion-icon style={{ color: 'red' }} size="small" name="alert-circle"></ion-icon> 아직 호스트가 미팅을 시작하지 않았습니다.
+                            </p>
+                        ) : null}
+                    </div>
                 </div>
 
 
@@ -378,7 +389,9 @@ class Streaming extends Component {
                         myUserName === host_nickname 
                         ?
                         <div className='buttonContainer'>
-                            <button className='startButton' onClick={this.startSession} disabled={isStartBtnDisabled}>미팅 시작하기</button>
+                            {!isStartBtnDisabled &&
+                                <button className='startButton' onClick={this.startSession}>미팅 시작하기</button>
+                            }
                             <button className='leaveButton' onClick={this.endSession}>미팅 끝내기</button>   
                         </div>
                     

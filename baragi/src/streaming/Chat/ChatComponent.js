@@ -131,7 +131,7 @@ export default class ChatComponent extends Component {
         <div className='recipe-info'>
           <div className='recipe-title'>재료</div>
           {this.props.recipeData.recipeIngredients.map((ing)=>{
-            return <div>{ing.ingredientsName} {ing.amount}</div>
+            return <div>{ing.ingredientName} {ing.amount}</div>
           })}
         </div>
 
@@ -139,7 +139,7 @@ export default class ChatComponent extends Component {
           <div className='recipe-title'>레시피</div>
           {this.props.recipeData.steps.map((step)=>{
             return(
-              <div>{step.orderingNumber} {step.descriptions}</div>
+              <div>Step{step.orderingNumber} : {step.description}</div>
             )
           })}
         </div>
