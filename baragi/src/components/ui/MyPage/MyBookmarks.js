@@ -16,7 +16,7 @@ const StyledCardWrapper = styled.div`
   margin-right:2.5%
 `;
 
-function MyBookmarks({rowNum, list}) {
+function MyBookmarks({rowNum}) {
   const [items, setItems] = useState([]); // 리스트에 나타낼 아이템
   const [count, setCount] = useState(0); // 아이템 총 개수
   const [currentpage, setCurrentpage] = useState(1); // 현재페이지
@@ -30,6 +30,7 @@ function MyBookmarks({rowNum, list}) {
       .then((res) => {
           if (res.status === 200){
             setItems(res.data)
+            console.log(res.data);
           }
       }) 
       .catch((res) => {
@@ -75,13 +76,10 @@ function MyBookmarks({rowNum, list}) {
 
   const indexOfLastPost = currentpage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = [];
-  if (items) {
-    const currentPosts = items.slice(
-      indexOfFirstPost,
-      Math.min(indexOfLastPost, count)
-    );
-  }
+  const currentPosts = items.slice(
+    indexOfFirstPost,
+    Math.min(indexOfLastPost, count)
+  );
   
   const setPage = (e) => {
     setCurrentpage(e);
