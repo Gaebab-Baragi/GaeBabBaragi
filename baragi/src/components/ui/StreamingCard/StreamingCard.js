@@ -12,52 +12,65 @@ function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_i
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [modalShow, setModalShow] = useState(false);
+    const [enteredPassword, setEnteredPassword] = useState('');
+
+    // 비밀번호 입력 확인
+    useEffect(()=>{
+      console.log('비밀번호 입력됨', enteredPassword)
+    },[enteredPassword])
+
+    const handlePasswordEntered = (password) =>{
+      setEnteredPassword(password)
+      setModalShow(false)
+    }
 
     function checkMeeting() {
         console.log('PRIVATE ROOM :', is_private_room)
         // 비밀번호 요청하기 + 모달창 띄우기
-        if (!streamingInfo.is_private_room) {
+        if (streamingInfo.is_private_room) {
             setModalShow(true);
-            
             console.log('private room')
         }
 
         // 미팅에 참여 가능한 지 
-        // axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}`)
-        // .then((res)=>{
-        //     console.log('request success : ', res.data);
-        //     const data = {
-        //         meeting_id,
-        //         title,
-        //         recipe_id,
-        //         host_nickname,
-        //         max_participant,
-        //         start_time,
-        //         recipe_image_url,
-        //     }
-        //     dispatch(setStreamingInfo(data))
-        //     axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
-        //     .then((res)=>{
-        //         console.log('미팅 참여 성공 ')
-        //         navigate('/streaming-live')
-        //     })
-        //     .catch((err)=>{
-        //         console.log('error after join accepted', err.message)
-        //     })
-        // })
-        // .catch((err)=>{
-        //     return Toast.fire(err.response.data.message, "", "warning")
-        //     console.log('error occured' , err.response.data.message)
-        // })
+        axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}?password=${enteredPassword}`)
+        .then((res)=>{
+            console.log('request success : ', res.data);
+            const data = {
+              meeting_id,
+              title,
+              recipe_id,
+              host_nickname,
+              max_participant,
+              start_time,
+              recipe_image_url,
+            }
+            dispatch(setStreamingInfo(data))
+            axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
+            .then((res)=>{
+                console.log('미팅 참여 성공 ')
+                navigate('/streaming-live')
+            })
+            .catch((err)=>{
+              Toast.fire(err.response.data.message,"","warning")
+              console.log('error after join accepted', err.message)
+            })
+        })
+        .catch((err)=>{
+            Toast.fire(err.response.data.message, "", "warning")
+            console.log('error occured' , err.response.data.message)
+        })
     }
     
     useEffect(()=>{
         console.log(meeting_id)
     },[])
+
+    
     
     return (
         <div className='streaming-card-wrapper'>
-          <PassswordModal show={modalShow} onHide={()=>setModalShow(false)} />
+          <PassswordModal handlePasswordEntered={handlePasswordEntered} show={modalShow} onHide={()=>setModalShow(false)} />
             <Card className="streaming-card" onClick={()=>checkMeeting()}>
                 {
                     status === "ATTENDEE_WAIT" ? (
