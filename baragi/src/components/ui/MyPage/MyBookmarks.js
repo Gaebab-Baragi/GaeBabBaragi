@@ -7,12 +7,13 @@ import axios from "axios";
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  
+  justify-content:flex-start;
   max-width : 1200px;
 `;
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
+  margin-right:2.5%
 `;
 
 function MyBookmarks({rowNum, list}) {
@@ -33,11 +34,14 @@ function MyBookmarks({rowNum, list}) {
       }) 
       .catch((res) => {
         console.log(res) 
+        setItems([])
       }) 
   }, []);
 
   useEffect(() => {
-    setCount(items.length);
+    if (items) {
+      setCount(items.length);
+    }
   }, [items]);
   
   useEffect(() => {
@@ -71,10 +75,13 @@ function MyBookmarks({rowNum, list}) {
 
   const indexOfLastPost = currentpage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = items.slice(
-    indexOfFirstPost,
-    Math.min(indexOfLastPost, count)
-  );
+  const currentPosts = [];
+  if (items) {
+    const currentPosts = items.slice(
+      indexOfFirstPost,
+      Math.min(indexOfLastPost, count)
+    );
+  }
   
   const setPage = (e) => {
     setCurrentpage(e);
