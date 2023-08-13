@@ -25,7 +25,7 @@ public class BookmarkController {
 
     private final BookmarkServiceImpl bookmarkService;
 
-    @Operation(description = "현재 로그인한 회원의 좋아요 목록을 불러옴")
+    @Operation(description = "현재 로그인한 회원의 좋아요 레시피 목록을 불러옴")
     @GetMapping("/my")
     public ResponseEntity<List<BookmarkResponseDTO>> selectMyBookmarks(){
        return new ResponseEntity<>(bookmarkService.selectByMember(SecurityUtil.getCurrentLoginMember()), HttpStatus.OK);

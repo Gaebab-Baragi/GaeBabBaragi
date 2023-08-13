@@ -29,7 +29,7 @@ function MyBookmarks({rowNum, list}) {
     axios.get(process.env.REACT_APP_BASE_URL +"/api/bookmark/my")
       .then((res) => {
           if (res.status === 200){
-            setItems(res.data.recipes)
+            setItems(res.data)
           }
       }) 
       .catch((res) => {

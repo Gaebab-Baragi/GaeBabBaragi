@@ -9,6 +9,7 @@ import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import axios from 'axios';
 import PetRegisterForm from '../../components/form/PetRegisterForm';
 import { useParams } from 'react-router-dom';
+import MyPageNavBar from '../../components/ui/MyPage/MyPageNavbar';
 
 function PetListPage() {
   const [petList, setPetList] = useState([])
@@ -28,6 +29,8 @@ function PetListPage() {
   },[idx])
 
   return(
+    <>
+    <MyPageNavBar sel={2}></MyPageNavBar>
     <div className='myswiper'>
       <Swiper
         effect={'coverflow'}
@@ -64,7 +67,7 @@ function PetListPage() {
         </SwiperSlide>
       </Swiper>
     </div>
-
+    </>
   )
 }
 
