@@ -3,14 +3,12 @@ import './css/ObjectDetectionPage.css'
 import {setIngredients, AddIngredients} from '../redux/objectDetectSlice'
 import React, {useState, useEffect, useRef } from 'react';
 import { useDispatch,useSelector  } from 'react-redux';
-
-
 // import "./styles.css";
-
 function ObjectDetectionPage() {
   const dispatch = useDispatch();
   const classname = useSelector(state => state.objectDetect.Ingredients);
   const videoRef = useRef(null);
+  const forbidden = ['포도','사과']
   const [filterO, setfilter] = useState('');
   const video = document.getElementById('videoCam');
   const canvas = document.getElementById("canvas");
@@ -40,6 +38,8 @@ function ObjectDetectionPage() {
   };
 
   function GoToCamera(target) { // 다시 촬영
+    dispatch(setIngredients(''))
+
     const canvas = document.getElementById("canvas");
     if (canvas) {
       const context = canvas.getContext('2d');
@@ -58,7 +58,7 @@ function ObjectDetectionPage() {
   function sreenShot(target) { // 카메라 촬영
     setCanvasState(''); // 켄버스 켜기
     setCameraState('none'); //비디오 끄기
-  
+    setanswerClass('')
 
     const video = document.getElementById('videoCam');
     const canvas = document.getElementById("canvas");
@@ -169,17 +169,31 @@ function ObjectDetectionPage() {
     <div className = 'item-8'>
       <h2>객체탐지</h2>
       {CanvasState === 'none' ?
-      <div style={{display:"", justifyContent:"center",alignItems: "center" , width : '682px', borderRadius:"100px",position:"", zIndex :"", bottom:'5%', cursor:"pointer", backgroundColor:""}}>
-        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, width:'640px', hegiht :'640px' ,transform:"rotateY(180deg)"}}  />
-        <canvas id="canvas" style={{display: CanvasState, width:'640px', hegiht :'640px' }}></canvas>
+      <div style={{display:"", justifyContent:"center",alignItems: "center" , width : '60%',hegiht:'auto', marginLeft:'20%', borderRadius:"100px", bottom:'5%', cursor:"pointer" }}>
+        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, border : '2px solid #000', width:'100%', hegiht :'auto' ,transform:"rotateY(180deg)"}}  /> 
+        {/* width : 682 , height 682  */}
+        <canvas id="canvas" style={{display: CanvasState, width:'60%', marginLeft:'20%', hegiht :'auto' }}></canvas>
         <div onClick={sreenShot} style={{textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", display:'flex', margin:'auto',bottom:'5%'}}>찰캌</div>
+
         </div>:
-        <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"682px",margin:"10px", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
-          <img src= {answerClass}  alt="" style={{display:CanvasState , width:'682px'}}></img>
-          {/* <img src="./기본이미지.png" alt=""style={{display:"flex", marginTop:'400px', justifyContent:"center"}} ></img> */}
-        <div style ={{textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", margin:'auto'}}>재촬영</div> 
-        </div>   
+        // <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"682px",margin:"10px", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
+        //   <img src= {answerClass}  alt="" style={{display:CanvasState , width:'682px'}}></img>
+        //   {/* <img src="./기본이미지.png" alt=""style={{display:"flex", marginTop:'400px', justifyContent:"center"}} ></img> */}
+        // <div style ={{textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", margin:'auto'}}>재촬영</div> 
+        // </div>   
+        <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"60%",marginLeft:"20%", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
+          <img src={answerClass} alt="" style={{display:CanvasState, width:'60%', marginLeft:'20%', height:'auto'}}></img>
+          <div style={{textAlign:"center", justifyContent: 'center', width:"60px", height:"60px", border:"2px solid", borderRadius:"100px", margin:'auto'}}>재촬영</div> 
+      </div>
     }
+
+
+
+
+
+
+
+
 
     </div>
     <div className = 'item-4'>
@@ -188,7 +202,9 @@ function ObjectDetectionPage() {
       {uniqueClassname.length > 0 ? (
           <ul>
             {uniqueClassname.map((value, index) => (
-              <li key={index}>{value}</li>
+              <li 
+              style={{color: forbidden.includes(value) ? 'red' : 'black'}}
+              key={index}>{value}</li>
             ))}
           </ul>
         ) 
