@@ -5,6 +5,7 @@ import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
+import Toast from '../components/ui/Toast';
 var localUser = new UserModel();
 
 class Streaming extends Component {
@@ -24,10 +25,12 @@ class Streaming extends Component {
             chatDisplay: true,
             videostate:true,
             audiostate:true,
+            isStartBtnDisabled:false,
         };
 
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
+        this.startSession = this.startSession.bind(this);
         this.endSession = this.endSession.bind(this);
         // this.toggleChat = this.toggleChat.bind(this);
     
@@ -237,6 +240,23 @@ class Streaming extends Component {
         
     }
 
+    startSession() {
+        if (this.isStartBtnDisabled) {
+            Toast.fire('이미 미팅을 시작하였습니다.', '','info')
+        }
+        const sessionId = parseInt(this.state.mySessionId)
+        axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/start/${sessionId}`)
+        .then((res)=>{
+            console.log(res.data)
+            this.setState({
+                isStartBtnDisabled:true,
+            });
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+
     endSession() {
         const sessionId = parseInt(this.state.mySessionId)
         console.log(sessionId, typeof(sessionId))
@@ -258,20 +278,7 @@ class Streaming extends Component {
         this.state.session.signal(signalOptions);
     }
 
-    camStatusChanged() {
-        localUser.setVideoActive(!localUser.isVideoActive());
-        localUser.getStreamManager().publishVideo(localUser.isVideoActive());
-        this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
-        this.setState({ localUser: localUser });
-    }
 
-    micStatusChanged() {
-        localUser.setAudioActive(!localUser.isAudioActive());
-        localUser.getStreamManager().publishAudio(localUser.isAudioActive());
-        this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
-        this.setState({ localUser: localUser });
-    }
-    
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
@@ -281,7 +288,8 @@ class Streaming extends Component {
         const streamManager = this.state.publisher
         const streamManagerNickname = this.state.myUserName
         const recipeData = this.props.recipeData;
-
+        const isStartBtnDisabled = this.state.isStartBtnDisabled
+        const userProfileUrl = this.props.userProfileUrl
 
         return (
             <div className='StreamingLiveContatiner'>
@@ -289,7 +297,14 @@ class Streaming extends Component {
             <div className="streamingContainer">
                 <div className='streamingTop'>
                     <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
-                    <p>시작 시간 : {streamingInfo.start_time}</p>
+                    <div className='streamingInfoContainer'>
+                        <p>시작 시간 : {streamingInfo.start_time}</p>
+                        {!isStartBtnDisabled ? (
+                            <p style={{marginLeft:'1%', fontWeight:'bold', marginRight:'2%'}}>
+                                <ion-icon style={{ color: 'red' }} size="small" name="alert-circle"></ion-icon> 아직 호스트가 미팅을 시작하지 않았습니다.
+                            </p>
+                        ) : null}
+                    </div>
                 </div>
 
 
@@ -368,10 +383,19 @@ class Streaming extends Component {
                         }}
                         name="videocam-off-outline"></ion-icon>
                     )}
+                    {/* 미팅 시작하기 / 나가기 */}
                     {
                         myUserName === host_nickname 
-                        ?<button className='leaveButton' onClick={this.endSession}>미팅 끝내기</button>
-                        :<button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                        ?
+                        <div className='buttonContainer'>
+                            {!isStartBtnDisabled &&
+                                <button className='startButton' onClick={this.startSession}>미팅 시작하기</button>
+                            }
+                            <button className='leaveButton' onClick={this.endSession}>미팅 끝내기</button>   
+                        </div>
+                    
+                        :
+                        <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
                     }
                       {/* 내 마이크 on off */}
                     {this.state.audiostate ?
@@ -392,7 +416,7 @@ class Streaming extends Component {
                 </div>
             </div>
 
-                <ChatComponent recipeData={recipeData} user={localUser} className="ChatComponent"/>
+                <ChatComponent userProfileUrl={userProfileUrl} recipeData={recipeData} user={localUser} className="ChatComponent"/>
                 
 
 

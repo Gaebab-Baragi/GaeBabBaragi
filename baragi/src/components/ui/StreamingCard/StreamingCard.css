@@ -10,14 +10,18 @@
     cursor: pointer; /* 원하는 커서 스타일로 변경 */
 }
 
-.streaming-card .card-img-bg {
+.streaming-card .card-img-bg-wait {
     position: absolute; /* 절대 포지션으로 설정하여 겹치게 함 */
     opacity: 0.8;
 }
 
-.streaming-card:hover .card-img-bg {
+.streaming-card:hover .card-img-bg-wait {
     position: absolute; /* 절대 포지션으로 설정하여 겹치게 함 */
     opacity: 1;
+}
+
+.streaming-card .card-img-bg-scheduled {
+    position: absolute; /* 절대 포지션으로 설정하여 겹치게 함 */
 }
 
 .streaming-card .card-img {
@@ -25,21 +29,33 @@
     height: 100%;
 }
 
-.streaming-card .overlay-icon {
+.streaming-card .overlay-icon-play {
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.streaming-card .overlay-icon ion-icon{
+.streaming-card .overlay-icon-alarm {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.streaming-card .overlay-icon-play ion-icon{
     opacity: 0;
 }
 
-.streaming-card:hover .overlay-icon ion-icon {
+.streaming-card:hover .overlay-icon-play ion-icon {
     color: #FFAA00;
     font-size: clamp(35px, 4vw, 40px);
     opacity: 1;
+}
+
+.streaming-card .overlay-icon-alarm ion-icon {
+    color: #FFAA00;
+    font-size: clamp(35px, 4vw, 40px);
 }
 
 .streaming-card .overlay-scheduled {
