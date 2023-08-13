@@ -16,7 +16,7 @@ function StreamingRegisterPage() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [maxParticipant, setMaxParticipant] = useState(2);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(null);
   const user = useSelector(state=>state.user)
   const navigate = useNavigate();
   // 로그인 안된 유저는 접근 안됨
@@ -51,7 +51,7 @@ function StreamingRegisterPage() {
     const data = {
       title: roomTitle,
       description: roomDescription,
-      password: null,
+      password: password,
       max_participant: maxParticipant,
       start_time: startTime,
       recipe_id: parseInt(id),
