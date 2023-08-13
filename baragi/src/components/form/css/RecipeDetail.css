@@ -176,19 +176,18 @@
 }
 
 .floatingDiv-image{
-  margin-left:10%;
-  margin-right:10%; 
   /*max-width: 100%;  부모 요소(floatingDiv)의 가로 크기에 맞게 이미지 크기 조절 
   
   object-fit: cover; */
   width: 80%; /* 부모 요소(floatingDiv)의 가로 크기와 동일한 크기로 이미지 크기 조절 */
   object-fit: contain;
   height:100px; 
-  border: 1px solid red;
+  border: 1px solid;
   margin-left:10%;
   margin-right:10%;
   margin-top:5%;
   margin-bottom:5%;
+  border-radius: 10px;
 }
 /* .comment-form{
   display: flex;
@@ -331,4 +330,20 @@
 }
 .file-input label{
   cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+}
+.floatingDiv-meeting-info{
+  color:#8B95A2;
+  font-size:11px;
+  text-align: left;
+  margin-left:10%;
+}
+.floatingDiv-meeting-host{
+  font-weight:bold;
+  font-size:15px;
+}
+
+.floatingDiv-meeting-host-img{
+  height:20px;
+  margin-right:2%;
+  
 }

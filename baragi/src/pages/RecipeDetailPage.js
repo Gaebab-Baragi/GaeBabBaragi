@@ -2,14 +2,13 @@
 
 //npm i react-copy-to-clipboard : 필요 (for 링크 복사)
 
-import tempImg from '../pages/apple.jpg';
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // 로그인 됏는지 확인해서 리다이렉트 하려고 필요.
 import { CopyToClipboard } from 'react-copy-to-clipboard'; // Import CopyToClipboard
 import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import StreamingCardComponent from '../components/ui/StreamingCard';
 
 //링크 복사 함수
 const copyUrlToClipboard = () => {
@@ -59,7 +58,7 @@ const RecipeDetailPage=()=>{
             try{
                 const response =await fetch(process.env.REACT_APP_BASE_URL+`/api/recipes/${id}`);
                 const responseComment=await fetch(process.env.REACT_APP_BASE_URL+`/api/comment?recipe_id=${id}`,{'Content-Type': 'application/json'})
-                const responseMeetings=await fetch(process.env.REACT_APP_BASE_URL+`/api/meetings?${id}`);
+                const responseMeetings=await fetch(process.env.REACT_APP_BASE_URL+`/api/meetings?recipe_id=${id}`);
                 const meetingRooms=await responseMeetings.json();
                 setMeetings(meetingRooms);
                 if(isLoggedIn==true){
@@ -158,17 +157,23 @@ const RecipeDetailPage=()=>{
     };
 
     const handleSubmitComment = async (event) => {
-        console.log("첨부");
+        
         event.preventDefault();
         const formData = new FormData();
-        formData.append('recipe_id',{id}.id);
-        console.log(formData.recipe_id);
-        formData.append('content', newCommentContent);
-        formData.append('commentImg', commentImage);
-        console.log("!!!!!");
+        const comment={
+            recipe_id:{id}.id,
+            content:newCommentContent,
+        }
+        formData.append('dto',new Blob([JSON.stringify(comment)],{type:"application/json"}));
+        if(commentImage){
+            formData.append('commentImg', new Blob([commentImage]));
+        }else{
+            formData.append('commentImg',new Blob());
+        }
+        
         if (!isLoggedIn) {
             alert('로그인이 필요한 서비스입니다.');
-            navigate('/login'); // Replace with your actual login page path
+            navigate('/login');
             return;
         }
         if (!newCommentContent.trim()) {
@@ -176,13 +181,12 @@ const RecipeDetailPage=()=>{
             return;
         }
         try {
-            console.log("????????");
             const response = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/comment`,
                 formData,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data', // Important: Set content type to multipart/form-data
+                        'Content-Type': 'multipart/form-data',
                       }
                 }
             );
@@ -191,11 +195,12 @@ const RecipeDetailPage=()=>{
                 const responseComment = await axios.get(
                     `${process.env.REACT_APP_BASE_URL}/api/comment?recipe_id=${id}`
                 );
-                const comment = responseComment.data; // Use response.data to access the returned data
+                const comment = responseComment.data;
                 setComments(comment);
     
                 // 댓글 작성 내용 초기화
                 setNewCommentContent('');
+                setCommentImage(null);
             } else {
                 console.error('댓글 작성 실패');
             }
@@ -345,9 +350,11 @@ const RecipeDetailPage=()=>{
                                         <div className='comment-content-delete'>
                                             <div className='comment-content'>{comment.content}</div>
                                         </div>
-                                    <div className='comment-img'>
-                                        <img className='comment-content-img' src={comment.commentImgUrl}></img>
-                                    </div>
+                                        {comment.commentImgUrl && (
+                                            <div className='comment-img'>
+                                                <img className='comment-content-img' src={comment.commentImgUrl}></img>
+                                            </div>
+                                        )}
                                     {isLoggedIn && comment.writerId === userId&& (
                                             <div className='comment-delete' onClick={() => handleDeleteComment(comment.id)}>삭제하기</div>
                                         )}
@@ -392,28 +399,23 @@ const RecipeDetailPage=()=>{
         </div>
         <hr></hr>
         <div>
-
             <ul className='meeting-list'>
                 {meetings.map((meeting, index) => (
                     <li key={index}>
                         <div>
-                            <img className='floatingDiv-image' src={meeting.host_profile_url}></img>
+                            <img className='floatingDiv-image' src={meeting.recipe_image_url}></img>
+                        </div>
+                        <div className='floatingDiv-meeting-info'>
+                            <div className='floatingDiv-meeting-host'>
+                                <img className='floatingDiv-meeting-host-img' src={meeting.host_profile_url}></img>
+                                {meeting.host_nickname}
+                            </div>
+                            • 예약 시간 : {meeting.start_time}
                         </div>
                     </li>
                 ))}
             </ul>
-
-
         </div>
-        {/* <div>
-            <img className='floatingDiv-image' src={tempImg}></img>
-        </div>
-        <div>
-            <img className='floatingDiv-image' src={tempImg}></img>
-        </div>
-        <div>
-            <img className='floatingDiv-image' src={tempImg}></img>
-        </div> */}
         
         
     </div>

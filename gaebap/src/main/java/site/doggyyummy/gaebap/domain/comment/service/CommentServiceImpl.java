@@ -36,9 +36,11 @@ public class CommentServiceImpl implements CommentService {
         dto.setMemberId(loginMember.getId());
         Comment comment = dto.toEntity();
         commentRepository.create(comment);
-        Map<String,String> commentMap=uploadFile(comment,commentImg);
-        comment.setCommentImgKey(commentMap.get("s3Key"));
-        comment.setCommentImgUrl(commentMap.get("s3Url"));
+        if(!commentImg.isEmpty()) {
+            Map<String, String> commentMap = uploadFile(comment, commentImg);
+            comment.setCommentImgKey(commentMap.get("s3Key"));
+            comment.setCommentImgUrl(commentMap.get("s3Url"));
+        }
         commentRepository.create(comment);
     }
 
