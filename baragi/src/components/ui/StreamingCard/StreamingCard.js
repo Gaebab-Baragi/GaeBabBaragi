@@ -1,30 +1,49 @@
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setStreamingInfo } from '../../../redux/streamingInfoSlice';
+import streamingInfo, { setStreamingInfo } from '../../../redux/streamingInfoSlice';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import './StreamingCard.css'
 import Toast from '../Toast';
+import PassswordModal from './PasswordModal';
 
-
-function StreamingCardComponent({meeting_id, recipe_id,recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
+function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [modalShow, setModalShow] = useState(false);
+    const [enteredPassword, setEnteredPassword] = useState('');
+
+    // 비밀번호 입력 확인
+    useEffect(()=>{
+      console.log('비밀번호 입력됨', enteredPassword)
+    },[enteredPassword])
+
+    const handlePasswordEntered = (password) =>{
+      setEnteredPassword(password)
+      setModalShow(false)
+    }
 
     function checkMeeting() {
-        console.log(meeting_id)
-        axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}`)
+        console.log('PRIVATE ROOM :', is_private_room)
+        // 비밀번호 요청하기 + 모달창 띄우기
+        if (streamingInfo.is_private_room) {
+            setModalShow(true);
+            console.log('private room')
+        }
+
+        // 미팅에 참여 가능한 지 
+        axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}?password=${enteredPassword}`)
         .then((res)=>{
             console.log('request success : ', res.data);
             const data = {
-                meeting_id: meeting_id,
-                title : title,
-                recipe_id: recipe_id,
-                host_nickname: host_nickname,
-                max_participant: max_participant,
-                start_time:start_time,
-                recipe_image_url
+              meeting_id,
+              title,
+              recipe_id,
+              host_nickname,
+              max_participant,
+              start_time,
+              recipe_image_url,
             }
             dispatch(setStreamingInfo(data))
             axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
@@ -33,11 +52,12 @@ function StreamingCardComponent({meeting_id, recipe_id,recipe_image_url, current
                 navigate('/streaming-live')
             })
             .catch((err)=>{
-                console.log('error after join accepted', err.message)
+              Toast.fire(err.response.data.message,"","warning")
+              console.log('error after join accepted', err.message)
             })
         })
         .catch((err)=>{
-            return Toast.fire(err.response.data.message, "", "warning")
+            Toast.fire(err.response.data.message, "", "warning")
             console.log('error occured' , err.response.data.message)
         })
     }
@@ -45,15 +65,32 @@ function StreamingCardComponent({meeting_id, recipe_id,recipe_image_url, current
     useEffect(()=>{
         console.log(meeting_id)
     },[])
+
+    
     
     return (
         <div className='streaming-card-wrapper'>
+          <PassswordModal handlePasswordEntered={handlePasswordEntered} show={modalShow} onHide={()=>setModalShow(false)} />
             <Card className="streaming-card" onClick={()=>checkMeeting()}>
-                <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg'/>
+                {
+                    status === "ATTENDEE_WAIT" ? (
+                        <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg-wait'/>
+                    ) : (
+                        <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg-scheduled'/>
+                    )
+                }
                 <Card.Img src={recipe_image_url} alt="레시피 대표 이미지" />
-                <Card.ImgOverlay className='overlay-icon'>
-                    <ion-icon name="play-circle-outline"></ion-icon>
-                </Card.ImgOverlay>
+                {
+                    status === "ATTENDEE_WAIT" ? (
+                        <Card.ImgOverlay className='overlay-icon-play'>
+                            <ion-icon name="play-circle-outline"></ion-icon>
+                        </Card.ImgOverlay>
+                    ) : (
+                        <Card.ImgOverlay className='overlay-icon-alarm'>
+                            <ion-icon name="alarm-outline"></ion-icon>
+                        </Card.ImgOverlay>
+                    )
+                }
                     {
                         status === "ATTENDEE_WAIT" && (
                             <Card.ImgOverlay className='overlay-participants'>

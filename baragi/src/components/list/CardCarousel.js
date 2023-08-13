@@ -4,7 +4,7 @@ import CardComponent from '../ui/Card';
 import { Stack } from 'react-bootstrap';
 import './CardCarousel.css'
 
-function CardCarousel() {
+function CardCarousel({popularRecipes}) {
   // 반응형 슬라이드당 카드 개수를 상태로 관리
   const [cardsPerSlide, setCardsPerSlide] = useState();
 
@@ -43,7 +43,9 @@ function CardCarousel() {
     const slideCards = [];
     for (let i = 0; i < cardsPerSlide; i++) {
       const count = startIndex + i;
-      slideCards.push(<CardComponent count={count} key={count} />);
+      let recipe = popularRecipes[count]
+      console.log('recipe slice for carousel', recipe)
+      slideCards.push(<CardComponent recipe={recipe}/>);
     }
     return slideCards;
   };

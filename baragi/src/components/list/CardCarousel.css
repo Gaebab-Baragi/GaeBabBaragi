@@ -1,6 +1,5 @@
 /* CardCarousel.css */
 
-/* Left and right arrow icons */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   filter: invert(100%);  
@@ -12,7 +11,6 @@
   filter: invert(100%);
 }
 
-/* .card {
-  width: 200px;
-  height: 300px;
-} */
+.carousel-indicators {
+  bottom: -50px; 
+}
