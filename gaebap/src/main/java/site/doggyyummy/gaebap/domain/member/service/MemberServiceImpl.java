@@ -41,6 +41,7 @@ public class MemberServiceImpl implements MemberService{
     public void signUp(Member member) throws Exception{
         validateMemberRegistration(member);
         member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setProfileUrl("/image/개밥바라기.png");
         memberRepository.save(member);
     }
 
@@ -156,7 +157,7 @@ public class MemberServiceImpl implements MemberService{
 
        if (file == null || file.isEmpty()) {//새로 등록하지 않는 경우는 삭제함
             if (imgKey != null && awsS3Client.doesObjectExist(bucketName,imgKey)) awsS3Client.deleteObject(bucketName, imgKey);
-            member.setProfileUrl(null);
+            member.setProfileUrl("/image/개밥바라기.png");
             return;
        }
 

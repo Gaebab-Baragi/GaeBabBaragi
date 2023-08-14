@@ -26,6 +26,7 @@ public class Comment {
     private Recipe recipe;
 
     private LocalDateTime writeTime;
-
+    private String commentImgKey;
+    private String commentImgUrl;
     private String content;
 }

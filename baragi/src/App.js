@@ -1,8 +1,7 @@
 /* eslint-disable */
 import './App.css';
 import React, {useState} from 'react';
-import { configureStore } from '@reduxjs/toolkit'
-import { Routes, Route, useLocation} from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate} from 'react-router-dom'
 import NaviBar from './components/ui/navbar/NaviBar';
 
 // -------------------PAGES--------------------//
@@ -25,27 +24,41 @@ import PasswordModificationPage from './pages/PasswordModificationPage';
 import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
-import Footer from './components/ui/Footer'
+import Footer from './components/ui/footer/Footer'
+import RecipeWriterPage from './pages/RecipeWriterPage';
 // -------------------PAGES-------------------//
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
+
+import Toast from './components/ui/Toast';
 
 function App() {  
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const navigate = useNavigate();
+  const [, , removeCookie] = useCookies(["refreshToken"]);
 
   axios.interceptors.response.use(
     (res) => {
       if (res.headers.get('Authorization')) {
         axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
-        dispatch(loginUser({...user, isLogin : true}))
+        dispatch(loginUser({...user, isLogin : true}));
       }
       return res;
     },
+    (err) => {
+      console.log(err);
+      if (err.response.status === 462) {
+        Toast.fire("로그인이 필요한 기능입니다.", "", "error");
+        dispatch(loginUser({}));
+        navigate("/login");
+      }
+      return err;
+    }
   )
-  axios.defaults.withCredentials = true;
 
 
   const location = useLocation();
@@ -70,6 +83,7 @@ function App() {
         <Route path='/recipe-register/' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
+        <Route path='/recipe-writer/:id' element={<RecipeWriterPage/>}></Route>
         {/* 스트리밍 */}
         <Route path='/streaming-register/:id' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>

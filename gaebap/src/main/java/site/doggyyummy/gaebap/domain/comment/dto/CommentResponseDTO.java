@@ -17,6 +17,7 @@ public class CommentResponseDTO {      //필요 없는데 걍 만듬 ,연습용 
     private Long writerId;
     private String writer;
     private Long recipeId;
+    private String commentImgUrl;
 
     private LocalDateTime writeTime;
 
@@ -32,6 +33,7 @@ public class CommentResponseDTO {      //필요 없는데 걍 만듬 ,연습용 
         dto.setRecipeId(comment.getRecipe().getId());
         dto.setWriterId(comment.getWriter().getId());
         dto.setWriteTime(comment.getWriteTime());
+        dto.setCommentImgUrl(comment.getCommentImgUrl());
         return dto;
     }
 
