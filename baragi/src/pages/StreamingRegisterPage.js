@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import Confirm from '../../src/components/ui/Confirm';
+import Toast from '../../src/components/ui/Toast';
 
 function StreamingRegisterPage() {
   const location = useLocation();
@@ -22,8 +24,9 @@ function StreamingRegisterPage() {
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
     if (!user) {
-      alert('로그인 후 이용해주세요.')
-      navigate('/login')
+      Confirm().then(() => {
+        // Handle anything else after confirmation if needed
+      });
     }
   },[])
 
@@ -56,19 +59,26 @@ function StreamingRegisterPage() {
       start_time: startTime,
       recipe_id: parseInt(id),
     };
-    console.log(data);
+
+    if(!(data.title).trim() || !(data.description).trim() || !(data.start_time).trim() ||!selectedTime || !selectedDate){
+      
+      return Toast.fire("내용을 입력해주세요","","warning");
+    }
 
     axios
       .post(process.env.REACT_APP_BASE_URL +"/api/meetings", data)
       .then((response) => {
         // Handle the response if needed
-        alert('스트리밍 예약이 완료되었습니다.')
+        Toast.fire("스트리밍 생성이 완료되었습니다.", "", "success")
+        
         navigate('/streaming-list');
       })
       .catch((error) => {
         // Handle errors if necessary
-        alert(error.response.data)
+        Toast.fire(error.response.data,"","warning")
         console.error("Error sending request:", error.response);
+        navigate('/'); // 메인 페이지로 리다이렉트
+        return; // 리다이렉트 후 함수 종료
       });
     };
 
@@ -174,19 +184,6 @@ function StreamingRegisterPage() {
           </div>
         </div>
       </div>
-
-      {/* <div className="inputContainer">
-        
-        <div className="inputContainer-left">
-          
-        </div>
-        <div className="inputContainer-right">
-          
-        
-         
-          
-        </div>
-      </div> */}
       <div className="inputContainer-bottom">
         <button onClick={handleRegisterSubmit} className="registerBtn">
           예약
