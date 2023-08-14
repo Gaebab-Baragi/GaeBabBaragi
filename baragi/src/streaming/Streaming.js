@@ -6,6 +6,7 @@ import UserVideoComponent from './UserVideoComponent';
 import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
 import Toast from '../components/ui/Toast';
+import useDidMountEffect from './../useDidMountEffect';
 var localUser = new UserModel();
 
 class Streaming extends Component {
@@ -44,6 +45,17 @@ class Streaming extends Component {
             this.joinSession();
             this.hasJoinedSession = true; // Mark joinSession as called
         }
+        // Subscribe to custom signals
+        this.state.subscribers.forEach(subscriber => {
+        subscriber.session.on('signal:userChanged', (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'meetingStarted') {
+                // Handle meeting start signal from host
+                console.log('Meeting has started!');
+            }
+            // Handle other custom signals if needed
+            });
+        });
     }
 
     componentWillUnmount() {
@@ -167,7 +179,7 @@ class Streaming extends Component {
                             var videoDevices = devices.filter(device => device.kind === 'videoinput');
                             var currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
                             var currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
-                            console.log('GET CURRENT VIDEO DEVICE!!!!!')
+                            // console.log('GET CURRENT VIDEO DEVICE!!!!!')
                             // Set the main video in the page to display our webcam and store our Publisher
                             this.setState({
                                 currentVideoDevice: currentVideoDevice,
@@ -209,11 +221,12 @@ class Streaming extends Component {
         );
     }
 
-    leaveSession() {
+    leaveSession(e) {
+        e.stopPropagation();
     const sessionId = parseInt(this.state.mySessionId)
-        console.log(sessionId, typeof(sessionId))
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/left/${sessionId}`)
             .then(() => {
+                console.log('방 떠나기!!!!')
                 // Leave the session and perform navigation after the axios call
                 const mySession = this.state.session;
 
@@ -236,9 +249,8 @@ class Streaming extends Component {
             .catch(error => {
                 console.error('Error leaving session:', error);
             });
-
-        
     }
+
 
     startSession() {
         if (this.isStartBtnDisabled) {
@@ -247,22 +259,24 @@ class Streaming extends Component {
         const sessionId = parseInt(this.state.mySessionId)
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/start/${sessionId}`)
         .then((res)=>{
-            console.log(res.data)
+            console.log('호스트가 미팅을 시작하였습니다!!!',res.data)
             this.setState({
                 isStartBtnDisabled:true,
             });
+            // this.user.getStreamManager().stream.session.signal()
         })
         .catch((err)=>{
             console.log(err)
         })
     }
 
-    endSession() {
+    endSession(e) {
+        // e.stopPropagation();
         const sessionId = parseInt(this.state.mySessionId)
         console.log(sessionId, typeof(sessionId))
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/close/${sessionId}`)
         .then((res)=>{
-            console.log('succesfully close meeting')
+            console.log('호스트가 방을 폭파했습니다.')
             window.location.replace('/streaming-list')
         })
         .catch((err)=>{
@@ -323,6 +337,7 @@ class Streaming extends Component {
                     </>
                 ) : (
                     this.state.subscribers.map((sub, i) => {
+                        console.log('subscriber 데이터다',sub.stream)
                         console.log(JSON.parse(sub.stream.connection.data).clientData);
                         const subName = JSON.parse(sub.stream.connection.data).clientData;
                         if (subName === host_nickname) {
@@ -391,11 +406,11 @@ class Streaming extends Component {
                             {!isStartBtnDisabled &&
                                 <button className='startButton' onClick={this.startSession}>미팅 시작하기</button>
                             }
-                            <button className='leaveButton' onClick={this.endSession}>미팅 끝내기</button>   
+                            <button className='leaveButton' onClick={(e)=>this.endSession(e)}>미팅 끝내기</button>   
                         </div>
                     
                         :
-                        <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
+                        <button className='leaveButton' onClick={(e)=>this.leaveSession(e)}>방 나가기</button>
                     }
                       {/* 내 마이크 on off */}
                     {this.state.audiostate ?
@@ -443,7 +458,6 @@ class Streaming extends Component {
     async getToken() {
         const sessionId = await this.createSession(this.state.mySessionId);
         return await this.createToken(sessionId);
-
     }
 
     async createSession(sessionId) {
