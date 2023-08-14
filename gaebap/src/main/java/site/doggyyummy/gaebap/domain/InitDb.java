@@ -376,6 +376,7 @@ public class InitDb {
             em.persist(recipeIngredient93);
             em.persist(recipeIngredient94);
             em.persist(recipeIngredient95);
+            em.persist(recipeIngredient96);
 
             Step step91=createStep(recipe9,1L,"큰 그릇에 밀가루를 넣어주세요.");
             Step step92=createStep(recipe9,2L,"베이킹 파우더를 넣고 달걀을 깨서 넣습니다.");
