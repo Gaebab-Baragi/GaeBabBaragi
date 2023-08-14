@@ -15,7 +15,7 @@ function InputMat({ step, matName, matAmount, ingredientsChange }) {
 
   return (
 
-      <div style={{ marginLeft : '10%', marginRight:'10%', borderRadius: '5px', backgroundColor: '#FFEACB', display:'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ borderRadius: '5px', width : '90%', backgroundColor: '#FFEACB', display:'', alignItems: 'center',  borderRadius: '10px',justifyContent: '' }}>
         {/* <div style={{ margin : '5% 5% 5% 5%'}}> */}
           <input 
             className='roomName'

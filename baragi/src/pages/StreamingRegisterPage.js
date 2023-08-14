@@ -16,7 +16,7 @@ function StreamingRegisterPage() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [maxParticipant, setMaxParticipant] = useState(2);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(null);
   const user = useSelector(state=>state.user)
   const navigate = useNavigate();
   // 로그인 안된 유저는 접근 안됨
@@ -43,15 +43,15 @@ function StreamingRegisterPage() {
   // =====================제출======================//
   const handleRegisterSubmit = ()=>{
     const startTime = selectedDate + ' ' + selectedTime
-    let tmpPw = password.toString()
-    if (tmpPw.length===0) {
-      tmpPw=null
-    }
+    // let tmpPw = password
+    // if (!password) {
+    //   tmpPw=password.toString()
+    // }
   
     const data = {
       title: roomTitle,
       description: roomDescription,
-      password: tmpPw,
+      password: password,
       max_participant: maxParticipant,
       start_time: startTime,
       recipe_id: parseInt(id),
@@ -70,10 +70,9 @@ function StreamingRegisterPage() {
         alert(error.response.data)
         console.error("Error sending request:", error.response);
       });
-  };
-  return (
+    };
 
-    
+    return (
     <div className="StreamingRegisterContainer">
       <div className="StreamingHeader">
       <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>

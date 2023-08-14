@@ -29,6 +29,7 @@ function StreamingLivePage() {
               nickname={user.nickname} 
               host_nickname = {streamingInfo.host_nickname}
               recipeData = {recipeData}
+              userProfileUrl={user.profileUrl}
               />
       
     </div>

@@ -21,8 +21,15 @@ public class RecipeFindByMemberIdResponseDto {
     public RecipeFindByMemberIdResponseDto(Member member, List<Recipe> recipes){
         this.name=member.getNickname();
         this.recipes=recipes.stream()
-                .map(recipe -> new RecipeFindByMemberIdResponseDto.RecipeDto(recipe.getId(),recipe.getTitle(),recipe.getDescription(),recipe.getWrittenTime(),recipe.getHit(),recipe.getImageUrl()))
+                .map(recipe -> new RecipeFindByMemberIdResponseDto.RecipeDto(recipe.getId(),recipe.getTitle(),recipe.getDescription(),recipe.getWrittenTime(),recipe.getHit(),recipe.getImageUrl(),recipe.getMember()))
                 .collect(Collectors.toList());
+    }
+    @Getter
+    public static class MemberDto{
+        private String nickname;
+        public MemberDto(String nickname){
+            this.nickname=nickname;
+        }
     }
     @Getter
     public static class RecipeDto{
@@ -31,14 +38,16 @@ public class RecipeFindByMemberIdResponseDto {
         private String description;
         private LocalDateTime writtenTime;
         private Long hit;
-        private String recipeImageUrl;
-        public RecipeDto(Long id,String title,String description,LocalDateTime writtenTime,Long hit,String recipeImageUrl){
+        private String imgUrl;
+        private MemberDto member;
+        public RecipeDto(Long id,String title,String description,LocalDateTime writtenTime,Long hit,String imgUrl,Member member){
             this.id=id;
             this.title=title;
             this.description=description;
             this.writtenTime=writtenTime;
             this.hit=hit;
-            this.recipeImageUrl=recipeImageUrl;
+            this.imgUrl=imgUrl;
+            this.member=new MemberDto(member.getNickname());
         }
     }
 }

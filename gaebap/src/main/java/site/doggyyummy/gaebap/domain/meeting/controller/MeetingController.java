@@ -178,9 +178,9 @@ public class MeetingController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "호스트 입장 가능"),
             @ApiResponse(responseCode = "400", description = "미팅 정보 오류: 미팅 정보를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "403", description = "미팅 입장 불가: ('호스트가 아직 미팅에 입장하지 않았습니다.' or '인원수 초과. 더 이상 미팅에 입장할 수 없습니다.' or '이미 진행 중인 미팅입니다.' or '예약 시간 10분 전부터 입장이 가능합니다.' or '비밀번호가 일치하지 않습니다.')")
+            @ApiResponse(responseCode = "403", description = "'호스트가 아직 미팅에 입장하지 않았습니다.' or '인원수 초과. 더 이상 미팅에 입장할 수 없습니다.' or '이미 진행 중인 미팅입니다.' or '예약 시간 10분 전부터 입장이 가능합니다.' or '비밀번호가 일치하지 않습니다.'")
     })
-    @PostMapping("/join-request/{id}")
+    @GetMapping("/join-request/{id}")
     public ResponseEntity<ResponseDTO> joinRequest(@PathVariable(name = "id") Long id, @RequestBody(required = false) String password) { // 미팅 참여 가능 여부
 
         Member member = SecurityUtil.getCurrentLoginMember();

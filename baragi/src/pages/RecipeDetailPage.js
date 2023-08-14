@@ -8,7 +8,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'; // Import CopyToClipb
 import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import StreamingCardComponent from '../components/ui/StreamingCard';
 
 //링크 복사 함수
 const copyUrlToClipboard = () => {
@@ -378,7 +377,7 @@ const RecipeDetailPage=()=>{
                                     />
                                     <div className='file-input'>
                                         <label>
-                                            이미지/동영상<br></br>첨부하기
+                                            후기 이미지<br></br>첨부하기
                                             <input type='file' onChange={handleImageChange} style={{ display: 'none'} } />
                                         </label>
                                     </div>                  

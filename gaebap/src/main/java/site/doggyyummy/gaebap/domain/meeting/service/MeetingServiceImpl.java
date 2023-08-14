@@ -179,7 +179,7 @@ public class MeetingServiceImpl implements MeetingService{
         Meeting findMeeting = meetingRepository.findByIdJoinMember(id).orElseThrow(() -> new NotFoundMeetingException());
 
         // 1. 시간 확인
-        if(findMeeting.getStartTime().minusMinutes(10).isBefore(ZonedDateTime.now()) || true) { // 1-1. 시작 시간 10분 전부터 입장 가능
+        if(findMeeting.getStartTime().minusMinutes(10).isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))) { // 1-1. 시작 시간 10분 전부터 입장 가능
 
             // 2. Meeting status 확인
             if(findMeeting.getStatus() == Status.SCHEDULED) { // 2-1. SCHEDULED일 경우 -> 호스트만 입장 가능

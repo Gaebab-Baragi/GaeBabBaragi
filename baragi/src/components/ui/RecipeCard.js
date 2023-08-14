@@ -9,15 +9,17 @@ function RecipeCard({item}) {
   }
 
   return (
-    <Card style={{ width: '16rem', margin : '1rem', cursor : 'pointer'}} onClick={onClick}>
-      <Card.Img variant="top" src={item.recipeImageUrl} />
+    <Card style={{ width: '16rem', cursor : 'pointer'}} onClick={onClick}>
+      <Card.Img style={{height:'200px'}}  variant="top" src={item.recipeImageUrl} />
       <Card.Body>
         <Card.Title>{item.title}</Card.Title>
         <Card.Text>
           {item.description}
         </Card.Text>
-        <Card.Text>
-          <span>조회수 : {item.hit} | ❤ : {item.bookmarkCount} | {item.writtenTime} </span>
+        <Card.Text  style={{display:'flex', justifyContent:'space-around'}}>
+          <span>❤️  {item.hit}</span>
+          <span> | </span>
+          <span>📅 {item.writtenTime.toString().slice(0,10)}</span>
         </Card.Text>
       </Card.Body>
     </Card>

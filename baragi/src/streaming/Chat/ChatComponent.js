@@ -67,11 +67,11 @@ export default class ChatComponent extends Component {
     }
 
     scrollToBottom() {
-    setTimeout(() => {
+      setTimeout(() => {
         try {
-            this.chatScroll.current.scrollTop = this.chatScroll.current.scrollHeight;
+          this.chatScroll.current.scrollTop = this.chatScroll.current.scrollHeight;
         } catch (err) {}
-    }, 20);
+      }, 0); // Increase the delay to 200ms or more
     }
 
   close() {
@@ -84,15 +84,19 @@ export default class ChatComponent extends Component {
       <div className='totalChatContainer'>
           {/* 제목 */}
           <div className="titleContainer">
-            <p className='chatTitleDetail'> <span onClick={this.handleChatStatus}>레시피 보기</span> <span>|</span> <span onClick={this.handleChatStatus}>채팅</span> </p>
+            <p className='chatTitleDetail'> 
+              <span style={{cursor:'pointer',color: !this.state.chatStatus ? '#ffaa00' : 'black'}} onClick={this.handleChatStatus}>레시피 보기</span> 
+              <span>|</span> 
+              <span style={{cursor:'pointer',color: this.state.chatStatus ? '#ffaa00' : 'black'}}  onClick={this.handleChatStatus}>채팅</span> 
+            </p>
           </div>
       {this.state.chatStatus 
       ?
 
-        <div id="chatContainer">
+        <div id="chatContainer" ref={this.chatScroll} >
           {/* 채팅 목록 */}
           <div id="chatComponent">
-            <div className="message-wrap" ref={this.chatScroll}>
+            <div className="message-wrap" >
                 {this.state.messageList.map((data, i) => (
                   <div
                     key={i}
@@ -126,16 +130,22 @@ export default class ChatComponent extends Component {
       <div className='recipeContainer'>
         <div className='recipe-info'>
           <div className='recipe-title'>재료</div>
-          {this.props.recipeData.recipeIngredients.map((ing)=>{
-            return <div>{ing.ingredientsName} {ing.amount}</div>
-          })}
+          {this.props.recipeData.recipeIngredients.map((ingredient, index) => (
+              <div key={index}>
+                  {this.props.recipeData.ingredients[index].name} : {ingredient.amount}
+              </div>
+          ))}
+
+          {/* {this.props.recipeData.recipeIngredients.map((ing)=>{
+            return <div>{ing.ingredientName} {ing.amount}</div>
+          })} */}
         </div>
 
         <div className='recipe-info'>
           <div className='recipe-title'>레시피</div>
           {this.props.recipeData.steps.map((step)=>{
             return(
-              <div>{step.orderingNumber} {step.descriptions}</div>
+              <div>Step{step.orderingNumber} : {step.description}</div>
             )
           })}
         </div>
