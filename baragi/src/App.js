@@ -31,7 +31,6 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser, clearUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
-import { useCookies } from 'react-cookie';
 import mem from 'mem';
 
 function App() {  
@@ -42,7 +41,7 @@ function App() {
   const getRefreshToken = mem(async () => {
     try {
       let accessToken = null;
-      await axios.get("/api/login")
+      await axios.get("/api/checkLogin")
                 .then((res) => {
                   if (res.headers.get('Authorization')){
                     accessToken = res.headers.get('Authorization');
@@ -74,7 +73,7 @@ function App() {
     async (err) => {
       const { config, response: { status } } = err;
   
-      if (config.url === "/api/checklogin" || status !== 462 || config.sent) {
+      if (config.url === "/api/checkLogin" || status !== 462 || config.sent) {
         return Promise.reject(err);
       }
   
