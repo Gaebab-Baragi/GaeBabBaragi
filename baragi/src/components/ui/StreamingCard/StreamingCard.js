@@ -37,13 +37,13 @@ function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_i
         .then((res)=>{
             console.log('request success : ', res.data);
             const data = {
-              meeting_id,
-              title,
-              recipe_id,
-              host_nickname,
-              max_participant,
-              start_time,
-              recipe_image_url,
+                meeting_id,
+                title,
+                recipe_id,
+                host_nickname,
+                max_participant,
+                start_time,
+                recipe_image_url,
             }
             dispatch(setStreamingInfo(data))
             axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
@@ -85,9 +85,13 @@ function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_i
                         <Card.ImgOverlay className='overlay-icon-play'>
                             <ion-icon name="play-circle-outline"></ion-icon>
                         </Card.ImgOverlay>
-                    ) : (
+                    ) : status === "SCHEDULED" ? (
                         <Card.ImgOverlay className='overlay-icon-alarm'>
                             <ion-icon name="alarm-outline"></ion-icon>
+                        </Card.ImgOverlay>
+                    ) : (
+                        <Card.ImgOverlay className='overlay-icon-restaurant'>
+                            <ion-icon name="restaurant-outline"></ion-icon>
                         </Card.ImgOverlay>
                     )
                 }

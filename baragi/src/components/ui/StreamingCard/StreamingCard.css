@@ -58,6 +58,11 @@
     font-size: clamp(35px, 4vw, 40px);
 }
 
+.streaming-card .overlay-icon-alarm overlay-icon-restaurant {
+    color: #FFAA00;
+    font-size: clamp(35px, 4vw, 40px);
+}
+
 .streaming-card .overlay-scheduled {
     padding: 0;
     display: flex;
