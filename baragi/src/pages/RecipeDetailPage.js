@@ -9,7 +9,7 @@ import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Confirm from '../../src/components/ui/Confirm';
-import CommentAlert from '../../src/components/ui/Alert';
+import CommentAlert from '../../src/components/ui/CommentAlert';
 //링크 복사 함수
 const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
