@@ -68,7 +68,7 @@ public class RecipeController {
     }
 
     //내가 등록한 레시피 조회
-    @Operation(summary = "search recipes by writer",description = "특정 작성자가 작성한 레시피 조회")
+    @Operation(summary = "search recipes by writer",description = "현재 로그인한 유저가 작성한 레시피 조회")
     @GetMapping("/recipes/writer")
     public RecipeFindByMemberIdResponseDto findRecipeByMe(){
         Long memberId = SecurityUtil.getCurrentLoginMember().getId();
