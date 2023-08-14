@@ -1,8 +1,10 @@
 import axios from "axios";
 import './css/ObjectDetectionPage.css'
-import {setIngredients, AddIngredients} from '../redux/objectDetectSlice'
+import {setIngredients,} from '../redux/objectDetectSlice';
+import IngredientTagBar from "../components/ui/IngredientTagBar";
 import React, {useState, useEffect, useRef } from 'react';
 import { useDispatch,useSelector  } from 'react-redux';
+// import '../components/ui/SearchBar.css'
 // import "./styles.css";
 function ObjectDetectionPage() {
   const dispatch = useDispatch();
@@ -19,6 +21,12 @@ function ObjectDetectionPage() {
   const [answerClass, setanswerClass] = useState('');
   const [newIngredient, setNewIngredient] = useState('');
   const uniqueClassname = [...new Set(classname)]
+
+
+  //
+
+  //
+
   useEffect(() => {
     getWebcam((stream => {
       videoRef.current.srcObject = stream;
@@ -134,32 +142,7 @@ function ObjectDetectionPage() {
             console.error('Error uploading image:', error);
           });
     // ... rest of the code
-  }, 'image/jpeg',1);
-
-
-// }, 'image/jpeg');
-// }
-        
-
-        //
-    //     let file = new File([blob], "fileName.jpg", { type: "image/jpeg" })
-    //     const uploadFile = [file] //이미지 객체
-    
-    //  }, 'image/jpeg');
-    
-     //
-
-    //  const image = canvas.toDataURL(); // 이미지 저장하는 코드
-    //  const link = document.createElement("a");
-    //  link.href = image;
-    //  link.download = "PaintJS[🎨]";
-    //  link.click();
-
-      // const s = videoRef.current.srcObject;
-      // s.getTracks().forEach((track) => {
-      //   track.stop();
-      // });
-     
+  }, 'image/jpeg',1);     
   const s = videoRef.current.srcObject;
   s.getTracks().forEach((track) => {
     track.stop();
@@ -168,50 +151,30 @@ function ObjectDetectionPage() {
 
   return (
   <div className = 'grid-container'>
-    <div className = 'item-7'>
+    <div className='item-1'></div>
+    <div className = 'item-6'>
       <h2>객체탐지</h2>
       {CanvasState === 'none' ?
-      <div style={{display:"", justifyContent:"center",alignItems: "center" , width : '60%',hegiht:'auto', marginLeft:'20%', borderRadius:"100px", bottom:'5%', cursor:"pointer" }}>
-        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, border : '2px solid #000', width:'100%', hegiht :'auto' ,transform:"rotateY(180deg)"}}  /> 
+      <div style={{display:"", justifyContent:"center",alignItems: "center" , width : '100%',hegiht:'auto',  borderRadius:"100px", bottom:'5%', cursor:"pointer" }}>
+        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, border : '2px solid #000', borderRadius:'15px', width:'90%', hegiht :'auto' ,transform:"rotateY(180deg)"}}  /> 
         {/* width : 682 , height 682  */}
-        <canvas id="canvas" style={{display: CanvasState, width:'60%', marginLeft:'20%', hegiht :'auto' }}></canvas>
-        <div onClick={sreenShot} style={{textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", display:'flex', margin:'auto',bottom:'5%'}}>찰캌</div>
+        <canvas id="canvas" style={{display: CanvasState, width:'90%', hegiht :'auto' }}></canvas>
+        <div onClick={sreenShot} style={{backgroundColor : 'red', textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", display:'flex', margin:'auto',bottom:'5%'}}></div>
 
-        </div>:
-        // <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"682px",margin:"10px", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
-        //   <img src= {answerClass}  alt="" style={{display:CanvasState , width:'682px'}}></img>
-        //   {/* <img src="./기본이미지.png" alt=""style={{display:"flex", marginTop:'400px', justifyContent:"center"}} ></img> */}
-        // <div style ={{textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", margin:'auto'}}>재촬영</div> 
-        // </div>   
+        </div>: 
         <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"60%",marginLeft:"20%", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
-          <img src={answerClass} alt="" style={{display:CanvasState, width:'60%', marginLeft:'20%', height:'auto'}}></img>
+          <img src={answerClass} alt="" style={{display:CanvasState, width:'90%', height:'auto'}}></img>
           <div style={{textAlign:"center", justifyContent: 'center', width:"60px", height:"60px", border:"2px solid", borderRadius:"100px", margin:'auto'}}>재촬영</div> 
       </div>
     }
-
-
-
-
-
-
-
-
-
     </div>
-    <div className ='item-1'>
-
-        <div style = {{marginTop:'40px',border : '2px solid black', width :'100%', hegiht:'auto'}}>
-          <li>빨간색은 금지</li>
-          <li>주황색은 주의</li>
-          <li>녹색은 가능</li>
-          <li>검은색은 사용자 지정</li>
-        </div>
-
+    <div className ='item-2'> 
+ 
     </div>
 
 
 
-    <div className = 'item-4'>
+    <div className = 'item-3'>
     <div>
       <h2>재료 목록:</h2>
       {uniqueClassname.length > 0 ? (
@@ -231,22 +194,52 @@ function ObjectDetectionPage() {
         : (
           <p>데이터가 없습니다.</p>
         )}
-        <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/>
+        <div style ={{width:'100%',  display:'flex'}}>
+          <IngredientTagBar style={{}}></IngredientTagBar>  
+        </div>
+        {/* <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/> */}
     </div>
-      <button onClick={() => {
+    <div style = {{border : '2px solid black', width :'80%', hegiht:'auto', borderRadius:'15px', margin : '10% auto 0 auto'}}>
+      <li>빨간색 : 금지</li>
+      <li>주황색 : 주의</li>
+      <li>녹색 : 허용</li>
+      <li>검은색 :모름</li>
+    </div>
+    <div style={{display: 'flex', justifyContent:'center'}}>
+      {/* <button 
+      style ={{
+        width: '100px',
+        height: '40px',
+        marginTop: '30px',
+        borderRadius: '10px',
+        backgroundColor: '#ffaa00',
+        color: 'white',
+        border: 'none',
+        fontWeight: '500'}} 
+      onClick={() => {
         if (newIngredient.trim() !== '') {
-        dispatch(AddIngredients(newIngredient));
-        setNewIngredient(''); // 입력 내용 초기화
+          dispatch(AddIngredients(newIngredient));
+          setNewIngredient(''); // 입력 내용 초기화
     }
   }}
 >
   재료추가
-</button>
-
+</button> */}
+<button style ={{
+        width: '100px',
+        height: '40px',
+        marginTop: '30px',
+        marginLeft : '10px',
+        borderRadius: '10px',
+        backgroundColor: '#ffaa00',
+        color: 'white',
+        border: 'none',
+        fontWeight: '500'}} >레시피 검색</button>
+        </div>
     </div>
-  
-
   </div>
+
+
 
   )};
 

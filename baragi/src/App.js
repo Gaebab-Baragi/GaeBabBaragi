@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage';
 import RecipeRegisterPage from './pages/RecipeRegisterPage';
 import RecipeListPage from './pages/RecipeListPage';
+import RecipeUpdatePage from './pages/RecipeUpdatePage';
 import StreamingRegisterPage from './pages/StreamingRegisterPage';
 import StreamingListPage from './pages/StreamingListPage';
 import MyinformationPage from './pages/MyinformationPage';
@@ -70,6 +71,7 @@ function App() {
         <Route path='/recipe-register/' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
+        <Route path='/recipe-update/:id' element={<RecipeUpdatePage/>}></Route>
         {/* 스트리밍 */}
         <Route path='/streaming-register/:id' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>

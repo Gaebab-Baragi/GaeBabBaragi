@@ -12,18 +12,17 @@ let recipeRegister = createSlice({
       {
         orderingNumber: 1,
         description: "모든 재료를 잘라주세요.",
-      },
-      {
-        orderingNumber: 2,
-        description: "재료를 끓여주세요.",
-      },
-      { orderingNumber: 3, description: "구워주세요" },
-      { orderingNumber: 4, description: "플레이팅"},
-    ],
+      }],
+    //   {
+    //     orderingNumber: 2,
+    //     description: "재료를 끓여주세요.",
+    //   },
+    //   { orderingNumber: 3, description: "구워주세요" },
+    //   { orderingNumber: 4, description: "플레이팅"},
+    // ],
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
-    recipeImage: '',
+    recipeImage: '0',
     recipeVideo: '0',
-    // videoUrl : './기본이미지.png'
     stepImages : ['0'],
 
   },
@@ -57,7 +56,11 @@ let recipeRegister = createSlice({
 
       formData.append("recipeImage", state.recipeImage)
       console.log(state.recipeVideo)
-      formData.append('recipeVideo',state.recipeVideo) // 이거 이름수정
+      formData.append('recipeVideo', state.recipeVideo === '0' ? new Blob([]) : state.recipeVideo);
+
+
+ 
+ 
       console.log('stepImages redux : ', state.stepImages)
       // state.stepImages.map((step)=>{
       //   formData.append('stepImages',step)

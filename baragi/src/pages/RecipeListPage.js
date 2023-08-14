@@ -25,6 +25,7 @@ function RecipeListPage() {
   
   // 레시피 제목 가져오기
   useEffect(()=>{
+    console.log(process.env.REACT_APP_BASE_URL + '/api/recipes/recipestitle')
     axios.get(process.env.REACT_APP_BASE_URL + '/api/recipes/recipestitle')
     .then((res)=>{
       console.log('레시피 제목 가져오기', res.data)

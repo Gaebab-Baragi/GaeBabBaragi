@@ -54,12 +54,12 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
     <>
       <div style={{ display: 'flex', marginLeft : '3%',  marginRgiht:'2%' }}>
         <div style ={{width : '90%', display : 'flex'}}>
-          <div style = {{ display : 'flex', flexDirection: 'column'}}> 
-            <label style={{ width : '20%' }} htmlFor={`Cookstep${step}`}>{`STEP${step}:`}</label>
-            <button style = {{fontSize : '8px'}} onClick={handleButtonClick}>이미지선택</button>
+          <div style = {{ display : 'flex', justifyItems:'center',textAlign:'center', flexDirection: 'column', width:'10%'}}> 
+            <label style={{ }} htmlFor={`Cookstep${step}`}>{`STEP ${step}:`}</label>
+            {/* <button style = {{fontSize : '8px'}} onClick={handleButtonClick}>이미지 첨부하기</button> */}
           </div>
         <input ref={fileInputRef} style={{display:'none'}} type="file" accept="" onChange={(e) => handleStepImage(e, step)}/>
-        {image && <img src={image} alt={`Step ${step} Preview`} style={{ marginLeft:'2%' ,marginRight : '2%', maxWidth: '10%', height: 'auto' }} />}
+        {image && <img src={image} alt={`Step ${step} Preview`} style={{ marginLeft:'2%' ,marginRight : '2%', maxWidth: '20%', height: 'auto',borderRadius:'15px'}}onClick={handleButtonClick} />}
         <textarea
           rows="5"
           cols="30"
@@ -81,7 +81,8 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
           textIndent: '10px'}}
         />
         </div>
-       <button style = {{ margin : 'auto'}}onClick={onDelete}>-</button>
+       {/* <button style = {{ margin : 'auto'}} onClick={onDelete}>-</button> */}
+       <img src='./minus.png' style = {{ margin : 'auto', width : '3%',}} onClick={onDelete}></img>
       </div>
      
     </>
