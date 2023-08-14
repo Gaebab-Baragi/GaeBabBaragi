@@ -7,7 +7,7 @@ import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
 import Toast from '../components/ui/Toast';
 import useDidMountEffect from './../useDidMountEffect';
-
+import StartInfoModal from './Modal/startInfoModal';
 
 var localUser = new UserModel();
 
@@ -29,14 +29,16 @@ class Streaming extends Component {
             videostate:true,
             audiostate:true,
             hideInfo:false,
+            modalShow:false,
+            requestStartSession:false,
         };
 
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
         this.startSession = this.startSession.bind(this);
         this.endSession = this.endSession.bind(this);
+        this.beforeStartSession=this.beforeStartSession.bind(this);
         // this.toggleChat = this.toggleChat.bind(this);
-    
         // this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         // this.onbeforeunload = this.onbeforeunload.bind(this);
     }
@@ -125,7 +127,6 @@ class Streaming extends Component {
 
                 // On every Stream destroyed...
                 mySession.on('streamDestroyed', (event) => {
-
                     // Remove the stream from 'subscribers' array
                     this.deleteSubscriber(event.stream.streamManager);
                 });
@@ -245,8 +246,24 @@ class Streaming extends Component {
             });
     }
 
+    // modal 보여주기 여부
+    beforeStartSession() {
+        this.setState({modalShow:true})
+    }
+    // 미팅 시작하기로 확인했으면
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.requestStartSession !== this.state.requestStartSession) {
+            if (this.state.requestStartSession) {
+                this.startSession();
+            }
+        }
+    }
+    
+
+
     // 미팅 시작하기(호스트 용) - 더 이상 들어오지 못함
     startSession() {
+
         const sessionId = parseInt(this.state.mySessionId)
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/start/${sessionId}`)
         .then((res)=>{
@@ -258,6 +275,7 @@ class Streaming extends Component {
             });
             this.setState({
                 isStartBtnDisabled:true,
+                requestStartSession:false,
             });
         })
         .catch((err)=>{
@@ -304,6 +322,11 @@ class Streaming extends Component {
         }
     }
 
+    changeModalStatus() {
+        this.setState({
+            modalShow:!this.state.modalShow
+        })
+    }
 
     render() {
         const mySessionId = this.state.mySessionId;
@@ -320,6 +343,7 @@ class Streaming extends Component {
 
         return (
             <div className='StreamingLiveContatiner'>
+                <StartInfoModal  handlerequestStartSession={()=>this.setState({requestStartSession:true})} show={this.state.modalShow} onHide={()=>this.setState({modalShow:!this.state.modalShow})} />
             <div className="streamingContainer">
                 <div className='streamingTop'>
                     <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
@@ -416,7 +440,7 @@ class Streaming extends Component {
                         ?
                         <div className='buttonContainer'>
                             {!isStartBtnDisabled &&
-                                <button className='startButton' onClick={this.startSession}>미팅 시작하기</button>
+                                <button className='startButton' onClick={this.beforeStartSession}>미팅 시작하기</button>
                             }
                             <button className='leaveButton' onClick={this.endSession}>미팅 끝내기</button>   
                         </div>
