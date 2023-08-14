@@ -116,12 +116,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/recipes/searchlike").permitAll()
                         .requestMatchers("/api/ingredients").permitAll()
                         .requestMatchers("/api/recipes/popular").permitAll()
-                        .requestMatchers("/api//searchlike").permitAll()
+                        .requestMatchers("/api/recipes/searchlike").permitAll()
                         .requestMatchers("/api/pets/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/meetings").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/meetings/{id}").permitAll()
-                        .requestMatchers("/forbiddens").permitAll()
-                        .requestMatchers("/participants/**").permitAll()
+                        .requestMatchers("/api/forbiddens").permitAll()
+                        .requestMatchers("/api/participants/**").permitAll()
+                        .requestMatchers("/api/comment").permitAll()
+                        .requestMatchers("/api/bookmark/{recipe_id}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login((oauth2login) ->
@@ -150,10 +152,10 @@ public class SecurityConfig {
                             @Override
                             public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
                                 log.info("response header : {}", response.getHeader("Access-Control-Allow-Origin"));
-                                response.setStatus(401);
+                                response.setStatus(462);
                             }
-                        }))
-        ;
+                        })
+                );
 
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);

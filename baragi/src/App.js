@@ -1,7 +1,6 @@
 /* eslint-disable */
 import './App.css';
 import React, {useState} from 'react';
-import { configureStore } from '@reduxjs/toolkit'
 import { Routes, Route, useLocation, useNavigate} from 'react-router-dom'
 import NaviBar from './components/ui/navbar/NaviBar';
 
@@ -32,12 +31,15 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
+
 import Toast from './components/ui/Toast';
 
 function App() {  
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
+  const [, , removeCookie] = useCookies(["refreshToken"]);
 
   axios.interceptors.response.use(
     (res) => {
@@ -49,9 +51,9 @@ function App() {
     },
     (err) => {
       console.log(err);
-      if (err.response.status === 401 || err.response.status === 462) {
+      if (err.response.status === 462) {
         Toast.fire("로그인이 필요한 기능입니다.", "", "error");
-        dispatch(loginUser({...user, isLogin : false}));
+        dispatch(loginUser({}));
         navigate("/login");
       }
       return err;
