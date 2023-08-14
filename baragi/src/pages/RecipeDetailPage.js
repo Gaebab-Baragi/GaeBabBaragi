@@ -8,6 +8,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'; // Import CopyToClipb
 import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import Toast from '../components/ui/Toast';
 
 //링크 복사 함수
 const copyUrlToClipboard = () => {
@@ -17,7 +18,7 @@ const copyUrlToClipboard = () => {
         navigator.clipboard.writeText(currentUrl).then(
         () => {
           // You can show a success message here if needed
-        alert('링크가 복사 되었습니다!')
+        Toast.fire('링크가 복사 되었습니다.',"","info")
         },
         () => {
           // Handle error if copying fails
@@ -106,7 +107,7 @@ const RecipeDetailPage=()=>{
 
     const handleStreamingReservation = () => {
         if (!isLoggedIn) {
-            alert("로그인이 필요한 서비스입니다.");
+            Toast.fire('로그인 후 이용해주세요.',"","warning")
             navigate('/login');
         } else {
             navigate(`/streaming-register/${id}`, { state: { recipeTitle: data.title } });
@@ -117,7 +118,7 @@ const RecipeDetailPage=()=>{
     const handleLikeClick = async () => {
         console.log('handleLikeClick function called');
         if (!isLoggedIn) {
-            alert('로그인이 필요한 서비스입니다.')
+            Toast.fire('로그인 후 이용해주세요.',"","warning")
             navigate('/login'); // Replace with your actual login page path
         } else {
             try {
@@ -171,12 +172,12 @@ const RecipeDetailPage=()=>{
         }
         
         if (!isLoggedIn) {
-            alert('로그인이 필요한 서비스입니다.');
+            Toast.fire('로그인 후 이용해주세요.',"","warning")
             navigate('/login');
             return;
         }
         if (!newCommentContent.trim()) {
-            alert('댓글 내용을 작성해주세요');
+            Toast.fire('댓글 내용을 작성해주세요.',"","warning")
             return;
         }
         try {
@@ -186,7 +187,7 @@ const RecipeDetailPage=()=>{
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                      }
+                    }
                 }
             );
             if (response.status === 200) {
@@ -236,8 +237,6 @@ const RecipeDetailPage=()=>{
     const goToWriterRecipe=(memberId)=>{
         navigate(`/recipe-writer/${memberId}`);
     }
-
-
 
 
     //댓글 쓰기 이벤트 끝

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import Toast from "../components/ui/Toast";
 
 function StreamingRegisterPage() {
   const location = useLocation();
@@ -22,7 +23,8 @@ function StreamingRegisterPage() {
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
     if (!user) {
-      alert('로그인 후 이용해주세요.')
+      Toast.fire('로그인 후 이용해주세요.',"","warning")
+      // alert('로그인 후 이용해주세요.')
       navigate('/login')
     }
   },[])
