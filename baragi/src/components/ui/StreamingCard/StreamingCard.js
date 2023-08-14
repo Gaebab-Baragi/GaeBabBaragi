@@ -9,7 +9,7 @@ import Toast from '../Toast';
 import PassswordModal from './PasswordModal';
 import useDidMountEffect from '../../../useDidMountEffect';
 
-function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
+function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [modalShow, setModalShow] = useState(false);
@@ -147,11 +147,24 @@ function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_i
                                 </div>
                             </Card.ImgOverlay>
                         )
-                        : (
+                        : status === "SCHEDULED" ? (
                             <Card.ImgOverlay className='overlay-scheduled'>
                                 <div className='status-scheduled'>
                                     <p>예정</p>
                                 </div>
+                            </Card.ImgOverlay>
+                        ) : (
+                            <Card.ImgOverlay className='overlay-in-progress'>
+                                <div className='status-in-progress'>
+                                    <p>미팅 진행 중</p>
+                                </div>
+                            </Card.ImgOverlay>
+                        )
+                    }
+                    {
+                        is_private_room === true && (
+                            <Card.ImgOverlay className='overlay-icon-lock'>
+                                <ion-icon name="lock-closed-outline"></ion-icon>
                             </Card.ImgOverlay>
                         )
                     }
