@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./css/StreamingRegisterPage.css"
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
@@ -63,7 +63,7 @@ function StreamingRegisterPage() {
       .then((response) => {
         // Handle the response if needed
         alert('스트리밍 예약이 완료되었습니다.')
-        console.log("Request successful:", response.data);
+        navigate('/streaming-list');
       })
       .catch((error) => {
         // Handle errors if necessary
@@ -75,85 +75,118 @@ function StreamingRegisterPage() {
     return (
     <div className="StreamingRegisterContainer">
       <div className="StreamingHeader">
-      <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
-      <h4 className="StreamingRegisterSemiTitle">스트리밍 기본 정보 입력</h4>
+        <h2 className="StreamingRegisterTitle">스트리밍 예약하기</h2>
       </div>
-      <div className="inputContainer">
+      <div className="input-list">
+        <div className="input-info">
+          <div className="input-details">
+            <div className="input-property">레시피</div>
+            <div className="input-content">{recipeTitle}</div>
+          </div>
+        </div>
+      </div>
+      <div className="input-list">
+        <div className="input-info">
+          <div className="input-details">
+            <div className="input-property">스트리밍 제목</div>
+            <div className="input-content">
+              <input
+                onChange={(e) => setRoomTitle(e.target.value)}
+                type="text"
+                placeholder="방 제목을 입력하세요."
+                className="roomName"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="input-list">
+        <div className="input-info">
+          <div className="input-details">
+            <div className="input-property">스트리밍 소개</div>
+            <div className="input-content">
+              <textarea
+                onChange={(e) => {
+                  setRoomDescription(e.target.value);
+                }}
+                className="description"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="input-list">
+        <div className="input-info">
+          <div className="input-details">
+            <div className="input-property">스트리밍 시작 시간</div>
+            <div className="input-content">
+              <input
+                type="date"
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="startTime"
+              />
+              <input
+                type="time"
+                onChange={(e) => setSelectedTime(e.target.value)}
+                className="startTime"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="input-list">
+        <div className="input-info">
+          <div className="input-details">
+            <div className="input-property">참가 가능 인원</div>
+            <div className="input-content">
+              <button
+                onClick={handleDecrease}
+                disabled={maxParticipant === 1}
+                className="minusBtn"
+              >
+                -
+              </button>
+              <span className="maxParticipant">{maxParticipant}</span>
+              <button
+                onClick={handleIncrease}
+                disabled={maxParticipant === 5}
+                className="plusBtn"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="input-list">
+        <div className="input-info">
+          <div className="input-details">
+            <div className="input-property">비밀번호 설정</div>
+            <div className="input-content">
+              <input
+                type="password"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                className="password"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="inputContainer">
+        
         <div className="inputContainer-left">
-          <label>방 제목 </label>
-          <label>레시피 </label>
-          <label>스트리밍 시작 시간 </label>
-          <label>참가 가능 인원 </label>
-          <label>방 비밀번호 설정 </label>
-          <label>방 소개 </label>
+          
         </div>
         <div className="inputContainer-right">
-          {/* 방제목 */}
-          <div className="inputComponent">
-            <input
-              onChange={(e) => setRoomTitle(e.target.value)}
-              type="text"
-              placeholder="방 제목을 입력하세요."
-              className="roomName"
-            />
-          </div>
-          {/* 레시피 */}
-          <div className="inputComponent">
-            <span className="recipeName">{recipeTitle}</span>
-          </div>
-          {/* 스트리밍 시작 시간 */}
-          <div className="inputComponent">
-            <input
-              type="date"
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="startTime"
-            />
-            <input
-              type="time"
-              onChange={(e) => setSelectedTime(e.target.value)}
-              className="startTime"
-            />
-          </div>
-          {/* 참가 가능 인원 */}
-          <div className="inputComponent">
-            <button
-              onClick={handleDecrease}
-              disabled={maxParticipant === 1}
-              className="minusBtn"
-            >
-              -
-            </button>
-            <span className="maxParticipant">{maxParticipant}</span>
-            <button
-              onClick={handleIncrease}
-              disabled={maxParticipant === 5}
-              className="plusBtn"
-            >
-              +
-            </button>
-          </div>
-          {/* 방 비밀번호 설정 */}
-          <div className="inputComponent">
-            <input
-              type="password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              className="password"
-            />
-          </div>
-          {/* 방 소개 */}
-          <div className="descriptionComponent">
-            <input
-              onChange={(e) => {
-                setRoomDescription(e.target.value);
-              }}
-              type="text"
-              className="description"
-            />
-          </div>
+          
+        
+         
+          
         </div>
-      </div>
+      </div> */}
       <div className="inputContainer-bottom">
         <button onClick={handleRegisterSubmit} className="registerBtn">
           예약

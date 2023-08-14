@@ -207,15 +207,6 @@ const RecipeDetailPage=()=>{
             console.error('에러 발생', error);
         }
     };
-    
-
-
-
-
-
-
-
-
 
     //댓글 등록 끝
 
