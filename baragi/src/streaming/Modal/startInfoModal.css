@@ -1,0 +1,13 @@
+.modal-title{
+  font-size:large;
+}
+
+.streamingPwInput {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.enterContainer {
+  display: flex;
+  justify-content: end;
+}
