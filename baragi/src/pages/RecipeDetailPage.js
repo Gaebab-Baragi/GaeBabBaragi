@@ -2,8 +2,6 @@
 
 //npm i react-copy-to-clipboard : 필요 (for 링크 복사)
 
-import tempImg from '../pages/apple.jpg';
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // 로그인 됏는지 확인해서 리다이렉트 하려고 필요.
 import { CopyToClipboard } from 'react-copy-to-clipboard'; // Import CopyToClipboard
@@ -59,7 +57,7 @@ const RecipeDetailPage=()=>{
             try{
                 const response =await fetch(process.env.REACT_APP_BASE_URL+`/api/recipes/${id}`);
                 const responseComment=await fetch(process.env.REACT_APP_BASE_URL+`/api/comment?recipe_id=${id}`,{'Content-Type': 'application/json'})
-                const responseMeetings=await fetch(process.env.REACT_APP_BASE_URL+`/api/meetings?${id}`);
+                const responseMeetings=await fetch(process.env.REACT_APP_BASE_URL+`/api/meetings?recipe_id=${id}`);
                 const meetingRooms=await responseMeetings.json();
                 setMeetings(meetingRooms);
                 if(isLoggedIn==true){
@@ -148,15 +146,33 @@ const RecipeDetailPage=()=>{
     };
     // 댓글 쓰기 이벤트
     const [newCommentContent, setNewCommentContent] = useState('');
+    const [commentImage, setCommentImage] = useState(null);
+    const handleCommentChange = (event) => {
+        setNewCommentContent(event.target.value);
+    };
 
-
+    const handleImageChange = (event) => {
+        setCommentImage(event.target.files[0]);
+    };
 
     const handleSubmitComment = async (event) => {
+        
         event.preventDefault();
-    
+        const formData = new FormData();
+        const comment={
+            recipe_id:{id}.id,
+            content:newCommentContent,
+        }
+        formData.append('dto',new Blob([JSON.stringify(comment)],{type:"application/json"}));
+        if(commentImage){
+            formData.append('commentImg', new Blob([commentImage]));
+        }else{
+            formData.append('commentImg',new Blob());
+        }
+        
         if (!isLoggedIn) {
             alert('로그인이 필요한 서비스입니다.');
-            navigate('/login'); // Replace with your actual login page path
+            navigate('/login');
             return;
         }
         if (!newCommentContent.trim()) {
@@ -166,27 +182,24 @@ const RecipeDetailPage=()=>{
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/comment`,
-                {
-                    recipe_id: id,
-                    content: newCommentContent
-                },
+                formData,
                 {
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'multipart/form-data',
+                      }
                 }
             );
-    
             if (response.status === 200) {
                 // 댓글 작성 후 댓글 목록을 다시 가져온다.
                 const responseComment = await axios.get(
                     `${process.env.REACT_APP_BASE_URL}/api/comment?recipe_id=${id}`
                 );
-                const comment = responseComment.data; // Use response.data to access the returned data
+                const comment = responseComment.data;
                 setComments(comment);
     
                 // 댓글 작성 내용 초기화
                 setNewCommentContent('');
+                setCommentImage(null);
             } else {
                 console.error('댓글 작성 실패');
             }
@@ -195,10 +208,20 @@ const RecipeDetailPage=()=>{
         }
     };
     
-    const handleCommentChange = (event) => {
-        setNewCommentContent(event.target.value);
-    };
 
+
+
+
+
+
+
+
+
+    //댓글 등록 끝
+
+
+
+    //댓글 삭제 시작
     const handleDeleteComment = async (commentId) => {
         try {
             const response = await axios.delete(
@@ -219,7 +242,9 @@ const RecipeDetailPage=()=>{
             console.error('에러 발생', error);
         }
     };
-
+    const goToWriterRecipe=(memberId)=>{
+        navigate(`/recipe-writer/${memberId}`);
+    }
 
 
 
@@ -253,7 +278,8 @@ const RecipeDetailPage=()=>{
                 <div className='imgForm'>
                     <img className='imgsize' src={data.imgUrl}></img>
                     <div>
-                        <button>
+                        <button onClick={()=>goToWriterRecipe(data.member.memberId)}>
+                        {/* onClick={() => handleDeleteComment(comment.id)} */}
                             <img className='profileImg' src={data.member.memberImage}></img>
                         </button>
                     </div>
@@ -326,9 +352,11 @@ const RecipeDetailPage=()=>{
                                         <div className='comment-content-delete'>
                                             <div className='comment-content'>{comment.content}</div>
                                         </div>
-                                    <div className='comment-img'>
-                                        <img className='comment-content-img' src={data.imgUrl}></img>
-                                    </div>
+                                        {comment.commentImgUrl && (
+                                            <div className='comment-img'>
+                                                <img className='comment-content-img' src={comment.commentImgUrl}></img>
+                                            </div>
+                                        )}
                                     {isLoggedIn && comment.writerId === userId&& (
                                             <div className='comment-delete' onClick={() => handleDeleteComment(comment.id)}>삭제하기</div>
                                         )}
@@ -347,12 +375,12 @@ const RecipeDetailPage=()=>{
                                         value={newCommentContent}
                                         onChange={handleCommentChange}
                                     />
-                                   <label className="file-input-label">
-                                        <div className='file-input'>
-                                            이미지/동영상<br></br>첨부하기
-                                            <input type='file' style={{ display: 'none' }} />
-                                        </div>
-                                    </label>                              
+                                    <div className='file-input'>
+                                        <label>
+                                            후기 이미지<br></br>첨부하기
+                                            <input type='file' onChange={handleImageChange} style={{ display: 'none'} } />
+                                        </label>
+                                    </div>                  
                                     <button type='submit'>댓글 작성</button>
                                 </div>
                             </form>
@@ -365,36 +393,31 @@ const RecipeDetailPage=()=>{
         
     </div>
     <div className='floatingDiv'>
-        <div><ion-icon name="radio-outline"></ion-icon></div>
-        <div onClick={handleStreamingReservation}>
-            <div className='floatingDiv-Text'>
+        <div><ion-icon name="radio-outline" onClick={handleStreamingReservation}></ion-icon></div>
+        <div>
+            <div className='floatingDiv-Text' onClick={handleStreamingReservation}>
                 스트리밍<br></br>예약하기
             </div>
         </div>
         <hr></hr>
         <div>
-
             <ul className='meeting-list'>
                 {meetings.map((meeting, index) => (
                     <li key={index}>
                         <div>
-                            <img className='floatingDiv-image' src={meeting.host_profile_url}></img>
+                            <img className='floatingDiv-image' src={meeting.recipe_image_url}></img>
+                        </div>
+                        <div className='floatingDiv-meeting-info'>
+                            <div className='floatingDiv-meeting-host'>
+                                <img className='floatingDiv-meeting-host-img' src={meeting.host_profile_url}></img>
+                                {meeting.host_nickname}
+                            </div>
+                            • 예약 시간 : {meeting.start_time}
                         </div>
                     </li>
                 ))}
             </ul>
-
-
         </div>
-        {/* <div>
-            <img className='floatingDiv-image' src={tempImg}></img>
-        </div>
-        <div>
-            <img className='floatingDiv-image' src={tempImg}></img>
-        </div>
-        <div>
-            <img className='floatingDiv-image' src={tempImg}></img>
-        </div> */}
         
         
     </div>

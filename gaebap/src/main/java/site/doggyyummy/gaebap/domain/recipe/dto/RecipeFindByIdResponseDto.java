@@ -49,7 +49,7 @@ public class RecipeFindByIdResponseDto {
         this.writtenTime=recipe.getWrittenTime();
         this.imgUrl=recipe.getImageUrl();
         this.videoUrl=recipe.getVideoUrl();
-        this.member=new MemberDto(member.getUsername(),member.getNickname(),member.getProfileUrl());
+        this.member=new MemberDto(member.getUsername(),member.getNickname(),member.getProfileUrl(),member.getId());
         // Convert List<Step> to List<StepDto>
         this.steps = steps.stream()
                 .map(step -> new StepDto(step.getOrderingNumber(), step.getDescription(),step.getS3Url()))
@@ -67,10 +67,12 @@ public class RecipeFindByIdResponseDto {
         private String name;
         private String nickname;
         private String memberImage;
-        public MemberDto(String name,String nickname,String memberImage){
+        private Long memberId;
+        public MemberDto(String name,String nickname,String memberImage,Long memberId){
             this.name=name;
             this.nickname=nickname;
             this.memberImage=memberImage;
+            this.memberId=memberId;
         }
     }
     @Getter

@@ -21,6 +21,13 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
 
   const handleStepImage = (e, step) => {
     const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(selectedImage);
+    }
     console.log('handlestep임', step,selectedImage)
     const context = {
       'step' : step,
@@ -36,14 +43,23 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
     //   };
     //   console.log(file);
     //   reader.readAsDataURL(selectedImage);
-    
-  }
+  };
+  const handleButtonClick = () => {
+    // Trigger the file input element click when the button is clicked
+    fileInputRef.current.click();
+  };
 
 
   return (
     <>
-      <div style={{ display: 'flex', marginLeft : '2%',  marginRgiht:'2%' }}>
-        <label style={{ width : '15%' }} htmlFor={`Cookstep${step}`}>{`STEP${step}:`}</label>
+      <div style={{ display: 'flex', marginLeft : '3%',  marginRgiht:'2%' }}>
+        <div style ={{width : '90%', display : 'flex'}}>
+          <div style = {{ display : 'flex', flexDirection: 'column'}}> 
+            <label style={{ width : '20%' }} htmlFor={`Cookstep${step}`}>{`STEP${step}:`}</label>
+            <button style = {{fontSize : '8px'}} onClick={handleButtonClick}>이미지선택</button>
+          </div>
+        <input ref={fileInputRef} style={{display:'none'}} type="file" accept="" onChange={(e) => handleStepImage(e, step)}/>
+        {image && <img src={image} alt={`Step ${step} Preview`} style={{ marginLeft:'2%' ,marginRight : '2%', maxWidth: '10%', height: 'auto' }} />}
         <textarea
           rows="5"
           cols="30"
@@ -64,9 +80,10 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
           fontWeight: 700,
           textIndent: '10px'}}
         />
-      <input type="file" accept="" onChange={(e) => handleStepImage(e, step)}/>
+        </div>
+       <button style = {{ margin : 'auto'}}onClick={onDelete}>-</button>
       </div>
-      <button onClick={onDelete}>-</button>
+     
     </>
   );
 }

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { loginUser } from "../../redux/userSlice";
 import axios from "axios";
+import Loading from "../ui/Loading";
 
 const SocialLoginHandler= () => {
 
@@ -27,7 +28,12 @@ const SocialLoginHandler= () => {
         })
     }, [])
 
-    return (<div> 안녕 </div>);
+    return (
+        <>
+            안녕하이
+            <Loading></Loading>
+        </>
+    ) 
 }
 
 export default SocialLoginHandler;
