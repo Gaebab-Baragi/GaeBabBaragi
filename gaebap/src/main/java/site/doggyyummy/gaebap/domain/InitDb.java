@@ -184,14 +184,14 @@ public class InitDb {
             Recipe recipe2=createRecipe("두부 간식",member1,"알러지가 있는 아이들, 방광 결석을 앓고 있는 아이들에게 최적의 간식 두부로 만드는 간식!",
                     url,LocalDateTime.now());
             em.persist(recipe2);
-            RecipeIngredient recipeIngredient11=createRecipeIngredient(ingredient17,recipe2,"50g");
-            em.persist(recipeIngredient11);
+            RecipeIngredient recipeIngredient21=createRecipeIngredient(ingredient17,recipe2,"50g");
+            em.persist(recipeIngredient21);
 
-            Step step21=createStep(recipe1,1L,"두부를 물에 1시간 30분 담근 후 20분 정도 끓는 물에 넣어 간수를 빼주세요.");
-            Step step22=createStep(recipe1,3L,"키친타올로 물기를 제거해주세요.");
-            Step step23=createStep(recipe1,4L,"한입 크기로 잘라주세요.");
-            Step step24=createStep(recipe1,5L,"전자레인지에 넣고 50초 돌리고 30초 식히고 8번 반복해주세요.");
-            Step step25=createStep(recipe1,6L,"급여해주세요.");
+            Step step21=createStep(recipe2,1L,"두부를 물에 1시간 30분 담근 후 20분 정도 끓는 물에 넣어 간수를 빼주세요.");
+            Step step22=createStep(recipe2,3L,"키친타올로 물기를 제거해주세요.");
+            Step step23=createStep(recipe2,4L,"한입 크기로 잘라주세요.");
+            Step step24=createStep(recipe2,5L,"전자레인지에 넣고 50초 돌리고 30초 식히고 8번 반복해주세요.");
+            Step step25=createStep(recipe2,6L,"급여해주세요.");
 
             em.persist(step21);
             em.persist(step22);
@@ -221,15 +221,13 @@ public class InitDb {
 
             Recipe recipe4=createRecipe("단호박 쿠키",member1,"오븐이 필요 없는 건강한 단호박으로 만드는 간단 단호박 쿠키 만들기!",
                     url,LocalDateTime.now());
-            em.persist(recipe3);
+            em.persist(recipe4);
             RecipeIngredient recipeIngredient41=createRecipeIngredient(ingredient14,recipe4,"");
             RecipeIngredient recipeIngredient42=createRecipeIngredient(ingredient8,recipe4,"");
             RecipeIngredient recipeIngredient43=createRecipeIngredient(ingredient6,recipe4,"");
-            em.persist(recipeIngredient1);
-            em.persist(recipeIngredient2);
-            em.persist(recipeIngredient3);
-            em.persist(recipeIngredient4);
-            em.persist(recipeIngredient5);
+            em.persist(recipeIngredient41);
+            em.persist(recipeIngredient42);
+            em.persist(recipeIngredient43);
             Step step41=createStep(recipe1,1L,"단호박을 깨끗하게 씻고 씨를 다 파내 준 다음 썰어줍니다.");
             Step step42=createStep(recipe1,2L,"전자레인지에 7-8분 돌려 삶아주세요.");
             Step step43=createStep(recipe1,3L,"호박 껍질을 숟가락을 사용해 분리해주세요.");
@@ -261,10 +259,10 @@ public class InitDb {
             RecipeIngredient recipeIngredient53=createRecipeIngredient(ingredient19,recipe5,"1 cup");
             RecipeIngredient recipeIngredient54=createRecipeIngredient(ingredient24,recipe5,"1 tbsp");
 
-            em.persist(recipeIngredient1);
-            em.persist(recipeIngredient2);
-            em.persist(recipeIngredient3);
-            em.persist(recipeIngredient4);
+            em.persist(recipeIngredient51);
+            em.persist(recipeIngredient52);
+            em.persist(recipeIngredient53);
+            em.persist(recipeIngredient54);
 
             Step step57=createStep(recipe5,1L,"달걀 흰자와 노른자를 분리해주세요.");
             Step step52=createStep(recipe5,2L,"그릇에 달걀 노른자를 붓고 마요네즈를 넣어주세요.");
