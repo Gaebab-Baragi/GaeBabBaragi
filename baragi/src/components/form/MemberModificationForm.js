@@ -27,6 +27,7 @@ function MemberModificationForm(){
             }
         })
         .catch((res) => {
+            console.log(res);
             Toast.fire("회원 정보를 불러올 수 없습니다.", "", "error");
         })
     }, [])
