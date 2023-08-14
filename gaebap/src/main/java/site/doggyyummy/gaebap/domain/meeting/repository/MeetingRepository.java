@@ -14,7 +14,6 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     @Query("SELECT m FROM Meeting m " +
             "JOIN FETCH m.recipe r " +
             "JOIN FETCH m.host h " +
-            "WHERE m.status != 'IN_PROGRESS' " +
             "ORDER BY m.startTime")
     List<Meeting> findAll();
 
@@ -22,9 +21,8 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
             "JOIN FETCH m.recipe r " +
             "JOIN FETCH m.host h " +
             "WHERE r.id = :recipeId " +
-            "AND m.status != :status " +
             "ORDER BY m.startTime ASC")
-    List<Meeting> findMeetingsByRecipeIdAndStatusNotOrderByStartTimeAsc(Long recipeId, Status status);
+    List<Meeting> findMeetingsByRecipeIdOrderByStartTimeAsc(Long recipeId);
 
     @Query("SELECT m FROM Meeting m " +
             "JOIN FETCH m.host h " +
