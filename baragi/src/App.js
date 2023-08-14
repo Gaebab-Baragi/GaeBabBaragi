@@ -26,6 +26,7 @@ import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
 import Footer from './components/ui/Footer'
+import RecipeWriterPage from './pages/RecipeWriterPage';
 // -------------------PAGES-------------------//
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -70,6 +71,7 @@ function App() {
         <Route path='/recipe-register/' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
+        <Route path='/recipe-writer/:id' element={<RecipeWriterPage/>}></Route>
         {/* 스트리밍 */}
         <Route path='/streaming-register/:id' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>
