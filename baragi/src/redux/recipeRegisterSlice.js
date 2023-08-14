@@ -25,7 +25,6 @@ let recipeRegister = createSlice({
     recipeVideo: '',
     // videoUrl : './기본이미지.png'
     stepImages : ['0'],
-
   },
   reducers: {
     requestFilteredRecipeList: (state) => {

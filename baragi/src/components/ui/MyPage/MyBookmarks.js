@@ -5,6 +5,7 @@ import RecipeCard from "../RecipeCard";
 import axios from "axios";
 
 const CardContainer = styled.div`
+  margin-top:2%;
   display: flex;
   flex-wrap: wrap;
   justify-content:flex-start;
