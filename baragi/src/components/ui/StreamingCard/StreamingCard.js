@@ -9,7 +9,7 @@ import Toast from '../Toast';
 import PassswordModal from './PasswordModal';
 import useDidMountEffect from '../../../useDidMountEffect';
 
-function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
+function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [modalShow, setModalShow] = useState(false);
@@ -118,9 +118,13 @@ function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_i
                         <Card.ImgOverlay className='overlay-icon-play'>
                             <ion-icon name="play-circle-outline"></ion-icon>
                         </Card.ImgOverlay>
-                    ) : (
+                    ) : status === "SCHEDULED" ? (
                         <Card.ImgOverlay className='overlay-icon-alarm'>
                             <ion-icon name="alarm-outline"></ion-icon>
+                        </Card.ImgOverlay>
+                    ) : (
+                        <Card.ImgOverlay className='overlay-icon-restaurant'>
+                            <ion-icon name="restaurant-outline"></ion-icon>
                         </Card.ImgOverlay>
                     )
                 }
@@ -143,10 +147,16 @@ function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_i
                                 </div>
                             </Card.ImgOverlay>
                         )
-                        : (
+                        : status === "SCHEDULED" ? (
                             <Card.ImgOverlay className='overlay-scheduled'>
                                 <div className='status-scheduled'>
                                     <p>예정</p>
+                                </div>
+                            </Card.ImgOverlay>
+                        ) : (
+                            <Card.ImgOverlay className='overlay-in-progress'>
+                                <div className='status-in-progress'>
+                                    <p>미팅 진행 중</p>
                                 </div>
                             </Card.ImgOverlay>
                         )
@@ -157,7 +167,13 @@ function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_i
                     <img src={host_profile_url}></img>
                 </div>
                 <div className='streaming-info-detail col-10'>
-                    <p className='streaming-title'>{title}</p>
+                    <p className='streaming-title'>{title}
+                    {
+                        is_private_room === true && (
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        )
+                    }
+                    </p>
                     <p className='streaming-host-nickname-and-start-time'>{host_nickname} • 예약 시간:{start_time}</p>
                 </div>
             </div>
