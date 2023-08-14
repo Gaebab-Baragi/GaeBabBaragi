@@ -45,10 +45,10 @@ function NaviBar() {
               )
               : (
               <Nav> {/* 로그인 O */}
-                <NavDropdown title="내 프로필" id="basic-nav-dropdown">
+                <NavDropdown title="마이페이지" id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to='/myinformation' href='/myinformation' eventKey={5} className='navbar-nav2-dropdown'>내 정보변경</NavDropdown.Item>
                   <NavDropdown.Item as={Link} to='/my-pet-list/0' href='/my-pet-list/0' eventKey={6} className='navbar-nav2-dropdown'>반려견 관리</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to='/myrecipe' href='/myrecipe' eventKey={7} className='navbar-nav2-dropdown'>마이페이지</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/myrecipe' href='/myrecipe' eventKey={7} className='navbar-nav2-dropdown'>내 레시피</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item as={Link} to='/logout' href='/logout' className='navbar-nav2-dropdown'> 로그아웃 </NavDropdown.Item>
                 </NavDropdown>
