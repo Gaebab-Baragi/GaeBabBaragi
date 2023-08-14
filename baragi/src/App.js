@@ -25,7 +25,7 @@ import PasswordModificationPage from './pages/PasswordModificationPage';
 import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
-import Footer from './components/ui/Footer'
+import Footer from './components/ui/footer/Footer'
 import RecipeWriterPage from './pages/RecipeWriterPage';
 // -------------------PAGES-------------------//
 import axios from 'axios';
