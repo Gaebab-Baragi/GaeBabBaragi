@@ -6,12 +6,8 @@ import { useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-<<<<<<< HEAD
-import Toast from "../components/ui/Toast";
-=======
 import Confirm from '../../src/components/ui/Confirm';
 import Toast from '../../src/components/ui/Toast';
->>>>>>> 0df5e929fac6ed163b4353dc6147bb6e020ae339
 
 function StreamingRegisterPage() {
   const location = useLocation();
@@ -73,15 +69,9 @@ function StreamingRegisterPage() {
       .post(process.env.REACT_APP_BASE_URL +"/api/meetings", data)
       .then((response) => {
         // Handle the response if needed
-<<<<<<< HEAD
-        Toast('스트리밍 예약이 완료되었습니다.', "", "success");
-        console.log("Request successful:", response.data);
-        navigate("/streaming-list");
-=======
         Toast.fire("스트리밍 생성이 완료되었습니다.", "", "success")
         
         navigate('/streaming-list');
->>>>>>> 0df5e929fac6ed163b4353dc6147bb6e020ae339
       })
       .catch((error) => {
         // Handle errors if necessary
