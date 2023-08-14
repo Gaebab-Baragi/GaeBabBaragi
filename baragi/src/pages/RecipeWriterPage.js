@@ -3,23 +3,34 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'; // 로�
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-const RecipeWriterPage=()=>{
-    const {id}=useParams();
-    const [data,setData]=useState(null);
-    useEffect(()=>{
-        const fetchData=async()=>{
+const RecipeWriterPage = () => {
+    const { id } = useParams();
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
             console.log(id);
-            const response=await fetch(process.env.REACT_APP_BASE_URL+`/api/recipes/writer/${id}`);
-            const data=await response.json();
+            const response = await fetch(process.env.REACT_APP_BASE_URL + `/api/recipes/writer/${id}`);
+            const data = await response.json();
             setData(data);
         };
         fetchData();
-    },[id]);
+    }, [id]);
+
     return (
         <div>
-            <h1>{data.name}님이 작성한 레시피 목록</h1>
-            asdfafd
+            {data ? (
+                <div>
+                    <h1>{data.name}님이 작성한 레시피 목록</h1>
+                    {data.recipes.map((recipe, index) => (
+                        <li key={index}>{recipe.title}</li>
+                    ))}
+                </div>
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     );
-}
+};
+
 export default RecipeWriterPage;

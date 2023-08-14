@@ -243,7 +243,9 @@ const RecipeDetailPage=()=>{
             console.error('에러 발생', error);
         }
     };
-
+    const goToWriterRecipe=(memberId)=>{
+        navigate(`/recipe-writer/${memberId}`);
+    }
 
 
 
@@ -277,7 +279,8 @@ const RecipeDetailPage=()=>{
                 <div className='imgForm'>
                     <img className='imgsize' src={data.imgUrl}></img>
                     <div>
-                        <button>
+                        <button onClick={()=>goToWriterRecipe(data.member.memberId)}>
+                        {/* onClick={() => handleDeleteComment(comment.id)} */}
                             <img className='profileImg' src={data.member.memberImage}></img>
                         </button>
                     </div>
