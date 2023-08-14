@@ -7,6 +7,8 @@ import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
 import Toast from '../components/ui/Toast';
 import useDidMountEffect from './../useDidMountEffect';
+
+
 var localUser = new UserModel();
 
 class Streaming extends Component {
@@ -26,7 +28,7 @@ class Streaming extends Component {
             chatDisplay: true,
             videostate:true,
             audiostate:true,
-            isStartBtnDisabled:false,
+            hideInfo:false,
         };
 
         this.joinSession = this.joinSession.bind(this);
@@ -35,7 +37,7 @@ class Streaming extends Component {
         this.endSession = this.endSession.bind(this);
         // this.toggleChat = this.toggleChat.bind(this);
     
-        this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
+        // this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         // this.onbeforeunload = this.onbeforeunload.bind(this);
     }
 
@@ -58,38 +60,16 @@ class Streaming extends Component {
         });
     }
 
+    handleToggleStartSignal = (event) => {
+        const data = event.data;
+        this.setState({
+            hideInfo: data,
+        });
+    };
+
     componentWillUnmount() {
         window.removeEventListener('beforeunload', this.onbeforeunload);
         this.leaveSession()
-    }
-
-    // onbeforeunload(event) {
-    //     this.leaveSession();
-    // }
-
-    // leaveSessionOnTabClose = (event) => {
-    //     event.preventDefault();
-    //     this.leaveSession();
-    // };
-
-
-    handleMainVideoStream(stream) {
-        if (this.state.mainStreamManager !== stream) {
-            this.setState({
-                mainStreamManager: stream
-            });
-        }
-    }
-
-    deleteSubscriber(streamManager) {
-        let subscribers = this.state.subscribers;
-        let index = subscribers.indexOf(streamManager, 0);
-        if (index > -1) {
-            subscribers.splice(index, 1);
-            this.setState({
-                subscribers: subscribers,
-            });
-        }
     }
 
     joinSession() {
@@ -127,6 +107,21 @@ class Streaming extends Component {
                         subscribers: subscribers,
                     });
                 });
+                mySession.on('signal:toggleStart', (event) => {
+                    console.log('시그널!!!!!!!!!!!!!!',event.data)
+                        // Handle meeting start signal from host
+                        this.setState({
+                            hideInfo: true, // Hide the "Meeting not started" message
+                        });
+
+                    // Handle other custom signals if needed
+                });
+                
+                mySession.on('signal:roomExploded',(event)=>{
+                    console.log('방 폭파됨')
+                    Toast.fire('호스트에 의해 미팅이 끝났습니다.',"","info")
+                    window.location.replace('/streaming-list')
+                })
 
                 // On every Stream destroyed...
                 mySession.on('streamDestroyed', (event) => {
@@ -191,7 +186,7 @@ class Streaming extends Component {
                             localUser.setConnectionId(this.state.session.connection.connectionId);
                             localUser.setStreamManager(publisher);
                             this.sendSignalUserChanged({ isScreenShareActive: localUser.isScreenShareActive() });
-
+                        
                         })
                         .catch((error) => {
                             console.log('There was an error connecting to the session:', error.code, error.message);
@@ -221,8 +216,7 @@ class Streaming extends Component {
         );
     }
 
-    leaveSession(e) {
-        e.stopPropagation();
+    leaveSession() {
     const sessionId = parseInt(this.state.mySessionId)
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/left/${sessionId}`)
             .then(() => {
@@ -272,8 +266,12 @@ class Streaming extends Component {
     }
 
     // 미팅 폭파하기(호스트용) - 방이 아예 삭제됨
-    endSession(e) {
-        // e.stopPropagation();
+    endSession() {
+        localUser.getStreamManager().stream.session.signal({
+            data: true,
+            type:'roomExploded'
+        });
+
         const sessionId = parseInt(this.state.mySessionId)
         console.log(sessionId, typeof(sessionId))
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/close/${sessionId}`)
@@ -294,6 +292,17 @@ class Streaming extends Component {
         this.state.session.signal(signalOptions);
     }
 
+    deleteSubscriber(stream) {
+        const remoteUsers = this.state.subscribers;
+        const userStream = remoteUsers.filter((user) => user.getStreamManager().stream === stream)[0];
+        let index = remoteUsers.indexOf(userStream, 0);
+        if (index > -1) {
+            remoteUsers.splice(index, 1);
+            this.setState({
+                subscribers: remoteUsers,
+            });
+        }
+    }
 
 
     render() {
@@ -307,16 +316,16 @@ class Streaming extends Component {
         const recipeData = this.props.recipeData;
         const isStartBtnDisabled = this.state.isStartBtnDisabled
         const userProfileUrl = this.props.userProfileUrl
+        let hideInfo = this.state.hideInfo
 
         return (
             <div className='StreamingLiveContatiner'>
-
             <div className="streamingContainer">
                 <div className='streamingTop'>
                     <h3 style={{fontWeight:'bold'}}>{streamingInfo.title}</h3>
                     <div className='streamingInfoContainer'>
                         <p>시작 시간 : {streamingInfo.start_time}</p>
-                        {!isStartBtnDisabled ? (
+                        { !hideInfo ? (
                             <p style={{marginLeft:'1%', fontWeight:'bold', marginRight:'2%'}}>
                                 <ion-icon style={{ color: 'red' }} size="small" name="alert-circle"></ion-icon> 아직 호스트가 미팅을 시작하지 않았습니다.
                             </p>
