@@ -29,7 +29,7 @@ import RecipeWriterPage from './pages/RecipeWriterPage';
 // -------------------PAGES-------------------//
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { loginUser } from './redux/userSlice';
+import { loginUser, clearUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 
@@ -44,6 +44,7 @@ function App() {
   axios.interceptors.response.use(
     (res) => {
       if (res.headers.get('Authorization')) {
+        console.log("authorized")
         axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
         dispatch(loginUser({...user, isLogin : true}));
       }
@@ -53,12 +54,14 @@ function App() {
       console.log(err);
       if (err.response.status === 462) {
         Toast.fire("로그인이 필요한 기능입니다.", "", "error");
-        dispatch(loginUser({}));
+        dispatch(clearUser());
         navigate("/login");
+        return;
       }
-      return err;
+      return Promise.reject(err);
     }
   )
+  axios.defaults.withCredentials = true;
 
 
   const location = useLocation();
