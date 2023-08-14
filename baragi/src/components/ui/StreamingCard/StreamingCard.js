@@ -161,20 +161,19 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
                             </Card.ImgOverlay>
                         )
                     }
-                    {
-                        is_private_room === true && (
-                            <Card.ImgOverlay className='overlay-icon-lock'>
-                                <ion-icon name="lock-closed-outline"></ion-icon>
-                            </Card.ImgOverlay>
-                        )
-                    }
             </Card>
             <div className='streaming-info row'>
                 <div className='streaming-host-profile col-2'>
                     <img src={host_profile_url}></img>
                 </div>
                 <div className='streaming-info-detail col-10'>
-                    <p className='streaming-title'>{title}</p>
+                    <p className='streaming-title'>{title}
+                    {
+                        is_private_room === true && (
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        )
+                    }
+                    </p>
                     <p className='streaming-host-nickname-and-start-time'>{host_nickname} • 예약 시간:{start_time}</p>
                 </div>
             </div>

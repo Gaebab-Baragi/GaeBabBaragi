@@ -183,20 +183,6 @@
     font-weight: 500;
 }
 
-/* 자물쇠 아이콘 */
-.streaming-card .overlay-icon-lock {
-    padding: 0;
-    display: flex;
-    justify-content: left;
-
-    margin-left: 0.5vw;
-    margin-top: 0.5vw;
-}
-
-.streaming-card .overlay-icon-lock ion-icon {
-    font-size: clamp(25px, 3vw, 30px);
-}
-
 /* 스트리밍 정보 */
 .streaming-info {
     margin-top: 5px;
@@ -212,10 +198,17 @@
 .streaming-info .streaming-info-detail p {
     text-align: left;
     margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 .streaming-info .streaming-info-detail .streaming-title {
     font-weight: 500;
+}
+
+/* 자물쇠 아이콘 */
+.streaming-info .streaming-info-detail .streaming-title ion-icon {
+    font-size: 16px;
 }
 
 .streaming-info .streaming-info-detail .streaming-host-nickname-and-start-time {
