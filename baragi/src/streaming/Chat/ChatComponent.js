@@ -10,7 +10,6 @@ export default class ChatComponent extends Component {
         chatStatus: true,
         };
     this.chatScroll = React.createRef();
-
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.close = this.close.bind(this);
