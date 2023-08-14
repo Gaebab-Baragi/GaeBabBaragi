@@ -7,9 +7,8 @@
 
 .StreamingHeader {
   justify-content: left;
-  width: 100%;
   margin-top: 30px;
-  margin-left: 13vw;
+  margin-left: 10%;
   margin-bottom: 30px;
 }
 
@@ -25,15 +24,15 @@
   font-weight: 500;
 }
 
-.inputContainer {
+/* .inputContainer {
   display: flex;
   flex-direction: row;
   justify-items: center;
   text-align: left;
   height: 400px;
-}
+} */
 
-.inputContainer-left {
+/* .inputContainer-left {
   display: flex;
   flex-direction: column;
   justify-content: right;
@@ -51,13 +50,13 @@
   margin-left: 13vw;
   margin-right: 1vw;
   font-size: 1.8vw;
-}
+} */
 
-.inputContainer-right {
+/* .inputContainer-right {
   margin-left: 30px;
   margin-right: 20px;
   width: 100%;
-}
+} */
 
 .inputComponent {
   width: 36vw;
@@ -82,12 +81,12 @@
   border-radius: 10px;
   border: 2px solid #000;
   background: #FFF;
-  width: 32vw;
+  width: 100%;
   height: 40px;
   flex-shrink: 0;
-  font-size: 1vw;
-  font-weight: 700;
   text-indent: 10px;
+  font-weight: 500;
+  color: #777;
 }
 .roomName2 {
   border-radius: 10px;
@@ -110,24 +109,24 @@
 
 .startTime {
   display: flex;
-  width: 15vw;
+  width: 49%;
   height: 40px;
   justify-content: center;
   flex-shrink: 0;
   color: #000;
   text-align: center;
-  font-size: 1vw;
-  font-weight: 700;
+  font-size: 1.5vw;
+  font-weight: 500;
   line-height: 130%;
-  margin-right: 2vw;
+  margin-right: 2%;
   border-radius: 10px;
   border: 2px solid #000
 }
 
 .plusBtn {
   display: flex;
-  color: goldenrod;
-  border-color: #FA0;
+  color: #FA0;
+  border: 1px solid #FA0;
   background-color: #FFF;
   width: 34px;
   height: 34px;
@@ -143,8 +142,8 @@
 
 .minusBtn {
   display: flex;
-  color: goldenrod;
-  border-color: #FA0;
+  color: #FA0;
+  border: 1px solid #FA0;
   background-color: #FFF;
   width: 34px;
   height: 34px;
@@ -189,13 +188,14 @@
   border-radius: 10px;
   border: 2px solid #000;
   background: #FFF;
-  width: 32vw;
+  width: 100%;
   height: 100px;
   flex-shrink: 0;
-  font-size: 1vw;
-  font-weight: 700;
-  margin-left: 10px;
+  font-size: 1.3vw;
+  font-weight: 500;
   text-indent: 10px;
+  color:#777;
+  resize: none;
 }
 
 .inputContainer-bottom {
@@ -211,10 +211,10 @@
   align-items: center;
   flex-shrink: 0;
   color: #FFF;
-  background-color: #FA0;
+  border:1px solid #FA0;
   font-size: 1vw;
   font-weight: 700;
-  border-color: #FA0;
+  background-color: #FA0;
   border-radius: 10px;
 }
 
@@ -225,11 +225,11 @@
 } */
 
 
-@media (max-width : 1000px){
+/* @media (max-width : 1000px){
   .inputContainer-left>label {
     font-size: 17px;
   }
-}
+} */
 
 
 .roomName:focus{
@@ -255,4 +255,58 @@
 }
 .description:hover{
   border-color:#FA0;
+}
+
+
+/* <ul className="ingredient-list">
+                        {data.ingredients.map((ingredient, index) => (
+                            <li key={index} className={`ingredient-item ${index % 2 === 0 ? 'even' : 'odd'}`}>
+                                <div className="ingredient-info">
+                                    <div className="ingredient-details">
+                                        <div className="ingredient-name">{ingredient.name}</div>
+                                        <div className="ingredient-amount">{data.recipeIngredients[index].amount}</div>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul> */
+
+
+/* 여기서 부터 */
+
+/* Add these CSS rules to your existing styles */
+.input-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Add this line */
+  margin-top:3%;
+  margin-left:10%;
+}
+.input-info {
+  display: flex;
+  justify-content: center;
+  font-size: 1.5vw;
+}
+.input-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 두 열로 배치하거나 필요한 열의 수에 맞게 조정 */
+  align-items: flex-start; /* 요소들을 왼쪽 위로 정렬 */
+  width: 100%;
+}
+.input-property {
+  flex: 1;
+  font-weight: bold;
+  text-align: left;
+  align-self: flex-start; /* 변경된 부분: 위로 정렬 */
+  
+}
+
+.input-content {
+  flex: 1;
+  text-align: left;
+  color: #777;
+  width: 50vw;
+  display: flex;
+  font-weight: 500;
+  /* margin-right:10%; */
 }

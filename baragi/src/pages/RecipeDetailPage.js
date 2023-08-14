@@ -8,6 +8,10 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'; // Import CopyToClipb
 import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import Confirm from '../../src/components/ui/Confirm';
+import Toast from '../../src/components/ui/Toast';
+import CommentAlert from '../../src/components/ui/CommentAlert';
+import Toast from '../../src/components/ui/Toast'
 
 //링크 복사 함수
 const copyUrlToClipboard = () => {
@@ -17,7 +21,7 @@ const copyUrlToClipboard = () => {
         navigator.clipboard.writeText(currentUrl).then(
         () => {
           // You can show a success message here if needed
-        alert('링크가 복사 되었습니다!')
+          return Toast.fire("링크가 복사되었습니다.", "", "success")
         },
         () => {
           // Handle error if copying fails
@@ -81,7 +85,7 @@ const RecipeDetailPage=()=>{
 
                 setBookmarkCnt(bookmarkCnt);
                 if(data.statusCode==400){
-                    alert(data.errorMessage);
+                    Toast.fire(data.errorMessage, "", "warning")
                     navigate('/'); // 메인 페이지로 리다이렉트
                     return; // 리다이렉트 후 함수 종료
                 }
@@ -106,8 +110,9 @@ const RecipeDetailPage=()=>{
 
     const handleStreamingReservation = () => {
         if (!isLoggedIn) {
-            alert("로그인이 필요한 서비스입니다.");
-            navigate('/login');
+            Confirm().then(() => {
+                // Handle anything else after confirmation if needed
+            });
         } else {
             navigate(`/streaming-register/${id}`, { state: { recipeTitle: data.title } });
         }
@@ -117,8 +122,9 @@ const RecipeDetailPage=()=>{
     const handleLikeClick = async () => {
         console.log('handleLikeClick function called');
         if (!isLoggedIn) {
-            alert('로그인이 필요한 서비스입니다.')
-            navigate('/login'); // Replace with your actual login page path
+            Confirm().then(() => {
+                // Handle anything else after confirmation if needed
+            });
         } else {
             try {
                 const response = await axios.post(
@@ -171,13 +177,17 @@ const RecipeDetailPage=()=>{
         }
         
         if (!isLoggedIn) {
-            alert('로그인이 필요한 서비스입니다.');
-            navigate('/login');
-            return;
+            
+            Confirm().then(() => {
+                // Handle anything else after confirmation if needed
+            });
+            return ;
         }
         if (!newCommentContent.trim()) {
-            alert('댓글 내용을 작성해주세요');
-            return;
+            CommentAlert().then(()=>{
+
+            });
+            return ;
         }
         try {
             const response = await axios.post(
@@ -186,7 +196,7 @@ const RecipeDetailPage=()=>{
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                      }
+                    }
                 }
             );
             if (response.status === 200) {
@@ -207,15 +217,6 @@ const RecipeDetailPage=()=>{
             console.error('에러 발생', error);
         }
     };
-    
-
-
-
-
-
-
-
-
 
     //댓글 등록 끝
 
@@ -245,8 +246,6 @@ const RecipeDetailPage=()=>{
     const goToWriterRecipe=(memberId)=>{
         navigate(`/recipe-writer/${memberId}`);
     }
-
-
 
 
     //댓글 쓰기 이벤트 끝

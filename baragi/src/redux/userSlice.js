@@ -21,6 +21,10 @@ let user= createSlice({
     },
     clearUser: (state) =>{
       state.isLogin = false;
+      state.id="";
+      state.username='';
+      state.nickname='';
+      state.profileUrl='';
     }
   }
 })
