@@ -251,25 +251,27 @@ class Streaming extends Component {
             });
     }
 
-
+    // 미팅 시작하기(호스트 용) - 더 이상 들어오지 못함
     startSession() {
-        if (this.isStartBtnDisabled) {
-            Toast.fire('이미 미팅을 시작하였습니다.', '','info')
-        }
         const sessionId = parseInt(this.state.mySessionId)
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/start/${sessionId}`)
         .then((res)=>{
             console.log('호스트가 미팅을 시작하였습니다!!!',res.data)
+            // 미팅 시작되었다는 시그널 보내기(호스트 제외 사람들이 볼 수 있게)
+            localUser.getStreamManager().stream.session.signal({
+                data: true,
+                type:'toggleStart'
+            });
             this.setState({
                 isStartBtnDisabled:true,
             });
-            // this.user.getStreamManager().stream.session.signal()
         })
         .catch((err)=>{
             console.log(err)
         })
     }
 
+    // 미팅 폭파하기(호스트용) - 방이 아예 삭제됨
     endSession(e) {
         // e.stopPropagation();
         const sessionId = parseInt(this.state.mySessionId)
@@ -293,6 +295,7 @@ class Streaming extends Component {
     }
 
 
+
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
@@ -304,6 +307,8 @@ class Streaming extends Component {
         const recipeData = this.props.recipeData;
         const isStartBtnDisabled = this.state.isStartBtnDisabled
         const userProfileUrl = this.props.userProfileUrl
+        const test = this.loca;lU
+
 
         return (
             <div className='StreamingLiveContatiner'>
@@ -406,11 +411,11 @@ class Streaming extends Component {
                             {!isStartBtnDisabled &&
                                 <button className='startButton' onClick={this.startSession}>미팅 시작하기</button>
                             }
-                            <button className='leaveButton' onClick={(e)=>this.endSession(e)}>미팅 끝내기</button>   
+                            <button className='leaveButton' onClick={this.endSession}>미팅 끝내기</button>   
                         </div>
                     
                         :
-                        <button className='leaveButton' onClick={(e)=>this.leaveSession(e)}>방 나가기</button>
+                        <button className='leaveButton' onClick={this.leaveSession}>방 나가기</button>
                     }
                       {/* 내 마이크 on off */}
                     {this.state.audiostate ?

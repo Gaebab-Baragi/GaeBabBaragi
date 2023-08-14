@@ -60,7 +60,6 @@ function StreamingCardComponent({is_private_room,meeting_id, recipe_id, recipe_i
         // 비밀번호 요청하기 + 모달창 띄우기
         if (is_private_room) {
             setModalShow(true);
-
         } else {
 
             // 비밀번호 없이 미팅 참여
