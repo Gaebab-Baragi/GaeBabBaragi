@@ -8,7 +8,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'; // Import CopyToClipb
 import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-
+import Confirm from '../../src/components/ui/Confirm';
+import CommentAlert from '../../src/components/ui/Alert';
 //링크 복사 함수
 const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
@@ -106,8 +107,9 @@ const RecipeDetailPage=()=>{
 
     const handleStreamingReservation = () => {
         if (!isLoggedIn) {
-            alert("로그인이 필요한 서비스입니다.");
-            navigate('/login');
+            Confirm().then(() => {
+                // Handle anything else after confirmation if needed
+            });
         } else {
             navigate(`/streaming-register/${id}`, { state: { recipeTitle: data.title } });
         }
@@ -117,8 +119,9 @@ const RecipeDetailPage=()=>{
     const handleLikeClick = async () => {
         console.log('handleLikeClick function called');
         if (!isLoggedIn) {
-            alert('로그인이 필요한 서비스입니다.')
-            navigate('/login'); // Replace with your actual login page path
+            Confirm().then(() => {
+                // Handle anything else after confirmation if needed
+            });
         } else {
             try {
                 const response = await axios.post(
@@ -171,13 +174,17 @@ const RecipeDetailPage=()=>{
         }
         
         if (!isLoggedIn) {
-            alert('로그인이 필요한 서비스입니다.');
-            navigate('/login');
-            return;
+            
+            Confirm().then(() => {
+                // Handle anything else after confirmation if needed
+            });
+            return ;
         }
         if (!newCommentContent.trim()) {
-            alert('댓글 내용을 작성해주세요');
-            return;
+            CommentAlert().then(()=>{
+
+            });
+            return ;
         }
         try {
             const response = await axios.post(
