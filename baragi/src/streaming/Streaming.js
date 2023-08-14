@@ -307,8 +307,6 @@ class Streaming extends Component {
         const recipeData = this.props.recipeData;
         const isStartBtnDisabled = this.state.isStartBtnDisabled
         const userProfileUrl = this.props.userProfileUrl
-        const test = this.loca;lU
-
 
         return (
             <div className='StreamingLiveContatiner'>
