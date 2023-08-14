@@ -19,7 +19,7 @@ function RecipeCard({item}) {
   },[])
 
   return (
-    <Card style={{ width: '16rem', cursor : 'pointer'}} onClick={onClick}>
+    <Card style={{ width: '16.5rem', cursor : 'pointer'}} onClick={onClick}>
       <Card.Img style={{height:'200px'}}  variant="top" src={item.recipeImageUrl} />
       <Card.Body>
         <Card.Title>{item.title}</Card.Title>
@@ -27,10 +27,10 @@ function RecipeCard({item}) {
           {item.description}
         </Card.Text>
         <Card.Text  style={{display:'flex', justifyContent:'space-around'}}>
-          <span>👁‍🗨 {item.hit}</span>
-          <span>❤️ {bookMarks}</span>
+          <span><ion-icon size='small' name="eye-outline"></ion-icon> {item.hit}</span>
+          <span><ion-icon size='small' name="heart-circle-outline"></ion-icon> {bookMarks}</span>
           {/* <span> | </span> */}
-          <span>📅 {item.writtenTime.toString().slice(0,10)}</span>
+          <span><ion-icon size='small' name="calendar-outline"></ion-icon> {item.writtenTime.toString().slice(0,10)}</span>
         </Card.Text>
       </Card.Body>
     </Card>
