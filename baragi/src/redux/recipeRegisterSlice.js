@@ -22,7 +22,7 @@ let recipeRegister = createSlice({
     ],
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
     recipeImage: '',
-    recipeVideo: '0',
+    recipeVideo: '',
     // videoUrl : './기본이미지.png'
     stepImages : ['0'],
 
