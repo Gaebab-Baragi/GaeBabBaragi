@@ -9,6 +9,7 @@ import '../components/form/css/RecipeDetail.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Confirm from '../../src/components/ui/Confirm';
+import Toast from '../../src/components/ui/Toast';
 import CommentAlert from '../../src/components/ui/CommentAlert';
 import Toast from '../../src/components/ui/Toast'
 
@@ -20,7 +21,7 @@ const copyUrlToClipboard = () => {
         navigator.clipboard.writeText(currentUrl).then(
         () => {
           // You can show a success message here if needed
-        Toast.fire('링크가 복사 되었습니다.',"","info")
+          return Toast.fire("링크가 복사되었습니다.", "", "success")
         },
         () => {
           // Handle error if copying fails
@@ -84,7 +85,7 @@ const RecipeDetailPage=()=>{
 
                 setBookmarkCnt(bookmarkCnt);
                 if(data.statusCode==400){
-                    alert(data.errorMessage);
+                    Toast.fire(data.errorMessage, "", "warning")
                     navigate('/'); // 메인 페이지로 리다이렉트
                     return; // 리다이렉트 후 함수 종료
                 }
