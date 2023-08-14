@@ -2,7 +2,7 @@
 import './App.css';
 import React, {useState} from 'react';
 import { configureStore } from '@reduxjs/toolkit'
-import { Routes, Route, useLocation} from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate} from 'react-router-dom'
 import NaviBar from './components/ui/navbar/NaviBar';
 
 // -------------------PAGES--------------------//
@@ -32,21 +32,31 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
+import Toast from './components/ui/Toast';
 
 function App() {  
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const navigate = useNavigate();
 
   axios.interceptors.response.use(
     (res) => {
       if (res.headers.get('Authorization')) {
         axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
-        dispatch(loginUser({...user, isLogin : true}))
+        dispatch(loginUser({...user, isLogin : true}));
       }
       return res;
     },
+    (err) => {
+      console.log(err);
+      if (err.response.status === 401 || err.response.status === 462) {
+        Toast.fire("로그인이 필요한 기능입니다.", "", "error");
+        dispatch(loginUser({...user, isLogin : false}));
+        navigate("/login");
+      }
+      return err;
+    }
   )
-  axios.defaults.withCredentials = true;
 
 
   const location = useLocation();
