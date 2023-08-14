@@ -50,3 +50,15 @@
     text-align: center;
     font-size: 1.2vw;
 }
+
+.nav-profile-img{
+    width: 4vw;
+    height: 4vw;
+    border-radius: 50%;
+}
+
+@media screen and (max-width : 990px){
+    .nav-profile-img{
+        border-radius: 0;
+    }
+}
