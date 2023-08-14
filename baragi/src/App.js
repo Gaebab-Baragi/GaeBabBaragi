@@ -32,14 +32,35 @@ import { useDispatch } from 'react-redux';
 import { loginUser, clearUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
-
-import Toast from './components/ui/Toast';
+import mem from 'mem';
 
 function App() {  
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
-  const [, , removeCookie] = useCookies(["refreshToken"]);
+  
+  const getRefreshToken = mem(async () => {
+    try {
+      let accessToken = null;
+      await axios.get("/api/login")
+                .then((res) => {
+                  if (res.headers.get('Authorization')){
+                    accessToken = res.headers.get('Authorization');
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                  return;
+                });
+      return accessToken;
+    } catch (e) {
+      delete axios.defaults.headers.common['Authorization'];
+      Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
+      navigate("/login");
+    }
+  }, { maxAge: 1000 })
+  
+
 
   axios.interceptors.response.use(
     (res) => {
@@ -50,14 +71,23 @@ function App() {
       }
       return res;
     },
-    (err) => {
-      console.log(err);
-      if (err.response.status === 462) {
-        Toast.fire("로그인이 필요한 기능입니다.", "", "error");
-        dispatch(clearUser());
-        navigate("/login");
-        return;
+    async (err) => {
+      const { config, response: { status } } = err;
+  
+      if (config.url === "/api/checklogin" || status !== 462 || config.sent) {
+        return Promise.reject(err);
       }
+  
+      config.sent = true;
+      const accessToken = await getRefreshToken();
+  
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+        return axios(config);
+      }
+  
+      Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
+      navigate("/login");
       return Promise.reject(err);
     }
   )
