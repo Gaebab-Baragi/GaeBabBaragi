@@ -56,9 +56,3 @@
     height: 4vw;
     border-radius: 50%;
 }
-
-@media screen and (max-width : 990px){
-    .nav-profile-img{
-        border-radius: 0;
-    }
-}
