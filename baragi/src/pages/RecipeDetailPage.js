@@ -11,6 +11,8 @@ import axios from 'axios';
 import Confirm from '../../src/components/ui/Confirm';
 import Toast from '../../src/components/ui/Toast';
 import CommentAlert from '../../src/components/ui/CommentAlert';
+import Toast from '../../src/components/ui/Toast'
+
 //링크 복사 함수
 const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
@@ -194,7 +196,7 @@ const RecipeDetailPage=()=>{
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                      }
+                    }
                 }
             );
             if (response.status === 200) {
@@ -244,8 +246,6 @@ const RecipeDetailPage=()=>{
     const goToWriterRecipe=(memberId)=>{
         navigate(`/recipe-writer/${memberId}`);
     }
-
-
 
 
     //댓글 쓰기 이벤트 끝
