@@ -152,6 +152,12 @@ public class SecurityConfig {
                             @Override
                             public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
                                 log.info("response header : {}", response.getHeader("Access-Control-Allow-Origin"));
+                                log.info("response header : {}", response.getHeader("Authorization"));
+
+                                String refreshToken = jwtService.extractRefreshToken(request)
+                                        .filter(jwtService::isTokenValid)
+                                        .orElse(null);
+                                log.info("refreshToken : {}", refreshToken);
                                 response.setStatus(462);
                             }
                         })

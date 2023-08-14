@@ -31,8 +31,8 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser, clearUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
-import { useCookies } from 'react-cookie';
 import mem from 'mem';
+import Toast from './components/ui/Toast';
 
 function App() {  
   const dispatch = useDispatch();
@@ -42,8 +42,9 @@ function App() {
   const getRefreshToken = mem(async () => {
     try {
       let accessToken = null;
-      await axios.get("/api/login")
+      await axios.get(process.env.REACT_APP_BASE_URL + "/api/checkLogin")
                 .then((res) => {
+                  console.log(res);
                   if (res.headers.get('Authorization')){
                     accessToken = res.headers.get('Authorization');
                   }
@@ -55,6 +56,7 @@ function App() {
       return accessToken;
     } catch (e) {
       delete axios.defaults.headers.common['Authorization'];
+      dispatch(clearUser());
       Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
       navigate("/login");
     }
@@ -64,29 +66,26 @@ function App() {
 
   axios.interceptors.response.use(
     (res) => {
-      if (res.headers.get('Authorization')) {
-        console.log("authorized")
-        axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
-        dispatch(loginUser({...user, isLogin : true}));
-      }
       return res;
     },
     async (err) => {
       const { config, response: { status } } = err;
   
-      if (config.url === "/api/checklogin" || status !== 462 || config.sent) {
+      if (config.url === "/api/checkLogin" || status !== 462 || config.sent) {
         return Promise.reject(err);
       }
   
       config.sent = true;
       const accessToken = await getRefreshToken();
-  
+      console.log("accessToken", accessToken);
       if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
+        axios.defaults.headers.common['Authorization']= `Bearer ${accessToken}`;
         return axios(config);
       }
-  
+
+      delete axios.defaults.headers.common['Authorization'];
       Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
+      dispatch(clearUser());
       navigate("/login");
       return Promise.reject(err);
     }
