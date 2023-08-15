@@ -16,7 +16,7 @@ function LoginForm() {
   const [msg, setMsg] = useState('');
 
   // ----------- 로그인 기능 구현-------------------//
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     // Reload 막기
     e.preventDefault();
     // 빈 값 처리
@@ -31,11 +31,11 @@ function LoginForm() {
       password : password
     };
 
-    axios.post(process.env.REACT_APP_BASE_URL +'/api/login', body) 
+    await axios.post(process.env.REACT_APP_BASE_URL +'/api/login', body) 
     .then((res)=>{
       if (res.status === 200){
         const accessToken = res.headers['authorization'];
-        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; 
+        axios.defaults.headers.common['Authorization'] = `${accessToken}`; 
         const data = res.data;
         dispatch(loginUser(data))
         navigate('/');
