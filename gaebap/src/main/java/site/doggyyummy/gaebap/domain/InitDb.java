@@ -1005,7 +1005,7 @@ public class InitDb {
                     .title(title)
                     .description(description)
                     .host(member)
-                    .startTime(start_time)
+                    .startTime(start_time.toLocalDateTime())
                     .recipe(recipe)
                     .status(status)
                     .currentParticipants(currentParticipants)
