@@ -8,7 +8,7 @@ import lombok.Setter;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 import site.doggyyummy.gaebap.domain.meeting.entity.Status;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 @Builder
@@ -34,7 +34,7 @@ public class FindMeetingResponseDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     @JsonProperty("start_time")
-    private ZonedDateTime startTime;
+    private LocalDateTime startTime;
 
     @JsonProperty("recipe_id")
     private Long recipeId;
