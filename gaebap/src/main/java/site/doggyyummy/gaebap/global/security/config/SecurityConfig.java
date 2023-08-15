@@ -124,6 +124,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/participants/**").permitAll()
                         .requestMatchers("/api/comment").permitAll()
                         .requestMatchers("/api/bookmark/{recipe_id}").permitAll()
+                        .requestMatchers("/api/refresh").permitAll()
+                        .requestMatchers("/api/member/modify/role").hasRole("GUEST")
+                        .requestMatchers("/api/member/find").permitAll()
+                        .requestMatchers("/api/member/reset-password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login((oauth2login) ->
@@ -151,13 +155,6 @@ public class SecurityConfig {
                         .authenticationEntryPoint(new AuthenticationEntryPoint() {
                             @Override
                             public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-                                log.info("response header : {}", response.getHeader("Access-Control-Allow-Origin"));
-                                log.info("response header : {}", response.getHeader("Authorization"));
-
-                                String refreshToken = jwtService.extractRefreshToken(request)
-                                        .filter(jwtService::isTokenValid)
-                                        .orElse(null);
-                                log.info("refreshToken : {}", refreshToken);
                                 response.setStatus(462);
                             }
                         })

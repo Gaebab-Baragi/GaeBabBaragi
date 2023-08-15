@@ -75,7 +75,6 @@ public class MemberController {
         return new ResponseEntity<>("modified successfully", HttpStatus.OK);
     }
 
-
     @PutMapping(value = "/modify/role", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(description = "아이디 재설정 후 재로그인")
     public ResponseEntity<String> oauth2Signup(@RequestPart(value="dto") MemberModifyDTO modifyDTO, @RequestPart(value="file", required = false) MultipartFile file) throws Exception{
@@ -98,7 +97,6 @@ public class MemberController {
        memberService.checkCurrentPassword(password.get("password"));
        return new ResponseEntity<>("일치", HttpStatus.OK) ;
     }
-
 
     @PostMapping("/modify/password")
     @Operation(description = "새 비밀번호로 수정")
@@ -123,15 +121,5 @@ public class MemberController {
         memberMailService.sendEmail(email.get("email"), newPassword);
         return new ResponseEntity<>("sent", HttpStatus.OK);
     }
-
-
     //====================================================================================
-
-    @GetMapping("/test")
-    public ResponseEntity<MemberResponseDTO> test() throws NoSuchUserException {
-        Member member = SecurityUtil.getCurrentLoginMember();
-        MemberResponseDTO dto = MemberResponseDTO.toDTO((member));
-        return new ResponseEntity<>(dto, HttpStatus.OK);
-    }
-
 }
