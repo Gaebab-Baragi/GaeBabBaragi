@@ -45,9 +45,9 @@ function App() {
       let accessToken = null;
       await axios.get(process.env.REACT_APP_BASE_URL + "/api/checkLogin")
                 .then((res) => {
-                  console.log(res);
-                  if (res.headers.get('Authorization')){
-                    accessToken = res.headers.get('Authorization');
+                  if (res.headers.authorization){
+                    console.log("here", res);
+                    accessToken = res.headers.authorization;
                   }
                 })
                 .catch((err) => {
@@ -79,7 +79,6 @@ function App() {
         return Promise.reject(err);
       }
   
-      console.log(config);
       config.sent = true;
       const accessToken = await getRefreshToken();
       if (accessToken) {
