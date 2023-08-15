@@ -45,14 +45,12 @@ function App() {
       let accessToken = null;
       await axios.get(process.env.REACT_APP_BASE_URL + "/api/checkLogin")
                 .then((res) => {
-                  console.log(res);
-                  if (res.headers.get('Authorization')){
-                    accessToken = res.headers.get('Authorization');
+                  if (res.headers.authorization){
+                    accessToken = res.headers.authorization;
                   }
                 })
                 .catch((err) => {
-                  console.log(err);
-                  return;
+                  return null;
                 });
       return accessToken; 
     } catch (e) {
@@ -67,7 +65,6 @@ function App() {
     (res) => {
       let accessToken = res.headers.authorization;
       if (accessToken) {
-        console.log("res acc:", accessToken);
         setAccToken(accessToken);
       }
       return res;
@@ -79,11 +76,11 @@ function App() {
         return Promise.reject(err);
       }
   
-      console.log(config);
       config.sent = true;
       const accessToken = await getRefreshToken();
       if (accessToken) {
         setAccToken(accessToken);
+        axios.defaults.headers.common.Authorization = accessToken;
         config.headers.Authorization = accessToken; 
         return axios(config);
       }
@@ -97,15 +94,13 @@ function App() {
   )
 
   axios.interceptors.request.use((config) => {
-    console.log("req ", config);
-    console.log("req interceptor. accToken:", config.headers.Authorization);
     if (accToken) {
-      console.log("acc exists:", accToken);
       config.headers.Authorization = accToken;
       axios.defaults.headers.common.Authorization = accToken;
     }
     else if (config.headers.Authorization) {
-      setAccToken(axios.defaults.headers.common.Authorization);
+      setAccToken(config.headers.Authorization);
+      axios.defaults.headers.common.Authorization = config.headers.Authorization;
     }
     return config;
 
