@@ -47,4 +47,10 @@ public class Oauth2Controller {
     public ResponseEntity<String> checkLogin() throws Exception{
         return new ResponseEntity<>("checked", HttpStatus.OK);
     }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<String> refresh(HttpServletResponse response) throws Exception{
+        return new ResponseEntity<>("refreshed", HttpStatus.OK);
+    }
+
 }
