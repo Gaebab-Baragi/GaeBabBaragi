@@ -38,6 +38,7 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
+  const [accToken, setAccToken] = useState('');
   
   const getRefreshToken = mem(async () => {
     try {
@@ -53,7 +54,7 @@ function App() {
                   console.log(err);
                   return;
                 });
-      return accessToken;
+      return accessToken; 
     } catch (e) {
       delete axios.defaults.headers.common['Authorization'];
       dispatch(clearUser());
@@ -61,11 +62,14 @@ function App() {
       navigate("/login");
     }
   }, { maxAge: 1000 })
-  
-
 
   axios.interceptors.response.use(
     (res) => {
+      let accessToken = res.headers.authorization;
+      if (accessToken) {
+        console.log("res acc:", accessToken);
+        setAccToken(accessToken);
+      }
       return res;
     },
     async (err) => {
@@ -75,21 +79,37 @@ function App() {
         return Promise.reject(err);
       }
   
+      console.log(config);
       config.sent = true;
       const accessToken = await getRefreshToken();
-      console.log("accessToken", accessToken);
       if (accessToken) {
-        axios.defaults.headers.common['Authorization']= `Bearer ${accessToken}`;
+        setAccToken(accessToken);
+        config.headers.Authorization = accessToken; 
         return axios(config);
       }
 
-      delete axios.defaults.headers.common['Authorization'];
+      delete axios.defaults.headers.common.Authorization;
       Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
       dispatch(clearUser());
       navigate("/login");
       return Promise.reject(err);
     }
   )
+
+  axios.interceptors.request.use((config) => {
+    console.log("req ", config);
+    console.log("req interceptor. accToken:", config.headers.Authorization);
+    if (accToken) {
+      console.log("acc exists:", accToken);
+      config.headers.Authorization = accToken;
+      axios.defaults.headers.common.Authorization = accToken;
+    }
+    else if (config.headers.Authorization) {
+      setAccToken(axios.defaults.headers.common.Authorization);
+    }
+    return config;
+
+  })
   axios.defaults.withCredentials = true;
 
 
