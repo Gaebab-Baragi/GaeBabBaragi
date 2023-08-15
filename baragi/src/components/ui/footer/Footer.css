@@ -14,6 +14,7 @@
   font-weight: 900;
 }
 
+/* .footer-info */
 .footer .footer-info h4 {
   font-size: 18px;
   font-weight: bold;
@@ -37,12 +38,11 @@
 .footer .footer-info .team-info .team .team-email {
   display: flex;
   align-items: center;
-  margin-right: 4px;
 }
 
 .footer .footer-info .team-info .team .team-email ion-icon {
   font-size: 15px;
-  margin-right: 1px;
+  margin-right: 3px;
 }
 
 .footer .footer-info .team-info .team .team-github ion-icon {
@@ -52,6 +52,39 @@
   color: black;
 }
 
+/* .footer-watch-videos */
+.footer .footer-watch-videos h4 {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: left;
+}
+
+.footer .footer-watch-videos .video {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+}
+
+.footer .footer-watch-videos .video .video-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.footer .footer-watch-videos .video .video-icon ion-icon {
+  font-size: 15px;
+}
+
+.footer .footer-watch-videos .video .video-name {
+  margin-right: 4px;
+}
+
+/* .footer-our-project */
 .footer .footer-our-project h4 {
   font-size: 18px;
   font-weight: bold;
@@ -60,18 +93,20 @@
   justify-content: left;
 }
 
-.footer .footer-our-project p {
-  line-height: 26px;
+.footer .footer-our-project .project-info {
+  margin-top: 6px;
+  margin-bottom: 6px;
   display: flex;
-  justify-content: left;
+  align-items: center;
 }
 
-.footer .footer-our-project a ion-icon {
+.footer .footer-our-project .project-info a ion-icon {
   display: flex;
   justify-content: left;
   color: black;
 }
 
+/* copyleft */
 .footer .copyleft {
   text-align: center;
 }
