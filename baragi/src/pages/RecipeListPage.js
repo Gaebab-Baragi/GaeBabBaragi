@@ -127,5 +127,4 @@ function RecipeListPage() {
 
 export default RecipeListPage;
 
-
 // redux에서 검색 여부 받아와서 화면 바꿔주기

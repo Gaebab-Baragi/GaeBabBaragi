@@ -21,10 +21,10 @@ let recipeRegister = createSlice({
     //   { orderingNumber: 4, description: "플레이팅"},
     // ],
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
-    recipeImage: '0',
-    recipeVideo: '0',
+    recipeImage: '',
+    recipeVideo: '',
+    // videoUrl : './기본이미지.png'
     stepImages : ['0'],
-
   },
   reducers: {
     requestFilteredRecipeList: (state) => {

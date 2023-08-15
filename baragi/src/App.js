@@ -1,8 +1,7 @@
 /* eslint-disable */
 import './App.css';
 import React, {useState} from 'react';
-import { configureStore } from '@reduxjs/toolkit'
-import { Routes, Route, useLocation} from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate} from 'react-router-dom'
 import NaviBar from './components/ui/navbar/NaviBar';
 
 // -------------------PAGES--------------------//
@@ -26,26 +25,92 @@ import PasswordModificationPage from './pages/PasswordModificationPage';
 import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
-import Footer from './components/ui/Footer'
+import Footer from './components/ui/footer/Footer'
+import RecipeWriterPage from './pages/RecipeWriterPage';
 // -------------------PAGES-------------------//
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { loginUser } from './redux/userSlice';
+import { loginUser, clearUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
+import mem from 'mem';
+import Toast from './components/ui/Toast';
 
 function App() {  
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const navigate = useNavigate();
+  const [accToken, setAccToken] = useState('');
+  
+  const getRefreshToken = mem(async () => {
+    try {
+      let accessToken = null;
+      await axios.get(process.env.REACT_APP_BASE_URL + "/api/checkLogin")
+                .then((res) => {
+                  console.log(res);
+                  if (res.headers.get('Authorization')){
+                    accessToken = res.headers.get('Authorization');
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                  return;
+                });
+      return accessToken; 
+    } catch (e) {
+      delete axios.defaults.headers.common['Authorization'];
+      dispatch(clearUser());
+      Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
+      navigate("/login");
+    }
+  }, { maxAge: 1000 })
 
   axios.interceptors.response.use(
     (res) => {
-      if (res.headers.get('Authorization')) {
-        axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
-        dispatch(loginUser({...user, isLogin : true}))
+      let accessToken = res.headers.authorization;
+      if (accessToken) {
+        console.log("res acc:", accessToken);
+        setAccToken(accessToken);
       }
       return res;
     },
+    async (err) => {
+      const { config, response: { status } } = err;
+  
+      if (config.url === "/api/checkLogin" || status !== 462 || config.sent) {
+        return Promise.reject(err);
+      }
+  
+      console.log(config);
+      config.sent = true;
+      const accessToken = await getRefreshToken();
+      if (accessToken) {
+        setAccToken(accessToken);
+        config.headers.Authorization = accessToken; 
+        return axios(config);
+      }
+
+      delete axios.defaults.headers.common.Authorization;
+      Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
+      dispatch(clearUser());
+      navigate("/login");
+      return Promise.reject(err);
+    }
   )
+
+  axios.interceptors.request.use((config) => {
+    console.log("req ", config);
+    console.log("req interceptor. accToken:", config.headers.Authorization);
+    if (accToken) {
+      console.log("acc exists:", accToken);
+      config.headers.Authorization = accToken;
+      axios.defaults.headers.common.Authorization = accToken;
+    }
+    else if (config.headers.Authorization) {
+      setAccToken(axios.defaults.headers.common.Authorization);
+    }
+    return config;
+
+  })
   axios.defaults.withCredentials = true;
 
 
@@ -72,6 +137,7 @@ function App() {
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
         <Route path='/recipe-update/:id' element={<RecipeUpdatePage/>}></Route>
+        <Route path='/recipe-writer/:id' element={<RecipeWriterPage/>}></Route>
         {/* 스트리밍 */}
         <Route path='/streaming-register/:id' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>

@@ -1,0 +1,77 @@
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.footer {
+  font-size: 14px;
+  padding: 20px 0;
+  border-top: 2px solid #ccc;
+}
+
+.footer .logo {
+  text-decoration: none;
+  color: #FFAA00;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.footer .footer-info h4 {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: left;
+}
+
+.footer .footer-info .team-info .team {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.footer .footer-info .team-info .team .team-name {
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.footer .footer-info .team-info .team .team-email {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.footer .footer-info .team-info .team .team-email ion-icon {
+  font-size: 15px;
+  margin-right: 1px;
+}
+
+.footer .footer-info .team-info .team .team-github ion-icon {
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  color: black;
+}
+
+.footer .footer-our-project h4 {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: left;
+}
+
+.footer .footer-our-project p {
+  line-height: 26px;
+  display: flex;
+  justify-content: left;
+}
+
+.footer .footer-our-project a ion-icon {
+  display: flex;
+  justify-content: left;
+  color: black;
+}
+
+.footer .copyleft {
+  text-align: center;
+}

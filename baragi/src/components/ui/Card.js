@@ -1,5 +1,4 @@
 import Card from 'react-bootstrap/Card';
-import recipeImg from './recipeImg.png'
 import { useNavigate } from 'react-router-dom';
 
 function CardComponent({recipe}) {

@@ -109,7 +109,7 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     public List<FindMeetingResponseDTO> findByRecipe(Long recipeId) {
-        List<Meeting> meetings = meetingRepository.findMeetingsByRecipeIdAndStatusNotOrderByStartTimeAsc(recipeId, Status.IN_PROGRESS);
+        List<Meeting> meetings = meetingRepository.findMeetingsByRecipeIdOrderByStartTimeAsc(recipeId);
 
         List<FindMeetingResponseDTO> findMeetingResponseDTOS = meetings.stream()
                 .map(FindMeetingResponseDTO::toDTO)
