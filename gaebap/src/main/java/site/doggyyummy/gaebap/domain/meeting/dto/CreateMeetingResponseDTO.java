@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import site.doggyyummy.gaebap.domain.meeting.entity.Meeting;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Getter @Builder
 public class CreateMeetingResponseDTO implements ResponseDTO{
@@ -27,7 +27,7 @@ public class CreateMeetingResponseDTO implements ResponseDTO{
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     @JsonProperty("start_time")
-    private ZonedDateTime startTime;
+    private LocalDateTime startTime;
 
     @JsonProperty("recipe_id")
     private Long recipeId;

@@ -5,7 +5,7 @@ import "./ServiceInfo.css"
 function ServiceInfo() {
     return (
         <>
-        <div>
+        <div className="main-page">
             <section id="features" className="service-info-features">
                 <div className="service-info-header">
                     <h2>서비스 소개</h2>

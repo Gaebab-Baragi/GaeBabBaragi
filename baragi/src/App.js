@@ -39,76 +39,82 @@ function App() {
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
   const [accToken, setAccToken] = useState('');
+
+  let isFecthedAccessToken = false;
+  let subscribers = [];
   
-  const getRefreshToken = mem(async () => {
+  async function resetTokenAndReattempt(error) {
     try {
-      let accessToken = null;
-      await axios.get(process.env.REACT_APP_BASE_URL + "/api/checkLogin")
-                .then((res) => {
-                  console.log(res);
-                  if (res.headers.get('Authorization')){
-                    accessToken = res.headers.get('Authorization');
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                  return;
-                });
-      return accessToken; 
-    } catch (e) {
-      delete axios.defaults.headers.common['Authorization'];
-      dispatch(clearUser());
-      Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
-      navigate("/login");
+      const { response: errorResponse } = error;
+  
+      const retryOriginalRequest = new Promise((resolve, reject) => {
+        addSubscriber(async (accessToken) => {
+          try {
+            errorResponse.config.headers['Authorization'] = accessToken;
+            resolve(axios(errorResponse.config));
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+
+      if (!isFecthedAccessToken){
+        isFecthedAccessToken = true;
+        const {headers}= await axios.get(process.env.REACT_APP_BASE_URL + "/api/refresh")
+        setAccToken(headers.authorization);
+        console.log(headers.authorization);
+
+        isFecthedAccessToken = false;
+        onAccessTokenFetched(headers.authorization);
+      }
+      return retryOriginalRequest;
     }
-  }, { maxAge: 1000 })
+    catch (error){
+      signOut();
+      return Promise.reject(error);
+    }
+  }
+
+  function addSubscriber(callback) {
+    subscribers.push(callback);
+  }
+  
+  function onAccessTokenFetched(accessToken) {
+    subscribers.forEach((callback) => callback(accessToken));
+    subscribers = [];
+  }
+  
+  function signOut() {
+      delete axios.defaults.headers.common.Authorization;//없으면 그냥 없애고 예외처리
+      Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
+      dispatch(clearUser());
+      navigate("/login");
+  }
 
   axios.interceptors.response.use(
     (res) => {
-      let accessToken = res.headers.authorization;
-      if (accessToken) {
-        console.log("res acc:", accessToken);
-        setAccToken(accessToken);
-      }
       return res;
     },
-    async (err) => {
+    async (err) => {//에러 발생시 
       const { config, response: { status } } = err;
   
-      if (config.url === "/api/checkLogin" || status !== 462 || config.sent) {
-        return Promise.reject(err);
+      if (config.url === "/api/refresh" || status !== 462 || config.sent) {//refresh 요청을 했는데 에러가 나거나, 462에러가 아니거나, 이미 보낸 상태면
+        return Promise.reject(err);//그냥 err리턴
       }
   
-      console.log(config);
       config.sent = true;
-      const accessToken = await getRefreshToken();
-      if (accessToken) {
-        setAccToken(accessToken);
-        config.headers.Authorization = accessToken; 
-        return axios(config);
-      }
-
-      delete axios.defaults.headers.common.Authorization;
-      Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
-      dispatch(clearUser());
-      navigate("/login");
-      return Promise.reject(err);
+      return await resetTokenAndReattempt(err);
     }
   )
 
   axios.interceptors.request.use((config) => {
-    console.log("req ", config);
-    console.log("req interceptor. accToken:", config.headers.Authorization);
-    if (accToken) {
-      console.log("acc exists:", accToken);
-      config.headers.Authorization = accToken;
-      axios.defaults.headers.common.Authorization = accToken;
+    if (accToken) {//저장된 액세스 토큰이 있으면
+      config.headers.Authorization = `Bearer ${accToken}`;//헤더에 담음
     }
-    else if (config.headers.Authorization) {
-      setAccToken(axios.defaults.headers.common.Authorization);
+    else if (config.headers.Authorization) {//헤더에 이미 담겨 있으면
+      setAccToken(axios.defaults.headers.common.Authorization);//저장함
     }
     return config;
-
   })
   axios.defaults.withCredentials = true;
 
