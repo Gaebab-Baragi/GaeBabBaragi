@@ -12,8 +12,7 @@ import site.doggyyummy.gaebap.domain.meeting.exception.MeetingForbiddenException
 import site.doggyyummy.gaebap.domain.meeting.exception.NotFoundMeetingException;
 import site.doggyyummy.gaebap.domain.meeting.repository.MeetingRepository;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,7 @@ public class MeetingServiceImpl implements MeetingService{
                 throw new InvalidArgumentMeetingCreateException("비밀번호는 6자리 숫자로 이루어진 문자열만 가능합니다.");
         }
 
-        if (createMeetingRequestDTO.getStartTime().isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))) { // 미팅 시작 시간이 현재 시간보다 전이라면
+        if (createMeetingRequestDTO.getStartTime().isBefore(LocalDateTime.now())) { // 미팅 시작 시간이 현재 시간보다 전이라면
                 throw new InvalidArgumentMeetingCreateException("이미 지난 시간으로는 예약이 불가능합니다.");
         }
 
@@ -67,7 +66,7 @@ public class MeetingServiceImpl implements MeetingService{
             throw new InvalidArgumentMeetingCreateException("비밀번호는 6자리 숫자로 이루어진 문자열만 가능합니다.");
         }
 
-        if (modifyMeetingRequestDTO.getStartTime().isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))) { // 미팅 시작 시간이 현재 시간보다 전이라면
+        if (modifyMeetingRequestDTO.getStartTime().isBefore(LocalDateTime.now())) { // 미팅 시작 시간이 현재 시간보다 전이라면
             throw new InvalidArgumentMeetingCreateException("이미 지난 시간으로는 예약이 불가능합니다.");
         }
 
@@ -179,7 +178,7 @@ public class MeetingServiceImpl implements MeetingService{
         Meeting findMeeting = meetingRepository.findByIdJoinMember(id).orElseThrow(() -> new NotFoundMeetingException());
 
         // 1. 시간 확인
-        if(findMeeting.getStartTime().minusMinutes(10).isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))) { // 1-1. 시작 시간 10분 전부터 입장 가능
+        if(findMeeting.getStartTime().minusMinutes(10).isBefore(LocalDateTime.now())) { // 1-1. 시작 시간 10분 전부터 입장 가능
 
             // 2. Meeting status 확인
             if(findMeeting.getStatus() == Status.SCHEDULED) { // 2-1. SCHEDULED일 경우 -> 호스트만 입장 가능
