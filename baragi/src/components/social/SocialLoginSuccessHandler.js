@@ -18,6 +18,8 @@ const SocialLoginHandler= () => {
         )
         .then((res) => {
             if (res.status === 200){
+
+                axios.defaults.headers.Authorization = params.token;
                 dispatch(loginUser(res.data));
                 console.log("handler", res.data);
                 navigate("/");
