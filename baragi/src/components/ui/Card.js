@@ -17,7 +17,7 @@ function CardComponent({ recipe }) {
   };
 
   return (
-    <Card onClick={handleNavigateDetail} style={{ width: '16rem', height: '400px' }}>
+    <Card onClick={handleNavigateDetail} style={{ width: '16.5rem', height: '400px' }}>
       <Card.Img style={{ height: '200px' }} variant="top" src={recipe.imgUrl} />
       <Card.Body style={{height:'auto'}}>
         <Card.Title>{recipe.title}</Card.Title>
