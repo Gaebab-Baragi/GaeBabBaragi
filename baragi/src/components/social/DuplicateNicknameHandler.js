@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import Loading from "../ui/Loading";
 
 const DuplicateNicknameHandler= () => {
     const params = useParams();
@@ -21,7 +22,9 @@ const DuplicateNicknameHandler= () => {
         })
     }, [])
 
-    return (<div> 안녕 </div>);
+    return (<div> 
+        <Loading></Loading>
+    </div>);
 }
 
 export default DuplicateNicknameHandler; 
