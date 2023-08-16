@@ -34,11 +34,21 @@ function RecipeCard({item}) {
         {truncateText(item.description, 70)}
         </Card.Text>
       </Card.Body>
-      <Card.Text  style={{marginBottom:'5%',display:'flex', justifyContent:'space-around'}}>
-        <span><ion-icon size='small' name="eye-outline"></ion-icon> {item.hit}</span>
-        <span><ion-icon size='small' name="heart-circle-outline"></ion-icon> {bookMarks}</span>
-        {/* <span> | </span> */}
-        <span><ion-icon size='small' name="calendar-outline"></ion-icon> {item.writtenTime.toString().slice(0,10)}</span>
+      <Card.Text style={{ marginBottom: '5%', display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+        <span style={{ display: 'flex', alignItems: 'center' }}>
+          <ion-icon name="eye" size="small" style={{ marginRight: '5px' }}></ion-icon>
+          {item.hit}
+        </span>
+        <span>|</span>
+        <span style={{ display: 'flex', alignItems: 'center' }}>
+          <ion-icon name="heart" size="small" style={{ marginRight: '5px' }}></ion-icon>
+          {bookMarks}
+        </span>
+        <span>|</span>
+        <span style={{ display: 'flex', alignItems: 'center' }}>
+        <ion-icon name="calendar-clear-sharp" size='small' style={{ marginRight: '5px' }}></ion-icon>
+          {item.writtenTime.toString().slice(0,10)}
+        </span>
       </Card.Text>
     </Card>
   );
