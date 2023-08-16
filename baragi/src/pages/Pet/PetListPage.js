@@ -29,7 +29,7 @@ function PetListPage() {
   },[idx])
 
   return(
-    <>
+    <div className="pageContainer">
     <MyPageNavBar sel={2}></MyPageNavBar>
     <div className='myswiper'>
       <Swiper
@@ -45,11 +45,10 @@ function PetListPage() {
           slideShadows: false,
         }}
         style={{width:"100%", paddingTop:"3%", paddingBottom:"3%"}}
-        pagination={true}
         mousewheel={true}
         modules={[EffectCoverflow, Pagination, Navigation]}
         slideToClickedSlide={true}
-        noSwipingClass='react-tags__listbox-option'
+        noSwipingClass='react-tags'
         initialSlide={idx}
         autoHeight={true}
       >
@@ -58,16 +57,16 @@ function PetListPage() {
       {petList.map((petInfo, index)=>{
         return(
           <SwiperSlide style={{width:"400px" }} key= {index +1}>
-            <PetRegisterForm className='swiper-no-swiping' petInfo={petInfo} idx={index + 1}/>
+            <PetRegisterForm petInfo={petInfo} idx={index + 1}/>
           </SwiperSlide>
         )
       })}
         <SwiperSlide style={{width:"400px" }} key= {petList.length + 1}>
-          <PetRegisterForm className='swiper-no-swiping' idx={petList.length +1 }/>
+          <PetRegisterForm idx={petList.length +1 }/>
         </SwiperSlide>
       </Swiper>
     </div>
-    </>
+    </div>
   )
 }
 

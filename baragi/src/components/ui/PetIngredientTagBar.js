@@ -1,35 +1,38 @@
 import React, {useCallback, useEffect, useState} from "react";
 import { ReactTags } from "react-tag-autocomplete";
+import './IngredientTagBar.css'
 import './PetIngredientTagBar.css'
-import { useDispatch } from "react-redux";
-import { setForbiddenIngredients } from "../../redux/petRegisterSlice";
 import axios from "axios";
 import useDidMountEffect from "../../useDidMountEffect";
+
 function PetIngredientTagBar({forbiddens, selectIngredients}) {
   const [selected, setSelected] = useState([]);
   const [suggestions, setSuggestions] = useState('');
-  const dispatch = useDispatch();
+  const [colorArray, setColorArray] = useState([]);
 
   useEffect(()=>{
-    console.log("dkk", forbiddens)
     if (forbiddens) {
       const tmp = []
       forbiddens.map((i)=>{
         tmp.push({value : i.ingredientId, label : i.ingredientName})
       })
-      console.log(tmp)
       setSelected(tmp)
     }
   },[])
 
-  // 재료 리스트 받아와주기
   useEffect(()=>{
+    const color = () => { return [
+      Math.floor(Math.random() * 55 + 200),
+      Math.floor(Math.random() * 55 + 200),
+      Math.floor(Math.random() * 55 + 200),
+    ]
+    }
     axios.get(process.env.REACT_APP_BASE_URL +'/api/ingredients')
     .then((res)=>{
-      console.log('res data : ' ,res.data)
       const tmp = []
       res.data.ingredients.map((i)=>{
         tmp.push({value:i.id, label:i.name})
+        setColorArray(colorArray => [...colorArray, `rgb(${color()[0]},${color()[1]},${color()[2]})`])
       })
       setSuggestions(tmp)
     })
@@ -39,8 +42,6 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
   },[])
 
   useDidMountEffect(()=>{
-    console.log(selected)
-    dispatch(setForbiddenIngredients(selected))
     selectIngredients(selected);
   },[selected])
 
@@ -57,17 +58,26 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
     },
     [selected]
   )
+  const CustomTag = ({ classNames, tag, ...tagProps }) => {
+    console.log(tag.value);
+    return (
+      <button type="button" className={classNames.tag} {...tagProps} style={{background : colorArray[tag.value - 1]}}>
+        <span className={classNames.tagName}>{tag.label}</span>
+      </button>
+    )
+  }
 
   return(
     <div className="petIngredientSelect">
       <ReactTags
         suggestions={suggestions}
-        placeholderText={selected.length ? '' : "이건 먹으면 안 돼요"}
+        placeholderText={selected.length ? "" : "이건 먹으면 안 돼요"}
         selected={selected}
         onAdd={onAdd}
         onDelete={onDelete}
         noOptionsText="일치하는 재료가 없습니다."
         allowBackspace={true}
+        renderTag={CustomTag}
       />
     </div>
   );
