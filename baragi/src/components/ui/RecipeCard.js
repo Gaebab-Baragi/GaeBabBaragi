@@ -18,21 +18,28 @@ function RecipeCard({item}) {
     })
   },[])
 
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + '...';
+    }
+    return text;
+  };
+
   return (
-    <Card style={{ width: '16.5rem', cursor : 'pointer'}} onClick={onClick}>
+    <Card style={{ width: '16.5rem', cursor : 'pointer',height: '400px' }} onClick={onClick}>
       <Card.Img style={{height:'200px'}}  variant="top" src={item.recipeImageUrl} />
-      <Card.Body>
+      <Card.Body  style={{height:'auto'}}> 
         <Card.Title>{item.title}</Card.Title>
-        <Card.Text>
-          {item.description}
-        </Card.Text>
-        <Card.Text  style={{display:'flex', justifyContent:'space-around'}}>
-          <span><ion-icon size='small' name="eye-outline"></ion-icon> {item.hit}</span>
-          <span><ion-icon size='small' name="heart-circle-outline"></ion-icon> {bookMarks}</span>
-          {/* <span> | </span> */}
-          <span><ion-icon size='small' name="calendar-outline"></ion-icon> {item.writtenTime.toString().slice(0,10)}</span>
+        <Card.Text style={{textAlign:'left'}}>
+        {truncateText(item.description, 70)}
         </Card.Text>
       </Card.Body>
+      <Card.Text  style={{marginBottom:'5%',display:'flex', justifyContent:'space-around'}}>
+        <span><ion-icon size='small' name="eye-outline"></ion-icon> {item.hit}</span>
+        <span><ion-icon size='small' name="heart-circle-outline"></ion-icon> {bookMarks}</span>
+        {/* <span> | </span> */}
+        <span><ion-icon size='small' name="calendar-outline"></ion-icon> {item.writtenTime.toString().slice(0,10)}</span>
+      </Card.Text>
     </Card>
   );
 }
