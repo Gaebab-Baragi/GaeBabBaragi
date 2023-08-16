@@ -194,16 +194,15 @@ function ObjectDetectionPage() {
         : (
           <p>데이터가 없습니다.</p>
         )}
-        <div style ={{width:'100%',  display:'flex'}}>
+        <div style ={{width:'80%', marginLeft:'10%', display:'flex'}}>
           <IngredientTagBar style={{}}></IngredientTagBar>  
         </div>
         {/* <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/> */}
     </div>
     <div style = {{border : '2px solid black', width :'80%', hegiht:'auto', borderRadius:'15px', margin : '10% auto 0 auto'}}>
-      <li>빨간색 : 금지</li>
-      <li>주황색 : 주의</li>
-      <li>녹색 : 허용</li>
-      <li>검은색 :모름</li>
+      <li style ={{marginLeft:'5%', color:'red', textAlign : 'left'}}>빨간색 : 금지</li>
+      <li style ={{marginLeft:'5%', color:'orange', textAlign : 'left'}}>주황색 : 주의</li>
+      <li style ={{marginLeft:'5%', color:'green', textAlign : 'left'}}>녹색 : 허용</li>
     </div>
     <div style={{display: 'flex', justifyContent:'center'}}>
       {/* <button 
