@@ -61,9 +61,8 @@ function App() {
 
       if (!isFecthedAccessToken){
         isFecthedAccessToken = true;
-        const {headers}= await axios.get(process.env.REACT_APP_BASE_URL + "/api/refresh")
+        const {headers}= await axios.get(process.env.REACT_APP_BASE_URL + "/api/refresh");
         setAccToken(headers.authorization);
-        console.log(headers.authorization);
 
         isFecthedAccessToken = false;
         onAccessTokenFetched(headers.authorization);
@@ -110,7 +109,7 @@ function App() {
 
   axios.interceptors.request.use((config) => {
     if (accToken) {//저장된 액세스 토큰이 있으면
-      config.headers.Authorization = `Bearer ${accToken}`;//헤더에 담음
+      config.headers.Authorization =accToken;//헤더에 담음
     }
     else if (config.headers.Authorization) {//헤더에 이미 담겨 있으면
       setAccToken(axios.defaults.headers.common.Authorization);//저장함

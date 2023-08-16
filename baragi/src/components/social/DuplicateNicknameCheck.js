@@ -99,7 +99,7 @@ const DuplicateNickname = () => {
             axios.put(process.env.REACT_APP_BASE_URL +'/api/member/modify/role', formData)
             .then((res)=>{
                 if (res.status === 200) {
-                    Toast.fire("회원 정보를 수정했습니다.", "", "success");
+                    Toast.fire("회원 정보를 수정했습니다.", "다시 로그인해주세요", "success");
                     navigate("/");
                 }
             })
