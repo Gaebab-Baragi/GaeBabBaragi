@@ -159,13 +159,13 @@ function ObjectDetectionPage() {
   <div className = 'grid-container'>
     <div className='item-1'></div>
     <div className = 'item-6'>
-      <h2>객체탐지</h2>
+      <h2 style={{minHeight: '10%', alignItems:"center"}}>객체탐지</h2>
       {CanvasState === 'none' ?
-      <div style={{display:"", justifyContent:"center",alignItems: "center" , width : '100%',hegiht:'auto',  borderRadius:"100px", bottom:'5%', cursor:"pointer" }}>
-        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, border : '2px solid #000', borderRadius:'15px', width:'90%', hegiht :'auto' ,transform:"rotateY(180deg)"}}  /> 
+      <div style={{display:"inherit", justifyContent:"center",alignItems: "center" , width : '100%', height:'70%',  borderRadius:"100px", bottom:'5%', cursor:"pointer" }}>
+        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, border : '2px solid #000', borderRadius:'15px', maxWidth:'90%', maxHeight :'80%' ,transform:"rotateY(180deg)"}}  /> 
         {/* width : 682 , height 682  */}
-        <canvas id="canvas" style={{display: CanvasState, width:'90%', hegiht :'auto' }}></canvas>
-        <div onClick={sreenShot} style={{backgroundColor : 'red', textAlign:"center",justifyContent: 'center', width:"60px",height:"60px",border:"2px solid", borderRadius:"100px", display:'flex', margin:'auto',bottom:'5%'}}></div>
+        <canvas id="canvas" style={{display: CanvasState, width:'90%', maxHeight:'90%' }}></canvas>
+        <div onClick={sreenShot} style={{backgroundColor : 'red', textAlign:"center",justifyContent: 'center', width:"25px",height:"25px",border:"2px solid", borderRadius:"100px", display:'flex', margin:'auto',bottom:'5%'}}></div>
 
         </div>: 
         <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"60%",marginLeft:"20%", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
@@ -233,7 +233,7 @@ function ObjectDetectionPage() {
         height: '40px',
         marginTop: '30px',
         marginLeft : '10px',
-        borderRadius: '10px',
+        borderRadius: '10%',
         backgroundColor: '#ffaa00',
         color: 'white',
         border: 'none',

@@ -1,12 +1,11 @@
 import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
 import Toast from '../components/ui/Toast';
-import useDidMountEffect from './../useDidMountEffect';
 import StartInfoModal from './Modal/startInfoModal';
 
 var localUser = new UserModel();
@@ -31,6 +30,7 @@ class Streaming extends Component {
             hideInfo:false,
             modalShow:false,
             requestStartSession:false,
+            // hasJoinedSession:false,
         };
 
         this.joinSession = this.joinSession.bind(this);
@@ -236,7 +236,9 @@ class Streaming extends Component {
                     mySessionId: 'SessionA',
                     myUserName: 'Participant' + Math.floor(Math.random() * 100),
                     mainStreamManager: undefined,
-                    publisher: undefined
+                    publisher: undefined,
+                    subscribers: [],
+                    hasJoinedSession:false,
                 });
 
                 window.location.replace('/streaming-list')
@@ -260,10 +262,8 @@ class Streaming extends Component {
     }
     
 
-
     // 미팅 시작하기(호스트 용) - 더 이상 들어오지 못함
     startSession() {
-
         const sessionId = parseInt(this.state.mySessionId)
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/start/${sessionId}`)
         .then((res)=>{
@@ -310,14 +310,13 @@ class Streaming extends Component {
         this.state.session.signal(signalOptions);
     }
 
-    deleteSubscriber(stream) {
-        const remoteUsers = this.state.subscribers;
-        const userStream = remoteUsers.filter((user) => user.getStreamManager().stream === stream)[0];
-        let index = remoteUsers.indexOf(userStream, 0);
+    deleteSubscriber(streamManager) {
+        let subscribers = this.state.subscribers;
+        let index = subscribers.indexOf(streamManager, 0);
         if (index > -1) {
-            remoteUsers.splice(index, 1);
+            subscribers.splice(index, 1);
             this.setState({
-                subscribers: remoteUsers,
+                subscribers: subscribers,
             });
         }
     }

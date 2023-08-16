@@ -9,7 +9,7 @@ function Footer() {
           <p>개밥바라기</p>
         </a>
         <div className="row gy-5">
-          <div className="col-lg-4 col-md-12 footer-info">
+          <div className="col-lg-3 col-md-12 footer-info">
             <div className="team-info">
               <h4>Contact Us</h4>
               <div className="team">
@@ -57,18 +57,25 @@ function Footer() {
             </a>
           </div>
 
-          <div className="col-lg-5 col-md-12 footer-our-project">
+          <div className="col-lg-3 col-md-12 footer-our-project">
             <h4>Our Project</h4>
             <div className="project-info"><span>SSAFY 9기 서울 A703</span></div>
             <div className="project-info"><span>공통 프로젝트 (웹 기술)</span></div>
             <div className="project-info"><a href="https://lab.ssafy.com/s09-webmobile1-sub2/S09P12A703"><ion-icon name="logo-gitlab"></ion-icon></a></div>
+          </div>
+
+          <div className="col-lg-3 col-md-12 footer-work-space">
+            <h4>Work Space</h4>
+            <div className="work-space-info"><span>서울특별시 강남구 테헤란로 212 (역삼동 718-5번지)</span></div>
+            <div className="work-space-info"><span>멀티캠퍼스 역삼</span></div>
           </div>
         </div>
       </div>
 
       <div className="container mt-4">
         <div className="copyleft">
-          &copy; Copyleft <strong><span>개밥바라기</span></strong>
+            <img src="./image/Copyleft.png"></img>&nbsp;Copyleft&nbsp;&nbsp;<strong>개밥바라기</strong>&nbsp;
+            All rights are reserved to everyone
         </div>
       </div>
     </div>

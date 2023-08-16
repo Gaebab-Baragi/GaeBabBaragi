@@ -1,10 +1,11 @@
 .StreamingLiveContatiner {
 	display: flex;
 	flex-direction: row;
-	margin-left: 5%;
-	margin-right: 5%;
+	margin-left: 3%;
+	margin-right: 3%;
 	margin-top:0.5%;
 	margin-bottom: 1%;
+	/* background-color: red; */
 }
 
 .stream-container {
@@ -16,10 +17,14 @@
 .streamingContainer {
 	background-color:#f9f9f9;
 	width: 70%;
+	height: auto;
 	display: flex;
 	flex-direction: column;
 	margin-top: 1%;
 	border-radius: 10px;
+	/* max-height: 90vh; */
+	/* background-color: aqua; */
+	padding-bottom: 0;
 }
 .streamingInfoContainer{
 	display: flex;
@@ -38,12 +43,13 @@ width: 30%;
 .subVideos {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-between;
 	margin-left: 10px;
 	margin-right: 10px;
 	margin-top: 2%;
-	height: 200px;
+	height: 20vh;
 	margin-bottom: 1%;
+	gap: 1%;
 	/* background-color: rebeccapurple; */
 }
 .buttonContainer{

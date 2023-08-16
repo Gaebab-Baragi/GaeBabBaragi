@@ -21,7 +21,7 @@ export default class ChatComponent extends Component {
         // Delay the execution of the component initialization
         setTimeout(() => {
             this.initializeChat();
-        },2000); // Adjust the delay time as needed
+        },5000); // Adjust the delay time as needed
     }
 
     initializeChat() {

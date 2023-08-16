@@ -15,6 +15,7 @@ const DuplicateNickname = () => {
     const navigate = useNavigate();
 
     useEffect(()=> {
+        Toast.fire("중복된 닉네임입니다.", "새 닉네임을 선택해주세요", "warning")
         axios.get(process.env.REACT_APP_BASE_URL +"/api/member")
         .then((res) => {
             if (res.status === 200){
@@ -98,7 +99,7 @@ const DuplicateNickname = () => {
             axios.put(process.env.REACT_APP_BASE_URL +'/api/member/modify/role', formData)
             .then((res)=>{
                 if (res.status === 200) {
-                    Toast.fire("회원 정보를 수정했습니다.", "", "success");
+                    Toast.fire("회원 정보를 수정했습니다.", "다시 로그인해주세요", "success");
                     navigate("/");
                 }
             })
