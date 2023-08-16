@@ -162,7 +162,6 @@ function App() {
         <Route path='/oauth2/nickname-check' element={<DuplicateNicknameCheckPage></DuplicateNicknameCheckPage>}></Route>
         
         <Route path="*" element={ <div>없는페이지임</div> } />
-        <Route path='/object-detect' element={<ObjectDetectionPage></ObjectDetectionPage>}></Route>
       </Routes>
 
       {showNavAndFooter && <Footer />}
