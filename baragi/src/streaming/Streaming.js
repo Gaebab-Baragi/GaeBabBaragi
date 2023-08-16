@@ -1,12 +1,11 @@
 import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import './Streaming.css';
 import UserVideoComponent from './UserVideoComponent';
 import UserModel from './user-model';
 import ChatComponent from './Chat/ChatComponent';
 import Toast from '../components/ui/Toast';
-import useDidMountEffect from './../useDidMountEffect';
 import StartInfoModal from './Modal/startInfoModal';
 
 var localUser = new UserModel();
@@ -310,14 +309,13 @@ class Streaming extends Component {
         this.state.session.signal(signalOptions);
     }
 
-    deleteSubscriber(stream) {
-        const remoteUsers = this.state.subscribers;
-        const userStream = remoteUsers.filter((user) => user.getStreamManager().stream === stream)[0];
-        let index = remoteUsers.indexOf(userStream, 0);
+    deleteSubscriber(streamManager) {
+        let subscribers = this.state.subscribers;
+        let index = subscribers.indexOf(streamManager, 0);
         if (index > -1) {
-            remoteUsers.splice(index, 1);
+            subscribers.splice(index, 1);
             this.setState({
-                subscribers: remoteUsers,
+                subscribers: subscribers,
             });
         }
     }
