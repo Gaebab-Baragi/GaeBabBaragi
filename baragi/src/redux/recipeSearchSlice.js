@@ -33,8 +33,8 @@ let recipeSearch= createSlice({
       // console.log(state.ingredients)
     },
     updateIngredients2: (state,action) =>{
-      const ingredientArray = action.payload
-      console.log('1:' , ingredientArray)
+      state.ingredients = action.payload
+      console.log('state.ingredients임' , state.ingredients)
     },
 
     updateDogs: (state, action) =>{

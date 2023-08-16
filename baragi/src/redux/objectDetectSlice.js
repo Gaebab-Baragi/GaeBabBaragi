@@ -18,6 +18,7 @@ let objectDetect= createSlice({
         console.log('추가됨 :' , action.payload)
         state.Ingredients.push(action.payload)
     },
+
     
   
   }

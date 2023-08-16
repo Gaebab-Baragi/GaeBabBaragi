@@ -1,12 +1,9 @@
 import axios from "axios";
 import './css/ObjectDetectionPage.css'
-import {setIngredients,AddIngredients} from '../redux/objectDetectSlice';
-import IngredientTagBar from "../components/ui/IngredientTagBar";
+import {setIngredients,} from '../redux/objectDetectSlice';
+import { updateIngredients2 } from "../redux/recipeSearchSlice";
 import React, {useState, useEffect, useRef } from 'react';
 import { useDispatch,useSelector  } from 'react-redux';
-import useDidMountEffect from "../useDidMountEffect";
-import { updateIngredients2 } from "../redux/recipeSearchSlice";
-
 // import '../components/ui/SearchBar.css'
 // import "./styles.css";
 function ObjectDetectionPage() {
@@ -22,18 +19,19 @@ function ObjectDetectionPage() {
   const [CanvasState, setCanvasState] = useState('none'); //사
   const [CameraState, setCameraState] = useState(''); //사
   const [answerClass, setanswerClass] = useState('');
-  // const [newIngredient, setNewIngredient] = useState('');
+  const [newIngredient, setNewIngredient] = useState('');
   const uniqueClassname = [...new Set(classname)]
-  //
-  const handlesearch2 = ()=>{
-    dispatch(updateIngredients2(uniqueClassname))
-    console.log(uniqueClassname)
-  }
-  // //
-  // useDidMountEffect(()=>{
-  //   dispatch(updateIngredients(selected))
-  // }, [selectedIngredients])
   
+  const handleSearch = ()=>{
+    const allowClassname = uniqueClassname.filter(value => !forbidden.includes(value));
+    dispatch(updateIngredients2(allowClassname))
+    dispatch(setIngredients(''))
+  }
+
+
+  //
+
+  //
 
   useEffect(() => {
     getWebcam((stream => {
@@ -132,7 +130,7 @@ function ObjectDetectionPage() {
  
         // Send FormData using Axios
         // 'https://doggy-yummy.site/v1/object-detection/yolov5' master 입력시  
-          axios.post('http://localhost:5000/v1/object-detection/yolov5', formData,{
+          axios.post('https://doggy-yummy.site/v1/object-detection/yolov5', formData,{
             withCredentials: true,
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -194,8 +192,6 @@ function ObjectDetectionPage() {
                        caution.includes(value) ? 'orange':
                        safe.includes(value)?  '#00FF09': 'black'}}
               key={index}>{value}</li>
-              
-
             ))}
           </ul>
         ) 
@@ -204,8 +200,7 @@ function ObjectDetectionPage() {
         : (
           <p>데이터가 없습니다.</p>
         )}
-        <div style ={{width:'80%', marginLeft:'10%', display:'flex'}}>
-        </div>
+ 
         {/* <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/> */}
     </div>
     <div style = {{border : '2px solid black', width :'80%', hegiht:'auto', borderRadius:'15px', margin : '10% auto 0 auto'}}>
@@ -214,7 +209,6 @@ function ObjectDetectionPage() {
       <li style ={{marginLeft:'5%', color:'green', textAlign : 'left'}}>녹색 : 허용</li>
     </div>
     <div style={{display: 'flex', justifyContent:'center'}}>
-
       {/* <button 
       style ={{
         width: '100px',
@@ -244,7 +238,7 @@ function ObjectDetectionPage() {
         color: 'white',
         border: 'none',
         fontWeight: '500'}}
-        onClick={handlesearch2} >레시피 검색</button>
+        onClick={handleSearch}>레시피 검색</button>
         </div>
     </div>
   </div>
