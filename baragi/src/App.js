@@ -140,6 +140,7 @@ function App() {
         {/* 레시피 */}
         <Route path='/recipe-register/' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
+        <Route path='/recipe-list/:open' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
         <Route path='/recipe-update/:id' element={<RecipeUpdatePage/>}></Route>
         <Route path='/recipe-writer/:id' element={<RecipeWriterPage/>}></Route>
