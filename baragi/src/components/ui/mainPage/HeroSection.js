@@ -28,31 +28,24 @@ function HeroSection() {
                     <div className="container position-relative">
                         <div className="row gy-4 mt-5">
 
-                            <div className="col-xl-3 col-md-6">
+                            <div className="col-xl-4 col-md-6">
                                 <div className="icon-box">
                                     <div className="icon"><ion-icon name="library-outline"></ion-icon></div>
                                     <h4 className="title"><a href="/recipe-register" className="stretched-link"><span>나만의<br/></span>레시피 공유</a></h4>
                                 </div>
                             </div>{/* End Icon Box */}
 
-                            <div className="col-xl-3 col-md-6">
+                            <div className="col-xl-4 col-md-6">
                                 <div className="icon-box">
                                     <div className="icon"><ion-icon name="search-outline"></ion-icon></div>
                                     <h4 className="title"><a href="/recipe-list" className="stretched-link"><span>반려견 맞춤<br/></span>레시피 검색</a></h4>
                                 </div>
                             </div>{/* End Icon Box */}
 
-                            <div className="col-xl-3 col-md-6">
+                            <div className="col-xl-4 col-md-6">
                                 <div className="icon-box">
                                     <div className="icon"><ion-icon name="videocam-outline"></ion-icon></div>
                                     <h4 className="title"><a href="/streaming-list" className="stretched-link"><span>함께 만들어요!<br/></span>스트리밍 참여</a></h4>
-                                </div>
-                            </div>{/* End Icon Box */}
-
-                            <div className="col-xl-3 col-md-6">
-                                <div className="icon-box">
-                                    <div className="icon"><ion-icon name="paw-outline"></ion-icon></div>
-                                    <h4 className="title"><a href="" className="stretched-link"><span>어떤 간식을 잘 먹을까?<br/></span>강아지 먹방</a></h4>
                                 </div>
                             </div>{/* End Icon Box */}
                         </div>

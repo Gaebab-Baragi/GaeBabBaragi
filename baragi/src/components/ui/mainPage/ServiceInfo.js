@@ -61,22 +61,6 @@ function ServiceInfo() {
                             </ul>
                         </div>
                     </div>{/* Features Item */}
-
-                    <div className="row gy-4 align-items-center features-item">
-                        <div className="col-md-5 order-1 order-md-2">
-                            <img src="/image/개밥바라기.png" className="img-fluid" alt="커뮤니티 페이지" />
-                        </div>
-                        <div className="col-md-7 order-2 order-md-1 content">
-                            <h3>수제 간식을 맛있게 먹는 반려견 자랑하기!</h3>
-                            <p className="sub-title">
-                                간식을 맛있게 먹는 반려견 모습을 동영상 리뷰를 통해 자랑할 수 있어요.
-                            </p>
-                            <p>
-                                수제 간식을 맛있게 먹는 반려견들의 동영상 리뷰를 참고하여 레시피 선택에 도움을 받을 수 있어요.<br/>
-                                커뮤니티에서 먹방하는 반려견들의 동영상을 모아볼 수 있어요.
-                            </p>
-                        </div>
-                    </div>{/* Features Item */}
                 </div>
             </section>
         </div>
