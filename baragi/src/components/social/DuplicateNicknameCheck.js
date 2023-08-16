@@ -15,6 +15,7 @@ const DuplicateNickname = () => {
     const navigate = useNavigate();
 
     useEffect(()=> {
+        Toast.fire("중복된 닉네임입니다.", "임시 닉네임을 설정했습니다. 새 닉네임을 선택해주세요", "warning")
         axios.get(process.env.REACT_APP_BASE_URL +"/api/member")
         .then((res) => {
             if (res.status === 200){
