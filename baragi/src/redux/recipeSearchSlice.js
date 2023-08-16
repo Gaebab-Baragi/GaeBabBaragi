@@ -32,6 +32,11 @@ let recipeSearch= createSlice({
       console.log('redux 재료 업데이트 됨', state.ingredients)
       // console.log(state.ingredients)
     },
+    updateIngredients2: (state,action) =>{
+      const ingredientArray = action.payload
+      console.log('1:' , ingredientArray)
+    },
+
     updateDogs: (state, action) =>{
       const tmp = []
       action.payload.forEach((dog) => {
@@ -43,6 +48,6 @@ let recipeSearch= createSlice({
   }
 })
 
-export const {updateKeyword, updateIngredients, updateDogs} = recipeSearch.actions;
+export const {updateKeyword, updateIngredients,updateIngredients2, updateDogs} = recipeSearch.actions;
 
 export default recipeSearch;
