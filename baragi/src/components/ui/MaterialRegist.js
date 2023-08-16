@@ -48,11 +48,13 @@ function MaterialRegist() {
       {inputMats.map((inputMat, index) => (
         <div key={index} style={{display:'flex', marginLeft:'3%', marginBottom : '1%'}}>
           <InputMat step={index} matName={inputMat.ingredientName} matAmount={inputMat.amount} ingredientsChange={handleIngredientsChange} />
-          <button style ={{ margin:'auto'}} onClick={() => handleDeleteInputMat(index)}>-</button>
+          <img src='./minus.png' style = {{ margin : 'auto', width : '3%'}}  onClick={() => handleDeleteInputMat(index)}></img>
+          {/* <button style ={{ margin:'auto', borderRadius:'100px'}} onClick={() => handleDeleteInputMat(index)}>-</button> */}
         </div>
         ))}
       </div>
-      <button onClick={handleAddInputMat}>+</button>
+      {/* <button onClick={handleAddInputMat}>+</button> */}
+      <img src='./plus.png' style = {{ margin : 'auto', width : '3%'}} onClick={handleAddInputMat}></img>
     </div>
   );
 }
