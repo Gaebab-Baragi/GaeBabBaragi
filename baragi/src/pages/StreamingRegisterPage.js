@@ -221,7 +221,7 @@ function StreamingRegisterPage() {
             </div>
             <div className='input-content'>
             {isPrivate && password && password.length < 6 && (
-                <div className="password-notice">비밀번호는 6자로 설정해주세요.</div>
+                <div className="password-notice">비밀번호는 숫자 6자리로 설정해주세요.</div>
               )}
             </div>
           </div>
