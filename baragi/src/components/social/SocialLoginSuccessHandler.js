@@ -30,7 +30,6 @@ const SocialLoginHandler= () => {
 
     return (
         <>
-            안녕하이
             <Loading></Loading>
         </>
     ) 

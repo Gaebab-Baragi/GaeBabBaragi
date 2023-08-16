@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { clearUser } from "../../redux/userSlice";
 import axios from "axios";
 import Toast from "../ui/Toast";
+import Loading from "../ui/Loading";
 
 
 const LogoutHandler= () => {
@@ -34,7 +35,7 @@ const LogoutHandler= () => {
         })
     }, [])
 
-    return (<div> 빠이요 </div>);
+    return (<div> <Loading></Loading> </div>);
 }
 
 export default LogoutHandler;
