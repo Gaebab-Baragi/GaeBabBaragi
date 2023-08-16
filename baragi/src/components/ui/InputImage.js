@@ -43,12 +43,13 @@ function InputImage({handleImageUpload}) {
      <div>
       {/* 이미지 미리보기 */}
       <div>
-        {image !== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '50%', height: '50%', marginBottom :'1%'}} />}
-        {image === defaultImageUrl && <img src={defaultImageUrl} alt="미리보기" style={{ width: '50%', height: '40%' ,marginBottom :'1%' }} />}
+        {image !== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '50%', height: '50%', marginBottom :'1%',borderRadius:'15px'
+      }} onClick={handleButtonClick} />}
+        {image === defaultImageUrl && <img src={defaultImageUrl} alt="미리보기" style={{ width: '50%', height: '40%' ,marginBottom :'1%',borderRadius:'15px'}} onClick={handleButtonClick} />}
       {/* {image!== defaultImageUrl && <img src={image} alt="미리보기" style={{ width: '200px', height: '200px' }} />} */}
       </div>
       <div >
-        <button  onClick={handleButtonClick}>이미지선택</button>
+        {/* <button  onClick={handleButtonClick}>이미지선택</button> */}
         <input style = {{display:'none' }} type="file" ref={fileInputRef} accept="" onChange={handleImagePreview}/>
       </div>
     </div>

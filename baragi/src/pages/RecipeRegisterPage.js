@@ -18,7 +18,7 @@ function RecipeRegisterPage() {
     const selectedVideo = e.target.files[0];
     dispatch(updateVideo(selectedVideo));
     setFile(selectedVideo);
-    if (selectedVideo) {
+    if (selectedVideo) { 
       const reader = new FileReader();
       reader.onloadend = () => {
         setVideo(reader.result);
@@ -41,17 +41,27 @@ function RecipeRegisterPage() {
         {/* backgroundColor : '#0001', */}
           <InputImage></InputImage>
         </div>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>2. 기본 정보 입력</h4>
+        <h4 style={{ textAlign: 'left', marginLeft:'5%' }}>2. 기본 정보 입력</h4>
         <InputInfor></InputInfor>
-        <h4 style={{textAlign:'left', marginLeft:'2%', marginLeft:'5%'}}>3. 재료 등록</h4>
+        <h4 style={{textAlign:'left', marginLeft:'5%'}}>3. 재료 등록</h4>
         <MaterialRegist></MaterialRegist>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>4. 요리 순서</h4>
+        <h4 style={{ textAlign: 'left', marginLeft:'5%' }}>4. 요리 순서</h4>
         <CookStep></CookStep>
-        <h4 style={{ textAlign: 'left', marginLeft: '2%', marginLeft:'5%' }}>5. 동영상 제출</h4>
+        <h4 style={{ textAlign: 'left',  marginLeft:'5%' }}>5. 동영상 제출</h4>
         <input type="file" accept="" onChange={handleVideoChange}/>
 
         <div style={{ marginTop : '1%', marginBottom : '1%' , justifyContent:'center', alignItems:'center'}}>
-        <button onClick={()=>{dispatch(requestFilteredRecipeList())}}>제출</button>
+        <button style ={{ 
+          width: '100px',
+          height: '40px',
+          marginTop: '30px',
+          borderRadius: '10px',
+          backgroundColor: '#ffaa00',
+          color: 'white',
+          border: 'none',
+          fontWeight: '500'}}
+          onClick={()=>{dispatch(requestFilteredRecipeList())}}>제출</button>
+
         </div>
     </div>
     </>

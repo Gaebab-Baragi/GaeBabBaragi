@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage';
 import RecipeRegisterPage from './pages/RecipeRegisterPage';
 import RecipeListPage from './pages/RecipeListPage';
+import RecipeUpdatePage from './pages/RecipeUpdatePage';
 import StreamingRegisterPage from './pages/StreamingRegisterPage';
 import StreamingListPage from './pages/StreamingListPage';
 import MyinformationPage from './pages/MyinformationPage';
@@ -31,6 +32,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser, clearUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
+
 import Toast from './components/ui/Toast';
 
 function App() {  
@@ -140,6 +142,7 @@ function App() {
         <Route path='/recipe-register/' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
+        <Route path='/recipe-update/:id' element={<RecipeUpdatePage/>}></Route>
         <Route path='/recipe-writer/:id' element={<RecipeWriterPage/>}></Route>
         {/* 스트리밍 */}
         <Route path='/streaming-register/:id' element={<StreamingRegisterPage/>}></Route>

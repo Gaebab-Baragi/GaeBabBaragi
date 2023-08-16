@@ -106,6 +106,22 @@
   color: black;
 }
 
+/* footer-work-space */
+.footer .footer-work-space h4 {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: left;
+}
+
+.footer .footer-work-space .work-space-info {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+}
+
 /* copyleft */
 .footer .copyleft {
   text-align: center;

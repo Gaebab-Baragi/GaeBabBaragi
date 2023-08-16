@@ -18,9 +18,12 @@ function StreamingRegisterPage() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [maxParticipant, setMaxParticipant] = useState(2);
-  const [password, setPassword] = useState(null);
   const user = useSelector(state=>state.user)
   const navigate = useNavigate();
+  const [isPrivate, setIsPrivate] = useState(false); // 비밀방 여부 상태 추가
+  const [password, setPassword] = useState(null); // 비밀번호 상태 추가
+
+
   // 로그인 안된 유저는 접근 안됨
   useEffect(()=>{
     if (!user) {
@@ -29,7 +32,13 @@ function StreamingRegisterPage() {
       });
     }
   },[])
-
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+  
+    if (newPassword.length <= 6) {
+      setPassword(newPassword);
+    }
+  };
   const handleIncrease = (e) => {
     e.preventDefault();
     if (maxParticipant < 5) {
@@ -63,6 +72,9 @@ function StreamingRegisterPage() {
     if(!(data.title).trim() || !(data.description).trim() || !(data.start_time).trim() ||!selectedTime || !selectedDate){
       
       return Toast.fire("내용을 입력해주세요","","warning");
+    }
+    if(isPrivate && data.password.length<6){
+      return Toast.fire("비밀번호를 확인해주세요.","","warning");
     }
 
     axios
@@ -103,7 +115,7 @@ function StreamingRegisterPage() {
               <input
                 onChange={(e) => setRoomTitle(e.target.value)}
                 type="text"
-                placeholder="방 제목을 입력하세요."
+                placeholder="스트리밍 제목을 입력하세요."
                 className="roomName"
               />
             </div>
@@ -168,6 +180,7 @@ function StreamingRegisterPage() {
           </div>
         </div>
       </div>
+
       <div className="input-list">
         <div className="input-info">
           <div className="input-details">
@@ -175,11 +188,41 @@ function StreamingRegisterPage() {
             <div className="input-content">
               <input
                 type="password"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
+                value={password}
+                onChange={handlePasswordChange}
+                disabled={!isPrivate}
                 className="password"
+                style={{ backgroundColor: isPrivate ? '#FFF' : '#f0f0f0' }}
               />
+              <div className="input-content">
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={isPrivate}
+                  onChange={(e) => {
+                    setIsPrivate(e.target.checked);
+                    if (!e.target.checked) {
+                      setPassword(null);
+                    }
+                  }}
+                />
+                비밀 스트리밍 설정
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div className="input-list" style={{'margin-top':0}}>
+        <div className="input-info">
+          <div className="input-details">
+            <div className='input-property'>
+
+            </div>
+            <div className='input-content'>
+            {isPrivate && password && password.length < 6 && (
+                <div className="password-notice">비밀번호는 6자로 설정해주세요.</div>
+              )}
             </div>
           </div>
         </div>
