@@ -31,7 +31,6 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser, clearUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
-import mem from 'mem';
 import Toast from './components/ui/Toast';
 
 function App() {  
