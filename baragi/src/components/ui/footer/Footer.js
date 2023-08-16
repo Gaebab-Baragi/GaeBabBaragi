@@ -74,7 +74,8 @@ function Footer() {
 
       <div className="container mt-4">
         <div className="copyleft">
-          &copy; Copyleft <strong><span>개밥바라기</span></strong>
+            <img src="./image/Copyleft.png"></img>&nbsp;Copyleft&nbsp;&nbsp;<strong>개밥바라기</strong>&nbsp;
+            All rights are reserved to everyone
         </div>
       </div>
     </div>
