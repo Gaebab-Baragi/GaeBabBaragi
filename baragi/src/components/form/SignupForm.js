@@ -100,7 +100,7 @@ function SignupForm() {
       })
     .then((res)=>{
       if (res.status === 200) {
-        Toast.fire("인증 코드가 발송되었습니다. 이메일을 확인해주세요.", "", "success")
+        Toast.fire("인증 코드가 발송되었습니다. 이메일을 확인해주세요.", "임시:" + res.data, "success")
         setVerificationCode(res.data);
         setEmailCodeCheck(false);
         setSendCode(true);

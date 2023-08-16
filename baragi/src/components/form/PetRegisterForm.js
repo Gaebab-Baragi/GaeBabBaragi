@@ -54,7 +54,7 @@ function PetRegisterForm({petInfo, idx}) {
     }
   };
 
-  const registerPet = (e) => {
+  const registerPet = async (e) => {
     e.preventDefault();
     let tmp = []
     selected.map((i)=>{
@@ -74,7 +74,7 @@ function PetRegisterForm({petInfo, idx}) {
     );
 
 
-    axios
+    await axios
       .post(process.env.REACT_APP_BASE_URL +"/api/pet", formData, {
         headers : { 'Content-Type' : 'multipart/form-data'}
       })
@@ -88,7 +88,7 @@ function PetRegisterForm({petInfo, idx}) {
       });
   }
 
-  const modifyPet = (e) => {
+  const modifyPet = async (e) => {
       e.preventDefault();
       let tmp = []
       selected.map((i)=>{
@@ -106,7 +106,7 @@ function PetRegisterForm({petInfo, idx}) {
         new Blob([JSON.stringify(datas)], { type: "application/json" })
       );
 
-    axios
+    await axios
       .post(process.env.REACT_APP_BASE_URL +"/api/pet/modify", formData, {
         headers : { 'Content-Type' : 'multipart/form-data'}
       })

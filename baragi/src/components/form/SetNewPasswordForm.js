@@ -26,14 +26,14 @@ const SetNewPasswordForm = ({password}) => {
         setSamePassword(password1===password2)
     },[password2])
 
-    const handleSubmit = (e) => { 
+    const handleSubmit = async (e) => { 
         e.preventDefault();
         if (!validPassword || !samePassword) {
             Toast.fire('비밀번호를 확인해주세요', "", "error")
             return
         } 
 
-        axios.post(process.env.REACT_APP_BASE_URL +'/api/member/modify/password', { originPassword, password : password1})
+        await axios.post(process.env.REACT_APP_BASE_URL +'/api/member/modify/password', { originPassword, password : password1})
         .then((res)=>{
             if (res.status ===200) {
                 Toast.fire("비밀번호를 변경했습니다.", "", "success")

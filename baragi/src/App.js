@@ -1,8 +1,7 @@
 /* eslint-disable */
 import './App.css';
 import React, {useState} from 'react';
-import { configureStore } from '@reduxjs/toolkit'
-import { Routes, Route, useLocation} from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate} from 'react-router-dom'
 import NaviBar from './components/ui/navbar/NaviBar';
 
 // -------------------PAGES--------------------//
@@ -26,26 +25,98 @@ import PasswordModificationPage from './pages/PasswordModificationPage';
 import PetListPage from './pages/Pet/PetListPage';
 import StreamingLivePage from './streaming/StreamingLivePage';
 import ObjectDetectionPage from './pages/ObjectDetectionPage';
-import Footer from './components/ui/Footer'
+import Footer from './components/ui/footer/Footer'
+import RecipeWriterPage from './pages/RecipeWriterPage';
 // -------------------PAGES-------------------//
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { loginUser } from './redux/userSlice';
+import { loginUser, clearUser } from './redux/userSlice';
 import { useSelector } from 'react-redux';
+import mem from 'mem';
+import Toast from './components/ui/Toast';
 
 function App() {  
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const navigate = useNavigate();
+  const [accToken, setAccToken] = useState('');
+
+  let isFecthedAccessToken = false;
+  let subscribers = [];
+  
+  async function resetTokenAndReattempt(error) {
+    try {
+      const { response: errorResponse } = error;
+  
+      const retryOriginalRequest = new Promise((resolve, reject) => {
+        addSubscriber(async (accessToken) => {
+          try {
+            errorResponse.config.headers['Authorization'] = accessToken;
+            resolve(axios(errorResponse.config));
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+
+      if (!isFecthedAccessToken){
+        isFecthedAccessToken = true;
+        const {headers}= await axios.get(process.env.REACT_APP_BASE_URL + "/api/refresh")
+        setAccToken(headers.authorization);
+        console.log(headers.authorization);
+
+        isFecthedAccessToken = false;
+        onAccessTokenFetched(headers.authorization);
+      }
+      return retryOriginalRequest;
+    }
+    catch (error){
+      signOut();
+      return Promise.reject(error);
+    }
+  }
+
+  function addSubscriber(callback) {
+    subscribers.push(callback);
+  }
+  
+  function onAccessTokenFetched(accessToken) {
+    subscribers.forEach((callback) => callback(accessToken));
+    subscribers = [];
+  }
+  
+  function signOut() {
+      delete axios.defaults.headers.common.Authorization;//없으면 그냥 없애고 예외처리
+      Toast.fire("로그인이 필요한 서비스입니다.", "", "error");
+      dispatch(clearUser());
+      navigate("/login");
+  }
 
   axios.interceptors.response.use(
     (res) => {
-      if (res.headers.get('Authorization')) {
-        axios.defaults.headers.common['Authorization']= res.headers.get('Authorization');
-        dispatch(loginUser({...user, isLogin : true}))
-      }
       return res;
     },
+    async (err) => {//에러 발생시 
+      const { config, response: { status } } = err;
+  
+      if (config.url === "/api/refresh" || status !== 462 || config.sent) {//refresh 요청을 했는데 에러가 나거나, 462에러가 아니거나, 이미 보낸 상태면
+        return Promise.reject(err);//그냥 err리턴
+      }
+  
+      config.sent = true;
+      return await resetTokenAndReattempt(err);
+    }
   )
+
+  axios.interceptors.request.use((config) => {
+    if (accToken) {//저장된 액세스 토큰이 있으면
+      config.headers.Authorization = `Bearer ${accToken}`;//헤더에 담음
+    }
+    else if (config.headers.Authorization) {//헤더에 이미 담겨 있으면
+      setAccToken(axios.defaults.headers.common.Authorization);//저장함
+    }
+    return config;
+  })
   axios.defaults.withCredentials = true;
 
 
@@ -72,6 +143,7 @@ function App() {
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
         <Route path='/recipe-update/:id' element={<RecipeUpdatePage/>}></Route>
+        <Route path='/recipe-writer/:id' element={<RecipeWriterPage/>}></Route>
         {/* 스트리밍 */}
         <Route path='/streaming-register/:id' element={<StreamingRegisterPage/>}></Route>
         <Route path='/streaming-list' element={<StreamingListPage/>}></Route>

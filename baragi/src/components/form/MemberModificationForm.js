@@ -27,6 +27,7 @@ function MemberModificationForm(){
             }
         })
         .catch((res) => {
+            console.log(res);
             Toast.fire("회원 정보를 불러올 수 없습니다.", "", "error");
         })
     }, [])
@@ -53,7 +54,6 @@ function MemberModificationForm(){
             nickname : nickname ? nickname : originNickname,
             profileUrl : profileUrl === originProfileUrl ? profileUrl : "null"
         };
- 
 
         axios.post(process.env.REACT_APP_BASE_URL +'/api/member/modify/nickname', body, {
             headers: { 
@@ -69,10 +69,10 @@ function MemberModificationForm(){
         })
         .catch((res) => {
             console.log(res);
-        res = res.response;
-        if (res.status === 460) Toast.fire("잘못된 닉네임 형식입니다.", "", "warning");
-        else if (res.status === 457) Toast.fire("이미 사용 중인 이메일입니다.", "", "warning")
-        else Toast.fire("이유를 알 수 없는 오류", "", "error")
+            res = res.response;
+            if (res.status === 460) Toast.fire("잘못된 닉네임 형식입니다.", "", "warning");
+            else if (res.status === 457) Toast.fire("이미 사용 중인 이메일입니다.", "", "warning")
+            else Toast.fire("이유를 알 수 없는 오류", "", "error")
         })
 
     }, [nickname, originNickname]); 
