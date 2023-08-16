@@ -30,6 +30,7 @@ class Streaming extends Component {
             hideInfo:false,
             modalShow:false,
             requestStartSession:false,
+            // hasJoinedSession:false,
         };
 
         this.joinSession = this.joinSession.bind(this);
@@ -235,7 +236,9 @@ class Streaming extends Component {
                     mySessionId: 'SessionA',
                     myUserName: 'Participant' + Math.floor(Math.random() * 100),
                     mainStreamManager: undefined,
-                    publisher: undefined
+                    publisher: undefined,
+                    subscribers: [],
+                    hasJoinedSession:false,
                 });
 
                 window.location.replace('/streaming-list')
@@ -259,10 +262,8 @@ class Streaming extends Component {
     }
     
 
-
     // 미팅 시작하기(호스트 용) - 더 이상 들어오지 못함
     startSession() {
-
         const sessionId = parseInt(this.state.mySessionId)
         axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/start/${sessionId}`)
         .then((res)=>{
