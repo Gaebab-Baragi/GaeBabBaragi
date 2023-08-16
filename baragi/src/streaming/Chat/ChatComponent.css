@@ -63,13 +63,11 @@
   justify-content: space-between; 
   margin-top: 2%;
 }
-
 .messageSendInput {
   border-radius: 10px;
   width: 100%;
   margin-bottom: 5%;
 }
-
 .recipeContainer {
   display: flex;
   flex-direction: column;
@@ -88,7 +86,18 @@
   /* margin-left: 1%; */
   font-size: larger;
 }
-
+.recipe-info-list{
+  text-align: start;
+  background-color: white;
+  width: 90%;
+  padding: 2%;
+  border-radius: 10px;
+  margin-bottom: 2%;
+  /* margin-left: 1%; */
+  font-size: larger;
+  max-height: 450px;
+  overflow-y:scroll;
+}
 .recipe-title {
   font-weight: bold;
 }
