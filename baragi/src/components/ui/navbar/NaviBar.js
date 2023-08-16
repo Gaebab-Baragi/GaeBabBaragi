@@ -69,8 +69,10 @@ function NaviBar() {
             </Navbar.Toggle>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className='me-auto my-2 my-lg-0'>
-                <Nav.Link as={Link} to='/recipe-list' onClick={() => navigate("/recipe-list")} >레시피</Nav.Link>
-                <Nav.Link as={Link} to='/streaming-list' onClick={() => navigate("/streaming-list")}>스트리밍</Nav.Link> <Nav.Link as={Link} to='/' href='/'>커뮤니티</Nav.Link> </Nav>
+                <Nav.Link as={Link} to='/recipe-list' href='/recipe-list'>레시피</Nav.Link>
+                <Nav.Link as={Link} to='/streaming-list' href='/streaming-list'>스트리밍</Nav.Link>
+                <Nav.Link as={Link} to='/object-detect' href='/object-detect'>재료 확인</Nav.Link>
+              </Nav>
               {
               !user.isLogin ? ( 
                 <Nav> {/* 로그인 X */}
