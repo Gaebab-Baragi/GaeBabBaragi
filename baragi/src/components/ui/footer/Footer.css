@@ -124,5 +124,13 @@
 
 /* copyleft */
 .footer .copyleft {
+  display: flex;
+  align-items: center;
   text-align: center;
+  justify-content: center;
+}
+
+.footer .copyleft img {
+  width: 14px;
+  height: 14px;
 }
