@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios  from 'axios';
+import './Card.css'
 
 function CardComponent({ recipe }) {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function CardComponent({ recipe }) {
   };
 
   return (
-    <Card onClick={handleNavigateDetail} style={{ width: '16.5rem', height: '400px' }}>
+    <Card className='card-hover' onClick={handleNavigateDetail} style={{ width: '16.5rem', height: '400px' }}>
       <Card.Img style={{ height: '200px' }} variant="top" src={recipe.imgUrl} />
       <Card.Body style={{height:'auto'}}>
         <Card.Title>{recipe.title}</Card.Title>
