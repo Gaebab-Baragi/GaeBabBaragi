@@ -43,7 +43,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             checkAccessTokenAndAuthentication(request, response, filterChain);
             return;
         }
-
         checkRefreshTokenAndReIssueAccessToken(request, response, filterChain);
     }
 
@@ -65,7 +64,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             reIssuedRefreshToken);
                     jwtService.updateRefreshToken(member.getUsername(), reIssuedRefreshToken);
                 });
-        filterChain.doFilter(request, response);
     }
 
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
