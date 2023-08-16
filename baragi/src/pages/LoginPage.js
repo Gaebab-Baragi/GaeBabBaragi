@@ -1,8 +1,9 @@
 import LoginForm from "../components/form/LoginForm";
+import './css/PageDefaults.css'
 
 function LoginPage() {
     return (
-        <div>
+        <div className="pageContainer">
           <LoginForm></LoginForm>
         </div>
       );
