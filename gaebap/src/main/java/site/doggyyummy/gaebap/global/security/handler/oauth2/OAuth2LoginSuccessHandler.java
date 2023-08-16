@@ -61,13 +61,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (oAuth2User.getRole() == Role.GUEST) {
             redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/signup/"+ accessToken)
                     .build().toUriString();
-            refreshToken = null;
         }
 
-        log.info("새 로그인 유저 : {}, 리프레시 토큰 : {}, with role {}", oAuth2User.getName(), refreshToken, oAuth2User.getRole());
+        log.info("새 로그인 유저 : {}, with role {}", oAuth2User.getName(), refreshToken, oAuth2User.getRole());
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getName(), refreshToken);
         redirectStrategy.sendRedirect(request, response, redirectUrl);
-        log.info("token : {}", accessToken);
     }
 }

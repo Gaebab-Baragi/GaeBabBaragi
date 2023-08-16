@@ -29,7 +29,6 @@ function NaviBar() {
     useEffect(() => {
       console.log("user Login", user);
       if (user.isLogin){
-
         axios.get(process.env.REACT_APP_BASE_URL + "/api/member")
         .then((res) => {
           if (res.status === 200){

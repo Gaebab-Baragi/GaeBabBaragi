@@ -21,7 +21,7 @@ export default class ChatComponent extends Component {
         // Delay the execution of the component initialization
         setTimeout(() => {
             this.initializeChat();
-        },2000); // Adjust the delay time as needed
+        },5000); // Adjust the delay time as needed
     }
 
     initializeChat() {
@@ -140,11 +140,14 @@ export default class ChatComponent extends Component {
           })} */}
         </div>
 
-        <div className='recipe-info'>
+        <div className='recipe-info-list'>
           <div className='recipe-title'>레시피</div>
           {this.props.recipeData.steps.map((step)=>{
             return(
-              <div>Step{step.orderingNumber} : {step.description}</div>
+              <div>
+                <div style={{fontWeight:'bold'}}>Step{step.orderingNumber}</div>
+                <span>{step.description}</span>
+              </div>
             )
           })}
         </div>

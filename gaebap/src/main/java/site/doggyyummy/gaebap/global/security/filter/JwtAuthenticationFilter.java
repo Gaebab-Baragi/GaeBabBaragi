@@ -25,7 +25,7 @@ import java.util.Optional;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String LOGIN_URL = "/api/login";
-    private static final String LOGOUT_URL= "/api/logout";
+    private static final String REFRESH_URL = "/api/refresh";
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
@@ -39,11 +39,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        checkAccessTokenAndAuthentication(request, response, filterChain);
+        if (!request.getRequestURI().equals(REFRESH_URL)){
+            checkAccessTokenAndAuthentication(request, response, filterChain);
+            return;
+        }
+        checkRefreshTokenAndReIssueAccessToken(request, response, filterChain);
     }
 
 
-    public void checkRefreshTokenAndReIssueAccessToken(HttpServletRequest request, HttpServletResponse response) {
+    public void checkRefreshTokenAndReIssueAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)  throws ServletException, IOException {
 
         log.info("checkRefreshTokenAndReIssueAccessToken() 호출");
 
@@ -59,8 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getUsername()),
                             reIssuedRefreshToken);
                     jwtService.updateRefreshToken(member.getUsername(), reIssuedRefreshToken);
-                    saveAuthentication(member);
-                    log.info("authenticatedMember : {}", member);
                 });
     }
 
@@ -68,30 +70,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                                   FilterChain filterChain) throws ServletException, IOException {
         log.info("checkAccessTokenAndAuthentication() 호출");
 
-        Optional<String> accessToken = jwtService.extractAccessToken(request);
-        log.info("accessToken : {}" , accessToken.orElseGet(() -> "no access token"));
-        if (accessToken.isPresent() && jwtService.isTokenValid(accessToken.get())){
-            Optional<String> name = jwtService.extractName(accessToken.get());
-            if (name.isPresent()){
-                Optional<Member> member = memberRepository.findByUsername(name.get());
-                if (member.isPresent()) {
-                    saveAuthentication(member.get());
+        jwtService.extractAccessToken(request)
+                .filter(jwtService::isTokenValid)
+                .ifPresent(accessToken -> jwtService.extractName(accessToken)
+                        .ifPresent(name -> memberRepository.findByUsername(name)
+                                .ifPresent(this::saveAuthentication)));
 
-                    String refreshToken = jwtService.extractRefreshToken(request)
-                            .filter(jwtService::isTokenValid)
-                            .orElse(null);
-
-                    if (refreshToken == null) {
-                        String reissuedRefreshToken = jwtService.createRefreshToken();
-                        jwtService.updateRefreshToken(member.get().getUsername(), reissuedRefreshToken);
-                        jwtService.sendAccessAndRefreshToken(response, accessToken.get(), reissuedRefreshToken);
-                    }
-                    filterChain.doFilter(request, response);
-                    return;
-                }
-            }
-        }
-        checkRefreshTokenAndReIssueAccessToken(request, response);
         filterChain.doFilter(request, response);
     }
 

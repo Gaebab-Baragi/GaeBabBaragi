@@ -88,6 +88,7 @@ public class JwtService {
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         log.info("토큰 뽑기");
+
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(token -> token.startsWith(BEARER))
                 .map(token -> token.replace(BEARER, ""));
@@ -108,7 +109,7 @@ public class JwtService {
     }
 
     public void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
-        response.setHeader(accessHeader, "Bearer " + accessToken);
+        response.setHeader(accessHeader, BEARER + accessToken);
     }
 
     public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {

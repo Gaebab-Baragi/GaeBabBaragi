@@ -45,3 +45,15 @@
   border: none;
   font-weight: 500;
 }
+
+.objectDetectionBtn{
+  width: 100px;
+  height: 40px;
+  margin-top: 30px;
+  margin-left: 1%;
+  border-radius: 10px;
+  background-color: #00aeff;
+  color: white;
+  border: none;
+  font-weight: 500;
+}

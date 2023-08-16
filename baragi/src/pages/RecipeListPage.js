@@ -10,6 +10,8 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom'
 import useDidMountEffect from "../useDidMountEffect";
 import Toast from "../components/ui/Toast";
+import Modal from "../components/ui/modal/Modal";
+import ObjectDetectionPage from "./ObjectDetectionPage";
 
 function RecipeListPage() {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ function RecipeListPage() {
   const [recipeTitleList, setRecipeTitleList] = useState([])
   const [popularRecipes, setPopularRecipes] = useState([])
   const [showCarousel, setShowCarousel] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   // 레시피 제목 가져오기
   useEffect(()=>{
@@ -92,12 +95,14 @@ function RecipeListPage() {
 
   return (
     <div >
+
       {/* 검색창 */}
       <div className="searchWrapContainer">
         <div className="searchContainer">
           <div className="searchRecipeRegister">
             <SearchBar data={recipeTitleList}/>
             <button className="recipeRegisterBtn" onClick={handleRequestRecipeRegister}>레시피 작성</button>
+            <button className="objectDetectionBtn" onClick={()=>{setIsModalOpen(true)}}>재료 탐지</button>
           </div>
           <IngredientTagBar/> 
           {/* 로그인 된 회원 만 보이게 하기 */}
@@ -121,6 +126,11 @@ function RecipeListPage() {
         <CardCarousel popularRecipes={popularRecipes}/>
       </div>
     }
+    {isModalOpen && (
+        <Modal closeModal={() => setIsModalOpen(!isModalOpen)}>
+          <ObjectDetectionPage/>
+        </Modal>
+    )}
     </div>
   )
 }

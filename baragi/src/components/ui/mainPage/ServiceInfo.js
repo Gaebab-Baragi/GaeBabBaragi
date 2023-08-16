@@ -5,7 +5,7 @@ import "./ServiceInfo.css"
 function ServiceInfo() {
     return (
         <>
-        <div>
+        <div className="main-page">
             <section id="features" className="service-info-features">
                 <div className="service-info-header">
                     <h2>서비스 소개</h2>
@@ -59,22 +59,6 @@ function ServiceInfo() {
                                 <li><ion-icon name="checkmark-outline"></ion-icon> 자신만의 레시피를 여러 사람들에게 자랑하고 싶으신 분</li>
                                 <li><ion-icon name="checkmark-outline"></ion-icon> 함께 간식을 만들고 맛있게 먹는 반려견의 모습을 자랑하고 싶으신 분</li>
                             </ul>
-                        </div>
-                    </div>{/* Features Item */}
-
-                    <div className="row gy-4 align-items-center features-item">
-                        <div className="col-md-5 order-1 order-md-2">
-                            <img src="/image/개밥바라기.png" className="img-fluid" alt="커뮤니티 페이지" />
-                        </div>
-                        <div className="col-md-7 order-2 order-md-1 content">
-                            <h3>수제 간식을 맛있게 먹는 반려견 자랑하기!</h3>
-                            <p className="sub-title">
-                                간식을 맛있게 먹는 반려견 모습을 동영상 리뷰를 통해 자랑할 수 있어요.
-                            </p>
-                            <p>
-                                수제 간식을 맛있게 먹는 반려견들의 동영상 리뷰를 참고하여 레시피 선택에 도움을 받을 수 있어요.<br/>
-                                커뮤니티에서 먹방하는 반려견들의 동영상을 모아볼 수 있어요.
-                            </p>
                         </div>
                     </div>{/* Features Item */}
                 </div>

@@ -78,7 +78,8 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
           flexShrink: 0,
           fontSize: '1vw',
           fontWeight: 700,
-          textIndent: '10px'}}
+          textIndent: '10px',
+          resize : 'none'}}
         />
         </div>
        {/* <button style = {{ margin : 'auto'}} onClick={onDelete}>-</button> */}
