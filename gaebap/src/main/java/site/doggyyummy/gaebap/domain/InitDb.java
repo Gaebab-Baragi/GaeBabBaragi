@@ -929,7 +929,7 @@ public class InitDb {
 
             member.setNickname(nickname);
             member.setUsername(username);
-//            member.setRole(Role.USER);
+            member.setRole(Role.USER);
             member.setPassword(password);
             member.setProfileUrl(profileUrl);
 
