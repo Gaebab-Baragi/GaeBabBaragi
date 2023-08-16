@@ -44,6 +44,7 @@ function InputInfor() {
                 borderRadius: '10px',
                 textIndent:'10px',
                 border :'2px solid #000',
+                marginRight : '9%'
               }}            />    
           </div>
           
@@ -61,6 +62,8 @@ function InputInfor() {
                 borderRadius: '10px',
                 textIndent:'10px',
                 border :'2px solid #000',
+                marginRight : '9%',
+                resize : 'none'
               }}
             />
           </div>

@@ -66,7 +66,8 @@ function CookStep() {
           </div>
         ))}
       </div>
-      <button onClick={handleAddInputCookstep}>+</button>
+      {/* <button onClick={handleAddInputCookstep}>+</button> */}
+      <img src='./plus.png' style = {{ margin : 'auto', width : '3%'}} onClick={handleAddInputCookstep}></img>
     </div>
   );
 }
