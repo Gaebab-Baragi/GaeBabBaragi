@@ -124,7 +124,7 @@ function ObjectDetectionPage() {
  
         // Send FormData using Axios
         // 'https://doggy-yummy.site/v1/object-detection/yolov5' master 입력시  
-          axios.post('http://localhost:5000/v1/object-detection/yolov5', formData,{
+          axios.post('https://doggy-yummy.site/v1/object-detection/yolov5', formData,{
             withCredentials: true,
             headers: {
               'Content-Type': 'multipart/form-data'
