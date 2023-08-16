@@ -11,7 +11,7 @@ class UserModel {
       this.connectionId = '';
       this.audioActive = true;
       this.videoActive = true;
-      this.screenShareActive = false;
+      this.screenShareActive = true;
       this.nickname = '';
       this.streamManager = null;
       this.type = 'local';
