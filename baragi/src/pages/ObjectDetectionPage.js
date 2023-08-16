@@ -6,7 +6,7 @@ import React, {useState, useEffect, useRef } from 'react';
 import { useDispatch,useSelector  } from 'react-redux';
 // import '../components/ui/SearchBar.css'
 // import "./styles.css";
-function ObjectDetectionPage() {
+function ObjectDetectionPage({onValueChange}) {
   const dispatch = useDispatch();
   const classname = useSelector(state => state.objectDetect.Ingredients);
   const videoRef = useRef(null);
@@ -26,6 +26,7 @@ function ObjectDetectionPage() {
     const allowClassname = uniqueClassname.filter(value => !forbidden.includes(value));
     dispatch(updateIngredients2(allowClassname))
     dispatch(setIngredients(''))
+    onValueChange(1)
   }
 
 
