@@ -51,7 +51,7 @@ function App() {
       const retryOriginalRequest = new Promise((resolve, reject) => {
         addSubscriber(async (accessToken) => {
           try {
-            errorResponse.config.headers['Authorization'] = `Bearer ${accessToken}`;
+            errorResponse.config.headers['Authorization'] = accessToken;
             resolve(axios(errorResponse.config));
           } catch (err) {
             reject(err);
@@ -61,8 +61,8 @@ function App() {
 
       if (!isFecthedAccessToken){
         isFecthedAccessToken = true;
-        const {headers}= await axios.get(process.env.REACT_APP_BASE_URL + "/api/refresh")
-        setAccToken(`Bearer ${headers.authorization}`);
+        const {headers}= await axios.get(process.env.REACT_APP_BASE_URL + "/api/refresh");
+        setAccToken(headers.authorization);
 
         isFecthedAccessToken = false;
         onAccessTokenFetched(headers.authorization);
