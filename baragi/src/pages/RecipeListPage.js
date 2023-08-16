@@ -26,6 +26,11 @@ function RecipeListPage() {
   const [showCarousel, setShowCarousel] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  const handle2 = (value)=>{
+    console.log(value)
+    setIsModalOpen(false)
+  }
+  
   // 레시피 제목 가져오기
   useEffect(()=>{
     console.log(process.env.REACT_APP_BASE_URL + '/api/recipes/recipestitle')
@@ -128,7 +133,7 @@ function RecipeListPage() {
     }
     {isModalOpen && (
         <Modal closeModal={() => setIsModalOpen(!isModalOpen)}>
-          <ObjectDetectionPage/>
+          <ObjectDetectionPage onValueChange={handle2} />
         </Modal>
     )}
     </div>

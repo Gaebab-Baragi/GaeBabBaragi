@@ -7,7 +7,7 @@ import useDidMountEffect from "../../useDidMountEffect";
 import axios from "axios";
 
 
-function IngredientTagBar() {
+function IngredientTagBar({onSelectedChange}) {
   const [suggestions, setSuggestions] = useState('');
   const [selected, setSelected] = useState([]);
   const dispatch = useDispatch();
@@ -40,16 +40,26 @@ function IngredientTagBar() {
     (newTag) => {
       setSelected([...selected, newTag])
       //
+      onSelectedChange([...selected, newTag]);
     },
     [selected]
   )
 
   const onDelete = useCallback(
     (tagIndex) => {
-      setSelected(selected.filter((_, i) => i !== tagIndex))
+      // setSelected(selected.filter((_, i) => i !== tagIndex))
+      const newSelected = selected.filter((_, i) => i !== tagIndex);
+      setSelected(newSelected);
+      onSelectedChange(newSelected); // 삭제된 재료 정보를 상위 컴포넌트로 전달
     },
-    [selected]
-  )
+    [selected, onSelectedChange]
+  );
+    
+    // },
+      
+    // [selected]
+    
+  // )
 
 
   return(

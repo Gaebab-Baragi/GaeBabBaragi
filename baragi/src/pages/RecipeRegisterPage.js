@@ -6,6 +6,7 @@ import CookStep from '../components/ui/CookStep';
 import { useDispatch } from 'react-redux';
 import { requestFilteredRecipeList,updateVideo} from '../redux/recipeRegisterSlice';
 import  { useState } from 'react';
+import {useNavigate} from 'react-router-dom'
 
 
 function RecipeRegisterPage() {
@@ -27,6 +28,8 @@ function RecipeRegisterPage() {
 
     }
   }
+
+ 
   // const handleImageUpload = (imageData) => {
   //   console.log('리덕스에 저장되냐?',imageData)
   //   dispatch(updateImage(imageData));
@@ -60,7 +63,7 @@ function RecipeRegisterPage() {
           color: 'white',
           border: 'none',
           fontWeight: '500'}}
-          onClick={()=>{dispatch(requestFilteredRecipeList())}}>제출</button>
+          onClick={handlerequest}>제출</button>
 
         </div>
     </div>

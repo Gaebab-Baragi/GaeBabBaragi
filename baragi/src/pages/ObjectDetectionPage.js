@@ -1,12 +1,12 @@
 import axios from "axios";
 import './css/ObjectDetectionPage.css'
 import {setIngredients,} from '../redux/objectDetectSlice';
-import IngredientTagBar from "../components/ui/IngredientTagBar";
+import { updateIngredients2 } from "../redux/recipeSearchSlice";
 import React, {useState, useEffect, useRef } from 'react';
 import { useDispatch,useSelector  } from 'react-redux';
 // import '../components/ui/SearchBar.css'
 // import "./styles.css";
-function ObjectDetectionPage() {
+function ObjectDetectionPage({onValueChange}) {
   const dispatch = useDispatch();
   const classname = useSelector(state => state.objectDetect.Ingredients);
   const videoRef = useRef(null);
@@ -22,6 +22,17 @@ function ObjectDetectionPage() {
   const [newIngredient, setNewIngredient] = useState('');
   const uniqueClassname = [...new Set(classname)]
   
+  const handleSearch = ()=>{
+    const allowClassname = uniqueClassname.filter(value => !forbidden.includes(value));
+    dispatch(updateIngredients2(allowClassname))
+    dispatch(setIngredients(''))
+    onValueChange(1)
+  }
+
+
+  //
+
+  //
 
   useEffect(() => {
     getWebcam((stream => {
@@ -190,6 +201,7 @@ function ObjectDetectionPage() {
         : (
           <p>데이터가 없습니다.</p>
         )}
+ 
         {/* <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/> */}
     </div>
     <div style = {{border : '2px solid black', width :'80%', hegiht:'auto', borderRadius:'15px', margin : '10% auto 0 auto'}}>
@@ -226,7 +238,8 @@ function ObjectDetectionPage() {
         backgroundColor: '#ffaa00',
         color: 'white',
         border: 'none',
-        fontWeight: '500'}} >레시피 검색</button>
+        fontWeight: '500'}}
+        onClick={handleSearch}>레시피 검색</button>
         </div>
     </div>
   </div>
