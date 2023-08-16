@@ -24,39 +24,6 @@
   font-weight: 500;
 }
 
-/* .inputContainer {
-  display: flex;
-  flex-direction: row;
-  justify-items: center;
-  text-align: left;
-  height: 400px;
-} */
-
-/* .inputContainer-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: right;
-  align-items: right;
-  width: 28.6vw;
-
-}
-
-.inputContainer-left>label {
-  display: flex;
-  height: 50px;
-  width: 20vw;
-  justify-content: left;
-  align-items: center;
-  margin-left: 13vw;
-  margin-right: 1vw;
-  font-size: 1.8vw;
-} */
-
-/* .inputContainer-right {
-  margin-left: 30px;
-  margin-right: 20px;
-  width: 100%;
-} */
 
 .inputComponent {
   width: 36vw;
@@ -87,16 +54,6 @@
   text-indent: 10px;
   font-weight: 500;
   color: #777;
-}
-.roomName2 {
-  border-radius: 10px;
-  border: 2px solid #000;
-  background: #FFF;
-  width: 32vw;
-  flex-shrink: 0;
-  font-size: 1vw;
-  font-weight: 700;
-  text-indent: 10px;
 }
 
 .recipeName {
@@ -168,7 +125,6 @@
 .password {
   border-radius: 10px;
   border: 2px solid #000;
-  background: #FFF;
   width: 150px;
   height: 40px;
   flex-shrink: 0;
@@ -216,63 +172,9 @@
   font-weight: 700;
   background-color: #FA0;
   border-radius: 10px;
+  margin-bottom: 3%;
 }
 
-
-
-/* input:hover{
-  border-color:#FA0;
-} */
-
-
-/* @media (max-width : 1000px){
-  .inputContainer-left>label {
-    font-size: 17px;
-  }
-} */
-
-
-.roomName:focus{
-  border-color:#FA0;
-}
-.startTime:focus{
-  border-color:#FA0;
-}
-.password:focus{
-  border-color:#FA0;
-}
-.description:focus{
-  border-color:#FA0;
-}
-.roomName:hover{
-  border-color:#FA0;
-}
-.startTime:hover{
-  border-color:#FA0;
-}
-.password:hover{
-  border-color:#FA0;
-}
-.description:hover{
-  border-color:#FA0;
-}
-
-
-/* <ul className="ingredient-list">
-                        {data.ingredients.map((ingredient, index) => (
-                            <li key={index} className={`ingredient-item ${index % 2 === 0 ? 'even' : 'odd'}`}>
-                                <div className="ingredient-info">
-                                    <div className="ingredient-details">
-                                        <div className="ingredient-name">{ingredient.name}</div>
-                                        <div className="ingredient-amount">{data.recipeIngredients[index].amount}</div>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul> */
-
-
-/* 여기서 부터 */
 
 /* Add these CSS rules to your existing styles */
 .input-list {
@@ -309,4 +211,15 @@
   display: flex;
   font-weight: 500;
   /* margin-right:10%; */
+}
+.checkbox{
+  margin-left:5%;
+  margin-right:3%;
+  width:20px;
+}
+
+.password-notice{
+  font-size: 1vw;
+  margin-top: 0;
+  color:#FA0;
 }
