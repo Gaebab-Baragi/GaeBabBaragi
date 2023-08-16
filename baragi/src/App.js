@@ -112,7 +112,7 @@ function App() {
       config.headers.Authorization =accToken;//헤더에 담음
     }
     else if (config.headers.Authorization) {//헤더에 이미 담겨 있으면
-      setAccToken(axios.defaults.headers.common.Authorization);//저장함
+      setAccToken(config.headers.Authorization);//저장함
     }
     return config;
   })
