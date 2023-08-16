@@ -10,11 +10,15 @@ import {useNavigate} from 'react-router-dom'
 
 
 function RecipeRegisterPage() {
+  const navigator = useNavigate()
   const dispatch = useDispatch();
   const [video, setVideo] = useState('./기본이미지.PNG');
   const [file, setFile] = useState("");
   
-  
+  const handlerequest = ()=>{
+    dispatch(requestFilteredRecipeList)
+    navigator('/recipe-list')
+  }
   const handleVideoChange = (e)=>{
     const selectedVideo = e.target.files[0];
     dispatch(updateVideo(selectedVideo));

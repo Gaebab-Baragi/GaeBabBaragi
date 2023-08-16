@@ -24,9 +24,10 @@ function ObjectDetectionPage({onValueChange}) {
   
   const handleSearch = ()=>{
     const allowClassname = uniqueClassname.filter(value => !forbidden.includes(value));
-    dispatch(updateIngredients2(allowClassname))
-    dispatch(setIngredients(''))
     onValueChange(1)
+    dispatch(setIngredients(''))
+    dispatch(updateIngredients2(allowClassname))
+
   }
 
 
