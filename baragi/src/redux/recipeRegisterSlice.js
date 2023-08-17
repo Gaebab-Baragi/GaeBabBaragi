@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import Toast from "../components/ui/Toast";
+import { useNavigate } from "react-router-dom";
+
 
 // 레시피 등록
 let recipeRegister = createSlice({
@@ -21,8 +24,8 @@ let recipeRegister = createSlice({
     //   { orderingNumber: 4, description: "플레이팅"},
     // ],
     recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
-    recipeImage: '',
-    recipeVideo: '',
+    recipeImage: '0',
+    recipeVideo: '0',
     // videoUrl : './기본이미지.png'
     stepImages : ['0'],
   },
@@ -35,7 +38,6 @@ let recipeRegister = createSlice({
       console.log('2:', state.recipeImage)
 
       const formData = new FormData();
-      
       const data = {
         title: state.title,
         description: state.description,
@@ -50,16 +52,10 @@ let recipeRegister = createSlice({
         "stepImages",
         new Blob([state.stepImages], { type: "multipart/form-data" })
       );
-
-
       console.log('file',state.recipeImage)
-
       formData.append("recipeImage", state.recipeImage)
       console.log(state.recipeVideo)
       formData.append('recipeVideo', state.recipeVideo === '0' ? new Blob([]) : state.recipeVideo);
-
-
- 
  
       console.log('stepImages redux : ', state.stepImages)
       // state.stepImages.map((step)=>{
@@ -81,8 +77,13 @@ let recipeRegister = createSlice({
       
         .then((res) => {
           console.log("Request successful : ", res);
+          Toast.fire('레시피 등록이 완료되었습니다.','','success')
+  
         })
+          // navigator('/recipe-list')
         .catch((err) => {
+
+          // alert('실패하였습니다.')
           console.log("Error sending request : ", err);
         });
     },

@@ -16,9 +16,11 @@ function RecipeRegisterPage() {
   const [file, setFile] = useState("");
   
   const handlerequest = ()=>{
-    dispatch(requestFilteredRecipeList)
+    dispatch(requestFilteredRecipeList())
+    
     navigator('/recipe-list')
   }
+
   const handleVideoChange = (e)=>{
     const selectedVideo = e.target.files[0];
     dispatch(updateVideo(selectedVideo));

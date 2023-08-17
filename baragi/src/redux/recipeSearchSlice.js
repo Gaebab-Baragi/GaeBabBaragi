@@ -38,11 +38,11 @@ let recipeSearch= createSlice({
       const ingredientArray = action.payload  // []
 
       ingredientArray.forEach(ingredient => {
-        temp.push({'name' : ingredient})
+        temp.push({'value' : '1','label' : ingredient})
       });
       console.log(temp)
       state.detectedingredients = temp
-      console.log('redux 재료 업데이트 됨', state.detectedingredients)
+      console.log('redux 탐지재료 업데이트 됨', state.detectedingredients)
     },
 
     updateDogs: (state, action) =>{
