@@ -10,15 +10,21 @@ import {useNavigate} from 'react-router-dom'
 
 
 function RecipeRegisterPage() {
-  const navigator = useNavigate()
+  const navigator = useNavigate();
   const dispatch = useDispatch();
   const [video, setVideo] = useState('./기본이미지.PNG');
   const [file, setFile] = useState("");
   
   const handlerequest = ()=>{
     dispatch(requestFilteredRecipeList())
-    
-    // navigator('/recipe-list')
+    .then(() => {
+      // 성공적으로 완료되면 페이지 전환
+      navigator('/recipe-list');
+    })
+    .catch(() => {
+      
+      // 실패했을 때의 처리
+    });
   }
 
   const handleVideoChange = (e)=>{
