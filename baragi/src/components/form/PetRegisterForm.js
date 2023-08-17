@@ -2,30 +2,27 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import './css/MemberModification.css'
 import './css/BasicForm.css'
+import './css/PetRegisterForm.css'
 import PetIngredientTagBar from "../ui/PetIngredientTagBar";
-import { useDispatch } from "react-redux";
 import defaultImg from "./default.png"
-import { useNavigate } from "react-router-dom";
 import Toast from "../ui/Toast";
+import Swal from "sweetalert2";
 
-function PetRegisterForm({petInfo, idx}) {
-  const [pet, setPet] = useState({})
+function PetRegisterForm({petInfo, idx, rerender}) {
   const [petName, setPetName] = useState('')
   const [forbiddens, setForbiddens] = useState([])
   const [petImage, setPetImage] = useState(defaultImg)
   const [file, setFile] = useState('')
   const [selected, setSelected] = useState([]);
 
-  const navigate = useNavigate();
-
   useEffect(()=>{
     if (petInfo) {
-      setPet(petInfo.pet);
       setPetName(petInfo.name);
       setPetImage(petInfo.imgUrl);
+      setFile(null);
       setForbiddens(petInfo.forbiddens);
     }
-  },[idx])
+  },[petInfo])
 
   useEffect(() => {
     if (!petImage) {
@@ -79,9 +76,8 @@ function PetRegisterForm({petInfo, idx}) {
         headers : { 'Content-Type' : 'multipart/form-data'}
       })
       .then((res) => {
-        console.log("axios success :", res.data);
         Toast.fire("추가되었습니다.", "", "success");
-        navigate("/my-pet-list/"+ idx);
+        rerender();
       })
       .catch((err) => {
         Toast.fire("오류 발생", "", "error");
@@ -119,13 +115,42 @@ function PetRegisterForm({petInfo, idx}) {
   }
 
 
+  const removePet = () => {
+    Swal.fire({
+      title: '해당 반려견을\n목록에서 제외시킵니다',
+      showDenyButton: true,
+      confirmButtonText: '예',
+      confirmButtonColor: 'red',
+      denyButtonText: `취소`,
+      denyButtonColor: 'gray'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        axios.delete(process.env.REACT_APP_BASE_URL + "/api/pet/" + petInfo.id)
+          .then((res) => {
+            Toast.fire("목록에서 제외시켰습니다", "", "success");
+            rerender();
+          })
+          .catch((res) => {
+            Toast.fire("삭제할 수 없습니다.", "", "error");
+          })
+      } else if (result.isDenied) {
+
+      }
+    })
+  }
 
   return (
     <div className="formContainer">
       {/* 제목 */}
       <form className = "form">
       <div className="formTitle">내 반려견</div>
-
+      
+      {
+        petInfo? 
+        <div className="petRemoveBtn" onClick={() => removePet()}> X </div>
+        : <></>
+      }
       {/* 사진 등록 */}
       <label htmlFor={"upload-"+idx} className="custom-file-upload fas">
           <div className="img-wrap img-upload" >
