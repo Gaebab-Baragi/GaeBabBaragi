@@ -73,7 +73,10 @@ function StreamingRegisterPage() {
       
       return Toast.fire("내용을 입력해주세요","","warning");
     }
-    if(isPrivate && data.password.length<6){
+    if(isPrivate && data.password==null){
+      return Toast.fire("비밀번호를 확인해주세요.","","warning");
+    }
+    if(isPrivate && data.password && data.password.length<6){
       return Toast.fire("비밀번호를 확인해주세요.","","warning");
     }
 
