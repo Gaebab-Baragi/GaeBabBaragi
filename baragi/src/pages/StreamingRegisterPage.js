@@ -91,7 +91,7 @@ function StreamingRegisterPage() {
       .catch((error) => {
         // Handle errors if necessary
         Toast.fire(error.response.data,"","warning")
-        console.error("Error sending request:", error.response);
+        // console.error("Error sending request:", error.response);
         navigate('/'); // 메인 페이지로 리다이렉트
         return; // 리다이렉트 후 함수 종료
       });

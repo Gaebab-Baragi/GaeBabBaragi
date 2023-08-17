@@ -12,7 +12,7 @@ let user= createSlice({
   },
   reducers:{
     loginUser: (state, action)=>{
-      console.log(action.payload);
+      // console.log(action.payload);
       state.id= action.payload.id;
       state.username = action.payload.username;
       state.nickname = action.payload.nickname;

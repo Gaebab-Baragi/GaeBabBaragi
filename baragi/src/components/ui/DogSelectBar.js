@@ -30,7 +30,7 @@ function DogSelectBar() {
   useEffect(() => {
     axios.get(process.env.REACT_APP_BASE_URL +"/api/pet").then((res) => {
       setPets(res.data);
-      console.log('반려견 목록 가져옴')
+      // console.log('반려견 목록 가져옴')
     });
   }, []);
   

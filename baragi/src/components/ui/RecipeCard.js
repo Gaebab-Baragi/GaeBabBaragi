@@ -13,7 +13,7 @@ function RecipeCard({item}) {
   useEffect(()=>{
     axios.get(process.env.REACT_APP_BASE_URL + `/api/bookmark/${item.id}`)
     .then((res)=>{
-        console.log(`${item.id }좋아요 수`,  res.data)
+        // console.log(`${item.id }좋아요 수`,  res.data)
         setBookMarks(res.data)
     })
   },[])

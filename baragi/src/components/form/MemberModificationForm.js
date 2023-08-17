@@ -27,7 +27,7 @@ function MemberModificationForm(){
             }
         })
         .catch((res) => {
-            console.log(res);
+            // console.log(res);
             Toast.fire("회원 정보를 불러올 수 없습니다.", "", "error");
         })
     }, [])
@@ -42,7 +42,7 @@ function MemberModificationForm(){
 
     const handleNicknameDuplicateCheck = useCallback((e) => {
         e.preventDefault();
-        console.log('Nickname-Duplication-Check')
+        // console.log('Nickname-Duplication-Check')
 
         if (!validNickname) {
             Toast.fire("닉네임은 1자 이상 30자 이하여야 합니다.", "", "warning");
@@ -62,13 +62,13 @@ function MemberModificationForm(){
         })
         .then((res)=>{
         if (res.status === 200) {
-            console.log('duplication checked')
+            // console.log('duplication checked')
             Toast.fire("사용 가능한 닉네임입니다.", "", "");
             setNicknameDuplicateCheck(true);
         }
         })
         .catch((res) => {
-            console.log(res);
+            // console.log(res);
             res = res.response;
             if (res.status === 460) Toast.fire("잘못된 닉네임 형식입니다.", "", "warning");
             else if (res.status === 457) Toast.fire("이미 사용 중인 이메일입니다.", "", "warning")

@@ -23,7 +23,7 @@ export default class OpenViduVideoComponent extends Component {
 
 
     render() {
-        {console.log('2',this.props.size)}
+        // {console.log('2',this.props.size)}
         return <video className={this.props.size} autoPlay={true} ref={this.videoRef} />;
     }
 

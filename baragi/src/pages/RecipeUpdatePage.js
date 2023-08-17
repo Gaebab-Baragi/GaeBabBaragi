@@ -30,14 +30,14 @@ function RecipeUpdatePage() {
     const [recipeData, setRecipeData] = useState({}); // 수정할 레시피 정보를 저장하는 상태
   
     useEffect(()=>{
-        console.log(process.env.REACT_APP_BASE_URL + `/api/recipes/${id}`)
+        // console.log(process.env.REACT_APP_BASE_URL + `/api/recipes/${id}`)
     axios.put(process.env.REACT_APP_BASE_URL + `/api/recipes/${id}`)
     .then((res)=>{
-      console.log('레시피 제목 가져오기', res.data)
+      // console.log('레시피 제목 가져오기', res.data)
       setData(res.data)
     })
     .catch((err)=>{
-      console.log('레시피 제목 못 가져옴', err)
+      // console.log('레시피 제목 못 가져옴', err)
     })
   },[])
 

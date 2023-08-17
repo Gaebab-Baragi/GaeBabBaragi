@@ -21,13 +21,15 @@ function NaviBar() {
     useEffect(() => {
         axios.get(process.env.REACT_APP_BASE_URL +"/api/checkLogin")
         .then((res) => {
-            console.log("")
+            // console.log("")
         })
-        .catch((res) => console.log(res));
+        .catch((res) => {}
+        // console.log(res)
+        );
     }, [])
 
     useEffect(() => {
-      console.log("user Login", user);
+      // console.log("user Login", user);
       if (user.isLogin){
         axios.get(process.env.REACT_APP_BASE_URL + "/api/member")
         .then((res) => {
@@ -36,7 +38,7 @@ function NaviBar() {
           }
         })
         .catch((res) => {
-          console.log(res)
+          // console.log(res)
         });
       }
     }, [user])

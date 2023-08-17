@@ -23,7 +23,7 @@ function InputImage({handleImageUpload}) {
       reader.onloadend = () => {
         setImage(reader.result);
       };
-      console.log(file);
+      // console.log(file);
       reader.readAsDataURL(selectedImage);
     }
   };

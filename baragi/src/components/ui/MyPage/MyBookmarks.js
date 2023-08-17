@@ -31,11 +31,11 @@ function MyBookmarks({rowNum}) {
       .then((res) => {
           if (res.status === 200){
             setItems(res.data)
-            console.log(res.data);
+            // console.log(res.data);
           }
       }) 
       .catch((res) => {
-        console.log(res) 
+        // console.log(res) 
         setItems([])
       }) 
   }, []);

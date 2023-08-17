@@ -12,11 +12,11 @@ function StreamingLivePage() {
   useEffect(()=>{
     axios.get(process.env.REACT_APP_BASE_URL +`/api/recipes/${streamingInfo.recipe_id}`)
     .then((res)=>{
-      console.log(res.data)
+      // console.log(res.data)
       setRecipeData(res.data)
     })
     .catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
   },[])
 

@@ -18,20 +18,20 @@ let streamingRegister= createSlice({
     },
     setTitle: (state, action) => {
       state.title = action.payload
-      console.log('streaming title : ' + state.title)
+      // console.log('streaming title : ' + state.title)
     },
     setDescription: (state, action) =>{
       state.description = action.payload;
-      console.log('streaming description : ' + state.description)
+      // console.log('streaming description : ' + state.description)
     },
     setMaxParticipant: (state, action)=>{
       state.max_participant = action.payload
-      console.log('max participant :' + state.max_participant)
+      // console.log('max participant :' + state.max_participant)
     },
     setStartTime: (state, action) =>{
       state.start_time = action.payload;
-      console.log('start time : ' + state.start_time)
-      console.log('start time : ' + typeof(state.start_time))
+      // console.log('start time : ' + state.start_time)
+      // console.log('start time : ' + typeof(state.start_time))
     },
     setRecipeId : (state, action) => {
       // 추후 수정
@@ -47,17 +47,17 @@ let streamingRegister= createSlice({
         start_time: state.start_time,
         recipe_id: state.recipe_id,
       };
-      console.log(data)
-      console.log(typeof(state.start_time), state.start_time)
+      // console.log(data)
+      // console.log(typeof(state.start_time), state.start_time)
 
       axios.post(process.env.REACT_APP_BASE_URL +"/api/meetings", data)
         .then((response) => {
           // Handle the response if needed
-          console.log("Request successful:", response.data);
+          // console.log("Request successful:", response.data);
         })
         .catch((error) => {
           // Handle errors if necessary
-          console.error("Error sending request:", error);
+          // console.error("Error sending request:", error);
         });
     },
   }

@@ -15,11 +15,11 @@ function CardComponent({ recipe }) {
   useEffect(()=>{
     axios.get(process.env.REACT_APP_BASE_URL+`/api/bookmark/${recipe.id}`)
     .then((res)=>{
-      console.log('좋아요 수',res.data)
+      // console.log('좋아요 수',res.data)
       setLikes(res.data)
     })
     .catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
   },[])
 

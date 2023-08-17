@@ -71,7 +71,7 @@ function CardPaginationList({rowNum,filteredList}) {
   const setPage = (e) => {
     setCurrentpage(e);
   };
-  console.log('currentPost', currentPosts)
+  // console.log('currentPost', currentPosts)
   return (
     <div>
       <CardContainer>

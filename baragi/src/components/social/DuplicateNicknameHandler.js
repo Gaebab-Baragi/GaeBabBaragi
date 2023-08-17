@@ -13,12 +13,12 @@ const DuplicateNicknameHandler= () => {
         })
         .then((res) => {
             if (res.status === 200){
-                console.log(res);
+                // console.log(res);
                 navigate("/oauth2/nickname-check");
             }
         })
         .catch((res) => {
-            console.log(res);
+            // console.log(res);
         })
     }, [])
 

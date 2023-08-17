@@ -31,13 +31,13 @@ function FindPasswordForm() {
     await axios.get(process.env.REACT_APP_BASE_URL +`/api/member/find?email=${email}`)
     .then((res) => {
       if (res.status === 200){
-        console.log('code sent')
+        // console.log('code sent')
         Toast.fire("인증 코드가 발송되었습니다. 이메일을 확인해주세요.", "", "info");
         setVerificationCode(res.data);
         setEmailCodeCheck(false);
         setSendCode(true);
       }
-      console.log(res);
+      // console.log(res);
     })
     .catch((res) => {
       res = res.response;
