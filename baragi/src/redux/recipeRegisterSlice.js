@@ -70,9 +70,39 @@ let recipeRegister = createSlice({
       formData.append("recipeImage", state.recipeImage)
       // console.log(state.recipeVideo)
       formData.append('recipeVideo', state.recipeVideo === '0' ? new Blob([]) : state.recipeVideo);
+      
+      if (!state.recipeImage) {
+        Toast.fire('레시피 이미지를 입력하세요.','','fail')
+        return;
+      }
+      if (!state.title) {
+        Toast.fire('레시피 제목을 입력하세요.','','fail')
+        return;
+      }
+      if (!state.description) {
+        Toast.fire('레시피 소개를 입력하세요.','','fail')
+        return;
+      }
+      // 
+      //   Toast.fire('레시피 소개를 입력하세요.','','fail')
+      //   return;
+      // }
+      for (let i = 0; i < state.recipeIngredients.length; i++) {
+        if (!state.recipeIngredients[i]['ingredientName']) {
+          Toast.fire('재료를 등록하세요')
+          return;
+        }else if (!state.recipeIngredients[i]['amount'])
+          Toast.fire('재료를 등록하세요')
+          return;
+        }
 
-
-
+      for (let i = 0; i < state.steps.length; i++) {
+        if (!state.steps[i]['description']) {
+          Toast.fire('요리방법을 등록하세요')
+          return;
+        }
+      }
+      
 
       // state.stepImages.map((step)=>{
       //   formData.append('stepImages',step)
