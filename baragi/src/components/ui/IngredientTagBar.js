@@ -6,7 +6,8 @@ import { updateIngredients, requestFilteredRecipeList } from "../../redux/recipe
 import useDidMountEffect from "../../useDidMountEffect";
 import axios from "axios";
 
-function IngredientTagBar() {
+
+function IngredientTagBar({}) {
   const [suggestions, setSuggestions] = useState('');
   const [selected, setSelected] = useState([]);
   const [colorArray, setColorArray] = useState([]);
@@ -49,16 +50,26 @@ function IngredientTagBar() {
     (newTag) => {
       setSelected([...selected, newTag])
       //
+      // onSelectedChange([...selected, newTag]);
     },
     [selected]
   )
 
   const onDelete = useCallback(
     (tagIndex) => {
-      setSelected(selected.filter((_, i) => i !== tagIndex))
+      // setSelected(selected.filter((_, i) => i !== tagIndex))
+      const newSelected = selected.filter((_, i) => i !== tagIndex);
+      setSelected(newSelected);
+      // onSelectedChange(newSelected); // 삭제된 재료 정보를 상위 컴포넌트로 전달
     },
-    [selected]
-  )
+    [selected]  //, onSelectedChange]
+  );
+    
+    // },
+      
+    // [selected]
+    
+  // )
 
   const CustomTag = ({ classNames, tag, ...tagProps }) => {
     console.log(tag.value);

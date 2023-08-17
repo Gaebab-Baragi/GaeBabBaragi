@@ -24,7 +24,7 @@ function RecipeUpdatePage() {
         navigate('/login')
       }
     },[])
-
+    
     const { recipeId } = useParams();
     const dispatch = useDispatch();
     const [recipeData, setRecipeData] = useState({}); // 수정할 레시피 정보를 저장하는 상태
