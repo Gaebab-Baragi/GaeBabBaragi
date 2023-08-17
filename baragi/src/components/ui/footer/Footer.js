@@ -15,7 +15,7 @@ function Footer() {
               <div className="team">
                 <span className="team-name">팀장 박영서:</span>
                 <span className="team-email"></span>
-                <span className="team-github"></span>
+                <span className="team-github"><a href="https://github.com/Frog-Slayer"><ion-icon name="logo-github"></ion-icon></a></span>
               </div>
               <div className="team">
                 <span className="team-name">팀원 김선형: </span>
@@ -30,7 +30,7 @@ function Footer() {
               <div className="team">
                 <span className="team-name">팀원 박준형: </span>
                 <span className="team-email"></span>
-                <span className="team-github"></span>
+                <span className="team-github"><a href="https://github.com/juneheyoung"><ion-icon name="logo-github"></ion-icon></a></span>
               </div>
               <div className="team">
                 <span className="team-name">팀원 배찬일: </span>
