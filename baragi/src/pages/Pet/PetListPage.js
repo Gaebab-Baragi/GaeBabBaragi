@@ -13,6 +13,7 @@ import MyPageNavBar from '../../components/ui/MyPage/MyPageNavbar';
 
 function PetListPage() {
   const [petList, setPetList] = useState([])
+  const [swiperState, setSwiperState] = useState(0);
   const { idx } = useParams();
 
   useEffect(()=>{
@@ -26,7 +27,12 @@ function PetListPage() {
     .catch((err)=>{
       console.log('error : ' , err)
     })
-  },[idx])
+  },[idx, swiperState])
+
+  const rerenderSwiper = () => {
+    setSwiperState(swiperState + 1);
+    console.log(swiperState + 1);
+  }
 
   return(
     <div className="pageContainer">
@@ -56,13 +62,13 @@ function PetListPage() {
       
       {petList.map((petInfo, index)=>{
         return(
-          <SwiperSlide style={{width:"400px" }} key= {index +1}>
-            <PetRegisterForm petInfo={petInfo} idx={index + 1}/>
+          <SwiperSlide style={{width:"400px" }} key= {index}>
+            <PetRegisterForm petInfo={petInfo} idx={index} rerender={rerenderSwiper}/>
           </SwiperSlide>
         )
       })}
-        <SwiperSlide style={{width:"400px" }} key= {petList.length + 1}>
-          <PetRegisterForm idx={petList.length +1 }/>
+        <SwiperSlide style={{width:"400px" }} key= {petList.length}>
+          <PetRegisterForm idx={petList.length} rerender={rerenderSwiper}/>
         </SwiperSlide>
       </Swiper>
     </div>
