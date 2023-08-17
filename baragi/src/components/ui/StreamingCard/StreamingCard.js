@@ -117,8 +117,8 @@ function StreamingCardComponent({setUpdateList,is_private_room, meeting_id, reci
     return (
         <div className='streaming-card-wrapper'>
           <PassswordModal handlePasswordEntered={handlePasswordEntered} show={modalShow} onHide={()=>setModalShow(false)} />
-            {/* <Card className="streaming-card" onClick={()=>checkMeeting()}> */}
-            <Card className="streaming-card">
+            <Card className="streaming-card" onClick={()=>checkMeeting()}>
+            {/* <Card className="streaming-card"> */}
                 {
                     status === "ATTENDEE_WAIT" ? (
                         <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg-wait'/>
