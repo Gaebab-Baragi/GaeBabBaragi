@@ -12,6 +12,7 @@ import useDidMountEffect from "../useDidMountEffect";
 import Toast from "../components/ui/Toast";
 import Modal from "../components/ui/modal/Modal";
 import ObjectDetectionPage from "./ObjectDetectionPage";
+import { useParams } from "react-router-dom";
 
 function RecipeListPage() {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ function RecipeListPage() {
   const [popularRecipes, setPopularRecipes] = useState([])
   const [showCarousel, setShowCarousel] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const params = useParams();
   
   const handle2 = (value)=>{
     console.log(value)
@@ -42,6 +45,7 @@ function RecipeListPage() {
     .catch((err)=>{
       console.log('레시피 제목 못 가져옴', err)
     })
+    setIsModalOpen(params.open);
   },[])
 
   // 추천 레시피 가져오기

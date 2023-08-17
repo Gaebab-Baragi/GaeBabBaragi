@@ -1,3 +1,7 @@
 .pageContainer {
-    height: 100%;
+    min-height: 80vh;
+    padding-top : 5vh;
+    padding-bottom: 5vh;
+
+
 }

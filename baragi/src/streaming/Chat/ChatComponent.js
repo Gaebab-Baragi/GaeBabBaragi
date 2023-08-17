@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './ChatComponent.css'
-import { useState } from 'react';
+import QuestionAlert from '../../components/ui/QuestionAlert';
+
 export default class ChatComponent extends Component {
     constructor(props) {
         super(props);
@@ -8,6 +9,7 @@ export default class ChatComponent extends Component {
         messageList: [],
         message: '',
         chatStatus: true,
+        nameColor:null
         };
     this.chatScroll = React.createRef();
     this.handleChange = this.handleChange.bind(this);
@@ -19,9 +21,11 @@ export default class ChatComponent extends Component {
 
     componentDidMount() {
         // Delay the execution of the component initialization
+        this.setState({nameColor:this.getRandomBrightColor()})
+        console.log(this.nameColor)
         setTimeout(() => {
             this.initializeChat();
-        },5000); // Adjust the delay time as needed
+        },4000); // Adjust the delay time as needed
     }
 
     initializeChat() {
@@ -29,7 +33,14 @@ export default class ChatComponent extends Component {
         this.props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
             const data = JSON.parse(event.data);
             let messageList = this.state.messageList;
-            messageList.push({ connectionId: event.from.connectionId, nickname: data.nickname, message: data.message });
+            messageList.push({ 
+              userProfileUrl:data.userProfileUrl,
+              connectionId: event.from.connectionId, 
+              nickname: data.nickname, 
+              message: data.message,
+              nameColor:data.nameColor,
+              nowTime:data.nowTime,
+            });
             const document = window.document;
             this.setState({ messageList: messageList });
             this.scrollToBottom();
@@ -54,8 +65,19 @@ export default class ChatComponent extends Component {
     console.log(this.state.message);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, '');
+      let dt = new Date();
+      const hour = dt.getHours();
+      const min = dt.getMinutes();
+      const nowTime = hour + ':' + min
       if (message !== '' && message !== ' ') {
-          const data = { message: message, nickname: this.props.user.getNickname(), streamId: this.props.user.getStreamManager().stream.streamId };
+          const data = { 
+            userProfileUrl:this.props.userProfileUrl, 
+            message: message, 
+            nickname: this.props.user.getNickname(), 
+            streamId: this.props.user.getStreamManager().stream.streamId,
+            nameColor: this.state.nameColor ,
+            nowTime:nowTime
+          };
           this.props.user.getStreamManager().stream.session.signal({
               data: JSON.stringify(data),
               type: 'chat',
@@ -77,18 +99,27 @@ export default class ChatComponent extends Component {
     this.props.close(undefined);
   }
 
+  getRandomBrightColor() {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = '100%';
+    const lightness = `${Math.floor(Math.random() * 21) + 70}%`;
+    return `hsl(${hue}, ${saturation}, ${lightness})`;
+  }
+  
+
   render() {
 
     return (
       <div className='totalChatContainer'>
-          {/* 제목 */}
-          <div className="titleContainer">
-            <p className='chatTitleDetail'> 
-              <span style={{cursor:'pointer',color: !this.state.chatStatus ? '#ffaa00' : 'black'}} onClick={this.handleChatStatus}>레시피 보기</span> 
-              <span>|</span> 
-              <span style={{cursor:'pointer',color: this.state.chatStatus ? '#ffaa00' : 'black'}}  onClick={this.handleChatStatus}>채팅</span> 
-            </p>
-          </div>
+        {/* 제목 */}
+        <div className="titleContainer">
+          <p className='chatTitleDetail'> 
+            <span style={{cursor:'pointer',color: !this.state.chatStatus ? '#ffaa00' : 'black'}} onClick={this.handleChatStatus}>레시피 보기</span> 
+            <span>|</span> 
+            <span style={{cursor:'pointer',color: this.state.chatStatus ? '#ffaa00' : 'black'}}  onClick={this.handleChatStatus}>채팅</span> 
+          </p>
+        </div>
+
       {this.state.chatStatus 
       ?
 
@@ -104,10 +135,17 @@ export default class ChatComponent extends Component {
                         'message' + (data.connectionId !== this.props.user.getConnectionId() ? ' left' : ' right')
                     }
                   >
-                      <div className="msg-info">
-                          <span>{data.nickname} : </span>
-                          <span>{data.message}</span>
+                  <div className='msg-container'>
+                    <img className='chatProfileImg' src={data.userProfileUrl}  />
+                    <div className="msg-info">
+                      {/* {console.log(data.userProfileUrl)} */}
+                      <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
+                        <span style={{fontSize:'smaller',color:data.nameColor}}>{data.nickname} </span>
+                        <span style={{fontSize:'smaller'}} >{data.nowTime}</span>
                       </div>
+                        <span>{data.message}</span>
+                    </div>
+                  </div>
                   </div>
                   ))}
             </div>
@@ -116,13 +154,18 @@ export default class ChatComponent extends Component {
           <div id="messageInput">
             <input
               className='messageSendInput'
-              placeholder=""
+              placeholder=" 내용을 입력해주세요."
               id="chatInput"
               value={this.state.message}
               onChange={this.handleChange}
               onKeyPress={this.handlePressKey}
             />
-            <ion-icon class="messageSendButton" name="arrow-forward-circle-outline" onClick={this.sendMessage}></ion-icon>
+            <ion-icon 
+            name="arrow-redo-circle" 
+            style={{color:'#ffaa00', width:'50px'}} 
+            onClick={this.sendMessage}
+            size='large'
+            ></ion-icon>
           </div>
         </div>
       :
@@ -153,6 +196,9 @@ export default class ChatComponent extends Component {
         </div>
       </div>
       }
+      {/* <button onClick={()=>QuestionAlert()}>질문이 있어요!</button>
+      <button>너무 빨라요ㅠ</button>
+      <button></button> */}
       </div>
     );
   }

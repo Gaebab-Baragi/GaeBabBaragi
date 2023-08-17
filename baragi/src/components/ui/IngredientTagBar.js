@@ -10,6 +10,8 @@ import axios from "axios";
 function IngredientTagBar({onSelectedChange}) {
   const [suggestions, setSuggestions] = useState('');
   const [selected, setSelected] = useState([]);
+  const [colorArray, setColorArray] = useState([]);
+
   const dispatch = useDispatch();
 
   useDidMountEffect(()=>{
@@ -22,12 +24,20 @@ function IngredientTagBar({onSelectedChange}) {
 
   // 재료 리스트 받아와주기
   useEffect(()=>{
+    function getRandomBrightColor() {
+      const hue = Math.floor(Math.random() * 360);
+      const saturation = '100%';
+      const lightness = `${Math.floor(Math.random() * 21) + 70}%`;
+      return `hsl(${hue}, ${saturation}, ${lightness})`;
+    }
+  
     axios.get(process.env.REACT_APP_BASE_URL +'/api/ingredients')
     .then((res)=>{
       console.log('res data : ' ,res.data)
       const tmp = []
       res.data.ingredients.map((i)=>{
         tmp.push({value:i.id, label:i.name})
+        setColorArray(colorArray => [...colorArray, getRandomBrightColor()])
       })
       setSuggestions(tmp)
     })
@@ -61,6 +71,14 @@ function IngredientTagBar({onSelectedChange}) {
     
   // )
 
+  const CustomTag = ({ classNames, tag, ...tagProps }) => {
+    console.log(tag.value);
+    return (
+      <button type="button" className={classNames.tag} {...tagProps} style={{background : colorArray[tag.value - 1]}}>
+        <span className={classNames.tagName}>{tag.label}</span>
+      </button>
+    )
+  }
 
   return(
     <div className="ingredientSelect">
@@ -72,8 +90,7 @@ function IngredientTagBar({onSelectedChange}) {
         onDelete={onDelete}
         noOptionsText="일치하는 재료가 없습니다."
         allowBackspace={true}
-        
-
+        renderTag={CustomTag}
       />
     </div>
   );
