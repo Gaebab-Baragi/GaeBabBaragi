@@ -13,7 +13,7 @@ const CardContainer = styled.div`
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
-  margin-right:2.7%
+  margin-right:2.5%
 `;
 
 function CardPaginationList({rowNum,filteredList}) {
