@@ -10,7 +10,7 @@
 .swiper {
   width: 100%;
   position: relative;
-  overflow: visible !important;
+  overflow-y: visible !important;
   z-index: -1;
   padding-top: 1%;
   padding-bottom: 1%;
