@@ -265,8 +265,8 @@ function ObjectDetectionPage({onValueChange}) {
               <li 
               style={{
                 color: forbidden.includes(value) ? 'red' :
-                       caution.includes(value) ? 'orange':
-                       safe.includes(value)?  'green': 'black'}}
+                      caution.includes(value) ? 'orange':
+                      safe.includes(value)?  'green': 'black'}}
               key={index}>{value}</li>
             ))}
           </ul>
@@ -277,7 +277,7 @@ function ObjectDetectionPage({onValueChange}) {
             
           </p>
         )}
- 
+
         {/* <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/> */}
     </div>
     
@@ -297,9 +297,6 @@ function ObjectDetectionPage({onValueChange}) {
       </div>
     </div>
   </div>
-
-
-
   )};
 
 export default ObjectDetectionPage;
