@@ -30,15 +30,24 @@ function ObjectDetectionPage({onValueChange}) {
 
   }
 
-
-  //
-
-  //
-
   useEffect(() => {
-    getWebcam((stream => {
-      videoRef.current.srcObject = stream;
-    }));
+    let stream;
+    if (videoRef.current) {
+      getWebcam((stream => {
+        videoRef.current.srcObject = stream;
+        stream.oninactive = () => {
+          console.log('Camera stream inactive');
+        };
+      }));
+    }return () => {
+      // Clean up by stopping the camera stream when unmounting
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => {
+          track.stop();
+        });
+      }
+    };
   }, []);
 
   const getWebcam = (callback) => {
@@ -54,6 +63,29 @@ function ObjectDetectionPage({onValueChange}) {
       return undefined;
     }
   };
+  //
+
+  //
+
+  // useEffect(() => {
+  //   getWebcam((stream => {
+  //     videoRef.current.srcObject = stream;
+  //   }));
+  // }, []);
+
+  // const getWebcam = (callback) => {
+  //   try {
+  //     const constraints = {
+  //       'video': true,
+  //       'audio': false
+  //     }
+  //     navigator.mediaDevices.getUserMedia(constraints)
+  //       .then(callback);
+  //   } catch (err) {
+  //     console.log(err);
+  //     return undefined;
+  //   }
+  // };
 
   function GoToCamera(target) { // 다시 촬영
     dispatch(setIngredients(''))
@@ -150,14 +182,17 @@ function ObjectDetectionPage({onValueChange}) {
             console.error('Error uploading image:', error);
           });
     // ... rest of the code
-  }, 'image/jpeg',1);     
-  const s = videoRef.current.srcObject;
-  s.getTracks().forEach((track) => {
-    track.stop();
-  })
+  }, 'image/jpeg',1);
+  
+  
+//   const s = videoRef.current.srcObject;
+//   s.getTracks().forEach((track) => {
+//     track.stop();
+//   })
 };
 
   return (
+    
   <div className = 'grid-container'>
     <div className='item-1'></div>
     <div className = 'item-6'>
