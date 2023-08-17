@@ -1,9 +1,9 @@
 import Swal from "sweetalert2";
 
-const QuestionAlert=()=>{
+const TooHardAlert=()=>{
   return Swal.fire({
-    title: '질문이 있어요!', 
-    icon:'question',     
+    title: '너무 어려워요!', 
+    icon:'error',     
     showClass: {
       popup: 'animate__animated animate__fadeInDown'
     },
@@ -11,8 +11,8 @@ const QuestionAlert=()=>{
       popup: 'animate__animated animate__fadeOutUp'
     },
     showConfirmButton: false,
-    timer: 3000,
+    timer: 2500,
     });                   
   };
 
-  export default QuestionAlert;
+  export default TooHardAlert;
