@@ -58,9 +58,9 @@ let recipeRegister = createSlice({
 
       for (let i = 0; i < state.stepImages.length; i++) {
 
-        if(state.stepImages[i] === defaultImage ) {formData.append("stepimages", new Blob([state.stepImages[i]]))
+        if(state.stepImages[i] === defaultImage ) {formData.append("stepImages", new Blob([state.stepImages[i]]))
         }else{
-          formData.append('stepimages',new Blob([]))
+          formData.append('stepImages', new Blob([]))
         }
         // console.log(state.stepImages[i])
       }
@@ -142,7 +142,6 @@ let recipeRegister = createSlice({
           return selectedImage;
         }
         return image;
-      
       });
       //
 
@@ -164,6 +163,7 @@ let recipeRegister = createSlice({
         (_, index) => index !== deletestep - 1
       );
       state.stepImages = updatedStepImages; 
+      console.log(state.stepImages)
     },
 
     
