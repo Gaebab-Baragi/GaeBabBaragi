@@ -58,7 +58,7 @@ let recipeRegister = createSlice({
 
       for (let i = 0; i < state.stepImages.length; i++) {
 
-        if(state.stepImages[i] === defaultImage ) {formData.append("stepImages", new Blob([state.stepImages[i]]))
+        if(state.stepImages[i] !== defaultImage ) {formData.append("stepImages", new Blob([state.stepImages[i]]))
         }else{
           formData.append('stepImages', new Blob([]))
         }
