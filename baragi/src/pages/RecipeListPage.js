@@ -30,20 +30,20 @@ function RecipeListPage() {
   const params = useParams();
   
   const handle2 = (value)=>{
-    console.log(value)
+    // console.log(value)
     setIsModalOpen(false)
   }
   
   // 레시피 제목 가져오기
   useEffect(()=>{
-    console.log(process.env.REACT_APP_BASE_URL + '/api/recipes/recipestitle')
+    // console.log(process.env.REACT_APP_BASE_URL + '/api/recipes/recipestitle')
     axios.get(process.env.REACT_APP_BASE_URL + '/api/recipes/recipestitle')
     .then((res)=>{
-      console.log('레시피 제목 가져오기', res.data)
+      // console.log('레시피 제목 가져오기', res.data)
       setRecipeTitleList(res.data)
     })
     .catch((err)=>{
-      console.log('레시피 제목 못 가져옴', err)
+      // console.log('레시피 제목 못 가져옴', err)
     })
     setIsModalOpen(params.open);
   },[])
@@ -52,19 +52,19 @@ function RecipeListPage() {
   useEffect(()=>{
     axios.get(process.env.REACT_APP_BASE_URL + '/api/recipes/popular')
     .then((res)=>{
-      console.log('인기 레시피 가져옴', res.data.popularRecipes)
+      // console.log('인기 레시피 가져옴', res.data.popularRecipes)
       setPopularRecipes(res.data.popularRecipes)
       setShowCarousel(true)
 
     })
     .catch((err)=>{
-      console.log('인기 레시피 못 가져옴', err)
+      // console.log('인기 레시피 못 가져옴', err)
     })
   },[])
   
   // 검색에 변화 있을 떄 필터링된 레시피 가져오기
   useDidMountEffect(()=>{
-    console.log('redux에서 변화가 일어남', title, ingredients, dogs)
+    // console.log('redux에서 변화가 일어남', title, ingredients, dogs)
     let tempIngredient = ingredients;
     if (ingredients.length === 0) {
       tempIngredient = null;
@@ -78,15 +78,15 @@ function RecipeListPage() {
       ingredients: tempIngredient,
       pets: tempDog
     }
-    console.log('보내는 데이터임',data)
+    // console.log('보내는 데이터임',data)
     // axios 요청 보내서 레시피 저장하기
     axios.post(process.env.REACT_APP_BASE_URL +'/api/recipes/searchlike', data)
       .then((res)=>{
-        console.log('필터링 된 목록 가져오기 성공 : ' , res.data.recipes)
+        // console.log('필터링 된 목록 가져오기 성공 : ' , res.data.recipes)
         setFilteredList(res.data.recipes)
       })
       .catch((err)=>{
-        console.log('필터링 데이터 가져오기 실패')
+        // console.log('필터링 데이터 가져오기 실패')
       })
 
     setFiltered(true)

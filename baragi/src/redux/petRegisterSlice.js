@@ -12,11 +12,11 @@ let petRegister= createSlice({
   reducers:{
     setPetName: (state, action)=>{
       state.name = action.payload
-      console.log('redux pet name : ', state.name)
+      // console.log('redux pet name : ', state.name)
     },
     setPetImage: (state, action)=>{
       state.petImage = action.payload
-      console.log('redux image',state.petImage)
+      // console.log('redux image',state.petImage)
     },
     setForbiddenIngredients: (state, action) =>{
       let tmp = []
@@ -38,11 +38,11 @@ let petRegister= createSlice({
         new Blob([JSON.stringify(datas)], { type: "application/json" })
       );
       for (let key of formData.keys()) {
-        console.log(key);
+        // console.log(key);
       }
 
       for (let value of formData.values()) {
-        console.log(value);
+        // console.log(value);
       }
 
       axios
@@ -50,10 +50,10 @@ let petRegister= createSlice({
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
-          console.log("axios success :", res.data);
+          // console.log("axios success :", res.data);
         })
         .catch((err) => {
-          console.log("error : ", err);
+          // console.log("error : ", err);
         });
     }
   }

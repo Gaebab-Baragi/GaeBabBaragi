@@ -35,8 +35,8 @@ let recipeRegister = createSlice({
       // console.log(state.recipeIngredients);
       // console.log(state.member.id);
       // axios 요청 보내서 레시피 저장하기
-      console.log('1:',state.title, state.description, state.steps, state.recipeIngredients)
-      console.log('2:', state.recipeImage)
+      // console.log('1:',state.title, state.description, state.steps, state.recipeIngredients)
+      // console.log('2:', state.recipeImage)
 
       const formData = new FormData();
       const data = {
@@ -53,12 +53,11 @@ let recipeRegister = createSlice({
         "stepImages",
         new Blob([state.stepImages], { type: "multipart/form-data" })
       );
-      console.log('file',state.recipeImage)
+      // console.log('file',state.recipeImage)
       formData.append("recipeImage", state.recipeImage)
-      console.log(state.recipeVideo)
+      // console.log(state.recipeVideo)
       formData.append('recipeVideo', state.recipeVideo === '0' ? new Blob([]) : state.recipeVideo);
- 
-      console.log('stepImages redux : ', state.stepImages)
+
 
 
 
@@ -78,7 +77,7 @@ let recipeRegister = createSlice({
       })
       
         .then((res) => {
-          console.log("Request successful : ", res);
+          // console.log("Request successful : ", res);
           Toast.fire('레시피 등록이 완료되었습니다.','','success')
         })
         
@@ -88,44 +87,42 @@ let recipeRegister = createSlice({
         .catch((err) => {
 
           // alert('실패하였습니다.')
-          console.log("Error sending request : ", err);
+          // console.log("Error sending request : ", err);
         });
     },
 
     updateRecipeInfor : (state, action) => {
       state.title = action.payload[0];
       state.description = action.payload[1];
-      console.log('레시피 이름 : ', state.title ,' 레시피 소개 : ', state.description)
+      // console.log('레시피 이름 : ', state.title ,' 레시피 소개 : ', state.description)
     },
     updateRecipeMaterial : (state, action) =>{
-      console.log('재료 redux: ',action.payload)
+      // console.log('재료 redux: ',action.payload)
       state.recipeIngredients = action.payload //['ingredientName']
-      console.log('inputMats 변경되었습니다:', state.recipeIngredients);
+      // console.log('inputMats 변경되었습니다:', state.recipeIngredients);
     },
     updateStep : (state,action) =>{
       state.steps = action.payload
-      console.log('step 변경됨', state.steps)
+      // console.log('step 변경됨', state.steps)
     },
     updateImage : (state,action) =>{
       state.recipeImage = action.payload
-      console.log('레시피이미지',state.recipeImage)
+      // console.log('레시피이미지',state.recipeImage)
     },
 
     updateVideo : (state,action) =>{
       state.recipeVideo = action.payload
-      console.log('비디오', state.recipeVideo) 
+      // console.log('비디오', state.recipeVideo) 
     },
     addStepImage : (state,action) =>{
-
-      console.log(defaultImage)
-      state.stepImages.push(defaultImage)
-      console.log('+버튼으로 ',state.stepImages)
+      state.stepImages.push('0')
+      // console.log('+버튼으로 ',state.stepImages)
 
     },
     updateStepImage : (state, action) =>{
-      console.log(action.payload)
+      // console.log(action.payload)
       const { step, selectedImage } = action.payload;
-      console.log('스탭플러스버튼',state.stepImages)
+      // console.log('스탭플러스버튼',state.stepImages)
       //
       state.stepImages = state.stepImages.map((image, index) => {
         if (index === step-1) {
@@ -138,16 +135,16 @@ let recipeRegister = createSlice({
    
        // 다시 수정하고 +버튼에서 리스트 추가로 아무거나 하나 넣어주는거?
       // state.stepImages = action.payload // 원래는 여기다가 slice 이용해서 추가하는기능
-      console.log('스탭 이미지 리스트', state.stepImages)
+      // console.log('스탭 이미지 리스트', state.stepImages)
       state.stepImages.forEach((image, index) => {
-        console.log(`인덱스 ${index}: ${image}`);
+        // console.log(`인덱스 ${index}: ${image}`);
       });
       state.stepImages = [...state.stepImages];
     },
     deletedStepImage : (state,action) =>{  
       const deletestep = action.payload
       state.stepImages.splice(deletestep-1,1) // 마찬가지로 삭제 요망
-      console.log('-버튼',state.stepImages)
+      // console.log('-버튼',state.stepImages)
     },
 
     

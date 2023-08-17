@@ -12,10 +12,10 @@ let objectDetect= createSlice({
     setIngredients: (state, action)=>{
       state.Ingredients = action.payload
       state.Ingredients = Object.values(state.Ingredients)
-      console.log('redux Ingredients name : ',state.Ingredients)
+      // console.log('redux Ingredients name : ',state.Ingredients)
     },
     AddIngredients: (state, action)=>{
-        console.log('추가됨 :' , action.payload)
+        // console.log('추가됨 :' , action.payload)
         state.Ingredients.push(action.payload)
     },
 

@@ -28,7 +28,7 @@ function InputCookstep({ step, description, onCookstepChange, onDelete , onStepI
       };
       reader.readAsDataURL(selectedImage);
     }
-    console.log('handlestep임', step,selectedImage)
+    // console.log('handlestep임', step,selectedImage)
     const context = {
       'step' : step,
       'selectedImage' : selectedImage

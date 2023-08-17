@@ -9,14 +9,14 @@ function PetListForm({ pet }) {
   const [forbidden, setForbidden] = useState();
 
   useEffect(()=>{
-    console.log('pet is ', pet)
+    // console.log('pet is ', pet)
     setData(pet)
     const tmp = []
     pet.forbiddens.map((i)=>{
       tmp.push(i.ingredientName)
     })
     setForbidden(tmp)
-    console.log('tmp : ', tmp)
+    // console.log('tmp : ', tmp)
   },[])
 
 

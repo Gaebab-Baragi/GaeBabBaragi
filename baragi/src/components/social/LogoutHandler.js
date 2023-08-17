@@ -21,7 +21,7 @@ const LogoutHandler= () => {
             }
         )
         .then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === 200){
                 delete axios.defaults.headers.common['Authorization'];
                 window.sessionStorage.clear();
@@ -31,7 +31,7 @@ const LogoutHandler= () => {
             }
         })
         .catch((res) => {
-            console.log(res);
+            // console.log(res);
         })
     }, [])
 
