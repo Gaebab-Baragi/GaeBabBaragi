@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import streamingInfo, { setStreamingInfo } from '../../../redux/streamingInfoSlice';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -9,9 +9,10 @@ import Toast from '../Toast';
 import PassswordModal from './PasswordModal';
 import useDidMountEffect from '../../../useDidMountEffect';
 
-function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
+function StreamingCardComponent({setUpdateList,is_private_room, meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector(state=>state.user)
     const [modalShow, setModalShow] = useState(false);
     const [enteredPassword, setEnteredPassword] = useState(null);
 
@@ -92,19 +93,32 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
             })
         }
         
-
     }
     
     useEffect(()=>{
         console.log(meeting_id)
     },[])
 
-    
-    
+    // 미팅 삭제하기
+    function deleteMeeting (e) {
+        e.stopPropagation();
+        console.log('삭제하기!!!')
+        axios.delete(process.env.REACT_APP_BASE_URL +`/api/meetings/${meeting_id}`)
+        .then((res)=>{
+            console.log(res.data)
+            Toast.fire('미팅이 삭제되었습니다.','','success')
+            setUpdateList(true)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+
     return (
         <div className='streaming-card-wrapper'>
           <PassswordModal handlePasswordEntered={handlePasswordEntered} show={modalShow} onHide={()=>setModalShow(false)} />
-            <Card className="streaming-card" onClick={()=>checkMeeting()}>
+            {/* <Card className="streaming-card" onClick={()=>checkMeeting()}> */}
+            <Card className="streaming-card">
                 {
                     status === "ATTENDEE_WAIT" ? (
                         <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg-wait'/>
@@ -128,6 +142,7 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
                         </Card.ImgOverlay>
                     )
                 }
+
                     {
                         status === "ATTENDEE_WAIT" && (
                             <Card.ImgOverlay className='overlay-participants'>
@@ -139,6 +154,13 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
                             </Card.ImgOverlay>
                         )
                     }
+                    {/* { user.nickname === host_nickname &&
+                        <Card.ImgOverlay className='overlay-delete'>
+                            <div className='user-delete-stream'>
+                                <p onClick={()=>deleteMeeting()}>삭제</p>
+                            </div>
+                        </Card.ImgOverlay>
+                    } */}
                     {
                         status == 'ATTENDEE_WAIT' ? (
                             <Card.ImgOverlay className='overlay-wait'>
@@ -176,6 +198,12 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
                     </p>
                     <p className='streaming-host-nickname-and-start-time'>{host_nickname} • 예약 시간:{start_time}</p>
                 </div>
+            {user.nickname === host_nickname &&
+            <div className='delete-streaming-container'>
+                <button className='delete-streaming' onClick={(e)=>deleteMeeting(e)}>삭제하기</button>
+                
+            </div>
+            }
             </div>
         </div>
     );
