@@ -220,7 +220,17 @@ const RecipeDetailPage=()=>{
 
     //댓글 등록 끝
 
-
+    const handleDeleteRecipe=async(recipeId)=>{
+        try{
+            const response = await axios.delete(
+                `${process.env.REACT_APP_BASE_URL}/api/recipes/${recipeId}`
+            );
+            Toast.fire("해당 레시피를 삭제하였습니다.","","success");
+            navigate("/");
+        }catch(error){
+            console.log('에러발생',error);
+        }
+    };
 
     //댓글 삭제 시작
     const handleDeleteComment = async (commentId) => {
@@ -259,6 +269,9 @@ const RecipeDetailPage=()=>{
             <div className='detailForm'>
                 <h1 className='recipeTitle'>{data.title}</h1>
                 <div className="hit">
+                    {isLoggedIn && data.member.memberId === userId&& (
+                    <div className='recipe-delete' onClick={() => handleDeleteRecipe(id)}>삭제하기</div>
+                    )}
                     <div className="icon-container">
                         {/* 로그인 상태와 좋아요 여부에 따라 아이콘 표시 */}
                         {isLoggedIn && isLiked ? (
@@ -276,7 +289,7 @@ const RecipeDetailPage=()=>{
                 </div>
                 <div className='imgForm'>
                     <img className='imgsize' src={data.imgUrl}></img>
-                    <div>
+                    <div className='writer-profile-img'>
                         <button onClick={()=>goToWriterRecipe(data.member.memberId)}>
                         {/* onClick={() => handleDeleteComment(comment.id)} */}
                             <img className='profileImg' src={data.member.memberImage}></img>
@@ -286,6 +299,7 @@ const RecipeDetailPage=()=>{
                         {data.member.nickname}
                     </div>
                 </div>
+                
                 <div className='descriptionForm'>
                     {data.description}
                 </div>
