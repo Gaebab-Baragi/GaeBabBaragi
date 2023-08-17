@@ -140,6 +140,7 @@ function App() {
         {/* 레시피 */}
         <Route path='/recipe-register/' element={<RecipeRegisterPage/>}></Route>
         <Route path='/recipe-list' element={<RecipeListPage/>}></Route>
+        <Route path='/recipe-list/:open' element={<RecipeListPage/>}></Route>
         <Route path='/recipe-detail/:id' element={<RecipeDetailPage/>}></Route>
         <Route path='/recipe-update/:id' element={<RecipeUpdatePage/>}></Route>
         <Route path='/recipe-writer/:id' element={<RecipeWriterPage/>}></Route>
@@ -162,7 +163,6 @@ function App() {
         <Route path='/oauth2/nickname-check' element={<DuplicateNicknameCheckPage></DuplicateNicknameCheckPage>}></Route>
         
         <Route path="*" element={ <div>없는페이지임</div> } />
-        <Route path='/object-detect' element={<ObjectDetectionPage></ObjectDetectionPage>}></Route>
       </Routes>
 
       {showNavAndFooter && <Footer />}

@@ -52,7 +52,7 @@ function HeroSection() {
                             <div className="col-xl-3 col-md-6">
                                 <div className="icon-box">
                                     <div className="icon"><ion-icon name="camera-outline"></ion-icon></div>
-                                    <h4 className="title"><a href="/object-detect" className="stretched-link"><span>어떤 재료를 활용할 수 있을까?<br/></span>재료 확인</a></h4>
+                                    <h4 className="title"><a href="/recipe-list/open?true" className="stretched-link"><span>어떤 재료를 활용할 수 있을까?<br/></span>재료 확인</a></h4>
                                 </div>
                             </div>{/* End Icon Box */}
 

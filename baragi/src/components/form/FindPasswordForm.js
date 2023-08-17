@@ -25,10 +25,10 @@ function FindPasswordForm() {
     }
   }, [code]);
 
-  const handleSendCode = useCallback((e) => {
+  const handleSendCode = useCallback(async (e) => {
     e.preventDefault()
 
-    axios.get(process.env.REACT_APP_BASE_URL +`/api/member/find?email=${email}`)
+    await axios.get(process.env.REACT_APP_BASE_URL +`/api/member/find?email=${email}`)
     .then((res) => {
       if (res.status === 200){
         console.log('code sent')
@@ -46,12 +46,12 @@ function FindPasswordForm() {
     })
   }, [email]);
     
-  const handleSubmit = (e) => { 
+  const handleSubmit = async (e) => { 
     e.preventDefault();
     if (!emailCodecheck) {
       Toast.fire("이메일 인증을 완료해주세요", "", "error");
     } else {
-      axios.post(process.env.REACT_APP_BASE_URL +"/api/member/reset-password", { email },
+      await axios.post(process.env.REACT_APP_BASE_URL +"/api/member/reset-password", { email },
         {
           headers: {"Content-Type": `application/json; charset= UTF-8`}
         })

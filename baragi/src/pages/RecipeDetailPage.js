@@ -288,7 +288,7 @@ const RecipeDetailPage=()=>{
                 </div>
                 <div className='imgForm'>
                     <img className='imgsize' src={data.imgUrl}></img>
-                    <div>
+                    <div className='writer-profile-img'>
                         <button onClick={()=>goToWriterRecipe(data.member.memberId)}>
                         {/* onClick={() => handleDeleteComment(comment.id)} */}
                             <img className='profileImg' src={data.member.memberImage}></img>
@@ -298,6 +298,7 @@ const RecipeDetailPage=()=>{
                         {data.member.nickname}
                     </div>
                 </div>
+                
                 <div className='descriptionForm'>
                     {data.description}
                 </div>

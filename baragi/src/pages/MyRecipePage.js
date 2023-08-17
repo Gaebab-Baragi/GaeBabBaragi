@@ -11,7 +11,7 @@ function MyRecipePage() {
   const [currentShow, setCurrentShow] = useState('mystreamings')
 
     return (
-      <>
+      <div className="pageContainer">
         <MyPageNavbar sel={3}> </MyPageNavbar>
 
         <div className="myRecipePageContainer" >
@@ -41,7 +41,7 @@ function MyRecipePage() {
           }
 
         </div>
-      </>
+      </div>
       );
     }
 export default MyRecipePage;
