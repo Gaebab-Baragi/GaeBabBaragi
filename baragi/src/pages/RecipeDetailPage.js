@@ -11,6 +11,7 @@ import axios from 'axios';
 import Confirm from '../../src/components/ui/Confirm';
 import Toast from '../../src/components/ui/Toast';
 import CommentAlert from '../../src/components/ui/CommentAlert';
+import Loading from '../components/ui/Loading.js'
 
 //링크 복사 함수
 const copyUrlToClipboard = () => {
@@ -260,7 +261,7 @@ const RecipeDetailPage=()=>{
     //댓글 쓰기 이벤트 끝
     
     if(!data){
-        return <div> Loading ...</div>;
+        return <div> <Loading/></div>;
     }
     return (
     <div className='recipe-container'>
