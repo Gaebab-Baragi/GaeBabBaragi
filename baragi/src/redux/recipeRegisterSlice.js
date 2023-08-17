@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Toast from "../components/ui/Toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useHistory } from "react-router-dom";
 import defaultImage from './default.PNG'
 
 
@@ -10,6 +10,7 @@ let recipeRegister = createSlice({
   
   name: "recipeRegister",
   initialState: {
+    redirectToRecipeList : false,
     title: "",
     description: "",
     steps: [
@@ -122,6 +123,7 @@ let recipeRegister = createSlice({
         .then((res) => {
           // console.log("Request successful : ", res);
           Toast.fire('레시피 등록이 완료되었습니다.','','success')
+          state.redirectToRecipeList =true;
         })
         
           
@@ -195,11 +197,14 @@ let recipeRegister = createSlice({
       state.stepImages = updatedStepImages; 
       console.log(state.stepImages)
     },
+    redirectToRecipeListComplete: (state) => {
+      state.redirectToRecipeList = false; // 값을 다시 false로 변경
+    },
 
     
   },
 });
 
-export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateImage, updateStepImage, deletedStepImage, updateVideo, addStepImage} = recipeRegister.actions;
+export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateImage, updateStepImage, deletedStepImage, updateVideo, addStepImage,redirectToRecipeListComplete} = recipeRegister.actions;
 
 export default recipeRegister;
