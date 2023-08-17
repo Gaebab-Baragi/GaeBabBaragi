@@ -256,6 +256,9 @@ const RecipeDetailPage=()=>{
     const goToWriterRecipe=(memberId)=>{
         navigate(`/recipe-writer/${memberId}`);
     }
+    const goToStreaming=(meetingId)=>{
+        navigate();
+    }
 
 
     //댓글 쓰기 이벤트 끝
@@ -417,7 +420,7 @@ const RecipeDetailPage=()=>{
             <ul className='meeting-list'>
                 {meetings.map((meeting, index) => (
                     <li key={index}>
-                        <div>
+                        <div onClick={() => goToStreaming(meeting.id)}>
                             <img className='floatingDiv-image' src={meeting.recipe_image_url}></img>
                         </div>
                         <div className='floatingDiv-meeting-info'>
