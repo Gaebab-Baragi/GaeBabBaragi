@@ -35,12 +35,91 @@
     flex: 0 0 8.33333%; /* 1칼럼 크기 (1/12) */
     max-width: 8.33333%; /* 최대 너비 설정 */
   }
-  .item-3{
-    flex: 0 0 25%; /* 4칼럼 크기 (4/12) */
-    max-width: 25%; /* 최대 너비 설정 */
+  .item-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
     background-color: #f9f9f9;
+    border-radius: 15px;
+    position: relative; /* 부모 div에 대해 상대적인 위치 지정 */
   }
   .item-2{
     flex : 0 0 12.25%;
     max-width : 12.25%;
   }
+
+
+.objectdetection-video{
+  margin-left:15%;
+  margin-right:15%;
+  width:70%;
+}
+
+
+.objectdetection-h2{
+  margin-top:5%;
+  margin-bottom:5%;
+}
+.objectdetection-icon{
+  display: flex;
+  justify-content: center; /* Horizontally center items */
+  align-items: center; /* Vertically center items */
+  margin-top:3%;
+}
+.camera-icon{
+  display: flex;
+  gap:3px;
+  margin-right:5%;
+}
+.camera-icon span{
+  font-size:20px;
+}
+.pick-picture label {
+  display: flex;
+  gap: 2px; /* Adjust the gap between icon and text */
+  justify-content: center; /* Horizontally center content */
+}
+.pick-picture span{
+  font-size:20px;
+}
+.objectdetection-help{
+  align-items: center;
+  display: flex;
+  gap:5px;
+  margin-left:5%;
+  margin-top:3%;
+  font-size:18px;
+}
+.objectdetection-help span{
+  font-weight: 500;
+}
+
+.obejectection-help-list {
+  position: absolute;
+  bottom: 10px; /* 하단에 붙이기 */
+  left: 50%; /* 좌측 가운데에 위치하도록 설정 */
+  transform: translateX(-50%); /* 좌우 가운데 정렬 */
+  width: 80%;
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color: #ffffff;
+  font-size: 13px;
+  font-weight: 300;
+}
+.objectdetection-help-list-content{
+  font-size: 14px;
+  font-weight: 400;
+  margin-top:3%;
+  margin-left:3%;
+}
+.objectdetection-help-list-content li{
+  margin-top:2%;
+}
+.ingredient-btn button{
+  width:100px;
+  height:40px;
+  border-radius: 10px;
+  background-color: #fa0;
+  color:#ffffff;
+  border:none;
+  font-weight: 500;
+}

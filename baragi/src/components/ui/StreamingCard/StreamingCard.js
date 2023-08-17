@@ -57,40 +57,46 @@ function StreamingCardComponent({setUpdateList,is_private_room, meeting_id, reci
     }
 
     function checkMeeting() {
-        console.log('PRIVATE ROOM :', is_private_room)
-        // 비밀번호 요청하기 + 모달창 띄우기
-        if (is_private_room) {
-            setModalShow(true);
+        if (!user.id) {
+            Toast.fire('로그인 후 입장해주세요','','info')
+            navigate('/login')
         } else {
 
-            // 비밀번호 없이 미팅 참여
-            axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}`)
-            .then((res)=>{
-              console.log('request success : ', res.data);
-              const data = {
-                meeting_id,
-                title,
-                recipe_id,
-                host_nickname,
-                max_participant,
-                start_time,
-                recipe_image_url,    
-                }
-                dispatch(setStreamingInfo(data))
-                axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
+            console.log('PRIVATE ROOM :', is_private_room)
+            // 비밀번호 요청하기 + 모달창 띄우기
+            if (is_private_room) {
+                setModalShow(true);
+            } else {
+    
+                // 비밀번호 없이 미팅 참여
+                axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}`)
                 .then((res)=>{
-                    console.log('미팅 참여 성공 ')
-                    navigate('/streaming-live')
+                  console.log('request success : ', res.data);
+                  const data = {
+                    meeting_id,
+                    title,
+                    recipe_id,
+                    host_nickname,
+                    max_participant,
+                    start_time,
+                    recipe_image_url,    
+                    }
+                    dispatch(setStreamingInfo(data))
+                    axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
+                    .then((res)=>{
+                        console.log('미팅 참여 성공 ')
+                        navigate('/streaming-live')
+                    })
+                    .catch((err)=>{
+                      Toast.fire(err.response.data.message,"","warning")
+                      console.log('error after join accepted', err.message)
+                    })
                 })
                 .catch((err)=>{
-                  Toast.fire(err.response.data.message,"","warning")
-                  console.log('error after join accepted', err.message)
+                    Toast.fire(err.response.data.message, "", "warning")
+                    console.log('error occured' , err.response.data.message)
                 })
-            })
-            .catch((err)=>{
-                Toast.fire(err.response.data.message, "", "warning")
-                console.log('error occured' , err.response.data.message)
-            })
+            }
         }
         
     }
