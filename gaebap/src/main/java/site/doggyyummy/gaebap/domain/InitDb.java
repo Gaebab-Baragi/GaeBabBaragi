@@ -264,26 +264,26 @@ public class InitDb {
             em.persist(recipeIngredient41);
             em.persist(recipeIngredient42);
             em.persist(recipeIngredient43);
-            Step step41=createStep(recipe1,1L,"단호박을 깨끗하게 씻고 씨를 다 파내 준 다음 썰어줍니다."
+            Step step41=createStep(recipe4,1L,"단호박을 깨끗하게 씻고 씨를 다 파내 준 다음 썰어줍니다."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62903ee6133cd.jpeg");
-            Step step42=createStep(recipe1,2L,"전자레인지에 7-8분 돌려 삶아주세요."
+            Step step42=createStep(recipe4,2L,"전자레인지에 7-8분 돌려 삶아주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62903efcd0954.jpeg");
-            Step step43=createStep(recipe1,3L,"호박 껍질을 숟가락을 사용해 분리해주세요."
+            Step step43=createStep(recipe4,3L,"호박 껍질을 숟가락을 사용해 분리해주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62904dbe46dc3.jpeg");
-            Step step44=createStep(recipe1,4L,"호박을 으깬 후 계란 노른자, 쌀가루를 넣고 반죽을 만들어주세요."
+            Step step44=createStep(recipe4,4L,"호박을 으깬 후 계란 노른자, 쌀가루를 넣고 반죽을 만들어주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62904e7a7aeda.jpeg");
-            Step step45=createStep(recipe1,5L,"식감을 위해 당근을 썰어 넣어주세요."
+            Step step45=createStep(recipe4,5L,"식감을 위해 당근을 썰어 넣어주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62904e8766a41.jpeg");
-            Step step47=createStep(recipe1,7L,"반죽을 30분 정도 냉장고에 숙성해 주세요."
+            Step step47=createStep(recipe4,6L,"반죽을 30분 정도 냉장고에 숙성해 주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62904eca69dae.jpeg");
-            Step step48=createStep(recipe1,8L,"반죽을 밀대로 펴주세요."
+            Step step48=createStep(recipe4,7L,"반죽을 밀대로 펴주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62904eda8dec4.jpeg");
-            Step step49=createStep(recipe1,9L,"쿠키틀로 모양을 내 반죽을 잘라주세요."
+            Step step49=createStep(recipe4,8L,"쿠키틀로 모양을 내 반죽을 잘라주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62904ef37ff47.png");
-            Step step50=createStep(recipe1,10L,"종이 호일을 깔고 프라이팬에 약불로 처음 8-10분, 뒤집어서 4-5분 구워주세요."
+            Step step50=createStep(recipe4,9L,"종이 호일을 깔고 프라이팬에 약불로 처음 8-10분, 뒤집어서 4-5분 구워주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62904efc33f04.jpeg");
-            Step step51=createStep(recipe1,11L,"급여해주세요."
-                    ,"");
+            Step step51=createStep(recipe4,10L,"급여해주세요."
+                    ,"https://recipe.bom.co.kr/uploads/posts/images/20220527/62904efc33f04.jpeg");
             em.persist(step41);
             em.persist(step42);
             em.persist(step43);
@@ -308,22 +308,22 @@ public class InitDb {
             em.persist(recipeIngredient53);
             em.persist(recipeIngredient54);
 
-            Step step57=createStep(recipe5,1L,"달걀 흰자와 노른자를 분리해주세요."
+            Step step52=createStep(recipe5,1L,"달걀 흰자와 노른자를 분리해주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220411/62538c8a11eb4.png");
-            Step step52=createStep(recipe5,2L,"그릇에 달걀 노른자를 붓고 마요네즈를 넣어주세요."
+            Step step53=createStep(recipe5,2L,"그릇에 달걀 노른자를 붓고 마요네즈를 넣어주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220411/62538c8e42378.png");
-            Step step53=createStep(recipe5,3L,"거품기로 잘 풀어주세요."
+            Step step54=createStep(recipe5,3L,"거품기로 잘 풀어주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220411/62538c991fb32.png");
-            Step step54=createStep(recipe5,4L,"염소 우유와 플레인 요거트를 조금씩 넣으면서 풀어주세요."
+            Step step55=createStep(recipe5,4L,"염소 우유와 플레인 요거트를 조금씩 넣으면서 풀어주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220411/62538ca44aee4.png");
-            Step step55=createStep(recipe5,5L,"그릇이나 접시에 부어 급여해주세요."
+            Step step56=createStep(recipe5,5L,"그릇이나 접시에 부어 급여해주세요."
                     ,"https://recipe.bom.co.kr/uploads/posts/images/20220411/62538cac140ab.png");
 
             em.persist(step52);
             em.persist(step53);
             em.persist(step54);
             em.persist(step55);
-            em.persist(step57);
+            em.persist(step56);
 
             Recipe recipe6=createRecipe("섬유질과 단백질이 풍부한 - 소고기와 배 정식",member1,"섬유질과 비타민, 미네랄과 산화방지제 함량이 높고 단백질이 풍부한 재료들로 만들어보는 소고기와 배 정식!",
                     "https://recipe.bom.co.kr/uploads/posts/images/20220407/624e68ed396c8.jpeg",LocalDateTime.now());
@@ -524,7 +524,7 @@ public class InitDb {
             em.persist(step108);
             em.persist(step109);
 
-            Recipe recipe11=createRecipe("닭가슴살 말랭이",member1,"우리 댕댕이들이 제일 좋아하는 닭가슴살 간식! 집에서 건조기 하나로 쉽게 만들어봐요!",
+            Recipe recipe11=createRecipe("닭가슴살 말랭이",member3,"우리 댕댕이들이 제일 좋아하는 닭가슴살 간식! 집에서 건조기 하나로 쉽게 만들어봐요!",
                     "https://recipe.bom.co.kr/uploads/posts/images/20220331/6245142c97d58.png",LocalDateTime.now());
             em.persist(recipe11);
             RecipeIngredient recipeIngredient111=createRecipeIngredient(ingredient7,recipe11,"300g");
@@ -550,7 +550,7 @@ public class InitDb {
 
 
 
-            Recipe recipe12=createRecipe("땅콩버터 사과 쿠키",member1,"비타민과 미네랄, 섬유질의 훌륭한 공급원인 사과! 쉽고 빠르게 만들 수 있는 땅콩버터 사과 쿠키 만들기!",
+            Recipe recipe12=createRecipe("땅콩버터 사과 쿠키",member3,"비타민과 미네랄, 섬유질의 훌륭한 공급원인 사과! 쉽고 빠르게 만들 수 있는 땅콩버터 사과 쿠키 만들기!",
                     "https://recipe.bom.co.kr/uploads/posts/images/20220330/6243d84726357.png",LocalDateTime.now());
             em.persist(recipe12);
             RecipeIngredient recipeIngredient121=createRecipeIngredient(ingredient8,recipe12,"1개");
