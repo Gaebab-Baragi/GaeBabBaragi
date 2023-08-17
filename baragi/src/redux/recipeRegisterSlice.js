@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Toast from "../components/ui/Toast";
 import { useNavigate } from "react-router-dom";
+import defaultImage from './default.PNG'
 
 
 // 레시피 등록
@@ -9,12 +10,12 @@ let recipeRegister = createSlice({
   
   name: "recipeRegister",
   initialState: {
-    title: "과일 타르트 만들기",
-    description: "상큼한 디저트 만들어봐요",
+    title: "",
+    description: "",
     steps: [
       {
         orderingNumber: 1,
-        description: "모든 재료를 잘라주세요.",
+        description: ".",
       }],
     //   {
     //     orderingNumber: 2,
@@ -23,11 +24,11 @@ let recipeRegister = createSlice({
     //   { orderingNumber: 3, description: "구워주세요" },
     //   { orderingNumber: 4, description: "플레이팅"},
     // ],
-    recipeIngredients: [{ ingredientName: "고구마", amount: "1 개" }],
+    recipeIngredients: [{ ingredientName: "", amount: "" }],
     recipeImage: '0',
     recipeVideo: '0',
     // videoUrl : './기본이미지.png'
-    stepImages : ['0'],
+    stepImages : [defaultImage],
   },
   reducers: {
     requestFilteredRecipeList: (state) => {
@@ -58,18 +59,19 @@ let recipeRegister = createSlice({
       formData.append('recipeVideo', state.recipeVideo === '0' ? new Blob([]) : state.recipeVideo);
  
       console.log('stepImages redux : ', state.stepImages)
+
+
+
       // state.stepImages.map((step)=>{
       //   formData.append('stepImages',step)
       // })
       // formData.append('stepImages',state.stepImages)
-      for (let key of formData.keys()) {
-        console.log(key);
-      }
-      for (let value of formData.values()) {
-        console.log(value);
-      }
-      
-
+      // for (let key of formData.keys()) {
+      //   console.log(key);
+      // }
+      // for (let value of formData.values()) {
+      //   console.log(value);
+      // }
       axios
         .post(process.env.REACT_APP_BASE_URL +"/api/recipes/new", formData
         ,  {headers: { "Content-Type": "multipart/form-data" },
@@ -78,8 +80,10 @@ let recipeRegister = createSlice({
         .then((res) => {
           console.log("Request successful : ", res);
           Toast.fire('레시피 등록이 완료되었습니다.','','success')
-  
         })
+        
+          
+
           // navigator('/recipe-list')
         .catch((err) => {
 
@@ -112,7 +116,9 @@ let recipeRegister = createSlice({
       console.log('비디오', state.recipeVideo) 
     },
     addStepImage : (state,action) =>{
-      state.stepImages.push('0')
+
+      console.log(defaultImage)
+      state.stepImages.push(defaultImage)
       console.log('+버튼으로 ',state.stepImages)
 
     },
@@ -122,7 +128,7 @@ let recipeRegister = createSlice({
       console.log('스탭플러스버튼',state.stepImages)
       //
       state.stepImages = state.stepImages.map((image, index) => {
-        if (index === step - 1) {
+        if (index === step-1) {
           return selectedImage;
         }
         return image;
