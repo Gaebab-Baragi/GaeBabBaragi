@@ -11,6 +11,7 @@ let recipeSearch= createSlice({
   initialState:{
     title:'',
     ingredients:[],
+    detectedingredients:[],
     dogs:[],
     filteredList:[],
     requestHappen: false,
@@ -23,7 +24,8 @@ let recipeSearch= createSlice({
     },
     updateIngredients: (state, action) =>{
       const temp = []
-      const ingredientArray = action.payload
+      const ingredientArray = action.payload  // []
+
       ingredientArray.forEach(ingredient => {
         temp.push({'name' : ingredient.label})
       });
@@ -33,8 +35,15 @@ let recipeSearch= createSlice({
       // console.log(state.ingredients)
     },
     updateIngredients2: (state,action) =>{
-      state.ingredients = action.payload
-      console.log('state.ingredients임' , state.ingredients)
+      const temp = []
+      const ingredientArray = action.payload  // []
+
+      ingredientArray.forEach(ingredient => {
+        temp.push({'name' : ingredient})
+      });
+      console.log(temp)
+      state.detectedingredients = temp
+      console.log('redux 재료 업데이트 됨', state.detectedingredients)
     },
 
     updateDogs: (state, action) =>{

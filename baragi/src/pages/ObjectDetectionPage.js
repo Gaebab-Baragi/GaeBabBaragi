@@ -1,7 +1,7 @@
 import axios from "axios";
 import './css/ObjectDetectionPage.css'
 import {setIngredients,} from '../redux/objectDetectSlice';
-import { updateIngredients2 } from "../redux/recipeSearchSlice";
+import { updateIngredients2,updateIngredients } from "../redux/recipeSearchSlice";
 import React, {useState, useEffect, useRef } from 'react';
 import { useDispatch,useSelector  } from 'react-redux';
 // import '../components/ui/SearchBar.css'
