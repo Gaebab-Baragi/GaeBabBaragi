@@ -44,7 +44,6 @@ let recipeSearch= createSlice({
       state.detectedingredients = temp
       console.log('redux 탐지재료 업데이트 됨', state.detectedingredients)
     },
-
     updateDogs: (state, action) =>{
       const tmp = []
       action.payload.forEach((dog) => {
