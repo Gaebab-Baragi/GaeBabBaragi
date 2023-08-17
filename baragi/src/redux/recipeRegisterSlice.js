@@ -57,8 +57,12 @@ let recipeRegister = createSlice({
         
 
       for (let i = 0; i < state.stepImages.length; i++) {
-        formData.append("stepimages", state.stepImages[i]);
-        console.log(state.stepImages[i])
+
+        if(state.stepImages[i] === defaultImage ) {formData.append("stepimages", new Blob([state.stepImages[i]]))
+        }else{
+          formData.append('stepimages',new Blob([]))
+        }
+        // console.log(state.stepImages[i])
       }
 
 
@@ -124,7 +128,7 @@ let recipeRegister = createSlice({
       // console.log('비디오', state.recipeVideo) 
     },
     addStepImage : (state,action) =>{
-      state.stepImages.push('0')
+      state.stepImages.push(defaultImage)
       // console.log('+버튼으로 ',state.stepImages)
 
     },
@@ -152,9 +156,14 @@ let recipeRegister = createSlice({
       state.stepImages = [...state.stepImages];
     },
     deletedStepImage : (state,action) =>{  
-      const deletestep = action.payload
-      state.stepImages.splice(deletestep-1,1) // 마찬가지로 삭제 요망
+      // const deletestep = action.payload
+      // state.stepImages.splice(deletestep-1,1) // 마찬가지로 삭제 요망
       // console.log('-버튼',state.stepImages)
+      const deletestep = action.payload;
+      const updatedStepImages = state.stepImages.filter(
+        (_, index) => index !== deletestep - 1
+      );
+      state.stepImages = updatedStepImages; 
     },
 
     
