@@ -97,8 +97,8 @@ let recipeRegister = createSlice({
           return;
         }
 
-      for (let i = 0; i < state.steps.length; i++) {
-        if (!state.steps[i]['description']) {
+      for (let i = 0; i < state.stepImages.length; i++) {
+        if (!state.stepImages[i]['description']) {
           Toast.fire('요리방법을 등록하세요')
           return;
         }
@@ -125,7 +125,7 @@ let recipeRegister = createSlice({
           Toast.fire('레시피 등록이 완료되었습니다.','','success')
           state.redirectToRecipeList =true;
         })
-        
+
           
 
           // navigator('/recipe-list')
