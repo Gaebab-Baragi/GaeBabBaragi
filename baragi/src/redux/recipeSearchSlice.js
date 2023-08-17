@@ -11,6 +11,7 @@ let recipeSearch= createSlice({
   initialState:{
     title:'',
     ingredients:[],
+    detectedingredients:[],
     dogs:[],
     filteredList:[],
     requestHappen: false,
@@ -23,7 +24,8 @@ let recipeSearch= createSlice({
     },
     updateIngredients: (state, action) =>{
       const temp = []
-      const ingredientArray = action.payload
+      const ingredientArray = action.payload  // []
+
       ingredientArray.forEach(ingredient => {
         temp.push({'name' : ingredient.label})
       });
@@ -32,6 +34,18 @@ let recipeSearch= createSlice({
       console.log('redux 재료 업데이트 됨', state.ingredients)
       // console.log(state.ingredients)
     },
+    updateIngredients2: (state,action) =>{
+      const temp = []
+      const ingredientArray = action.payload  // []
+
+      ingredientArray.forEach(ingredient => {
+        temp.push({'name' : ingredient})
+      });
+      console.log(temp)
+      state.detectedingredients = temp
+      console.log('redux 재료 업데이트 됨', state.detectedingredients)
+    },
+
     updateDogs: (state, action) =>{
       const tmp = []
       action.payload.forEach((dog) => {
@@ -43,6 +57,6 @@ let recipeSearch= createSlice({
   }
 })
 
-export const {updateKeyword, updateIngredients, updateDogs} = recipeSearch.actions;
+export const {updateKeyword, updateIngredients,updateIngredients2, updateDogs} = recipeSearch.actions;
 
 export default recipeSearch;
