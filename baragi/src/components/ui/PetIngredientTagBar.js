@@ -21,18 +21,18 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
   },[])
 
   useEffect(()=>{
-    const color = () => { return [
-      Math.floor(Math.random() * 55 + 200),
-      Math.floor(Math.random() * 55 + 200),
-      Math.floor(Math.random() * 55 + 200),
-    ]
+    function getRandomBrightColor() {
+      const hue = Math.floor(Math.random() * 360);
+      const saturation = '100%';
+      const lightness = `${Math.floor(Math.random() * 21) + 70}%`;
+      return `hsl(${hue}, ${saturation}, ${lightness})`;
     }
     axios.get(process.env.REACT_APP_BASE_URL +'/api/ingredients')
     .then((res)=>{
       const tmp = []
       res.data.ingredients.map((i)=>{
         tmp.push({value:i.id, label:i.name})
-        setColorArray(colorArray => [...colorArray, `rgb(${color()[0]},${color()[1]},${color()[2]})`])
+        setColorArray(colorArray => [...colorArray, getRandomBrightColor()])
       })
       setSuggestions(tmp)
     })
