@@ -14,13 +14,16 @@ let objectDetect= createSlice({
       state.Ingredients = Object.values(state.Ingredients)
       console.log('redux Ingredients name : ',state.Ingredients)
     },
-    // AddIngredients: (state, action)=>{
-    //     state.Ingredients.push(action.payload)
-    // }
+    AddIngredients: (state, action)=>{
+        console.log('추가됨 :' , action.payload)
+        state.Ingredients.push(action.payload)
+    },
+
+    
   
   }
 })
 
-export const {setIngredients} = objectDetect.actions;
+export const {setIngredients,AddIngredients} = objectDetect.actions;
 
 export default objectDetect;
