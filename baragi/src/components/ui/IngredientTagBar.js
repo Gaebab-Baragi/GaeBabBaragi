@@ -6,7 +6,6 @@ import { updateIngredients, requestFilteredRecipeList } from "../../redux/recipe
 import useDidMountEffect from "../../useDidMountEffect";
 import axios from "axios";
 
-
 function IngredientTagBar() {
   const [suggestions, setSuggestions] = useState('');
   const [selected, setSelected] = useState([]);
