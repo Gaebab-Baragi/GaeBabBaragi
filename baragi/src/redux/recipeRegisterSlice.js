@@ -10,13 +10,13 @@ let recipeRegister = createSlice({
   
   name: "recipeRegister",
   initialState: {
-    redirectToRecipeList : false,
+    // redirectToRecipeList : false,
     title: "",
     description: "",
     steps: [
       {
         orderingNumber: 1,
-        description: ".",
+        description: "",
       }],
     //   {
     //     orderingNumber: 2,
@@ -72,37 +72,37 @@ let recipeRegister = createSlice({
       // console.log(state.recipeVideo)
       formData.append('recipeVideo', state.recipeVideo === '0' ? new Blob([]) : state.recipeVideo);
       
-      if (!state.recipeImage) {
-        Toast.fire('레시피 이미지를 입력하세요.','','fail')
-        return;
-      }
-      if (!state.title) {
-        Toast.fire('레시피 제목을 입력하세요.','','fail')
-        return;
-      }
-      if (!state.description) {
-        Toast.fire('레시피 소개를 입력하세요.','','fail')
-        return;
-      }
-      // 
+      // if (!state.recipeImage) {
+      //   Toast.fire('레시피 이미지를 입력하세요.','','fail')
+      //   return;
+      // }
+      // if (!state.title) {
+      //   Toast.fire('레시피 제목을 입력하세요.','','fail')
+      //   return;
+      // }
+      // if (!state.description) {
       //   Toast.fire('레시피 소개를 입력하세요.','','fail')
       //   return;
       // }
-      for (let i = 0; i < state.recipeIngredients.length; i++) {
-        if (!state.recipeIngredients[i]['ingredientName']) {
-          Toast.fire('재료를 등록하세요')
-          return;
-        }else if (!state.recipeIngredients[i]['amount'])
-          Toast.fire('재료를 등록하세요')
-          return;
-        }
+      // // 
+      // //   Toast.fire('레시피 소개를 입력하세요.','','fail')
+      // //   return;
+      // // }
+      // for (let i = 0; i < state.recipeIngredients.length; i++) {
+      //   if (!state.recipeIngredients[i]['ingredientName']) {
+      //     Toast.fire('재료를 등록하세요')
+      //     return;
+      //   }else if (!state.recipeIngredients[i]['amount'])
+      //     Toast.fire('재료를 등록하세요')
+      //     return;
+      //   }
 
-      for (let i = 0; i < state.stepImages.length; i++) {
-        if (!state.stepImages[i]['description']) {
-          Toast.fire('요리방법을 등록하세요')
-          return;
-        }
-      }
+      // for (let i = 0; i < state.steps.length; i++) {
+      //   if (!state.steps[i]['description']) {
+      //     Toast.fire('요리방법을 등록하세요')
+      //     return;
+      //   }
+      // }
       
 
       // state.stepImages.map((step)=>{
@@ -123,7 +123,7 @@ let recipeRegister = createSlice({
         .then((res) => {
           // console.log("Request successful : ", res);
           Toast.fire('레시피 등록이 완료되었습니다.','','success')
-          state.redirectToRecipeList =true;
+          // state.redirectToRecipeList =true;
         })
 
           
@@ -197,14 +197,14 @@ let recipeRegister = createSlice({
       state.stepImages = updatedStepImages; 
       console.log(state.stepImages)
     },
-    redirectToRecipeListComplete: (state) => {
-      state.redirectToRecipeList = false; // 값을 다시 false로 변경
-    },
+    // redirectToRecipeListComplete: (state) => {
+    //   state.redirectToRecipeList = false; // 값을 다시 false로 변경
+    // },
 
     
   },
 });
 
-export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateImage, updateStepImage, deletedStepImage, updateVideo, addStepImage,redirectToRecipeListComplete} = recipeRegister.actions;
+export const { requestFilteredRecipeList , updateRecipeInfor, updateRecipeMaterial, updateStep, updateImage, updateStepImage, deletedStepImage, updateVideo, addStepImage} = recipeRegister.actions; // redirectToRecipeListComplete
 
 export default recipeRegister;

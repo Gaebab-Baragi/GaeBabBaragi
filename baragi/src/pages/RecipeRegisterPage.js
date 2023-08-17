@@ -3,8 +3,8 @@ import InputImage from '../components/ui/InputImage';
 import InputInfor from '../components/ui/InputInfor';
 import MaterialRegist from '../components/ui/MaterialRegist';
 import CookStep from '../components/ui/CookStep';
-import { useDispatch,useSelector } from 'react-redux';
-import { requestFilteredRecipeList,updateVideo,redirectToRecipeListComplete} from '../redux/recipeRegisterSlice';
+import { useDispatch,useSelector } from 'react-redux'; 
+import { requestFilteredRecipeList,updateVideo} from '../redux/recipeRegisterSlice'; //redirectToRecipeListComplete
 import  { useState } from 'react';
 import {useNavigate} from 'react-router-dom'
 
@@ -14,19 +14,20 @@ function RecipeRegisterPage() {
   const dispatch = useDispatch();
   const [video, setVideo] = useState('./기본이미지.PNG');
   const [file, setFile] = useState("");
-  const redirectToRecipeList = useSelector(
-    (state) => state.recipeRegister.redirectToRecipeList
-  );
+  // const redirectToRecipeList = useSelector(
+  //   (state) => state.recipeRegister.redirectToRecipeList
+  // );
   
 
 
   const handlerequest = ()=>{
     dispatch(requestFilteredRecipeList())
-    if (redirectToRecipeList) {
-      navigate("/recipe-list");
-      // 페이지 이동 후 값 다시 false로 변경
-      dispatch(redirectToRecipeListComplete());
-    }
+    navigate('/recipe-list')
+    // if (redirectToRecipeList) {
+    //   navigate("/recipe-list");
+    //   // 페이지 이동 후 값 다시 false로 변경
+    //   dispatch(redirectToRecipeListComplete());
+    // }
 
   }
 
