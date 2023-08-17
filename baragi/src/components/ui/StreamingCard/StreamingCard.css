@@ -93,7 +93,6 @@
     margin-bottom: 0.2vw;
     margin-left: 0.4vw;
     margin-right: 0.4vw;
-
     font-size: clamp(15px, 1.3vw, 30px);
     font-weight: 500;
 }
@@ -127,6 +126,30 @@
     font-weight: 500;
     color: #ffffff;
 }
+/* 삭제하기 버튼 */
+.streaming-card .overlay-delete {
+    padding: 0;
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+.streaming-card .overlay-delete .user-delete-stream{
+    background-color: red;
+    color:white;
+    margin-right: 1vw;
+    margin-bottom: 4vw;
+    border-radius: 6px;
+}
+
+.streaming-card .overlay-delete .user-delete-stream p {
+    margin-top: 0.2vw;
+    margin-bottom: 0.2vw;
+    margin-left: 0.4vw;
+    margin-right: 0.4vw;
+    font-size: clamp(15px, 1.3vw, 30px);
+    /* font-weight: 500; */
+}
 
 .streaming-card .overlay-wait {
     padding: 0;
@@ -138,10 +161,8 @@
 .streaming-card .overlay-wait .status-attendee-wait {
     background-color: #FFAA00;
     color: #493100;
-
     margin-right: 1vw;
     margin-bottom: 1vw;
-
     border-radius: 6px; /* 반지름으로 둥글게 모서리 설정 */
 }
 
@@ -150,7 +171,6 @@
     margin-bottom: 0.2vw;
     margin-left: 0.4vw;
     margin-right: 0.4vw;
-
     font-size: clamp(15px, 1.3vw, 30px);
     font-weight: 500;
 }
@@ -213,4 +233,17 @@
 
 .streaming-info .streaming-info-detail .streaming-host-nickname-and-start-time {
     color: #8B95A2;
+}
+
+.delete-streaming-container{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.delete-streaming{
+    width: fit-content;
+    border-radius: 10px;
+    background-color: red;
+    color:white;
+    border: none;
 }
