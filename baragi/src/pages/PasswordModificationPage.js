@@ -10,14 +10,14 @@ const PasswordModificationPage = () => {
     const [ isChecked, setIsChecked ] = useState(false)
     
     return (
-        <>
+        <div className="pageContainer">
         <MyPageNavBar sel={1}></MyPageNavBar>
         <MyPageSubNavBar sel = {2}></MyPageSubNavBar>
         {
             isChecked ? (<SetNewPasswordForm password={currentPassword}/>)
             : (<CurrentPasswordCheckForm setCurrentPassword={setCurrentPassword} setIsChecked={setIsChecked}/>)
         }
-        </>
+        </div>
     )
 }
 
