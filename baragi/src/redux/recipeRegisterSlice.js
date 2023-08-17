@@ -37,6 +37,7 @@ let recipeRegister = createSlice({
       // axios 요청 보내서 레시피 저장하기
       // console.log('1:',state.title, state.description, state.steps, state.recipeIngredients)
       // console.log('2:', state.recipeImage)
+     
 
       const formData = new FormData();
       const data = {
@@ -49,10 +50,18 @@ let recipeRegister = createSlice({
         "recipeUploadRequestDto",
         new Blob([JSON.stringify(data)], { type: "application/json" })
       );
-      formData.append(
-        "stepImages",
-        new Blob([state.stepImages], { type: "multipart/form-data" })
-      );
+      // formData.append(
+      //   "stepImages",
+      //   new Blob([state.stepImages], { type: "multipart/form-data" })
+      // );
+        
+
+      for (let i = 0; i < state.stepImages.length; i++) {
+        formData.append("stepimages", state.stepImages[i]);
+        console.log(state.stepImages[i])
+      }
+
+
       // console.log('file',state.recipeImage)
       formData.append("recipeImage", state.recipeImage)
       // console.log(state.recipeVideo)
@@ -129,6 +138,7 @@ let recipeRegister = createSlice({
           return selectedImage;
         }
         return image;
+      
       });
       //
 

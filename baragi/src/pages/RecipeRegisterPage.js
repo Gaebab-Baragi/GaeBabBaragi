@@ -18,7 +18,7 @@ function RecipeRegisterPage() {
   const handlerequest = ()=>{
     dispatch(requestFilteredRecipeList())
     
-    navigator('/recipe-list')
+    // navigator('/recipe-list')
   }
 
   const handleVideoChange = (e)=>{
