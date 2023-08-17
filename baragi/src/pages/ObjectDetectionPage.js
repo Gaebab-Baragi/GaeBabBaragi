@@ -222,93 +222,81 @@ function ObjectDetectionPage({onValueChange}) {
   <div className = 'grid-container'>
     <div className='item-1'></div>
     <div className = 'item-6'>
-
-      <h2 style={{minHeight: '10%', alignItems:"center"}}>객체탐지</h2>
+      <h2 className='objectdetection-h2' style={{alignItems:"center"}}>재료 탐색하기</h2>
       {CanvasState === 'none' ?
       <div style={{display:"inherit", justifyContent:"center",alignItems: "center" , width : '100%', height:'70%',  borderRadius:"100px", bottom:'5%', cursor:"pointer" }}>
-        <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, border : '2px solid #000', borderRadius:'15px', maxWidth:'90%', maxHeight :'80%' ,transform:"rotateY(180deg)"}}  /> 
-        {/* width : 682 , height 682  */}
+        <div  className='objectdetection-video'>
+          <video id="videoCam" ref={videoRef} autoPlay style={{display:CameraState, border : '1px solid #000', borderRadius:'15px', maxWidth:'100%', maxHeight :'80%' ,transform:"rotateY(180deg)"}}  /> 
+        </div>
         <canvas id="canvas" style={{display: CanvasState, width:'90%', maxHeight:'90%' }}></canvas>
-        <div onClick={sreenShot} style={{backgroundColor : 'red', textAlign:"center",justifyContent: 'center', width:"25px",height:"25px",border:"2px solid", borderRadius:"100px", display:'flex', margin:'auto',bottom:'5%'}}></div>
-        <input type='file' onChange={sendImage}></input>
+        <div className='objectdetection-icon'>
+          <div onClick={sreenShot} className='camera-icon'>
+            <ion-icon name="camera-outline"></ion-icon>
+            <span>사진 촬영</span>
+          </div>
+          <div className='pick-picture'>
+            <label> 
+              <ion-icon name="add-outline"></ion-icon>
+              <span>사진 첨부</span>
+              <input type='file' onChange={sendImage} style={{ display: 'none'}}></input>
+            </label>
+          </div>
+        </div>
         </div>: 
         <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"60%",marginLeft:"20%", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
-          <img src={answerClass} alt="" style={{display:CanvasState, width:'90%', height:'auto'}}></img>
-          <div style={{textAlign:"center", justifyContent: 'center', width:"60px", height:"60px", border:"2px solid", borderRadius:"100px", margin:'auto'}}>재촬영</div> 
+          <img src={answerClass} alt="" style={{display:CanvasState, width:'100%', height:'auto', border : '2px solid #000', borderRadius:'15px'}}></img>
+          <div className='objectdetection-icon'>
+            <div className='camera-icon'>
+              <ion-icon name="camera-outline"></ion-icon>
+              <span>재촬영</span>
+            </div>
+          </div>
       </div>
     }
     </div>
     <div className ='item-2'> 
- 
     </div>
-
-
-
     <div className = 'item-3'>
     <div>
-      <h2>재료 목록:</h2>
+      <h2 className="objectdetection-h2">재료 목록</h2>
       {uniqueClassname.length > 0 ? (
           <ul>
             {uniqueClassname.map((value, index) => (
               <li 
               style={{
                 color: forbidden.includes(value) ? 'red' :
-                       caution.includes(value) ? 'orange':
-                       safe.includes(value)?  '#00FF09': 'black'}}
+                      caution.includes(value) ? 'orange':
+                      safe.includes(value)?  'green': 'black'}}
               key={index}>{value}</li>
             ))}
           </ul>
         ) 
 
-        
         : (
-          <p>데이터가 없습니다.</p>
+          <p>데이터가 없습니다.
+            
+          </p>
         )}
- 
+
         {/* <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/> */}
     </div>
-    <div style = {{border : '2px solid black', width :'80%', hegiht:'auto', borderRadius:'15px', margin : '10% auto 0 auto'}}>
-      <li style ={{marginLeft:'5%', color:'red', textAlign : 'left'}}>빨간색 : 금지</li>
-      <li style ={{marginLeft:'5%', color:'orange', textAlign : 'left'}}>주황색 : 주의</li>
-      <li style ={{marginLeft:'5%', color:'green', textAlign : 'left'}}>녹색 : 허용</li>
-    </div>
-    <div style={{display: 'flex', justifyContent:'center'}}>
-      {/* <button 
-      style ={{
-        width: '100px',
-        height: '40px',
-        marginTop: '30px',
-        borderRadius: '10px',
-        backgroundColor: '#ffaa00',
-        color: 'white',
-        border: 'none',
-        fontWeight: '500'}} 
-      onClick={() => {
-        if (newIngredient.trim() !== '') {
-          dispatch(AddIngredients(newIngredient));
-          setNewIngredient(''); // 입력 내용 초기화
-    }
-  }}
->
-  재료추가
-</button> */}
-<button style ={{
-        width: '100px',
-        height: '40px',
-        marginTop: '30px',
-        marginLeft : '10px',
-        borderRadius: '10%',
-        backgroundColor: '#ffaa00',
-        color: 'white',
-        border: 'none',
-        fontWeight: '500'}}
-        onClick={handleSearch}>레시피 검색</button>
+    
+      <div className="ingredient-btn">
+        <button onClick={handleSearch}>레시피 검색</button>
+      </div>
+      <div className='obejectection-help-list'>
+        <div className='objectdetection-help'>
+          <ion-icon name="help-circle-outline"></ion-icon>
+          <span>도움말</span>
         </div>
+        <ul className="objectdetection-help-list-content">
+          <li style ={{marginLeft:'5%', color:'red', textAlign : 'left'}}>빨간 색 표시 : 섭취할 수 없는 재료</li>
+          <li style ={{marginLeft:'5%', color:'orange', textAlign : 'left'}}>주황 색 표시 : 주의가 필요한 재료</li>
+          <li style ={{marginLeft:'5%', color:'green', textAlign : 'left'}}>녹색 색 표시 : 섭취해도 괜찮은 재료</li>
+        </ul>
+      </div>
     </div>
   </div>
-
-
-
   )};
 
 export default ObjectDetectionPage;
