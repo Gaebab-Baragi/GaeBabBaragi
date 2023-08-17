@@ -47,8 +47,18 @@
 }
 }
 
-.service-info-features .features-item .img-fluid {
-    width: 300px;
+.service-info-features .features-item .img-fluid-1 {
+    width: 450px;
+    height: auto;
+}
+
+.service-info-features .features-item .img-fluid-2 {
+    width: 550px;
+    height: auto;
+}
+
+.service-info-features .features-item .img-fluid-3 {
+    width: 500px;
     height: auto;
 }
 

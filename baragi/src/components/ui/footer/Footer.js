@@ -47,7 +47,7 @@ function Footer() {
 
           <div className="col-lg-3 col-md-12 footer-watch-videos">
             <h4>Watch Videos</h4>
-            <a className="video" href="">
+            <a className="video" href="https://youtu.be/SR19uOLr5lc">
               <span className="video-icon"><ion-icon name="caret-forward-circle-outline"></ion-icon></span>
                 <span className="video-name">홍보 영상 보기</span>
             </a>
