@@ -123,7 +123,7 @@ let recipeRegister = createSlice({
         .then((res) => {
           // console.log("Request successful : ", res);
           Toast.fire('레시피 등록이 완료되었습니다.','','success')
-          state.navigateToRecipeList =true;
+          state.redirectToRecipeList =true;
         })
         
           
