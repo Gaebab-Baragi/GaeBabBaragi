@@ -63,6 +63,32 @@ function ObjectDetectionPage({onValueChange}) {
       return undefined;
     }
   };
+
+
+  const sendImage = (e)=>{
+    setCanvasState(''); // 켄버스 켜기
+    setCameraState('none'); //비디오 끄기
+    setanswerClass('')
+    const image = e.target.files[0]
+    const formData = new FormData();
+    formData.append('image', image,"fileName.jpeg"); 
+    axios.post('https://doggy-yummy.site/v1/object-detection/yolov5', formData,{
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'multipart/form-data'
+          },
+        })
+        .then(response => {
+          console.log('Image uploaded successfully:', response.data);
+          setanswerClass(response.data['image_url'])
+          dispatch(setIngredients(response.data['name']))
+        })
+        .catch(error => {
+          console.error('Error uploading image:', error);
+        });
+        // ... rest of the code
+  }
+  
   //
 
   //
@@ -196,6 +222,7 @@ function ObjectDetectionPage({onValueChange}) {
   <div className = 'grid-container'>
     <div className='item-1'></div>
     <div className = 'item-6'>
+
       <h2 style={{minHeight: '10%', alignItems:"center"}}>객체탐지</h2>
       {CanvasState === 'none' ?
       <div style={{display:"inherit", justifyContent:"center",alignItems: "center" , width : '100%', height:'70%',  borderRadius:"100px", bottom:'5%', cursor:"pointer" }}>
@@ -203,7 +230,7 @@ function ObjectDetectionPage({onValueChange}) {
         {/* width : 682 , height 682  */}
         <canvas id="canvas" style={{display: CanvasState, width:'90%', maxHeight:'90%' }}></canvas>
         <div onClick={sreenShot} style={{backgroundColor : 'red', textAlign:"center",justifyContent: 'center', width:"25px",height:"25px",border:"2px solid", borderRadius:"100px", display:'flex', margin:'auto',bottom:'5%'}}></div>
-
+        <input type='file' onChange={sendImage}></input>
         </div>: 
         <div onClick={GoToCamera} style={{display:"", justifyContent:"center",alignItems: "center",width:"60%",marginLeft:"20%", borderRadius:"10px",position:"", zIndex :"101", bottom:'5%', left:"46%", cursor:"pointer", backgroundColor:""}}>
           <img src={answerClass} alt="" style={{display:CanvasState, width:'90%', height:'auto'}}></img>
