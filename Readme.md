@@ -1,6 +1,6 @@
 # I.	개요
 
-## (소개 영상)[https://www.youtube.com/watch?v=SR19uOLr5lc]
+[소개 영상](https://www.youtube.com/watch?v=SR19uOLr5lc)
 
 
 ## 1.	프로젝트 개요
