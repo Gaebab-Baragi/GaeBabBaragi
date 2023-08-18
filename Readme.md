@@ -38,7 +38,7 @@ f)	`sudo docker-compose –p frontend up –d`
 g)	`sudo service nginx restart`   
 
 ## 3.	배포 시 특이사항
-a)	Docker 사용: Backend, Frontend, Nginx, Jenkins, YoloV5, OpenVidu, DB를 각각의 Docker Container로 관리하여 독립성을 보장시켰다.   
+a)	Docker 사용: Backend, Frontend, Nginx, Jenkins, YoloV5, OpenVidu, DB를 각각의 Docker Container로 관리하여 독립성을 보장시켰다.    
 b)	Docker-compose 사용: Docker-compose를 사용하여 각각의 Dockerfile을 통해 여러 개의 컨테이너를 build 후 생성하여 다중 컨테이너 관리, 설정의 일관성, 개발 효율성을 증대시켰다.   
 c)	Jenkins pipeline 사용: jenkins pipeline으로 한 프로젝트에 있는 backend단과 frontend단을 동시에 자동 배포 하여 배포 환경 테스트 효율성을 증가시켰다.   
 d)	Nginx의 reverse proxy 사용: 가비아에서 구입한 doggy-yummy 도메인 뒤에 /, /api, /v1 경로로 reverse proxy 하여 각각 front, back, object 
