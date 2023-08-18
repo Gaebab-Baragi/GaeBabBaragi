@@ -24,8 +24,8 @@
  
 # II.	빌드 
 ## 1.	빌드 환경 변수
-a)	`VERSION=$(curl—silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)` : Docker-compose의 최신 릴리즈 정보
-b)	`DESTINATION=/usr/bin/docker-compose` : docker-compose 실행 파일이 저장될 위치
+a)	`VERSION=$(curl—silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)` : Docker-compose의 최신 릴리즈 정보   
+b)	`DESTINATION=/usr/bin/docker-compose` : docker-compose 실행 파일이 저장될 위치   
 c)	`Docker-compse –p frontend build` : Docker-compose는 보통 docker-compose.yml이 저장 된 디렉토리 명을 환경변수로 설정하는데 본 프로젝트에서는 docker-compose.yml이 root에 있어 이러한 자동 환경변수 설정이 되지 않기 때문에 –p 를 이용해 frontend라고 수동으로 명명해주었다
 
 ## 2.	배포 순서
