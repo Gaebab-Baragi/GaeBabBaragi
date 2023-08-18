@@ -1,0 +1,238 @@
+.recipe-streaming-card-wrapper {
+    width: 100%;
+}
+
+/* 스트리밍 카드 */
+.recipe-streaming-card{
+    width: 80%; /* 부모 요소(floatingDiv)의 가로 크기와 동일한 크기로 이미지 크기 조절 */
+  object-fit: contain;
+  height:100px;
+  margin-left:10%;
+  margin-right:10%;
+  margin-top:5%;
+  margin-bottom:5%;
+  border-radius: 10px;
+    cursor:pointer;
+}
+
+.recipe-streaming-card .recipe-card-img-bg-wait {
+    position: absolute; /* 절대 포지션으로 설정하여 겹치게 함 */
+    opacity: 0.8;
+}
+
+.recipe-streaming-card:hover .recipe-card-img-bg-wait {
+    position: absolute; /* 절대 포지션으로 설정하여 겹치게 함 */
+    opacity: 1;
+}
+
+.recipe-streaming-card .recipe-card-img-bg-scheduled {
+    position: absolute; /* 절대 포지션으로 설정하여 겹치게 함 */
+}
+
+.recipe-streaming-card .recipe-card-img {
+    width: 100%;
+    height: 100%;
+}
+
+.recipe-streaming-card .recipe-overlay-icon-play {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.recipe-streaming-card .recipe-overlay-icon-alarm {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.recipe-streaming-card .recipe-overlay-icon-restaurant {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.recipe-streaming-card .recipe-overlay-icon-play ion-icon{
+    opacity: 0;
+}
+
+.recipe-streaming-card:hover .recipe-overlay-icon-play ion-icon {
+    color: #FFAA00;
+    font-size: clamp(35px, 4vw, 40px);
+    opacity: 1;
+}
+
+.recipe-streaming-card .recipe-overlay-icon-alarm ion-icon {
+    color: #FFAA00;
+    font-size: clamp(35px, 4vw, 40px);
+}
+
+.recipe-streaming-card .recipe-overlay-icon-restaurant ion-icon {
+    color: #FFAA00;
+    font-size: clamp(35px, 4vw, 40px);
+}
+
+/* 예정 */
+.recipe-streaming-card .recipe-overlay-scheduled {
+    padding: 0;
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+.recipe-streaming-card .recipe-overlay-scheduled .recipe-status-scheduled {
+    background-color: #493100;
+    color: #FFAA00;
+
+    margin-right: 1vw;
+    margin-bottom: 1vw;
+
+    border-radius: 6px; /* 반지름으로 둥글게 모서리 설정 */
+}
+
+.recipe-streaming-card .recipe-overlay-scheduled .recipe-status-scheduled p {
+    margin-top: 0.2vw;
+    margin-bottom: 0.2vw;
+    margin-left: 0.4vw;
+    margin-right: 0.4vw;
+
+    font-size: clamp(15px, 1.3vw, 30px);
+    font-weight: 500;
+}
+
+/* 입장 가능 */
+.recipe-streaming-card .recipe-overlay-participants {
+    padding: 0;
+    display: flex;
+    justify-content: left;
+    align-items: flex-end;
+}
+
+.recipe-streaming-card .recipe-overlay-participants .recipe-participants {
+    margin-left: 1vw;
+    margin-bottom: 1vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* 수직 중앙 정렬 */
+}
+
+.recipe-streaming-card .recipe-overlay-participants .recipe-participants ion-icon {
+    font-size: clamp(15px, 1.7vw, 22px);
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.recipe-streaming-card .recipe-overlay-participants .recipe-participants p {
+    margin: 0;
+    font-size: clamp(15px, 1.3vw, 30px);
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.recipe-streaming-card .recipe-overlay-wait {
+    padding: 0;
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+.recipe-streaming-card .recipe-overlay-wait .recipe-status-attendee-wait {
+    background-color: #FFAA00;
+    color: #493100;
+
+    margin-right: 1vw;
+    margin-bottom: 1vw;
+
+    border-radius: 6px; /* 반지름으로 둥글게 모서리 설정 */
+}
+
+.recipe-streaming-card .recipe-overlay-wait .recipe-status-attendee-wait p {
+    margin-top: 0.2vw;
+    margin-bottom: 0.2vw;
+    margin-left: 0.4vw;
+    margin-right: 0.4vw;
+
+    font-size: clamp(15px, 1.3vw, 30px);
+    font-weight: 500;
+}
+
+/* 미팅 진행중 */
+.recipe-streaming-card .recipe-overlay-in-progress {
+    padding: 0;
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+.recipe-streaming-card .recipe-overlay-in-progress .recipe-status-in-progress {
+    background-color: #493100;
+    color: #FFAA00;
+
+    margin-right: 1vw;
+    margin-bottom: 1vw;
+
+    border-radius: 6px; /* 반지름으로 둥글게 모서리 설정 */
+}
+
+.recipe-streaming-card .recipe-overlay-in-progress .recipe-status-in-progress p {
+    margin-top: 0.2vw;
+    margin-bottom: 0.2vw;
+    margin-left: 0.4vw;
+    margin-right: 0.4vw;
+
+    font-size: clamp(15px, 1.3vw, 30px);
+    font-weight: 500;
+}
+
+/* 스트리밍 정보 */
+.recipe-streaming-info {
+    margin-top: 5px;
+    padding-bottom: 30px;
+}
+
+.recipe-streaming-info .recipe-streaming-host-profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 50%로 설정하여 원 모양으로 만듦 */
+}
+
+.recipe-streaming-info .recipe-streaming-info-detail p {
+    text-align: left;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.recipe-streaming-info .recipe-streaming-info-detail .recipe-streaming-title {
+    font-weight: 500;
+}
+
+/* 자물쇠 아이콘 */
+.recipe-streaming-info .recipe-streaming-info-detail .recipe-streaming-title ion-icon {
+    font-size: 16px;
+}
+
+.recipe-streaming-info .recipe-streaming-info-detail .recipe-streaming-host-nickname-and-start-time {
+    color: #8B95A2;
+}
+
+.recipe-floatingDiv-meeting-info{
+    color:#8B95A2;
+    font-size:11px;
+    text-align: left;
+    margin-left:10%;
+  }
+  .recipe-floatingDiv-meeting-host{
+    font-weight:bold;
+    font-size:15px;
+  }
+  
+  .recipe-floatingDiv-meeting-host-img{
+    height:20px;
+    margin-right:2%;
+    border-radius: 50px;
+  }
