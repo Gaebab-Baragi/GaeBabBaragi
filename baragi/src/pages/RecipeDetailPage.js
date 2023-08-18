@@ -12,6 +12,7 @@ import Confirm from '../../src/components/ui/Confirm';
 import Toast from '../../src/components/ui/Toast';
 import CommentAlert from '../../src/components/ui/CommentAlert';
 import Loading from '../components/ui/Loading.js'
+import RecipeDetailStreamingCard from "../components/ui/StreamingCard/RecipeDetailStreamingCard";
 
 //링크 복사 함수
 const copyUrlToClipboard = () => {
@@ -417,15 +418,22 @@ const RecipeDetailPage=()=>{
             <ul className='meeting-list'>
                 {meetings.map((meeting, index) => (
                     <li key={index}>
-                        <div>
-                            <img className='floatingDiv-image' src={meeting.recipe_image_url}></img>
-                        </div>
-                        <div className='floatingDiv-meeting-info'>
-                            <div className='floatingDiv-meeting-host'>
-                                <img className='floatingDiv-meeting-host-img' src={meeting.host_profile_url}></img>
-                                {meeting.host_nickname}
-                            </div>
-                            • 예약 시간 : {meeting.start_time}
+                        <div className="streaming-card-component">
+                            <RecipeDetailStreamingCard
+                                key={meeting.id}
+                                title={meeting.title}
+                                description={meeting.description}
+                                host_nickname={meeting.host_nickname}
+                                host_profile_url={meeting.host_profile_url}
+                                max_participant={meeting.max_participant}
+                                start_time={meeting.start_time}
+                                status={meeting.status}
+                                current_participants={meeting.current_participants}
+                                meeting_id={meeting.id}
+                                recipe_id={meeting.recipe_id}
+                                recipe_image_url={meeting.recipe_image_url}
+                                is_private_room={meeting.is_private_room}
+                            />
                         </div>
                     </li>
                 ))}
