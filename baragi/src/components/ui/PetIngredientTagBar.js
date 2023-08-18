@@ -37,7 +37,7 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
       setSuggestions(tmp)
     })
     .catch((err)=>{
-      console.log('error is : ', err)
+      // console.log('error is : ', err)
     })
   },[])
 
@@ -59,7 +59,7 @@ function PetIngredientTagBar({forbiddens, selectIngredients}) {
     [selected]
   )
   const CustomTag = ({ classNames, tag, ...tagProps }) => {
-    console.log(tag.value);
+    // console.log(tag.value);
     return (
       <button type="button" className={classNames.tag} {...tagProps} style={{background : colorArray[tag.value - 1]}}>
         <span className={classNames.tagName}>{tag.label}</span>

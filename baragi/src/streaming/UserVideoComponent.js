@@ -11,7 +11,7 @@ export default class UserVideoComponent extends Component {
     render() {
         return (
             <div>
-                {console.log('1',this.props.size)}
+                {/* {console.log('1',this.props.size)} */}
                 {this.props.streamManager !== undefined ? (
                     <div className={"streamcomponent-"+this.props.size}>
                         <OpenViduVideoComponent size={this.props.size} streamManager={this.props.streamManager} />

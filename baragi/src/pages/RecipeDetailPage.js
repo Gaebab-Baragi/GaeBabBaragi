@@ -26,7 +26,7 @@ const copyUrlToClipboard = () => {
         },
         () => {
           // Handle error if copying fails
-        console.error('Copying URL to clipboard failed');
+        // console.error('Copying URL to clipboard failed');
         }
     );
     }
@@ -75,7 +75,7 @@ const RecipeDetailPage=()=>{
                 const responseBookmark=await fetch(process.env.REACT_APP_BASE_URL+`/api/bookmark/${id}`)
                 setBookmarkCnt()
                 if(!response.ok){
-                    console.log('에러에러 error: ');
+                    // console.log('에러에러 error: ');
                 }
                 const data=await response.json();
 
@@ -90,10 +90,10 @@ const RecipeDetailPage=()=>{
                     navigate('/'); // 메인 페이지로 리다이렉트
                     return; // 리다이렉트 후 함수 종료
                 }
-                console.log(data);
+                // console.log(data);
                 setData(data);
             }catch(error){
-                console.error('Error occured ',"문제야 문제");
+                // console.error('Error occured ',"문제야 문제");
             }
         };
         fetchData();
@@ -121,7 +121,7 @@ const RecipeDetailPage=()=>{
 
     //하트 눌렀을 때, 로그인 안되어있으면 로그인 페이지로 리다이렉트
     const handleLikeClick = async () => {
-        console.log('handleLikeClick function called');
+        // console.log('handleLikeClick function called');
         if (!isLoggedIn) {
             Confirm().then(() => {
                 // Handle anything else after confirmation if needed
@@ -144,10 +144,10 @@ const RecipeDetailPage=()=>{
                         isLiked ? prevBookmarkCnt - 1 : prevBookmarkCnt + 1
                     );
                 } else {
-                    console.error('좋아요 요청 실패');
+                    // console.error('좋아요 요청 실패');
                 }
             } catch (error) {
-                console.error('에러 발생', error);
+                // console.error('에러 발생', error);
             }
         }
     };
@@ -212,10 +212,10 @@ const RecipeDetailPage=()=>{
                 setNewCommentContent('');
                 setCommentImage(null);
             } else {
-                console.error('댓글 작성 실패');
+                // console.error('댓글 작성 실패');
             }
         } catch (error) {
-            console.error('에러 발생', error);
+            // console.error('에러 발생', error);
         }
     };
 
@@ -229,7 +229,7 @@ const RecipeDetailPage=()=>{
             Toast.fire("해당 레시피를 삭제하였습니다.","","success");
             navigate("/");
         }catch(error){
-            console.log('에러발생',error);
+            // console.log('에러발생',error);
         }
     };
 
@@ -248,10 +248,10 @@ const RecipeDetailPage=()=>{
                 const updatedComments = responseComment.data;
                 setComments(updatedComments);
             } else {
-                console.error('댓글 삭제 실패');
+                // console.error('댓글 삭제 실패');
             }
         } catch (error) {
-            console.error('에러 발생', error);
+            // console.error('에러 발생', error);
         }
     };
     const goToWriterRecipe=(memberId)=>{

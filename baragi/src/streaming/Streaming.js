@@ -18,7 +18,7 @@ class Streaming extends Component {
     super(props);
 
     this.hasJoinedSession = false;
-    console.log("스트리밍 들어옴, 아이디 확인", props.sessionId);
+    // console.log("스트리밍 들어옴, 아이디 확인", props.sessionId);
     this.state = {
       mySessionId: props.sessionId.toString(),
       myUserName: props.nickname,
@@ -58,7 +58,7 @@ class Streaming extends Component {
         const data = JSON.parse(event.data);
         if (data.type === "meetingStarted") {
           // Handle meeting start signal from host
-          console.log("Meeting has started!");
+          // console.log("Meeting has started!");
         }
         // Handle other custom signals if needed
       });
@@ -101,12 +101,12 @@ class Streaming extends Component {
           var subscribers = this.state.subscribers;
           //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           subscribers.push(subscriber);
-          console.log("이것이 subscribers다!!!! : ", subscribers);
+          // console.log("이것이 subscribers다!!!! : ", subscribers);
           subscribers.map((sub, i) => {
-            console.log(
-              "이것이 필요한 정보다!!!!!!!",
-              JSON.parse(sub.stream.connection.data).clientData
-            );
+            // console.log(
+            //   "이것이 필요한 정보다!!!!!!!",
+            //   JSON.parse(sub.stream.connection.data).clientData
+            // );
           });
 
           // Update the state with the new subscribers
@@ -115,7 +115,7 @@ class Streaming extends Component {
           });
         });
         mySession.on("signal:toggleStart", (event) => {
-          console.log("시그널!!!!!!!!!!!!!!", event.data);
+          // console.log("시그널!!!!!!!!!!!!!!", event.data);
           // Handle meeting start signal from host
           this.setState({
             hideInfo: true, // Hide the "Meeting not started" message
@@ -135,7 +135,7 @@ class Streaming extends Component {
         });
 
         mySession.on("signal:roomExploded", (event) => {
-          console.log("방 폭파됨");
+          // console.log("방 폭파됨");
           Toast.fire("호스트에 의해 미팅이 끝났습니다.", "", "info");
           window.location.replace("/streaming-list");
         });
@@ -148,7 +148,7 @@ class Streaming extends Component {
 
         // On every asynchronous exception...
         mySession.on("exception", (exception) => {
-          console.warn(exception);
+          // console.warn(exception);
         });
 
         // --- 4) Connect to the session with a valid user token ---
@@ -156,7 +156,7 @@ class Streaming extends Component {
         // Get a token from the OpenVidu deployment
 
         this.getToken().then((token) => {
-          console.log("이것이 토근이다!!!!!!!!!!", token);
+          // console.log("이것이 토근이다!!!!!!!!!!", token);
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
@@ -182,10 +182,10 @@ class Streaming extends Component {
               // this.state.publisher.publishVideo(!this.state.videostate);
 
               // --- 6) Publish your stream --
-              console.log("WANT TO PUBLISH");
+              // console.log("WANT TO PUBLISH");
 
               mySession.publish(publisher);
-              console.log("MY STREAM", publisher.stream);
+              // console.log("MY STREAM", publisher.stream);
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
@@ -217,11 +217,11 @@ class Streaming extends Component {
               });
             })
             .catch((error) => {
-              console.log(
-                "There was an error connecting to the session:",
-                error.code,
-                error.message
-              );
+              // console.log(
+              //   "There was an error connecting to the session:",
+              //   error.code,
+              //   error.message
+              // );
             });
         });
       }
@@ -253,7 +253,7 @@ class Streaming extends Component {
     axios
       .post(process.env.REACT_APP_BASE_URL + `/api/meetings/left/${sessionId}`)
       .then(() => {
-        console.log("방 떠나기!!!!");
+        // console.log("방 떠나기!!!!");
         // Leave the session and perform navigation after the axios call
         const mySession = this.state.session;
 
@@ -276,7 +276,7 @@ class Streaming extends Component {
         window.location.replace("/streaming-list");
       })
       .catch((error) => {
-        console.error("Error leaving session:", error);
+        // console.error("Error leaving session:", error);
       });
   }
 
@@ -299,7 +299,7 @@ class Streaming extends Component {
     axios
       .post(process.env.REACT_APP_BASE_URL + `/api/meetings/start/${sessionId}`)
       .then((res) => {
-        console.log("호스트가 미팅을 시작하였습니다!!!", res.data);
+        // console.log("호스트가 미팅을 시작하였습니다!!!", res.data);
         // 미팅 시작되었다는 시그널 보내기(호스트 제외 사람들이 볼 수 있게)
         localUser.getStreamManager().stream.session.signal({
           data: true,
@@ -311,7 +311,7 @@ class Streaming extends Component {
         });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }
 
@@ -323,15 +323,15 @@ class Streaming extends Component {
     });
 
     const sessionId = parseInt(this.state.mySessionId);
-    console.log(sessionId, typeof sessionId);
+    // console.log(sessionId, typeof sessionId);
     axios
       .post(process.env.REACT_APP_BASE_URL + `/api/meetings/close/${sessionId}`)
       .then((res) => {
-        console.log("호스트가 방을 폭파했습니다.");
+        // console.log("호스트가 방을 폭파했습니다.");
         window.location.replace("/streaming-list");
       })
       .catch((err) => {
-        console.log("error in closing meeting", err);
+        // console.log("error in closing meeting", err);
       });
   }
 
@@ -421,8 +421,8 @@ class Streaming extends Component {
             </>
           ) : (
             this.state.subscribers.map((sub, i) => {
-              console.log("subscriber 데이터다", sub.stream);
-              console.log(JSON.parse(sub.stream.connection.data).clientData);
+              // console.log("subscriber 데이터다", sub.stream);
+              // console.log(JSON.parse(sub.stream.connection.data).clientData);
               const subName = JSON.parse(sub.stream.connection.data).clientData;
               if (subName === host_nickname) {
                 return (

@@ -44,7 +44,7 @@ function CardCarousel({popularRecipes}) {
     for (let i = 0; i < cardsPerSlide; i++) {
       const count = startIndex + i;
       let recipe = popularRecipes[count]
-      console.log('recipe slice for carousel', recipe)
+      // console.log('recipe slice for carousel', recipe)
       slideCards.push(<CardComponent recipe={recipe}/>);
     }
     return slideCards;

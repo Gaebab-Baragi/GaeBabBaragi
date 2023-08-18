@@ -20,18 +20,18 @@ function PetListPage() {
     axios.get(process.env.REACT_APP_BASE_URL +`/api/pet`)
     .then((res)=>{
       if (res.status === 200){
-        console.log('pet list : ' , res.data)
+        // console.log('pet list : ' , res.data)
         setPetList(res.data)
       }
     })
     .catch((err)=>{
-      console.log('error : ' , err)
+      // console.log('error : ' , err)
     })
   },[idx, swiperState])
 
   const rerenderSwiper = () => {
     setSwiperState(swiperState + 1);
-    console.log(swiperState + 1);
+    // console.log(swiperState + 1);
   }
 
   return(

@@ -24,7 +24,7 @@ const SocialLoginHandler= () => {
             }
         })
         .catch((res) => {
-            console.log(res);
+            // console.log(res);
         })
     }, [])
 

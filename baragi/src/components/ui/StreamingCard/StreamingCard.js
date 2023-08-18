@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import streamingInfo, { setStreamingInfo } from '../../../redux/streamingInfoSlice';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -9,21 +9,22 @@ import Toast from '../Toast';
 import PassswordModal from './PasswordModal';
 import useDidMountEffect from '../../../useDidMountEffect';
 
-function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
+function StreamingCardComponent({setUpdateList,is_private_room, meeting_id, recipe_id, recipe_image_url, current_participants, max_participant, status, host_profile_url, title, host_nickname, start_time}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector(state=>state.user)
     const [modalShow, setModalShow] = useState(false);
     const [enteredPassword, setEnteredPassword] = useState(null);
 
     // 비밀번호 입력 확인
     useEffect(()=>{
-      console.log('비밀번호 입력됨', enteredPassword)
+    //   console.log('비밀번호 입력됨', enteredPassword)
     },[enteredPassword])
     //  비밀번호가 입력되었을 떄
     useDidMountEffect(()=>{
       axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}?password=${enteredPassword}`)
         .then((res)=>{
-          console.log('request success : ', res.data);
+        //   console.log('request success : ', res.data);
           const data = {
             meeting_id,
             title,
@@ -36,17 +37,17 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
             dispatch(setStreamingInfo(data))
             axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
             .then((res)=>{
-                console.log('미팅 참여 성공 ')
+                // console.log('미팅 참여 성공 ')
                 navigate('/streaming-live')
             })
             .catch((err)=>{
               Toast.fire(err.response.data.message,"","warning")
-              console.log('error after join accepted', err.message)
+            //   console.log('error after join accepted', err.message)
             })
         })
         .catch((err)=>{
             Toast.fire(err.response.data.message, "", "warning")
-            console.log('error occured' , err.response.data.message)
+            // console.log('error occured' , err.response.data.message)
         })
     },[enteredPassword])
 
@@ -56,55 +57,74 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
     }
 
     function checkMeeting() {
-        console.log('PRIVATE ROOM :', is_private_room)
-        // 비밀번호 요청하기 + 모달창 띄우기
-        if (is_private_room) {
-            setModalShow(true);
+        if (!user.id) {
+            Toast.fire('로그인 후 입장해주세요','','info')
+            navigate('/login')
         } else {
 
-            // 비밀번호 없이 미팅 참여
-            axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}`)
-            .then((res)=>{
-              console.log('request success : ', res.data);
-              const data = {
-                meeting_id,
-                title,
-                recipe_id,
-                host_nickname,
-                max_participant,
-                start_time,
-                recipe_image_url,    
-                }
-                dispatch(setStreamingInfo(data))
-                axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
+            // console.log('PRIVATE ROOM :', is_private_room)
+            // 비밀번호 요청하기 + 모달창 띄우기
+            if (is_private_room) {
+                setModalShow(true);
+            } else {
+    
+                // 비밀번호 없이 미팅 참여
+                axios.get(process.env.REACT_APP_BASE_URL +`/api/meetings/join-request/${meeting_id}`)
                 .then((res)=>{
-                    console.log('미팅 참여 성공 ')
-                    navigate('/streaming-live')
+                //   console.log('request success : ', res.data);
+                  const data = {
+                    meeting_id,
+                    title,
+                    recipe_id,
+                    host_nickname,
+                    max_participant,
+                    start_time,
+                    recipe_image_url,    
+                    }
+                    dispatch(setStreamingInfo(data))
+                    axios.post(process.env.REACT_APP_BASE_URL +`/api/meetings/join/${meeting_id}`)
+                    .then((res)=>{
+                        // console.log('미팅 참여 성공 ')
+                        navigate('/streaming-live')
+                    })
+                    .catch((err)=>{
+                      Toast.fire(err.response.data.message,"","warning")
+                    //   console.log('error after join accepted', err.message)
+                    })
                 })
                 .catch((err)=>{
-                  Toast.fire(err.response.data.message,"","warning")
-                  console.log('error after join accepted', err.message)
+                    Toast.fire(err.response.data.message, "", "warning")
+                    // console.log('error occured' , err.response.data.message)
                 })
-            })
-            .catch((err)=>{
-                Toast.fire(err.response.data.message, "", "warning")
-                console.log('error occured' , err.response.data.message)
-            })
+            }
         }
         
-
     }
     
     useEffect(()=>{
-        console.log(meeting_id)
+        // console.log(meeting_id)
     },[])
 
-    
-    
+    // 미팅 삭제하기
+    function deleteMeeting (e) {
+        e.stopPropagation();
+        // console.log('삭제하기!!!')
+        axios.delete(process.env.REACT_APP_BASE_URL +`/api/meetings/${meeting_id}`)
+        .then((res)=>{
+            // console.log(res.data)
+            Toast.fire('미팅이 삭제되었습니다.','','success')
+            setUpdateList(true)
+        })
+        .catch((err)=>{
+            // console.log(err)
+        })
+    }
+
     return (
         <div className='streaming-card-wrapper'>
           <PassswordModal handlePasswordEntered={handlePasswordEntered} show={modalShow} onHide={()=>setModalShow(false)} />
             <Card className="streaming-card" onClick={()=>checkMeeting()}>
+            {/* <Card className="streaming-card"> */}
                 {
                     status === "ATTENDEE_WAIT" ? (
                         <Card.Img src='/image/스트리밍 썸네일 배경.png' alt="스트리밍 썸네일 배경" className='card-img-bg-wait'/>
@@ -128,6 +148,7 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
                         </Card.ImgOverlay>
                     )
                 }
+
                     {
                         status === "ATTENDEE_WAIT" && (
                             <Card.ImgOverlay className='overlay-participants'>
@@ -139,6 +160,13 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
                             </Card.ImgOverlay>
                         )
                     }
+                    {/* { user.nickname === host_nickname &&
+                        <Card.ImgOverlay className='overlay-delete'>
+                            <div className='user-delete-stream'>
+                                <p onClick={()=>deleteMeeting()}>삭제</p>
+                            </div>
+                        </Card.ImgOverlay>
+                    } */}
                     {
                         status == 'ATTENDEE_WAIT' ? (
                             <Card.ImgOverlay className='overlay-wait'>
@@ -176,6 +204,12 @@ function StreamingCardComponent({is_private_room, meeting_id, recipe_id, recipe_
                     </p>
                     <p className='streaming-host-nickname-and-start-time'>{host_nickname} • 예약 시간:{start_time}</p>
                 </div>
+            {user.nickname === host_nickname &&
+            <div className='delete-streaming-container'>
+                <button className='delete-streaming' onClick={(e)=>deleteMeeting(e)}>삭제하기</button>
+                
+            </div>
+            }
             </div>
         </div>
     );

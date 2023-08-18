@@ -39,7 +39,7 @@ const DuplicateNickname = () => {
 
     const handleNicknameDuplicateCheck = useCallback((e) => {
         e.preventDefault();
-        console.log('Nickname-Duplication-Check')
+        // console.log('Nickname-Duplication-Check')
 
 
         if (!validNickname) {
@@ -60,7 +60,7 @@ const DuplicateNickname = () => {
         })
         .then((res)=>{
         if (res.status === 200) {
-            console.log('duplication checked')
+            // console.log('duplication checked')
             Toast.fire("사용 가능한 닉네임입니다.", "", "success")
             setNicknameDuplicateCheck(true);
         }

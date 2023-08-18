@@ -12,8 +12,7 @@ function HeroSection() {
                             <h2>반려견 수제 간식은<br/><span>개밥바라기</span></h2>
                             <p>다양한 레시피들을 살펴보고,<br/>반려견이 즐길만한 요리를 만들어 보는 여정에 도전해 보세요.<br/>사랑하는 강아지의 입맛을 만족시킬 참신한 요리들이 여러분을 기다리고 있습니다!</p>
                             <div className="d-flex justify-content-center justify-content-lg-start">
-                                {/* 여기 나중에 영상 url 넣으면 좋을 거 같아서 남겨둠 */}
-                                <a href="" className="btn-watch-video d-flex align-items-center">
+                                <a href="https://youtu.be/SR19uOLr5lc" className="btn-watch-video d-flex align-items-center">
                                     <ion-icon name="caret-forward-circle-outline"></ion-icon><span>홍보 영상 보러 가기</span>
                                 </a>
                             </div>

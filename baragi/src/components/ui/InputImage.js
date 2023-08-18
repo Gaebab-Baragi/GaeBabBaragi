@@ -14,6 +14,8 @@ function InputImage({handleImageUpload}) {
   // 파일 선택 시 이미지 미리보기 함수
   const handleImagePreview = (e) => {
     const selectedImage = e.target.files[0];
+    // const blobImgae = new Blob([selectedImage])
+    // dispatch(updateImage(blobImgae));
     dispatch(updateImage(selectedImage));
     setFile(selectedImage);
     if (selectedImage) {
@@ -21,12 +23,9 @@ function InputImage({handleImageUpload}) {
       reader.onloadend = () => {
         setImage(reader.result);
       };
-      console.log(file);
+      // console.log(file);
       reader.readAsDataURL(selectedImage);
-
     }
-
- 
   };
   const handleButtonClick = () => {
     // Trigger the file input element click when the button is clicked

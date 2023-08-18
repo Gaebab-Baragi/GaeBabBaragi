@@ -3,22 +3,34 @@ import InputImage from '../components/ui/InputImage';
 import InputInfor from '../components/ui/InputInfor';
 import MaterialRegist from '../components/ui/MaterialRegist';
 import CookStep from '../components/ui/CookStep';
-import { useDispatch } from 'react-redux';
-import { requestFilteredRecipeList,updateVideo} from '../redux/recipeRegisterSlice';
+import { useDispatch,useSelector } from 'react-redux'; 
+import { requestFilteredRecipeList,updateVideo} from '../redux/recipeRegisterSlice'; //redirectToRecipeListComplete
 import  { useState } from 'react';
 import {useNavigate} from 'react-router-dom'
 
 
 function RecipeRegisterPage() {
-  const navigator = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [video, setVideo] = useState('./기본이미지.PNG');
   const [file, setFile] = useState("");
+  // const redirectToRecipeList = useSelector(
+  //   (state) => state.recipeRegister.redirectToRecipeList
+  // );
   
+
+
   const handlerequest = ()=>{
-    dispatch(requestFilteredRecipeList)
-    navigator('/recipe-list')
+    dispatch(requestFilteredRecipeList())
+    navigate('/recipe-list')
+    // if (redirectToRecipeList) {
+    //   navigate("/recipe-list");
+    //   // 페이지 이동 후 값 다시 false로 변경
+    //   dispatch(redirectToRecipeListComplete());
+    // }
+
   }
+
   const handleVideoChange = (e)=>{
     const selectedVideo = e.target.files[0];
     dispatch(updateVideo(selectedVideo));

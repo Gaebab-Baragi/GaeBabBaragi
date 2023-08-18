@@ -13,7 +13,7 @@ function InputOne() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // 레시피 이름과 음식 이름을 서버로 전송하거나 다른 작업을 수행하는 로직을 추가할 수 있습니다.
-    console.log(' 이름:', InputBox);
+    // console.log(' 이름:', InputBox);
   };
 
   return (

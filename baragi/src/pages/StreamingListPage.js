@@ -8,18 +8,19 @@ import "./StreamingListPage.css";
 function StreamingListPage() {
   const [streamingList, setStreamingList] = useState([]);
   const user = useSelector((state) => (state.user));
+  const [updateList, setUpdateList] = useState(false); 
   const nickname = <user className="nickname"></user>;
   // streaming 전체 list 가져오기
   useEffect(() => {
     axios.get(process.env.REACT_APP_BASE_URL +'/api/meetings')
       .then((res) => {
-        console.log('get list is successful : ', res.data);
+        // console.log('get list is successful : ', res.data);
         setStreamingList(res.data);
       })
       .catch((err) => {
-        console.log('error : ', err);
+        // console.log('error : ', err);
       });
-  }, []);
+  },[updateList]);
 
   return (
       <div className="streaming-list container position-relative">
@@ -41,6 +42,7 @@ function StreamingListPage() {
                 recipe_id={streamingItem.recipe_id}
                 recipe_image_url={streamingItem.recipe_image_url}
                 is_private_room={streamingItem.is_private_room}
+                setUpdateList={setUpdateList}
               />
             </div>
           ))}

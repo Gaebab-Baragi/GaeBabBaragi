@@ -14,7 +14,7 @@ function ServiceInfo() {
                 <div className="container">
                     <div className="row gy-4 align-items-center features-item">
                         <div className="col-md-5">
-                            <img src="/image/개밥바라기.png" className="img-fluid" alt="레시피 검색 페이지" />
+                            <img src="/image/레시피 검색.png" className="img-fluid-1" alt="레시피 검색 페이지" />
                         </div>
                         <div className="col-md-7 content">
                             <h3>나의 반려견에 딱 맞는 레시피 찾기!</h3>
@@ -28,7 +28,7 @@ function ServiceInfo() {
 
                     <div className="row gy-4 align-items-center features-item">
                         <div className="col-md-5 order-1 order-md-2">
-                            <img src="/image/개밥바라기.png" className="img-fluid" alt="재료 객체 탐지 페이지" />
+                            <img src="/image/재료 리스트.png" className="img-fluid-2" alt="재료 객체 탐지 페이지" />
                         </div>
                         <div className="col-md-7 order-2 order-md-1 content">
                             <h3>사진 촬영을 통한 재료 리스트 얻기!</h3>
@@ -45,7 +45,7 @@ function ServiceInfo() {
 
                     <div className="row gy-4 align-items-center features-item">
                         <div className="col-md-5">
-                            <img src="/image/개밥바라기.png" className="img-fluid" alt="스트리밍 페이지" />
+                            <img src="/image/스트리밍.png" className="img-fluid-3" alt="스트리밍 페이지" />
                         </div>
                         <div className="col-md-7 content">
                             <h3>다 함께 모여서 간식 만들기!</h3>

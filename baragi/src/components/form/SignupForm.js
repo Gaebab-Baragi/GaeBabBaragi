@@ -60,7 +60,7 @@ function SignupForm() {
       })
     .then((res)=>{
       if (res.status === 200) {
-        console.log('duplication checked')
+        // console.log('duplication checked')
         Toast.fire("사용 가능한 닉네임입니다.", "", "success");
         setNicknameDuplicateCheck(true);
       }
@@ -76,7 +76,7 @@ function SignupForm() {
 
   const handleEmailCodeCheck = useCallback((e) => {
     e.preventDefault();
-    console.log('Email-Code-Check')
+    // console.log('Email-Code-Check')
     if (code === verificationCode) {
       setEmailCodeCheck(true)
       Toast.fire("확인되었습니다.", "", "success")
@@ -123,9 +123,9 @@ function SignupForm() {
     if (!nicknameDuplicateCheck || !emailCodecheck || !validEmail || !validPassword || !samePassword) {
       Toast.fire('중복 확인을 진행해주세요.', "", "error")
     } else {
-        console.log(password1);
-        console.log(nickname);
-        console.log(email);
+        // console.log(password1);
+        // console.log(nickname);
+        // console.log(email);
         
         let body = {
           registerName : email,
@@ -135,7 +135,7 @@ function SignupForm() {
         axios.post(process.env.REACT_APP_BASE_URL +'/api/member/register', body)
         .then((res)=>{
           if (res.status ===201) {
-            console.log('signup success')
+            // console.log('signup success')
             navigate('/login')
             Toast.fire("회원 가입에 성공했습니다.", "", "success")
           }

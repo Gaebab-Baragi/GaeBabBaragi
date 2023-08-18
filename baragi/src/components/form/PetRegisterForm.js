@@ -38,7 +38,7 @@ function PetRegisterForm({petInfo, idx, rerender}) {
   // ==========================사진 등록===================//
   const handleImagePreview = (e) => {
     e.preventDefault();
-    console.log(idx);
+    // console.log(idx);
     const selectedImage = e.target.files[0];
     setPetImage(selectedImage)
     setFile(selectedImage)
@@ -59,7 +59,7 @@ function PetRegisterForm({petInfo, idx, rerender}) {
     })
 
     const formData = new FormData();
-    console.log(file);
+    // console.log(file);
     formData.append("petImage", file);
     const datas = {
       name: petName,

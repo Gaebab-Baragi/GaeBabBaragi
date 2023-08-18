@@ -30,12 +30,12 @@ function RecipeCardPagination({rowNum}) {
     axios.get(process.env.REACT_APP_BASE_URL +"/api/recipes/writer")
       .then((res) => {
           if (res.status === 200){
-            console.log(res.data.recipes);
+            // console.log(res.data.recipes);
             setItems(res.data.recipes)
           }
       }) 
       .catch((res) => {
-        console.log(res) 
+        // console.log(res) 
       }) 
   }, []);
 

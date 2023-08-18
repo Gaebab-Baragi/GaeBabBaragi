@@ -36,7 +36,7 @@ function ObjectDetectionPage({onValueChange}) {
       getWebcam((stream => {
         videoRef.current.srcObject = stream;
         stream.oninactive = () => {
-          console.log('Camera stream inactive');
+          // console.log('Camera stream inactive');
         };
       }));
     }return () => {
@@ -59,7 +59,7 @@ function ObjectDetectionPage({onValueChange}) {
       navigator.mediaDevices.getUserMedia(constraints)
         .then(callback);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return undefined;
     }
   };
@@ -79,12 +79,12 @@ function ObjectDetectionPage({onValueChange}) {
           },
         })
         .then(response => {
-          console.log('Image uploaded successfully:', response.data);
+          // console.log('Image uploaded successfully:', response.data);
           setanswerClass(response.data['image_url'])
           dispatch(setIngredients(response.data['name']))
         })
         .catch(error => {
-          console.error('Error uploading image:', error);
+          // console.error('Error uploading image:', error);
         });
         // ... rest of the code
   }
@@ -180,10 +180,10 @@ function ObjectDetectionPage({onValueChange}) {
         formData.append('image', blob, "fileName.jpeg"); 
           
           for (let key of formData.keys()) {
-            console.log(key);
+            // console.log(key);
           }
           for (let value of formData.values()) {
-            console.log(value);
+            // console.log(value);
           }
 
 
@@ -198,14 +198,14 @@ function ObjectDetectionPage({onValueChange}) {
         })
           .then(response => {
 
-            console.log('Image uploaded successfully:', response.data);
+            // console.log('Image uploaded successfully:', response.data);
             setanswerClass(response.data['image_url'])
             dispatch(setIngredients(response.data['name']))
            
 
           })
           .catch(error => {
-            console.error('Error uploading image:', error);
+            // console.error('Error uploading image:', error);
           });
     // ... rest of the code
   }, 'image/jpeg',1);
@@ -265,8 +265,8 @@ function ObjectDetectionPage({onValueChange}) {
               <li 
               style={{
                 color: forbidden.includes(value) ? 'red' :
-                       caution.includes(value) ? 'orange':
-                       safe.includes(value)?  'green': 'black'}}
+                      caution.includes(value) ? 'orange':
+                      safe.includes(value)?  'green': 'black'}}
               key={index}>{value}</li>
             ))}
           </ul>
@@ -277,7 +277,7 @@ function ObjectDetectionPage({onValueChange}) {
             
           </p>
         )}
- 
+
         {/* <input type="text" value ={newIngredient} onChange={(e) => setNewIngredient(e.target.value)}/> */}
     </div>
     
@@ -297,9 +297,6 @@ function ObjectDetectionPage({onValueChange}) {
       </div>
     </div>
   </div>
-
-
-
   )};
 
 export default ObjectDetectionPage;

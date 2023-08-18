@@ -13,7 +13,7 @@ const CardContainer = styled.div`
 
 const StyledCardWrapper = styled.div`
   margin-bottom: 20px;
-  margin-right:2.7%
+  margin-right:2.5%
 `;
 
 function CardPaginationList({rowNum,filteredList}) {
@@ -71,7 +71,7 @@ function CardPaginationList({rowNum,filteredList}) {
   const setPage = (e) => {
     setCurrentpage(e);
   };
-  console.log('currentPost', currentPosts)
+  // console.log('currentPost', currentPosts)
   return (
     <div>
       <CardContainer>

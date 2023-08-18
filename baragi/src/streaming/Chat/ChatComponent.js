@@ -24,17 +24,17 @@ export default class ChatComponent extends Component {
   componentDidMount() {
     // Delay the execution of the component initialization
     this.setState({ nameColor: this.getRandomBrightColor() });
-    console.log(this.nameColor);
+    // console.log(this.nameColor);
     setTimeout(() => {
       this.initializeChat();
     }, 5000); // Adjust the delay time as needed
   }
 
   initializeChat() {
-    console.log(
-      "채팅의 getStreamManager()임!!!!!",
-      this.props.user.getStreamManager()
-    );
+    // console.log(
+    //   "채팅의 getStreamManager()임!!!!!",
+    //   this.props.user.getStreamManager()
+    // );
     this.props.user
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
@@ -69,13 +69,15 @@ export default class ChatComponent extends Component {
   }
 
   sendMessage() {
-    console.log(this.state.message);
+    // console.log(this.state.message);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       let dt = new Date();
       const hour = dt.getHours();
       const min = dt.getMinutes();
-      const nowTime = hour + ":" + min;
+      const formattedHour = hour < 10 ? '0' + hour : hour;
+      const formattedMin = min < 10 ? '0' + min : min;
+      const nowTime = formattedHour + ":" + formattedMin;
       if (message !== "" && message !== " ") {
         const data = {
           userProfileUrl: this.props.userProfileUrl,
@@ -116,7 +118,7 @@ export default class ChatComponent extends Component {
 
   // '질문이 있어요' signal 보내기
   sendQuestionSignal() {
-    console.log('props다!!!!!!!!!',this.props.user)
+    // console.log('props다!!!!!!!!!',this.props.user)
     this.props.user.getStreamManager().stream.session.signal({
       type:'questionSignal'
     })

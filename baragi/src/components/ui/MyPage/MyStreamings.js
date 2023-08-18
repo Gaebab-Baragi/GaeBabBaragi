@@ -15,11 +15,11 @@ const MyStreamings= () => {
   useEffect(() => {
     axios.get(process.env.REACT_APP_BASE_URL +'/api/meetings/my-meetings')
       .then((res) => {
-        console.log('get list is successful : ', res.data);
+        // console.log('get list is successful : ', res.data);
         setStreamingList(res.data);
       })
       .catch((err) => {
-        console.log('error : ', err);
+        // console.log('error : ', err);
       });
   }, []);
 
