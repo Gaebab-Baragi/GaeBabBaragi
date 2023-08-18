@@ -75,7 +75,9 @@ export default class ChatComponent extends Component {
       let dt = new Date();
       const hour = dt.getHours();
       const min = dt.getMinutes();
-      const nowTime = hour + ":" + min;
+      const formattedHour = hour < 10 ? '0' + hour : hour;
+      const formattedMin = min < 10 ? '0' + min : min;
+      const nowTime = formattedHour + ":" + formattedMin;
       if (message !== "" && message !== " ") {
         const data = {
           userProfileUrl: this.props.userProfileUrl,
