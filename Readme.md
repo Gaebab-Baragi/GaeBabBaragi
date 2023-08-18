@@ -24,26 +24,26 @@
  
 # II.	빌드 
 ## 1.	빌드 환경 변수
-a)	`VERSION=$(curl—silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)` : Docker-compose의 최신 릴리즈 정보   
-b)	`DESTINATION=/usr/bin/docker-compose` : docker-compose 실행 파일이 저장될 위치   
+a)	`VERSION=$(curl—silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)` : Docker-compose의 최신 릴리즈 정보
+b)	`DESTINATION=/usr/bin/docker-compose` : docker-compose 실행 파일이 저장될 위치
 c)	`Docker-compse –p frontend build` : Docker-compose는 보통 docker-compose.yml이 저장 된 디렉토리 명을 환경변수로 설정하는데 본 프로젝트에서는 docker-compose.yml이 root에 있어 이러한 자동 환경변수 설정이 되지 않기 때문에 –p 를 이용해 frontend라고 수동으로 명명해주었다
 
 ## 2.	배포 순서
-a)	`sudo su`
-b)	`cd /opt/openvidu`
-c)	`./openvidu start`
-d)	`cd /`
-e)	`sudo docker-compose –p frontend build`
-f)	`sudo docker-compose –p frontend up –d`
-g)	`sudo service nginx restart`
+a)	`sudo su`   
+b)	`cd /opt/openvidu`   
+c)	`./openvidu start`   
+d)	`cd /`   
+e)	`sudo docker-compose –p frontend build`   
+f)	`sudo docker-compose –p frontend up –d`   
+g)	`sudo service nginx restart`   
 
 ## 3.	배포 시 특이사항
-a)	Docker 사용: Backend, Frontend, Nginx, Jenkins, YoloV5, OpenVidu, DB를 각각의 Docker Container로 관리하여 독립성을 보장시켰다.
-b)	Docker-compose 사용: Docker-compose를 사용하여 각각의 Dockerfile을 통해 여러 개의 컨테이너를 build 후 생성하여 다중 컨테이너 관리, 설정의 일관성, 개발 효율성을 증대시켰다.
-c)	Jenkins pipeline 사용: jenkins pipeline으로 한 프로젝트에 있는 backend단과 frontend단을 동시에 자동 배포 하여 배포 환경 테스트 효율성을 증가시켰다.
+a)	Docker 사용: Backend, Frontend, Nginx, Jenkins, YoloV5, OpenVidu, DB를 각각의 Docker Container로 관리하여 독립성을 보장시켰다.   
+b)	Docker-compose 사용: Docker-compose를 사용하여 각각의 Dockerfile을 통해 여러 개의 컨테이너를 build 후 생성하여 다중 컨테이너 관리, 설정의 일관성, 개발 효율성을 증대시켰다.   
+c)	Jenkins pipeline 사용: jenkins pipeline으로 한 프로젝트에 있는 backend단과 frontend단을 동시에 자동 배포 하여 배포 환경 테스트 효율성을 증가시켰다.   
 d)	Nginx의 reverse proxy 사용: 가비아에서 구입한 doggy-yummy 도메인 뒤에 /, /api, /v1 경로로 reverse proxy 하여 각각 front, back, object 
-detection 단으로 보내주었다.
-e)  배포 시에는 application-secure.properties의 current.front, current.back을 ${deploy.front}, ${deploy.back}으로 바꿔주어야 한다.
+detection 단으로 보내주었다.   
+e)  배포 시에는 `application-secure.properties`의 `current.front`, `current.back`을 `${deploy.front}`, `${deploy.back}`으로 바꿔주어야 한다.   
 
 # III.	외부 서비스 정보
 ## 1.	소셜 인증
